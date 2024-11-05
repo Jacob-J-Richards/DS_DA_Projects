@@ -4,7 +4,7 @@ output: html_document
 date: "2024-11-05"
 ---
 ```{r}
-setwd("C:/Users/jake pc/Desktop/DS_assesment")
+setwd("/Users/jacobrichards/Desktop/DS assesment/DS_Exam_1")
 responders_data_sheet <- read.csv(file="data.csv",header=TRUE)
 ```
 
@@ -78,140 +78,124 @@ data_incomena_removed$income <- as.numeric(income_levels)
 
 target_by_income_model_data <- data_incomena_removed
 
+
+target_by_income_model_data_men <- target_by_income_model_data[target_by_income_model_data[,5]=="M",]
+
+target_by_income_model_data_women <- target_by_income_model_data[target_by_income_model_data[,5]=="F",]
+
+responders_data_sheet_men <- target_by_income_model_data[target_by_income_model_data[,5]=="M",]
+
+responders_data_sheet_women <- target_by_income_model_data[target_by_income_model_data[,5]=="F",]
 ```
 
 we're going to build a logistic regression model to see if income changes the probability of response 
 ```{r}
-simple_logistic_model = glm(data = target_by_income_model_data,
-                            target ~ income,
-                            family = binomial())
 
-summary(simple_logistic_model)
+# Prepare dataset
+remove_NA <- responders_data_sheet
+data_incomena_removed <- remove_NA[remove_NA[, "income"] != "", ]
 
+# Convert income levels to an ordered factor, then numeric
+income_levels <- factor(data_incomena_removed[, "income"],
+                        levels = c("Under $10k", "10-19,999", "20-29,999", "30-39,999",
+                                   "40-49,999", "50-59,999", "60-69,999", "70-79,999",
+                                   "80-89,999", "90-99,999", "100-149,999", "150 - 174,999",
+                                   "175 - 199,999", "200 - 249,999", "250k+"),
+                        ordered = TRUE)
 
-#Y = -0.31898  + -0.10718*X
+# Add numeric income levels to the dataset
+data_incomena_removed$income <- as.numeric(income_levels)
 
+# Set the modified data as target dataset
+target_by_income_model_data <- data_incomena_removed
 
-
-Prob_by_income <- function(income) {
+# Define binary_classifier with color parameter
+binary_classifier <- function(predictor, clean_data, color) {
   
-  log_odds = -0.31898  + -0.10718*income
+  # Fit the logistic model
+  simple_logistic_model <- glm(data = clean_data,
+                               target ~ predictor,
+                               family = binomial())
   
-  odds = exp(log_odds)
+  # Display the summary of the model
+  print(summary(simple_logistic_model))
   
-  probability = odds / (1+odds)
+  # Extract intercept and slope
+  intercept_slope <- coef(simple_logistic_model)
   
-  return(probability)
+  # Define a range for x evaluation
+  x_evaluation <- seq(min(predictor), max(predictor), length.out = 100)
   
+  # Define function to calculate probabilities
+  Prob_by_income <- function(x, intercept_slope) {
+    log_odds <- intercept_slope[1] + intercept_slope[2] * x
+    odds <- exp(log_odds)
+    probability <- odds / (1 + odds)
+    return(probability)
+  }
+  
+  # Calculate probabilities over x_evaluation
+  probabilities <- sapply(x_evaluation, function(x) Prob_by_income(x, intercept_slope))
+  
+  # Plot the curve
+  lines(x_evaluation, probabilities, col = color, lwd = 2)
 }
 
 
-# Evaluate the function for income levels 1 through 15
-income_levels <- 1:15
-probabilities <- sapply(income_levels, Prob_by_income)
 
-# Plot the results
-plot(income_levels, probabilities, type = "o", 
-     xlab = "Income Level (1 to 15)", 
+
+
+```
+
+
+
+FOR BOTH GENDERS AND ALL MARITAL STATUS 
+```{r}
+
+predictors <- list(target_by_income_model_data$income, responders_data_sheet$dist,responders_data_sheet$age) 
+clean_data_list <- list(target_by_income_model_data, responders_data_sheet,responders_data_sheet)
+colors <- c("blue", "red","orange") 
+
+
+
+plot(1, type = "n", xlim = range(unlist(predictors)), ylim = c(0, 1),
+     xlab = "Income, distance, and age ", 
      ylab = "Probability of Response", 
-     main = "Probability of Response as a Function of Income Level",
-     col = "blue", pch = 16)
+     main = "Probability of Response as function of income, distance, and age")
+legend("topright", legend = c("Income", "Distance", "Age"), fill = colors)
 
 
+
+
+results <- mapply(binary_classifier, predictor = predictors, clean_data = clean_data_list, color = colors)
 
 ```
 
 
-Therefore, as income incresed, probability of responce decreased 
-
-
-
-I don't know what this variable "dist" is, but lets check it 
 ```{r}
-simple_logistic_model_dist = glm(data = responders_data_sheet,
-                            target ~ dist,
-                            family = binomial())
 
-summary(simple_logistic_model_dist)
+responders_data_sheet
 
+predictors <- list(target_by_income_model_data_men$income,target_by_income_model_data_women$income,
+                   responders_data_sheet_men$dist,
+                   responders_data_sheet_women$dist,
+                   responders_data_sheet_men$age,
+                   responders_data_sheet_women$age) 
+clean_data_list <- list(target_by_income_model_data_men,target_by_income_model_data_women,
+                        responders_data_sheet_men,
+                        responders_data_sheet_women,
+                        responders_data_sheet_men,
+                        responders_data_sheet_women)
+colors <- c("black","blue","red","pink") 
 
-#Y = -1.015121  + -0.010059*X
+plot(1, type = "n", xlim = range(unlist(predictors)), ylim = c(0, 1),
+     xlab = "Income Level", 
+     ylab = "Probability of Response", 
+     main = "Probability of Response as function of __")
 
-
-
-Prob_by_dist <- function(income) {
-  
-  log_odds = -1.015121  + -0.010059*income
-  
-  odds = exp(log_odds)
-  
-  probability = odds / (1+odds)
-  
-  return(probability)
-  
-}
-
-range(min(responders_data_sheet$dist),max(responders_data_sheet$dist))
-# Evaluate the function for income levels 1 through 15
-
-dist_inputs <- seq(0.1290413,29.9588335,by=0.01)
-
-probabilities_dist <- sapply(seq(0.1290413,29.9588335,by=0.01), Prob_by_dist)
-
-# Plot the results
-plot(dist_inputs, probabilities_dist, type = "o", 
-     col = "blue", pch = 16)
-
+results <- mapply(binary_classifier, predictor = predictors, clean_data = clean_data_list, color = colors)
 
 
 ```
-I don't know what this variable is but as it increased, responce rate decresed
-
-
-
-
-
-of course we need to check age
-```{r}
-simple_logistic_model_age = glm(data = responders_data_sheet,
-                            target ~ age,
-                            family = binomial())
-
-summary(simple_logistic_model_age)
-
-
-#Y = -1.015121  + -0.010059*X
-
-
-
-Prob_by_age <- function(income) {
-  
-  log_odds = -5.433202  + 0.055955*income
-  
-  odds = exp(log_odds)
-  
-  probability = odds / (1+odds)
-  
-  return(probability)
-  
-}
-
-
-
-age_inputs <- seq(min(responders_data_sheet$age),max(responders_data_sheet$age),by=1)
-
-probabilities_dist <- sapply(age_inputs, Prob_by_age)
-
-# Plot the results
-plot(age_inputs, probabilities_dist, type = "o", 
-     col = "blue", pch = 16)
-
-
-
-```
-very clearly, as age increased probability of responce increased
-
-
-
-
-we need to factor each of these variables for analysis by gender 
+#the rate of male response increase was less than the rate of female responce increase with age 
+#becuase the men died sooner than women 
