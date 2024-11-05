@@ -1,0 +1,217 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-11-05"
+---
+```{r}
+setwd("C:/Users/jake pc/Desktop/DS_assesment")
+responders_data_sheet <- read.csv(file="data.csv",header=TRUE)
+```
+
+Part 1: Hypothesis Testing
+Use a Hypothesis Test to determine if responders and non-responders tend to have the same age.
+Output: A written summary of the steps of your hypothesis test and the result of your test.
+
+
+```{r}
+#check for normal age distribution 
+
+population_ages <- responders_data_sheet[,2]
+
+write.csv(population_ages,"test_if_normal.csv")
+
+hist(population_ages)
+
+shapiro.test(population_ages)
+
+qqnorm(population_ages)
+qqline(population_ages, col = "red")
+
+target_1_ages <- responders_data_sheet[responders_data_sheet[,7] == 1,2]
+target_0_ages <- responders_data_sheet[responders_data_sheet[,7] == 0,2]
+
+
+hist(target_1_ages)
+hist(target_0_ages)
+
+shapiro.test(target_1_ages)
+shapiro.test(target_0_ages)
+
+```
+reject null hypotheis that population, target = 1 and target = 0 have normally distributed ages 
+
+```{r}
+wilcox.test(target_1_ages, target_0_ages, alternative = "two.sided")
+```
+reject null hypothesis that mean age of responders and non responders are equal 
+
+the result is confirmed by the frequency distribution for non responders decreasing from 65 to 80, whereas
+the frequency distribution for responders increases from 65 to 80. 
+
+
+
+
+
+Part 2: Predictive Modeling
+Build a Binary Classifier to help this client better predict responders in future campaigns. 
+
+Output: A brief writeup of your approach, including the algorithm you used, any data analysis or preparation you pursued, and the performance metrics you used to evaluate your final model.
+
+
+check income as a predictor for target yes no 
+```{r}
+
+remove_NA <- responders_data_sheet
+
+data_incomena_removed <- remove_NA[remove_NA[, 4] != "", ]
+
+# Assuming `data_incomena_removed` is your dataset after removing blank values in the income column
+income_levels <- factor(data_incomena_removed[, "income"],
+                        levels = c("Under $10k", "10-19,999", "20-29,999", "30-39,999",
+                                   "40-49,999", "50-59,999", "60-69,999", "70-79,999",
+                                   "80-89,999", "90-99,999", "100-149,999", "150 - 174,999",
+                                   "175 - 199,999", "200 - 249,999", "250k+"),
+                        ordered = TRUE)
+
+# Add the ordered income levels back into the dataset
+data_incomena_removed$income <- as.numeric(income_levels)
+
+target_by_income_model_data <- data_incomena_removed
+
+```
+
+we're going to build a logistic regression model to see if income changes the probability of response 
+```{r}
+simple_logistic_model = glm(data = target_by_income_model_data,
+                            target ~ income,
+                            family = binomial())
+
+summary(simple_logistic_model)
+
+
+#Y = -0.31898  + -0.10718*X
+
+
+
+Prob_by_income <- function(income) {
+  
+  log_odds = -0.31898  + -0.10718*income
+  
+  odds = exp(log_odds)
+  
+  probability = odds / (1+odds)
+  
+  return(probability)
+  
+}
+
+
+# Evaluate the function for income levels 1 through 15
+income_levels <- 1:15
+probabilities <- sapply(income_levels, Prob_by_income)
+
+# Plot the results
+plot(income_levels, probabilities, type = "o", 
+     xlab = "Income Level (1 to 15)", 
+     ylab = "Probability of Response", 
+     main = "Probability of Response as a Function of Income Level",
+     col = "blue", pch = 16)
+
+
+
+```
+
+
+Therefore, as income incresed, probability of responce decreased 
+
+
+
+I don't know what this variable "dist" is, but lets check it 
+```{r}
+simple_logistic_model_dist = glm(data = responders_data_sheet,
+                            target ~ dist,
+                            family = binomial())
+
+summary(simple_logistic_model_dist)
+
+
+#Y = -1.015121  + -0.010059*X
+
+
+
+Prob_by_dist <- function(income) {
+  
+  log_odds = -1.015121  + -0.010059*income
+  
+  odds = exp(log_odds)
+  
+  probability = odds / (1+odds)
+  
+  return(probability)
+  
+}
+
+range(min(responders_data_sheet$dist),max(responders_data_sheet$dist))
+# Evaluate the function for income levels 1 through 15
+
+dist_inputs <- seq(0.1290413,29.9588335,by=0.01)
+
+probabilities_dist <- sapply(seq(0.1290413,29.9588335,by=0.01), Prob_by_dist)
+
+# Plot the results
+plot(dist_inputs, probabilities_dist, type = "o", 
+     col = "blue", pch = 16)
+
+
+
+```
+I don't know what this variable is but as it increased, responce rate decresed
+
+
+
+
+
+of course we need to check age
+```{r}
+simple_logistic_model_age = glm(data = responders_data_sheet,
+                            target ~ age,
+                            family = binomial())
+
+summary(simple_logistic_model_age)
+
+
+#Y = -1.015121  + -0.010059*X
+
+
+
+Prob_by_age <- function(income) {
+  
+  log_odds = -5.433202  + 0.055955*income
+  
+  odds = exp(log_odds)
+  
+  probability = odds / (1+odds)
+  
+  return(probability)
+  
+}
+
+
+
+age_inputs <- seq(min(responders_data_sheet$age),max(responders_data_sheet$age),by=1)
+
+probabilities_dist <- sapply(age_inputs, Prob_by_age)
+
+# Plot the results
+plot(age_inputs, probabilities_dist, type = "o", 
+     col = "blue", pch = 16)
+
+
+
+```
+very clearly, as age increased probability of responce increased
+
+
+
+
+we need to factor each of these variables for analysis by gender 
