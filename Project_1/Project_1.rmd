@@ -1,0 +1,166 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-11-05"
+---
+```{r}
+setwd("/Users/jacobrichards/Desktop/DS assesment/DS_Exam_1")
+responders_data_sheet <- read.csv(file="data.csv",header=TRUE)
+```
+
+Part 1: Hypothesis Testing
+Use a Hypothesis Test to determine if responders and non-responders tend to have the same age.
+Output: A written summary of the steps of your hypothesis test and the result of your test.
+
+
+```{r}
+#check for normal age distribution 
+
+population_ages <- responders_data_sheet[,2]
+
+write.csv(population_ages,"test_if_normal.csv")
+
+hist(population_ages)
+
+shapiro.test(population_ages)
+
+qqnorm(population_ages)
+qqline(population_ages, col = "red")
+
+target_1_ages <- responders_data_sheet[responders_data_sheet[,7] == 1,2]
+target_0_ages <- responders_data_sheet[responders_data_sheet[,7] == 0,2]
+
+
+hist(target_1_ages)
+hist(target_0_ages)
+
+shapiro.test(target_1_ages)
+shapiro.test(target_0_ages)
+
+```
+reject null hypotheis that population, target = 1 and target = 0 have normally distributed ages 
+
+```{r}
+wilcox.test(target_1_ages, target_0_ages, alternative = "two.sided")
+```
+reject null hypothesis that mean age of responders and non responders are equal 
+
+the result is confirmed by the frequency distribution for non responders decreasing from 65 to 80, whereas
+the frequency distribution for responders increases from 65 to 80. 
+
+
+
+
+
+Part 2: Predictive Modeling
+Build a Binary Classifier to help this client better predict responders in future campaigns. 
+
+Output: A brief writeup of your approach, including the algorithm you used, any data analysis or preparation you pursued, and the performance metrics you used to evaluate your final model.
+
+
+check income as a predictor for target yes no 
+```{r}
+
+remove_NA <- responders_data_sheet
+
+data_incomena_removed <- remove_NA[remove_NA[, 4] != "", ]
+
+# Assuming `data_incomena_removed` is your dataset after removing blank values in the income column
+income_levels <- factor(data_incomena_removed[, "income"],
+                        levels = c("Under $10k", "10-19,999", "20-29,999", "30-39,999",
+                                   "40-49,999", "50-59,999", "60-69,999", "70-79,999",
+                                   "80-89,999", "90-99,999", "100-149,999", "150 - 174,999",
+                                   "175 - 199,999", "200 - 249,999", "250k+"),
+                        ordered = TRUE)
+
+# Add the ordered income levels back into the dataset
+data_incomena_removed$income <- as.numeric(income_levels)
+
+target_by_income_model_data <- data_incomena_removed
+
+```
+
+we're going to build a logistic regression model to see if income changes the probability of response 
+```{r}
+
+# Prepare dataset
+remove_NA <- responders_data_sheet
+data_incomena_removed <- remove_NA[remove_NA[, "income"] != "", ]
+
+# Convert income levels to an ordered factor, then numeric
+income_levels <- factor(data_incomena_removed[, "income"],
+                        levels = c("Under $10k", "10-19,999", "20-29,999", "30-39,999",
+                                   "40-49,999", "50-59,999", "60-69,999", "70-79,999",
+                                   "80-89,999", "90-99,999", "100-149,999", "150 - 174,999",
+                                   "175 - 199,999", "200 - 249,999", "250k+"),
+                        ordered = TRUE)
+
+# Add numeric income levels to the dataset
+data_incomena_removed$income <- as.numeric(income_levels)
+
+# Set the modified data as target dataset
+target_by_income_model_data <- data_incomena_removed
+
+# Define binary_classifier with color parameter
+binary_classifier <- function(predictor, clean_data, color) {
+  
+  # Fit the logistic model
+  simple_logistic_model <- glm(data = clean_data,
+                               target ~ predictor,
+                               family = binomial())
+  
+  # Display the summary of the model
+  print(summary(simple_logistic_model))
+  
+  # Extract intercept and slope
+  intercept_slope <- coef(simple_logistic_model)
+  
+  # Define a range for x evaluation
+  x_evaluation <- seq(min(predictor), max(predictor), length.out = 100)
+  
+  # Define function to calculate probabilities
+  Prob_by_income <- function(x, intercept_slope) {
+    log_odds <- intercept_slope[1] + intercept_slope[2] * x
+    odds <- exp(log_odds)
+    probability <- odds / (1 + odds)
+    return(probability)
+  }
+  
+  # Calculate probabilities over x_evaluation
+  probabilities <- sapply(x_evaluation, function(x) Prob_by_income(x, intercept_slope))
+  
+  # Plot the curve
+  lines(x_evaluation, probabilities, col = color, lwd = 2)
+}
+
+
+
+
+
+```
+
+
+
+FOR BOTH GENDERS AND ALL MARITAL STATUS 
+```{r}
+
+predictors <- list(target_by_income_model_data$income, responders_data_sheet$dist,responders_data_sheet$age) 
+clean_data_list <- list(target_by_income_model_data, responders_data_sheet,responders_data_sheet)
+colors <- c("blue", "red","orange") 
+
+
+
+plot(1, type = "n", xlim = range(unlist(predictors)), ylim = c(0, 1),
+     xlab = "Income Level", 
+     ylab = "Probability of Response", 
+     main = "Probability of Response as function of __")
+
+
+
+
+results <- mapply(binary_classifier, predictor = predictors, clean_data = clean_data_list, color = colors)
+
+```
+
+
+
