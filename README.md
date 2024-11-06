@@ -1,2 +1,3 @@
 ## results of logistic regression model - probability of responce by income, distance, and age 
-![0001d4](https://github.com/user-attachments/assets/66210908-474c-4577-a344-4124f1002231)
+
+![0001d4](https://github.com/user-attachments/assets/7adb243f-282c-4aaf-ad82-f807ba77758f)
