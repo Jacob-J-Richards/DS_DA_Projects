@@ -122,7 +122,6 @@ binary_classifier <- function(predictor, clean_data, color) {
   max_x <- x_evaluation[which.max(probabilities)]
  
   delta_value <- as.numeric(tail(probabilities, 1) - head(probabilities, 1))
-  return(delta_value)
  
   delta_text <- paste0("Delta Prob %: ", round(delta_value*100))
   mtext(delta_text, side = 1, line = 3, col = "blue")
@@ -134,6 +133,8 @@ binary_classifier <- function(predictor, clean_data, color) {
   points(max_x, max_prob, col = "black", pch = 19)
   
   text(max_x, max_prob - 0.01, labels = paste0("Max: ", round(max_prob, 3)), col = "red")
+  
+  return(delta_value)
 
 }
 ```
