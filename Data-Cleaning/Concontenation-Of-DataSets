@@ -1,3 +1,8 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-11-07"
+---
 
 **undergraduate extra credit** (5) (Use R) This problem is required for
 Grad students (those of you registered in STAT 505) but can be extra
@@ -21,6 +26,10 @@ weight_treatment <- as.data.frame(read.csv(file = "weight_treatment(1).csv", hea
 ```
 
 ```{r}
+(head(SRH,5))
+(head(weight_control,5))
+(head(weight_treatment,5))
+
 SRH_id_sorted <- SRH[order(SRH[,1], SRH[,3] == "POST"), ]
 WC_id_sorted <- weight_control[order(weight_control[,1]),]
 WT_id_sorted <- weight_treatment[order(weight_treatment[,1]),]
