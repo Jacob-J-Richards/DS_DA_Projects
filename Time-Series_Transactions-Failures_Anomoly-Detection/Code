@@ -1,0 +1,40 @@
+---
+title: "Untitled"
+output:
+  pdf_document: default
+  html_document: default
+date: "2024-11-06"
+---
+```{r}
+setwd("/Users/jacobrichards/Desktop/DS assesment/DS_Exam_2")
+transactions <- read.csv(file="transactions(1).csv",header=TRUE)
+```
+
+lets plot percentage of failed transactions (per hour) over the time span of the dataset 
+
+```{r}
+failed_transactions <- transactions[,1] - transactions[,2]
+transactions <- cbind(failed_transactions,transactions)
+
+
+transactions <- transactions[order(as.POSIXct(transactions[,8], format = "%Y-%m-%d %H")),]
+unique_hours <- unique(transactions[,8])
+
+
+percentage_of_failed_transactions_per_hour <- numeric(length(unique_hours))
+for (i in 1:72) {
+  percentage_of_failed_transactions_per_hour[i] <- sum(transactions[transactions[,8] == unique_hours[i],1])/sum(transactions[transactions[,8] == unique_hours[i],2])
+}
+
+
+plot(1:length(factored_hours), percentage_of_failed_transactions_per_hour,type="o")
+points(1:length(factored_hours), failed_transactions_per_hour)
+axis(1, at = 1:length(factored_hours), labels = FALSE, tck = -0.02)
+```
+
+%of failed tranactions per hour
+SOMETHING IS INCREASING FORM 25 TO 45 AND DECREASING FROM 45 TO 65 
+
+
+ok what if it's the sum of a categorical variable 
+
