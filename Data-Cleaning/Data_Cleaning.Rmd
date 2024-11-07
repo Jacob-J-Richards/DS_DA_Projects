@@ -1,0 +1,68 @@
+---
+title: "Untitled"
+output:
+  pdf_document: default
+  html_document: default
+date: "2024-11-07"
+---
+
+**undergraduate extra credit** (5) (Use R) This problem is required for
+Grad students (those of you registered in STAT 505) but can be extra
+credit for undergrad students. A researcher needs your expertise to
+combine the so called SRH (Health rate) before and after a treatment. A
+random sample of size n = 2000 individuals were selected. A random
+sample of 1000 individuals were then subjected to the treatment and
+another 1000 to the control group. In the first data file called “SRH”,
+their status pre and post experiment are reported in. The weights of the
+treatment and control group were then record in the files called
+“weight_treatment” and “weight_control.” Combine the 3 data files
+properly to create an analytic dataset as shown in the sample below:
+Remember to sort the id in increasing order and sort the time in PRE and
+POST order. Provide code for how you arrived at your analytic data set.
+
+```{r}
+setwd("~/Desktop/Stat_405_R/Stat 405 M10 HW")
+SRH <- as.data.frame(read.csv(file = "SRH(1).csv", header = TRUE))
+weight_control <- as.data.frame(read.csv(file = "weight_control(1).csv", header = TRUE))
+weight_treatment <- as.data.frame(read.csv(file = "weight_treatment(1).csv", header = TRUE))
+```
+
+```{r}
+(head(SRH,5))
+(head(weight_control,5))
+(head(weight_treatment,5))
+```
+
+\pagebreak
+```{r}
+SRH_id_sorted <- SRH[order(SRH[,1], SRH[,3] == "POST"), ]
+WC_id_sorted <- weight_control[order(weight_control[,1]),]
+WT_id_sorted <- weight_treatment[order(weight_treatment[,1]),]
+
+Pre_WT <- na.omit(WT_id_sorted[,1:2]) 
+Post_WT <- na.omit(WT_id_sorted[,c(1,3)])
+Pre_WC <- na.omit(WC_id_sorted[,1:2])
+Post_WC <- na.omit(WC_id_sorted[,c(1,3)])
+
+Append <- numeric(nrow(SRH_id_sorted))
+
+Final <- cbind(SRH_id_sorted,Append)
+
+Final[Final[,3] == "PRE",5] <- Pre_WT[,2]
+Final[Final[,3] == "POST",5] <- Post_WT[,2]
+
+Pre_WC_id_nums <- Pre_WC[,1]
+Post_WC_id_nums <- Post_WC[,1]
+
+Final[which(Final[,1] %in% Pre_WC_id_nums & Final[,3] %in% "PRE"),5] <- Pre_WC[,2]
+Final[which(Final[,1] %in% Post_WC_id_nums & Final[,3] %in% "POST"),5] <- Post_WC[,2]
+
+trt <- Final[,2]
+time <- Final[,3]
+Final[,2] <- time
+Final[,3] <- trt
+
+colnames(Final) <- c("id","time","trt","SRH","weight")
+print(head(Final,10))
+write.csv(Final, "analytic_data_set.csv", row.names = FALSE)
+```
