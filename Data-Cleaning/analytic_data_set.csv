@@ -1,0 +1,4001 @@
+"id","time","trt","SRH","weight"
+1,"PRE",1,"Good",135.251
+1,"POST",1,"Poor",125.6678
+2,"PRE",1,"Poor",154.8713
+2,"POST",1,"Very Poor",153.9882
+3,"PRE",1,"Satisfactory",128.1951
+3,"POST",1,"Good",115.5969
+4,"PRE",1,"Poor",183.46
+4,"POST",1,"Good",177.0187
+5,"PRE",1,"Poor",166.3726
+5,"POST",1,"Poor",163.9262
+6,"PRE",1,"Good",120.23
+6,"POST",1,"Excellent",105.7827
+7,"PRE",1,"Excellent",158.7659
+7,"POST",1,"Excellent",151.6788
+8,"PRE",1,"Excellent",160.4238
+8,"POST",1,"Excellent",143.1758
+9,"PRE",1,"Poor",127.1933
+9,"POST",1,"Poor",119.3316
+10,"PRE",1,"Satisfactory",187.8683
+10,"POST",1,"Good",159.2082
+11,"PRE",1,"Very Poor",149.7034
+11,"POST",1,"Poor",138.6607
+12,"PRE",1,"Satisfactory",155.6975
+12,"POST",1,"Satisfactory",132.0746
+13,"PRE",1,"Satisfactory",155.0966
+13,"POST",1,"Good",151.9776
+14,"PRE",1,"Very Poor",171.5426
+14,"POST",1,"Very Poor",176.5242
+15,"PRE",1,"Poor",147.5775
+15,"POST",1,"Satisfactory",136.3011
+16,"PRE",1,"Very Poor",152.2897
+16,"POST",1,"Poor",142.8526
+17,"PRE",1,"Very Poor",143.4772
+17,"POST",1,"Very Poor",139.5775
+18,"PRE",1,"Good",152.0782
+18,"POST",1,"Poor",152.8087
+19,"PRE",1,"Good",170.0887
+19,"POST",1,"Poor",162.5293
+20,"PRE",1,"Very Poor",172.0275
+20,"POST",1,"Good",160.7706
+21,"PRE",1,"Very Poor",179.8065
+21,"POST",1,"Very Poor",180.9274
+22,"PRE",1,"Excellent",179.273
+22,"POST",1,"Excellent",159.5928
+23,"PRE",1,"Satisfactory",174.4266
+23,"POST",1,"Very Poor",172.7157
+24,"PRE",1,"Very Poor",171.2663
+24,"POST",1,"Very Poor",169.5385
+25,"PRE",1,"Good",139.0091
+25,"POST",1,"Poor",142.7194
+26,"PRE",1,"Very Poor",157.8386
+26,"POST",1,"Very Poor",131.7694
+27,"PRE",1,"Poor",192.6096
+27,"POST",1,"Very Poor",175.6675
+28,"PRE",1,"Excellent",141.8295
+28,"POST",1,"Excellent",123.0673
+29,"PRE",1,"Excellent",178.6673
+29,"POST",1,"Excellent",180.2298
+30,"PRE",1,"Excellent",136.7467
+30,"POST",1,"Excellent",119.4993
+31,"PRE",1,"Poor",127.494
+31,"POST",1,"Poor",117.6231
+32,"PRE",1,"Excellent",172.9085
+32,"POST",1,"Excellent",156.7024
+33,"PRE",1,"Very Poor",185.7238
+33,"POST",1,"Satisfactory",175.4742
+34,"PRE",1,"Very Poor",171.8378
+34,"POST",1,"Poor",167.9115
+35,"PRE",1,"Very Poor",155.5894
+35,"POST",1,"Poor",145.6568
+36,"PRE",1,"Satisfactory",173.1556
+36,"POST",1,"Excellent",176.087
+37,"PRE",1,"Excellent",164.3154
+37,"POST",1,"Excellent",146.8517
+38,"PRE",1,"Excellent",174.0927
+38,"POST",1,"Excellent",158.4584
+39,"PRE",1,"Very Poor",179.9346
+39,"POST",1,"Poor",181.2199
+40,"PRE",1,"Excellent",155.18
+40,"POST",1,"Excellent",150.3373
+41,"PRE",1,"Poor",189.5534
+41,"POST",1,"Satisfactory",170.9777
+42,"PRE",1,"Excellent",184.5117
+42,"POST",1,"Excellent",168.1356
+43,"PRE",1,"Excellent",155.1865
+43,"POST",1,"Excellent",151.4756
+44,"PRE",1,"Satisfactory",203.8078
+44,"POST",1,"Satisfactory",190.9797
+45,"PRE",1,"Excellent",125.3423
+45,"POST",1,"Excellent",120.6802
+46,"PRE",1,"Poor",167.7673
+46,"POST",1,"Satisfactory",180.4304
+47,"PRE",1,"Satisfactory",182.0676
+47,"POST",1,"Poor",182.6839
+48,"PRE",1,"Satisfactory",145.4992
+48,"POST",1,"Poor",136.2975
+49,"PRE",1,"Very Poor",149.0422
+49,"POST",1,"Satisfactory",139.1363
+50,"PRE",1,"Poor",134.0405
+50,"POST",1,"Good",135.7739
+51,"PRE",1,"Very Poor",150.0992
+51,"POST",1,"Very Poor",159.0771
+52,"PRE",1,"Satisfactory",164.5643
+52,"POST",1,"Excellent",162.1289
+53,"PRE",1,"Good",154.159
+53,"POST",1,"Poor",146.5947
+54,"PRE",1,"Good",186.5465
+54,"POST",1,"Poor",179.6912
+55,"PRE",1,"Very Poor",175.0381
+55,"POST",1,"Good",158.9087
+56,"PRE",1,"Excellent",142.4462
+56,"POST",1,"Excellent",123.4353
+57,"PRE",1,"Poor",146.2961
+57,"POST",1,"Very Poor",143.3673
+58,"PRE",1,"Excellent",156.86
+58,"POST",1,"Excellent",157.1997
+59,"PRE",1,"Satisfactory",194.8699
+59,"POST",1,"Excellent",183.418
+60,"PRE",1,"Good",138.7133
+60,"POST",1,"Good",133.3343
+61,"PRE",1,"Very Poor",158.0771
+61,"POST",1,"Good",158.8225
+62,"PRE",1,"Very Poor",155.7798
+62,"POST",1,"Satisfactory",133.6256
+63,"PRE",1,"Excellent",134.2601
+63,"POST",1,"Excellent",135.3192
+64,"PRE",1,"Very Poor",187.7403
+64,"POST",1,"Very Poor",185.1393
+65,"PRE",1,"Poor",167.0159
+65,"POST",1,"Satisfactory",147.2662
+66,"PRE",1,"Good",159.8893
+66,"POST",1,"Good",142.4058
+67,"PRE",1,"Satisfactory",174.0639
+67,"POST",1,"Excellent",153.244
+68,"PRE",1,"Very Poor",182.7422
+68,"POST",1,"Satisfactory",158.4848
+69,"PRE",1,"Good",163.9552
+69,"POST",1,"Satisfactory",150.1556
+70,"PRE",1,"Excellent",166.7626
+70,"POST",1,"Excellent",150.2015
+71,"PRE",1,"Very Poor",163.8836
+71,"POST",1,"Very Poor",160.1184
+72,"PRE",1,"Very Poor",176.0452
+72,"POST",1,"Good",158.8908
+73,"PRE",1,"Good",157.1196
+73,"POST",1,"Good",156.0377
+74,"PRE",1,"Excellent",154.7428
+74,"POST",1,"Excellent",140.9129
+75,"PRE",1,"Excellent",203.9719
+75,"POST",1,"Excellent",211.5808
+76,"PRE",1,"Excellent",169.8431
+76,"POST",1,"Excellent",159.4173
+77,"PRE",1,"Excellent",134.2765
+77,"POST",1,"Excellent",138.4549
+78,"PRE",1,"Excellent",204.1201
+78,"POST",1,"Excellent",173.2715
+79,"PRE",1,"Excellent",157.6408
+79,"POST",1,"Excellent",142.3069
+80,"PRE",1,"Poor",147.8871
+80,"POST",1,"Very Poor",148.9051
+81,"PRE",1,"Good",130.9803
+81,"POST",1,"Good",121.2392
+82,"PRE",1,"Good",171.6283
+82,"POST",1,"Satisfactory",167.3914
+83,"PRE",1,"Excellent",168.959
+83,"POST",1,"Excellent",152.497
+84,"PRE",1,"Very Poor",143.0471
+84,"POST",1,"Very Poor",133.2211
+85,"PRE",1,"Good",184.0593
+85,"POST",1,"Poor",175.4928
+86,"PRE",1,"Excellent",141.7542
+86,"POST",1,"Excellent",138.9859
+87,"PRE",1,"Good",214.2505
+87,"POST",1,"Satisfactory",194.292
+88,"PRE",1,"Excellent ",129.7189
+88,"POST",1,"Very Poor",130.2805
+89,"PRE",1,"Poor",173.9807
+89,"POST",1,"Satisfactory",152.1843
+90,"PRE",1,"Excellent",160.5892
+90,"POST",1,"Excellent",161.013
+91,"PRE",1,"Very Poor",160.2614
+91,"POST",1,"Poor",147.6222
+92,"PRE",1,"Poor",136.1944
+92,"POST",1,"Satisfactory",138.6877
+93,"PRE",1,"Very Poor",174.6147
+93,"POST",1,"Very Poor",178.1816
+94,"PRE",1,"Excellent",141.1065
+94,"POST",1,"Excellent",136.6791
+95,"PRE",1,"Very Poor",172.1866
+95,"POST",1,"Very Poor",153.1349
+96,"PRE",1,"Poor",159.3252
+96,"POST",1,"Poor",150.4298
+97,"PRE",1,"Excellent",151.3053
+97,"POST",1,"Excellent",145.2224
+98,"PRE",1,"Good",150.4692
+98,"POST",1,"Very Poor",140.687
+99,"PRE",1,"Very Poor",165.8074
+99,"POST",1,"Good",155.656
+100,"PRE",1,"Very Poor",163.4205
+100,"POST",1,"Poor",165.3332
+101,"PRE",1,"Very Poor",155.4686
+101,"POST",1,"Very Poor",152.1132
+102,"PRE",1,"Good",161.8637
+102,"POST",1,"Good",160.7575
+103,"PRE",1,"Good",167.6818
+103,"POST",1,"Satisfactory",168.7768
+104,"PRE",1,"Excellent",158.8954
+104,"POST",1,"Excellent",145.3362
+105,"PRE",1,"Very Poor",138.8078
+105,"POST",1,"Satisfactory",139.1101
+106,"PRE",1,"Very Poor",162.1971
+106,"POST",1,"Very Poor",145.6886
+107,"PRE",1,"Excellent",179.5838
+107,"POST",1,"Excellent",156.5367
+108,"PRE",1,"Excellent",153.158
+108,"POST",1,"Excellent",151.5772
+109,"PRE",1,"Satisfactory",202.4531
+109,"POST",1,"Very Poor",194.4391
+110,"PRE",1,"Very Poor",142.9138
+110,"POST",1,"Very Poor",135.2328
+111,"PRE",1,"Excellent",146.0456
+111,"POST",1,"Excellent",142.0629
+112,"PRE",1,"Good",171.4943
+112,"POST",1,"Satisfactory",165.031
+113,"PRE",1,"Poor",163.0728
+113,"POST",1,"Poor",157.0023
+114,"PRE",1,"Very Poor",105.1862
+114,"POST",1,"Very Poor",101.6092
+115,"PRE",1,"Poor",174.3012
+115,"POST",1,"Satisfactory",168.8695
+116,"PRE",1,"Poor",184.214
+116,"POST",1,"Very Poor",172.5392
+117,"PRE",1,"Very Poor",162.4006
+117,"POST",1,"Very Poor",154.6446
+118,"PRE",1,"Satisfactory",203.2407
+118,"POST",1,"Excellent",191.6467
+119,"PRE",1,"Good",149.7953
+119,"POST",1,"Very Poor",147.7801
+120,"PRE",1,"Poor",165.0586
+120,"POST",1,"Very Poor",155.1172
+121,"PRE",1,"Very Poor",148.7451
+121,"POST",1,"Very Poor",157.1792
+122,"PRE",1,"Good",146.6539
+122,"POST",1,"Good",145.2294
+123,"PRE",1,"Excellent",175.9765
+123,"POST",1,"Excellent",166.0375
+124,"PRE",1,"Satisfactory",134.7802
+124,"POST",1,"Excellent",138.8422
+125,"PRE",1,"Excellent",158.799
+125,"POST",1,"Excellent",154.4633
+126,"PRE",1,"Excellent",177.5798
+126,"POST",1,"Excellent",155.695
+127,"PRE",1,"Excellent",143.0874
+127,"POST",1,"Excellent",125.1507
+128,"PRE",1,"Satisfactory",147.8962
+128,"POST",1,"Excellent",149.2282
+129,"PRE",1,"Very Poor",146.8308
+129,"POST",1,"Satisfactory",137.6676
+130,"PRE",1,"Good",119.3579
+130,"POST",1,"Very Poor",115.8063
+131,"PRE",1,"Very Poor",139.4291
+131,"POST",1,"Satisfactory",137.4689
+132,"PRE",1,"Poor",181.4677
+132,"POST",1,"Poor",170.4871
+133,"PRE",1,"Excellent",155.434
+133,"POST",1,"Excellent",145.3508
+134,"PRE",1,"Excellent",154.446
+134,"POST",1,"Excellent",154.1562
+135,"PRE",1,"Excellent",120.6609
+135,"POST",1,"Excellent",124.8737
+136,"PRE",1,"Excellent",141.7442
+136,"POST",1,"Excellent",143.3602
+137,"PRE",1,"Good",173.4376
+137,"POST",1,"Very Poor",166.9929
+138,"PRE",1,"Excellent",124.4222
+138,"POST",1,"Excellent",120.5853
+139,"PRE",1,"Good",174.1129
+139,"POST",1,"Good",160.0756
+140,"PRE",1,"Very Poor",190.5979
+140,"POST",1,"Satisfactory",166.7908
+141,"PRE",1,"Poor",151.4061
+141,"POST",1,"Satisfactory",139.8368
+142,"PRE",1,"Poor",125.715
+142,"POST",1,"Poor",128.7504
+143,"PRE",1,"Good",144.1538
+143,"POST",1,"Good",129.3806
+144,"PRE",1,"Poor",171.7514
+144,"POST",1,"Satisfactory",158.3203
+145,"PRE",1,"Excellent",152.5402
+145,"POST",1,"Excellent",144.443
+146,"PRE",1,"Poor",160.7096
+146,"POST",1,"Good",147.1997
+147,"PRE",1,"Poor",143.1072
+147,"POST",1,"Poor",114.5961
+148,"PRE",1,"Poor",163.9512
+148,"POST",1,"Poor",166.5809
+149,"PRE",1,"Very Poor",150.3283
+149,"POST",1,"Poor",146.6917
+150,"PRE",1,"Excellent",155.3347
+150,"POST",1,"Excellent",149.4128
+151,"PRE",1,"Good",154.389
+151,"POST",1,"Very Poor",147.3365
+152,"PRE",1,"Good",146.6512
+152,"POST",1,"Good",141.4741
+153,"PRE",1,"Poor",147.3654
+153,"POST",1,"Very Poor",146.2169
+154,"PRE",1,"Satisfactory",188.4524
+154,"POST",1,"Good",164.9677
+155,"PRE",1,"Satisfactory",161.69
+155,"POST",1,"Satisfactory",151.9309
+156,"PRE",1,"Very Poor",137.9441
+156,"POST",1,"Very Poor",125.8899
+157,"PRE",1,"Very Poor",183.6896
+157,"POST",1,"Very Poor",155.0325
+158,"PRE",1,"Excellent",179.8556
+158,"POST",1,"Excellent",162.2012
+159,"PRE",1,"Good",148.8213
+159,"POST",1,"Satisfactory",135.838
+160,"PRE",1,"Poor",175.1265
+160,"POST",1,"Excellent",154.0439
+161,"PRE",1,"Good",185.5601
+161,"POST",1,"Poor",188.5951
+162,"PRE",1,"Poor",192.1068
+162,"POST",1,"Very Poor",177.0249
+163,"PRE",1,"Satisfactory",200.6092
+163,"POST",1,"Excellent",178.704
+164,"PRE",1,"Satisfactory",172.0214
+164,"POST",1,"Very Poor",163.1395
+165,"PRE",1,"Poor",163.6621
+165,"POST",1,"Good",155.7131
+166,"PRE",1,"Satisfactory",200.2885
+166,"POST",1,"Excellent",183.9653
+167,"PRE",1,"Excellent",191.4626
+167,"POST",1,"Excellent",174.3489
+168,"PRE",1,"Poor",184.1422
+168,"POST",1,"Satisfactory",175.9785
+169,"PRE",1,"Good",188.9422
+169,"POST",1,"Good",169.161
+170,"PRE",1,"Satisfactory",152.2691
+170,"POST",1,"Excellent",142.2897
+171,"PRE",1,"Good",161.4675
+171,"POST",1,"Satisfactory",145.7033
+172,"PRE",1,"Good",151.6295
+172,"POST",1,"Good",149.4963
+173,"PRE",1,"Excellent",192.4229
+173,"POST",1,"Excellent",178.8036
+174,"PRE",1,"Excellent",176.2005
+174,"POST",1,"Excellent",162.9755
+175,"PRE",1,"Poor",213.0835
+175,"POST",1,"Very Poor",194.6191
+176,"PRE",1,"Excellent",151.298
+176,"POST",1,"Excellent",138.7883
+177,"PRE",1,"Very Poor",172.3519
+177,"POST",1,"Poor",166.7874
+178,"PRE",1,"Very Poor",140.4821
+178,"POST",1,"Poor",138.9158
+179,"PRE",1,"Very Poor",154.4755
+179,"POST",1,"Very Poor",145.5661
+180,"PRE",1,"Excellent",170.0466
+180,"POST",1,"Excellent",152.1941
+181,"PRE",1,"Very Poor",171.3544
+181,"POST",1,"Satisfactory",166.1663
+182,"PRE",1,"Very Poor",184.61
+182,"POST",1,"Satisfactory",172.5868
+183,"PRE",1,"Very Poor",152.0743
+183,"POST",1,"Good",149.2706
+184,"PRE",1,"Very Poor",151.1837
+184,"POST",1,"Satisfactory",154.3852
+185,"PRE",1,"Excellent",135.8624
+185,"POST",1,"Excellent",121.6131
+186,"PRE",1,"Excellent",153.3611
+186,"POST",1,"Excellent",138.7633
+187,"PRE",1,"Poor",128.4221
+187,"POST",1,"Good",131.7089
+188,"PRE",1,"Poor",128.1638
+188,"POST",1,"Very Poor",111.1018
+189,"PRE",1,"Good",148.851
+189,"POST",1,"Good",127.2735
+190,"PRE",1,"Very Poor",154.551
+190,"POST",1,"Very Poor",127.4835
+191,"PRE",1,"Poor",199.3148
+191,"POST",1,"Excellent",196.8438
+192,"PRE",1,"Very Poor",175.902
+192,"POST",1,"Satisfactory",165.1236
+193,"PRE",1,"Very Poor",192.0903
+193,"POST",1,"Very Poor",180.5852
+194,"PRE",1,"Good",134.3876
+194,"POST",1,"Good",130.9856
+195,"PRE",1,"Excellent",131.6716
+195,"POST",1,"Excellent",141.1698
+196,"PRE",1,"Excellent",135.6895
+196,"POST",1,"Excellent",129.6028
+197,"PRE",1,"Good",147.4826
+197,"POST",1,"Good",146.0647
+198,"PRE",1,"Very Poor",189.3032
+198,"POST",1,"Satisfactory",162.7425
+199,"PRE",1,"Very Poor",215.4633
+199,"POST",1,"Satisfactory",204.0092
+200,"PRE",1,"Excellent",167.21
+200,"POST",1,"Excellent",163.0209
+201,"PRE",1,"Very Poor",157.2235
+201,"POST",1,"Poor",165.5851
+202,"PRE",1,"Excellent",206.3063
+202,"POST",1,"Excellent",187.4289
+203,"PRE",1,"Excellent",131.993
+203,"POST",1,"Excellent",128.0282
+204,"PRE",1,"Very Poor",159.3277
+204,"POST",1,"Very Poor",160.3559
+205,"PRE",1,"Satisfactory",148.1379
+205,"POST",1,"Excellent",135.2212
+206,"PRE",1,"Very Poor",122.1038
+206,"POST",1,"Poor",115.388
+207,"PRE",1,"Poor",164.7497
+207,"POST",1,"Very Poor",155.223
+208,"PRE",1,"Poor",140.1705
+208,"POST",1,"Good",134.5171
+209,"PRE",1,"Very Poor",147.1491
+209,"POST",1,"Very Poor",154.1735
+210,"PRE",1,"Very Poor",160.8717
+210,"POST",1,"Satisfactory",138.4557
+211,"PRE",1,"Good",160.875
+211,"POST",1,"Good",142.4215
+212,"PRE",1,"Good",141.2062
+212,"POST",1,"Good",131.2962
+213,"PRE",1,"Very Poor",142.0664
+213,"POST",1,"Poor",139.8227
+214,"PRE",1,"Satisfactory",142.6169
+214,"POST",1,"Satisfactory",127.1853
+215,"PRE",1,"Excellent",163.4824
+215,"POST",1,"Excellent",165.2911
+216,"PRE",1,"Poor",157.032
+216,"POST",1,"Poor",151.1364
+217,"PRE",1,"Good",150.1083
+217,"POST",1,"Good",127.5526
+218,"PRE",1,"Excellent",166.6267
+218,"POST",1,"Excellent",172.7463
+219,"PRE",1,"Good",166.4376
+219,"POST",1,"Good",154.6978
+220,"PRE",1,"Good",135.7552
+220,"POST",1,"Good",137.1937
+221,"PRE",1,"Excellent",157.2741
+221,"POST",1,"Excellent",154.2743
+222,"PRE",1,"Very Poor",137.2538
+222,"POST",1,"Very Poor",130.9677
+223,"PRE",1,"Very Poor",135.112
+223,"POST",1,"Very Poor",135.5648
+224,"PRE",1,"Excellent",146.1457
+224,"POST",1,"Excellent",127.9919
+225,"PRE",1,"Excellent",167.7659
+225,"POST",1,"Excellent",145.6782
+226,"PRE",1,"Excellent",140.479
+226,"POST",1,"Excellent",140.4484
+227,"PRE",1,"Very Poor",171.7692
+227,"POST",1,"Good",153.497
+228,"PRE",1,"Excellent",182.9722
+228,"POST",1,"Excellent",170.519
+229,"PRE",1,"Very Poor",159.5504
+229,"POST",1,"Poor",159.5163
+230,"PRE",1,"Very Poor",139.2942
+230,"POST",1,"Very Poor",120.7936
+231,"PRE",1,"Very Poor",183.8555
+231,"POST",1,"Very Poor",190.0171
+232,"PRE",1,"Poor",153.1154
+232,"POST",1,"Satisfactory",144.7937
+233,"PRE",1,"Excellent",153.3486
+233,"POST",1,"Excellent",143.7488
+234,"PRE",1,"Satisfactory",210.6154
+234,"POST",1,"Excellent",186.5999
+235,"PRE",1,"Good",168.7593
+235,"POST",1,"Good",151.319
+236,"PRE",1,"Excellent",176.591
+236,"POST",1,"Excellent",151.3286
+237,"PRE",1,"Very Poor",154.4656
+237,"POST",1,"Satisfactory",144.502
+238,"PRE",1,"Very Poor",159.0095
+238,"POST",1,"Good",141.2011
+239,"PRE",1,"Excellent",139.9465
+239,"POST",1,"Excellent",147.8497
+240,"PRE",1,"Very Poor",182.297
+240,"POST",1,"Satisfactory",175.1705
+241,"PRE",1,"Excellent",142.987
+241,"POST",1,"Excellent",140.0168
+242,"PRE",1,"Good",154.2619
+242,"POST",1,"Good",141.5216
+243,"PRE",1,"Poor",150.6832
+243,"POST",1,"Poor",121.422
+244,"PRE",1,"Excellent",148.1982
+244,"POST",1,"Excellent",152.4998
+245,"PRE",1,"Good",169.0526
+245,"POST",1,"Good",159.0383
+246,"PRE",1,"Excellent",185.8146
+246,"POST",1,"Excellent",170.1062
+247,"PRE",1,"Excellent",186.8681
+247,"POST",1,"Excellent",177.5148
+248,"PRE",1,"Very Poor",161.4826
+248,"POST",1,"Very Poor",152.6793
+249,"PRE",1,"Excellent",124.2458
+249,"POST",1,"Excellent",132.5319
+250,"PRE",1,"Very Poor",162.2697
+250,"POST",1,"Poor",151.5374
+251,"PRE",1,"Poor",165.4099
+251,"POST",1,"Very Poor",165.6607
+252,"PRE",1,"Very Poor",206.5033
+252,"POST",1,"Satisfactory",183.5261
+253,"PRE",1,"Good",152.9634
+253,"POST",1,"Satisfactory",138.716
+254,"PRE",1,"Satisfactory",173.2067
+254,"POST",1,"Good",157.4005
+255,"PRE",1,"Excellent",137.187
+255,"POST",1,"Excellent",117.5812
+256,"PRE",1,"Excellent",147.5819
+256,"POST",1,"Excellent",152.8481
+257,"PRE",1,"Excellent",159.7231
+257,"POST",1,"Excellent",148.22
+258,"PRE",1,"Very Poor",187.0605
+258,"POST",1,"Very Poor",173.7437
+259,"PRE",1,"Very Poor",148.5019
+259,"POST",1,"Very Poor",151.0258
+260,"PRE",1,"Excellent",149.3589
+260,"POST",1,"Excellent",137.4124
+261,"PRE",1,"Very Poor",172.1065
+261,"POST",1,"Satisfactory",146.3709
+262,"PRE",1,"Very Poor",171.8552
+262,"POST",1,"Good",161.1549
+263,"PRE",1,"Excellent",184.8508
+263,"POST",1,"Excellent",181.2539
+264,"PRE",1,"Excellent",139.9251
+264,"POST",1,"Excellent",134.215
+265,"PRE",1,"Poor",199.9832
+265,"POST",1,"Satisfactory",171.5275
+266,"PRE",1,"Very Poor",202.0748
+266,"POST",1,"Satisfactory",182.9677
+267,"PRE",1,"Excellent",144.8085
+267,"POST",1,"Excellent",136.1791
+268,"PRE",1,"Very Poor",195.8771
+268,"POST",1,"Very Poor",175.8744
+269,"PRE",1,"Very Poor",148.956
+269,"POST",1,"Very Poor",142.9979
+270,"PRE",1,"Very Poor",189.5349
+270,"POST",1,"Satisfactory",180.585
+271,"PRE",1,"Poor",132.8227
+271,"POST",1,"Very Poor",122.0483
+272,"PRE",1,"Good",175.0338
+272,"POST",1,"Good",162.8065
+273,"PRE",1,"Satisfactory",159.4467
+273,"POST",1,"Excellent",155.8845
+274,"PRE",1,"Satisfactory",134.533
+274,"POST",1,"Satisfactory",131.9323
+275,"PRE",1,"Excellent",162.8212
+275,"POST",1,"Excellent",163.4429
+276,"PRE",1,"Poor",168.6257
+276,"POST",1,"Good",149.7496
+277,"PRE",1,"Excellent",152.7109
+277,"POST",1,"Excellent",151.2961
+278,"PRE",1,"Excellent",170.6144
+278,"POST",1,"Excellent",164.9114
+279,"PRE",1,"Good",161.8042
+279,"POST",1,"Satisfactory",153.4726
+280,"PRE",1,"Excellent",167.6503
+280,"POST",1,"Excellent",159.5741
+281,"PRE",1,"Satisfactory",156.1647
+281,"POST",1,"Excellent",144.2902
+282,"PRE",1,"Poor",166.7918
+282,"POST",1,"Satisfactory",151.1215
+283,"PRE",1,"Poor",125.4827
+283,"POST",1,"Very Poor",125.4664
+284,"PRE",1,"Poor",163.0428
+284,"POST",1,"Poor",163.2858
+285,"PRE",1,"Good",110.6508
+285,"POST",1,"Very Poor",100.2631
+286,"PRE",1,"Very Poor",119.5287
+286,"POST",1,"Poor",113.8794
+287,"PRE",1,"Poor",173.0141
+287,"POST",1,"Very Poor",167.5777
+288,"PRE",1,"Very Poor",124.4887
+288,"POST",1,"Very Poor",131.1162
+289,"PRE",1,"Satisfactory",147.8228
+289,"POST",1,"Satisfactory",134.0768
+290,"PRE",1,"Excellent",183.5555
+290,"POST",1,"Excellent",176.734
+291,"PRE",1,"Very Poor",171.8396
+291,"POST",1,"Very Poor",171.1519
+292,"PRE",1,"Excellent",168.6044
+292,"POST",1,"Excellent",163.4821
+293,"PRE",1,"Very Poor",165.0731
+293,"POST",1,"Satisfactory",156.2857
+294,"PRE",1,"Very Poor",134.3138
+294,"POST",1,"Poor",128.2996
+295,"PRE",1,"Very Poor",157.9252
+295,"POST",1,"Very Poor",148.5325
+296,"PRE",1,"Good",162.7583
+296,"POST",1,"Poor",160.6304
+297,"PRE",1,"Satisfactory",136.7673
+297,"POST",1,"Excellent",132.8079
+298,"PRE",1,"Poor",164.7801
+298,"POST",1,"Very Poor",156.4097
+299,"PRE",1,"Poor",166.836
+299,"POST",1,"Poor",160.4613
+300,"PRE",1,"Very Poor",169.0348
+300,"POST",1,"Good",158.4347
+301,"PRE",1,"Very Poor",168.8679
+301,"POST",1,"Very Poor",176.6146
+302,"PRE",1,"Satisfactory",147.1241
+302,"POST",1,"Satisfactory",147.7594
+303,"PRE",1,"Excellent",192.4518
+303,"POST",1,"Good",177.6048
+304,"PRE",1,"Excellent",137.0947
+304,"POST",1,"Excellent",123.4048
+305,"PRE",1,"Very Poor",168.5193
+305,"POST",1,"Good",164.6036
+306,"PRE",1,"Very Poor",155.5677
+306,"POST",1,"Very Poor",160.1436
+307,"PRE",1,"Excellent",171.5146
+307,"POST",1,"Excellent",162.6481
+308,"PRE",1,"Very Poor",162.6102
+308,"POST",1,"Good",142.8446
+309,"PRE",1,"Excellent",163.0836
+309,"POST",1,"Excellent",139.982
+310,"PRE",1,"Very Poor",149.7135
+310,"POST",1,"Very Poor",146.4686
+311,"PRE",1,"Excellent",177.221
+311,"POST",1,"Excellent",164.8215
+312,"PRE",1,"Excellent",146.4213
+312,"POST",1,"Excellent",122.9093
+313,"PRE",1,"Poor",168.4758
+313,"POST",1,"Very Poor",166.4438
+314,"PRE",1,"Excellent",157.4906
+314,"POST",1,"Excellent",160.2055
+315,"PRE",1,"Very Poor",203.2845
+315,"POST",1,"Very Poor",191.1281
+316,"PRE",1,"Very Poor",166.8321
+316,"POST",1,"Very Poor",179.9623
+317,"PRE",1,"Poor",171.8906
+317,"POST",1,"Poor",176.7251
+318,"PRE",1,"Poor",133.4261
+318,"POST",1,"Very Poor",130.694
+319,"PRE",1,"Excellent",178.3217
+319,"POST",1,"Excellent",160.3261
+320,"PRE",1,"Very Poor",149.4091
+320,"POST",1,"Poor",142.1431
+321,"PRE",1,"Very Poor",158.1453
+321,"POST",1,"Good",144.9049
+322,"PRE",1,"Very Poor",142.9664
+322,"POST",1,"Very Poor",142.1962
+323,"PRE",1,"Good",150.0403
+323,"POST",1,"Poor",145.9259
+324,"PRE",1,"Very Poor",175.5682
+324,"POST",1,"Poor",170.6948
+325,"PRE",1,"Satisfactory",139.5282
+325,"POST",1,"Satisfactory",127.4298
+326,"PRE",1,"Good",174.6713
+326,"POST",1,"Good",156.2682
+327,"PRE",1,"Very Poor",158.8949
+327,"POST",1,"Very Poor",157.5676
+328,"PRE",1,"Excellent",142.1706
+328,"POST",1,"Excellent",135.6474
+329,"PRE",1,"Poor",144.4424
+329,"POST",1,"Poor",138.0872
+330,"PRE",1,"Very Poor",199.3969
+330,"POST",1,"Very Poor",192.5914
+331,"PRE",1,"Satisfactory",148.5063
+331,"POST",1,"Satisfactory",144.7164
+332,"PRE",1,"Very Poor",169.9741
+332,"POST",1,"Very Poor",163.6127
+333,"PRE",1,"Excellent",158.7398
+333,"POST",1,"Excellent",154.3527
+334,"PRE",1,"Excellent",146.0634
+334,"POST",1,"Excellent",151.6203
+335,"PRE",1,"Excellent",105.2068
+335,"POST",1,"Excellent",93.0818
+336,"PRE",1,"Very Poor",127.7827
+336,"POST",1,"Satisfactory",115.2801
+337,"PRE",1,"Satisfactory",121.8219
+337,"POST",1,"Good",119.4471
+338,"PRE",1,"Poor",128.813
+338,"POST",1,"Very Poor",126.4919
+339,"PRE",1,"Very Poor",114.3395
+339,"POST",1,"Very Poor",109.8092
+340,"PRE",1,"Excellent",158.5553
+340,"POST",1,"Excellent",160.4886
+341,"PRE",1,"Poor",144.5079
+341,"POST",1,"Very Poor",129.9471
+342,"PRE",1,"Good",178.8019
+342,"POST",1,"Good",164.814
+343,"PRE",1,"Excellent",145.5347
+343,"POST",1,"Excellent",131.3082
+344,"PRE",1,"Good",131.7532
+344,"POST",1,"Good",119.567
+345,"PRE",1,"Good",150.3958
+345,"POST",1,"Good",131.7692
+346,"PRE",1,"Good",144.7642
+346,"POST",1,"Very Poor",138.4152
+347,"PRE",1,"Poor",187.3339
+347,"POST",1,"Very Poor",168.9994
+348,"PRE",1,"Very Poor",160.158
+348,"POST",1,"Very Poor",146.2464
+349,"PRE",1,"Poor",151.8398
+349,"POST",1,"Satisfactory",138.6483
+350,"PRE",1,"Very Poor",177.7878
+350,"POST",1,"Good",161.0114
+351,"PRE",1,"Very Poor",158.8589
+351,"POST",1,"Satisfactory",144.1719
+352,"PRE",1,"Poor",146.0069
+352,"POST",1,"Very Poor",150.7789
+353,"PRE",1,"Good",158.2914
+353,"POST",1,"Excellent",134.8502
+354,"PRE",1,"Excellent",138.4566
+354,"POST",1,"Excellent",145.0441
+355,"PRE",1,"Satisfactory",103.7053
+355,"POST",1,"Excellent",95.36974
+356,"PRE",1,"Satisfactory",133.8231
+356,"POST",1,"Excellent",116.9007
+357,"PRE",1,"Very Poor",125.4962
+357,"POST",1,"Satisfactory",114.7125
+358,"PRE",1,"Good",188.8626
+358,"POST",1,"Excellent",171.6368
+359,"PRE",1,"Very Poor",170.597
+359,"POST",1,"Poor",178.0687
+360,"PRE",1,"Excellent",172.1551
+360,"POST",1,"Excellent",146.0123
+361,"PRE",1,"Good",135.6142
+361,"POST",1,"Good",124.2069
+362,"PRE",1,"Excellent",173.0678
+362,"POST",1,"Excellent",176.3236
+363,"PRE",1,"Excellent",178.5421
+363,"POST",1,"Excellent",164.2733
+364,"PRE",1,"Excellent",153.9705
+364,"POST",1,"Excellent",153.7427
+365,"PRE",1,"Good",179.4474
+365,"POST",1,"Good",163.5143
+366,"PRE",1,"Poor",141.5481
+366,"POST",1,"Good",138.0937
+367,"PRE",1,"Good",152.933
+367,"POST",1,"Good",134.7012
+368,"PRE",1,"Very Poor",129.3634
+368,"POST",1,"Excellent ",125.0089
+369,"PRE",1,"Excellent",120.9136
+369,"POST",1,"Excellent",116.2411
+370,"PRE",1,"Poor",178.4315
+370,"POST",1,"Good",166.6582
+371,"PRE",1,"Poor",151.3195
+371,"POST",1,"Satisfactory",148.6158
+372,"PRE",1,"Very Poor",146.7254
+372,"POST",1,"Very Poor",128.0595
+373,"PRE",1,"Good",148.0001
+373,"POST",1,"Satisfactory",126.6936
+374,"PRE",1,"Good",161.6769
+374,"POST",1,"Good",143.4353
+375,"PRE",1,"Excellent",145.3887
+375,"POST",1,"Excellent",141.423
+376,"PRE",1,"Poor",140.2876
+376,"POST",1,"Satisfactory",125.3182
+377,"PRE",1,"Good",116.955
+377,"POST",1,"Excellent",113.5897
+378,"PRE",1,"Satisfactory",122.7677
+378,"POST",1,"Excellent",122.0387
+379,"PRE",1,"Poor",109.2022
+379,"POST",1,"Very Poor",94.49207
+380,"PRE",1,"Satisfactory",156.0933
+380,"POST",1,"Satisfactory",155.3985
+381,"PRE",1,"Satisfactory",131.5335
+381,"POST",1,"Excellent",139.0062
+382,"PRE",1,"Good",141.7225
+382,"POST",1,"Excellent",128.093
+383,"PRE",1,"Satisfactory",176.214
+383,"POST",1,"Excellent",178.6172
+384,"PRE",1,"Very Poor",167.6333
+384,"POST",1,"Excellent ",145.5248
+385,"PRE",1,"Very Poor",150.7186
+385,"POST",1,"Satisfactory",142.3761
+386,"PRE",1,"Excellent",129.2667
+386,"POST",1,"Excellent",131.7289
+387,"PRE",1,"Very Poor",204.0911
+387,"POST",1,"Satisfactory",184.2752
+388,"PRE",1,"Very Poor",167.9753
+388,"POST",1,"Very Poor",169.1494
+389,"PRE",1,"Good",182.9607
+389,"POST",1,"Very Poor",178.0535
+390,"PRE",1,"Good",151.5161
+390,"POST",1,"Good",126.631
+391,"PRE",1,"Poor",196.6696
+391,"POST",1,"Good",174.9526
+392,"PRE",1,"Good",141.3356
+392,"POST",1,"Good",129.0256
+393,"PRE",1,"Poor",177.8706
+393,"POST",1,"Excellent",182.1987
+394,"PRE",1,"Poor",167.1185
+394,"POST",1,"Excellent",145.4665
+395,"PRE",1,"Poor",156.8287
+395,"POST",1,"Very Poor",148.9811
+396,"PRE",1,"Very Poor",181.1451
+396,"POST",1,"Excellent",164.0393
+397,"PRE",1,"Very Poor",197.0788
+397,"POST",1,"Satisfactory",178.7523
+398,"PRE",1,"Satisfactory",141.099
+398,"POST",1,"Excellent",138.3615
+399,"PRE",1,"Excellent",164.5142
+399,"POST",1,"Excellent",159.3488
+400,"PRE",1,"Good",168.4455
+400,"POST",1,"Very Poor",169.9285
+401,"PRE",1,"Poor",124.6485
+401,"POST",1,"Very Poor",119.6433
+402,"PRE",1,"Satisfactory",171.5099
+402,"POST",1,"Very Poor",164.0904
+403,"PRE",1,"Very Poor",182.0354
+403,"POST",1,"Good",164.6619
+404,"PRE",1,"Very Poor",165.5356
+404,"POST",1,"Very Poor",158.6039
+405,"PRE",1,"Very Poor",167.2639
+405,"POST",1,"Satisfactory",153.1277
+406,"PRE",1,"Very Poor",157.9938
+406,"POST",1,"Good",137.4595
+407,"PRE",1,"Very Poor",187.6519
+407,"POST",1,"Very Poor",184.9622
+408,"PRE",1,"Poor",196.2443
+408,"POST",1,"Very Poor",198.0002
+409,"PRE",1,"Excellent",205.9051
+409,"POST",1,"Excellent",192.8372
+410,"PRE",1,"Poor",152.7303
+410,"POST",1,"Satisfactory",142.9849
+411,"PRE",1,"Good",159.2401
+411,"POST",1,"Good",144.4354
+412,"PRE",1,"Excellent",199.2488
+412,"POST",1,"Excellent",189.4872
+413,"PRE",1,"Good",139.9284
+413,"POST",1,"Good",140.4013
+414,"PRE",1,"Very Poor",136.2792
+414,"POST",1,"Very Poor",122.0622
+415,"PRE",1,"Excellent",168.127
+415,"POST",1,"Excellent",151.7538
+416,"PRE",1,"Poor",136.3308
+416,"POST",1,"Poor",129.1319
+417,"PRE",1,"Excellent",187.5054
+417,"POST",1,"Excellent",160.2797
+418,"PRE",1,"Very Poor",132.5655
+418,"POST",1,"Satisfactory",132.1846
+419,"PRE",1,"Satisfactory",188.8906
+419,"POST",1,"Very Poor",180.0192
+420,"PRE",1,"Excellent",192.1371
+420,"POST",1,"Excellent",180.8694
+421,"PRE",1,"Very Poor",146.9255
+421,"POST",1,"Very Poor",144.6186
+422,"PRE",1,"Good",194.4712
+422,"POST",1,"Excellent",177.5939
+423,"PRE",1,"Poor",186.4642
+423,"POST",1,"Excellent",174.9761
+424,"PRE",1,"Poor",155.0924
+424,"POST",1,"Satisfactory",139.21
+425,"PRE",1,"Poor",175.0653
+425,"POST",1,"Good",161.554
+426,"PRE",1,"Excellent",174.2045
+426,"POST",1,"Excellent",163.5114
+427,"PRE",1,"Good",160.873
+427,"POST",1,"Good",139.4301
+428,"PRE",1,"Poor",175.2518
+428,"POST",1,"Poor",175.2486
+429,"PRE",1,"Excellent",159.1838
+429,"POST",1,"Excellent",140.1982
+430,"PRE",1,"Very Poor",115.8087
+430,"POST",1,"Very Poor",111.7807
+431,"PRE",1,"Very Poor",174.9356
+431,"POST",1,"Good",184.4881
+432,"PRE",1,"Good",157.9763
+432,"POST",1,"Satisfactory",149.7479
+433,"PRE",1,"Satisfactory",154.7696
+433,"POST",1,"Satisfactory",153.3774
+434,"PRE",1,"Excellent",130.0385
+434,"POST",1,"Excellent",123.2945
+435,"PRE",1,"Satisfactory",149.5083
+435,"POST",1,"Satisfactory",146.695
+436,"PRE",1,"Poor",155.3122
+436,"POST",1,"Very Poor",154.4902
+437,"PRE",1,"Poor",157.449
+437,"POST",1,"Very Poor",127.1125
+438,"PRE",1,"Very Poor",142.7218
+438,"POST",1,"Satisfactory",133.9265
+439,"PRE",1,"Excellent",125.8144
+439,"POST",1,"Excellent",113.7598
+440,"PRE",1,"Satisfactory",170.6342
+440,"POST",1,"Excellent",168.4023
+441,"PRE",1,"Very Poor",173.2547
+441,"POST",1,"Good",158.3083
+442,"PRE",1,"Good",150.0451
+442,"POST",1,"Very Poor",144.079
+443,"PRE",1,"Good",169.4526
+443,"POST",1,"Poor",163.2021
+444,"PRE",1,"Good",161.7132
+444,"POST",1,"Satisfactory",137.1624
+445,"PRE",1,"Excellent",147.4272
+445,"POST",1,"Excellent",140.0409
+446,"PRE",1,"Excellent",133.8295
+446,"POST",1,"Excellent",112.9103
+447,"PRE",1,"Very Poor",134.2883
+447,"POST",1,"Satisfactory",115.305
+448,"PRE",1,"Good",142.1802
+448,"POST",1,"Good",128.346
+449,"PRE",1,"Very Poor",195.1701
+449,"POST",1,"Very Poor",181.545
+450,"PRE",1,"Poor",164.6677
+450,"POST",1,"Good",137.8271
+451,"PRE",1,"Very Poor",164.512
+451,"POST",1,"Good",171.6427
+452,"PRE",1,"Poor",134.9949
+452,"POST",1,"Good",124.4076
+453,"PRE",1,"Excellent",160.5674
+453,"POST",1,"Excellent",150.9115
+454,"PRE",1,"Poor",191.89
+454,"POST",1,"Satisfactory",174.3387
+455,"PRE",1,"Satisfactory",132.2978
+455,"POST",1,"Satisfactory",124.0137
+456,"PRE",1,"Good",152.0677
+456,"POST",1,"Good",148.3902
+457,"PRE",1,"Good",156.7213
+457,"POST",1,"Good",156.7821
+458,"PRE",1,"Poor",174.9827
+458,"POST",1,"Good",157.5366
+459,"PRE",1,"Excellent",211.468
+459,"POST",1,"Excellent",187.7904
+460,"PRE",1,"Good",155.2304
+460,"POST",1,"Good",132.0732
+461,"PRE",1,"Very Poor",169.7237
+461,"POST",1,"Satisfactory",144.8988
+462,"PRE",1,"Poor",139.7119
+462,"POST",1,"Very Poor",137.5004
+463,"PRE",1,"Excellent",141.1459
+463,"POST",1,"Excellent",141.029
+464,"PRE",1,"Good",155.2043
+464,"POST",1,"Good",140.17
+465,"PRE",1,"Excellent",139.7782
+465,"POST",1,"Excellent",128.5392
+466,"PRE",1,"Excellent",177.1223
+466,"POST",1,"Excellent",161.9164
+467,"PRE",1,"Satisfactory",162.1025
+467,"POST",1,"Excellent",159.5556
+468,"PRE",1,"Excellent",193.5374
+468,"POST",1,"Excellent",170.8943
+469,"PRE",1,"Poor",172.0144
+469,"POST",1,"Good",148.4101
+470,"PRE",1,"Excellent",154.9387
+470,"POST",1,"Excellent",146.2377
+471,"PRE",1,"Poor",143.4794
+471,"POST",1,"Good",143.7623
+472,"PRE",1,"Good",113.3021
+472,"POST",1,"Poor",108.1805
+473,"PRE",1,"Excellent",132.8849
+473,"POST",1,"Excellent",137.2265
+474,"PRE",1,"Satisfactory",150.6871
+474,"POST",1,"Excellent",145.0124
+475,"PRE",1,"Good",157.8743
+475,"POST",1,"Good",141.9373
+476,"PRE",1,"Excellent",188.8933
+476,"POST",1,"Excellent",185.6089
+477,"PRE",1,"Good",156.6451
+477,"POST",1,"Good",157.8977
+478,"PRE",1,"Satisfactory",146.4865
+478,"POST",1,"Excellent",148.9393
+479,"PRE",1,"Excellent",215.2248
+479,"POST",1,"Excellent",203.8564
+480,"PRE",1,"Satisfactory",152.4391
+480,"POST",1,"Excellent",143.8324
+481,"PRE",1,"Poor",139.9026
+481,"POST",1,"Good",110.5884
+482,"PRE",1,"Very Poor",155.586
+482,"POST",1,"Satisfactory",137.9883
+483,"PRE",1,"Excellent",188.6694
+483,"POST",1,"Excellent",188.5444
+484,"PRE",1,"Good",165.335
+484,"POST",1,"Satisfactory",161.9684
+485,"PRE",1,"Good",156.6368
+485,"POST",1,"Good",146.6335
+486,"PRE",1,"Excellent",178.6514
+486,"POST",1,"Excellent",158.176
+487,"PRE",1,"Very Poor",139.8735
+487,"POST",1,"Poor",135.3323
+488,"PRE",1,"Very Poor",147.6537
+488,"POST",1,"Poor",150.2112
+489,"PRE",1,"Excellent",155.3635
+489,"POST",1,"Excellent",150.8789
+490,"PRE",1,"Poor",159.5895
+490,"POST",1,"Satisfactory",153.9767
+491,"PRE",1,"Satisfactory",189.0581
+491,"POST",1,"Good",168.7286
+492,"PRE",1,"Very Poor",146.713
+492,"POST",1,"Satisfactory",129.6625
+493,"PRE",1,"Very Poor",180.785
+493,"POST",1,"Satisfactory",184.2632
+494,"PRE",1,"Very Poor",186.992
+494,"POST",1,"Very Poor",166.8858
+495,"PRE",1,"Excellent",178.364
+495,"POST",1,"Excellent",177.8449
+496,"PRE",1,"Excellent",197.1111
+496,"POST",1,"Excellent",196.0424
+497,"PRE",1,"Satisfactory",148.0076
+497,"POST",1,"Excellent",125.1965
+498,"PRE",1,"Excellent",173.2621
+498,"POST",1,"Excellent",156.9805
+499,"PRE",1,"Very Poor",142.1522
+499,"POST",1,"Very Poor",153.0933
+500,"PRE",1,"Excellent",176.0791
+500,"POST",1,"Excellent",177.0793
+501,"PRE",1,"Poor",142.152
+501,"POST",1,"Satisfactory",129.281
+502,"PRE",1,"Excellent",183.3659
+502,"POST",1,"Excellent",166.5161
+503,"PRE",1,"Satisfactory",176.3159
+503,"POST",1,"Good",153.8344
+504,"PRE",1,"Good",128.6758
+504,"POST",1,"Poor",125.4314
+505,"PRE",1,"Poor",181.6264
+505,"POST",1,"Excellent",170.7798
+506,"PRE",1,"Excellent",216.3024
+506,"POST",1,"Excellent",199.976
+507,"PRE",1,"Excellent",158.1968
+507,"POST",1,"Excellent",160.4956
+508,"PRE",1,"Poor",179.5159
+508,"POST",1,"Good",161.4117
+509,"PRE",1,"Satisfactory",177.9039
+509,"POST",1,"Poor",173.9194
+510,"PRE",1,"Excellent",120.4515
+510,"POST",1,"Excellent",104.2793
+511,"PRE",1,"Excellent",155.1177
+511,"POST",1,"Excellent",155.1108
+512,"PRE",1,"Excellent",177.7555
+512,"POST",1,"Excellent",158.4051
+513,"PRE",1,"Excellent",153.9686
+513,"POST",1,"Excellent",129.2388
+514,"PRE",1,"Poor",124.767
+514,"POST",1,"Very Poor",126.9145
+515,"PRE",1,"Poor",161.7079
+515,"POST",1,"Satisfactory",156.9499
+516,"PRE",1,"Very Poor",149.761
+516,"POST",1,"Very Poor",147.6742
+517,"PRE",1,"Poor",138.3848
+517,"POST",1,"Poor",135.0237
+518,"PRE",1,"Very Poor",183.4976
+518,"POST",1,"Very Poor",170.4726
+519,"PRE",1,"Excellent",161.4641
+519,"POST",1,"Excellent",158.1394
+520,"PRE",1,"Poor",156.5812
+520,"POST",1,"Good",140.2062
+521,"PRE",1,"Poor",208.8779
+521,"POST",1,"Satisfactory",182.7496
+522,"PRE",1,"Very Poor",148.7864
+522,"POST",1,"Satisfactory",135.8447
+523,"PRE",1,"Satisfactory",126.1963
+523,"POST",1,"Satisfactory",121.2374
+524,"PRE",1,"Poor",175.1754
+524,"POST",1,"Good",164.9908
+525,"PRE",1,"Very Poor",127.1343
+525,"POST",1,"Good",129.0874
+526,"PRE",1,"Very Poor",137.0177
+526,"POST",1,"Satisfactory",114.2433
+527,"PRE",1,"Good",157.4697
+527,"POST",1,"Good",142.8575
+528,"PRE",1,"Very Poor",104.3813
+528,"POST",1,"Very Poor",99.31583
+529,"PRE",1,"Excellent",166.5215
+529,"POST",1,"Excellent",165.5275
+530,"PRE",1,"Good",147.0835
+530,"POST",1,"Excellent",132.5367
+531,"PRE",1,"Satisfactory",207.8352
+531,"POST",1,"Excellent",190.2886
+532,"PRE",1,"Very Poor",114.1334
+532,"POST",1,"Very Poor",119.0731
+533,"PRE",1,"Poor",183.5582
+533,"POST",1,"Very Poor",165.5532
+534,"PRE",1,"Satisfactory",195.164
+534,"POST",1,"Excellent",183.0243
+535,"PRE",1,"Good",165.3447
+535,"POST",1,"Good",141.6575
+536,"PRE",1,"Good",165.677
+536,"POST",1,"Good",151.5614
+537,"PRE",1,"Very Poor",135.0888
+537,"POST",1,"Good",123.2298
+538,"PRE",1,"Very Poor",146.3849
+538,"POST",1,"Good",128.7838
+539,"PRE",1,"Excellent",175.4538
+539,"POST",1,"Excellent",167.1964
+540,"PRE",1,"Very Poor",155.9727
+540,"POST",1,"Very Poor",163.7205
+541,"PRE",1,"Poor",148.6989
+541,"POST",1,"Poor",148.8191
+542,"PRE",1,"Very Poor",178.6472
+542,"POST",1,"Good",168.1492
+543,"PRE",1,"Excellent",151.137
+543,"POST",1,"Excellent",149.9361
+544,"PRE",1,"Poor",123.855
+544,"POST",1,"Satisfactory",124.6233
+545,"PRE",1,"Very Poor",207.6055
+545,"POST",1,"Satisfactory",185.6585
+546,"PRE",1,"Very Poor",127.5063
+546,"POST",1,"Satisfactory",105.0719
+547,"PRE",1,"Satisfactory",189.5132
+547,"POST",1,"Good",164.8798
+548,"PRE",1,"Excellent",131.3705
+548,"POST",1,"Excellent",117.854
+549,"PRE",1,"Poor",116.0429
+549,"POST",1,"Very Poor",101.9605
+550,"PRE",1,"Satisfactory",136.6142
+550,"POST",1,"Satisfactory",129.0053
+551,"PRE",1,"Very Poor",103.0576
+551,"POST",1,"Very Poor",102.5127
+552,"PRE",1,"Excellent",161.1828
+552,"POST",1,"Excellent",162.5265
+553,"PRE",1,"Very Poor",162.9143
+553,"POST",1,"Very Poor",165.182
+554,"PRE",1,"Poor",159.9045
+554,"POST",1,"Satisfactory",138.6043
+555,"PRE",1,"Good",135.2233
+555,"POST",1,"Good",120.3752
+556,"PRE",1,"Excellent",173.3223
+556,"POST",1,"Excellent",158.1409
+557,"PRE",1,"Satisfactory",186.359
+557,"POST",1,"Excellent",176.0798
+558,"PRE",1,"Very Poor",145.6502
+558,"POST",1,"Very Poor",142.5957
+559,"PRE",1,"Satisfactory",138.3952
+559,"POST",1,"Good",114.302
+560,"PRE",1,"Good",177.8646
+560,"POST",1,"Poor",168.6662
+561,"PRE",1,"Good",149.0084
+561,"POST",1,"Good",152.608
+562,"PRE",1,"Very Poor",154.6027
+562,"POST",1,"Good",152.5024
+563,"PRE",1,"Very Poor",171.4551
+563,"POST",1,"Satisfactory",159.8647
+564,"PRE",1,"Poor",150.3626
+564,"POST",1,"Very Poor",137.1939
+565,"PRE",1,"Excellent",195.087
+565,"POST",1,"Excellent",169.938
+566,"PRE",1,"Good",155.3817
+566,"POST",1,"Good",148.7414
+567,"PRE",1,"Good",148.9212
+567,"POST",1,"Good",141.5827
+568,"PRE",1,"Very Poor",143.8245
+568,"POST",1,"Good",132.6858
+569,"PRE",1,"Very Poor",138.1284
+569,"POST",1,"Satisfactory",138.2165
+570,"PRE",1,"Very Poor",242.7632
+570,"POST",1,"Poor",218.1815
+571,"PRE",1,"Very Poor",171.0608
+571,"POST",1,"Very Poor",160.7334
+572,"PRE",1,"Excellent",148.1776
+572,"POST",1,"Excellent",136.762
+573,"PRE",1,"Good",140.6989
+573,"POST",1,"Good",141.6832
+574,"PRE",1,"Very Poor",157.2882
+574,"POST",1,"Satisfactory",152.1784
+575,"PRE",1,"Poor",160.7122
+575,"POST",1,"Poor",155.0075
+576,"PRE",1,"Very Poor",225.6515
+576,"POST",1,"Satisfactory",204.8339
+577,"PRE",1,"Excellent",170.8044
+577,"POST",1,"Excellent",158.2812
+578,"PRE",1,"Good",117.5349
+578,"POST",1,"Satisfactory",107.5033
+579,"PRE",1,"Good",142.0015
+579,"POST",1,"Good",135.8309
+580,"PRE",1,"Very Poor",152.3333
+580,"POST",1,"Poor",150.4231
+581,"PRE",1,"Very Poor",156.5199
+581,"POST",1,"Good",142.2145
+582,"PRE",1,"Very Poor",176.1727
+582,"POST",1,"Very Poor",178.985
+583,"PRE",1,"Very Poor",162.9132
+583,"POST",1,"Very Poor",155.0742
+584,"PRE",1,"Poor",170.6597
+584,"POST",1,"Poor",173.3933
+585,"PRE",1,"Very Poor",158.4412
+585,"POST",1,"Very Poor",148.7561
+586,"PRE",1,"Poor",177.4318
+586,"POST",1,"Satisfactory",158.5099
+587,"PRE",1,"Very Poor",142.8049
+587,"POST",1,"Very Poor",146.4382
+588,"PRE",1,"Satisfactory",167.3042
+588,"POST",1,"Excellent",147.9995
+589,"PRE",1,"Satisfactory",154.1168
+589,"POST",1,"Excellent",137.0459
+590,"PRE",1,"Poor",185.4353
+590,"POST",1,"Satisfactory",167.9566
+591,"PRE",1,"Excellent",150.2803
+591,"POST",1,"Excellent",145.0917
+592,"PRE",1,"Poor",156.9987
+592,"POST",1,"Satisfactory",145.7805
+593,"PRE",1,"Excellent",176.0289
+593,"POST",1,"Excellent",174.5354
+594,"PRE",1,"Good",160.0372
+594,"POST",1,"Satisfactory",157.0621
+595,"PRE",1,"Excellent",167.8719
+595,"POST",1,"Excellent",141.6463
+596,"PRE",1,"Very Poor",176.8792
+596,"POST",1,"Very Poor",161.1671
+597,"PRE",1,"Poor",144.664
+597,"POST",1,"Very Poor",143.367
+598,"PRE",1,"Very Poor",168.9161
+598,"POST",1,"Satisfactory",150.0278
+599,"PRE",1,"Satisfactory",127.5257
+599,"POST",1,"Excellent",109.6133
+600,"PRE",1,"Satisfactory",173.21
+600,"POST",1,"Excellent",173.245
+601,"PRE",1,"Poor",166.0305
+601,"POST",1,"Satisfactory",159.8447
+602,"PRE",1,"Very Poor",175.5173
+602,"POST",1,"Good",162.4346
+603,"PRE",1,"Excellent",149.3981
+603,"POST",1,"Excellent",133.0777
+604,"PRE",1,"Very Poor",176.2839
+604,"POST",1,"Poor",182.3692
+605,"PRE",1,"Excellent",162.4976
+605,"POST",1,"Excellent",171.3654
+606,"PRE",1,"Very Poor",190.1666
+606,"POST",1,"Excellent ",175.9414
+607,"PRE",1,"Excellent",184.3896
+607,"POST",1,"Excellent",174.303
+608,"PRE",1,"Very Poor",223.9443
+608,"POST",1,"Satisfactory",210.542
+609,"PRE",1,"Very Poor",163.7558
+609,"POST",1,"Very Poor",162.2399
+610,"PRE",1,"Satisfactory",146.4503
+610,"POST",1,"Very Poor",141.2097
+611,"PRE",1,"Poor",165.0737
+611,"POST",1,"Very Poor",157.769
+612,"PRE",1,"Excellent",184.7119
+612,"POST",1,"Excellent",179.5068
+613,"PRE",1,"Satisfactory",146.6741
+613,"POST",1,"Satisfactory",140.08
+614,"PRE",1,"Good",167.0361
+614,"POST",1,"Poor",163.7431
+615,"PRE",1,"Excellent",165.457
+615,"POST",1,"Excellent",146.4793
+616,"PRE",1,"Very Poor",155.2348
+616,"POST",1,"Poor",155.3219
+617,"PRE",1,"Very Poor",200.4958
+617,"POST",1,"Satisfactory",184.127
+618,"PRE",1,"Poor",128.0415
+618,"POST",1,"Very Poor",116.5063
+619,"PRE",1,"Satisfactory",210.6102
+619,"POST",1,"Excellent",188.9859
+620,"PRE",1,"Very Poor",146.9925
+620,"POST",1,"Very Poor",129.9982
+621,"PRE",1,"Satisfactory",165.9997
+621,"POST",1,"Excellent",172.8132
+622,"PRE",1,"Very Poor",177.9304
+622,"POST",1,"Very Poor",187.5409
+623,"PRE",1,"Excellent",185.4681
+623,"POST",1,"Excellent",185.1456
+624,"PRE",1,"Excellent",126.295
+624,"POST",1,"Excellent",133.3203
+625,"PRE",1,"Poor",180.3245
+625,"POST",1,"Poor",178.8692
+626,"PRE",1,"Very Poor",173.6512
+626,"POST",1,"Satisfactory",165.246
+627,"PRE",1,"Poor",164.3792
+627,"POST",1,"Good",147.651
+628,"PRE",1,"Poor",133.6199
+628,"POST",1,"Poor",128.3559
+629,"PRE",1,"Poor",133.6858
+629,"POST",1,"Poor",135.1621
+630,"PRE",1,"Excellent",177.5688
+630,"POST",1,"Excellent",159.8417
+631,"PRE",1,"Excellent",165.3705
+631,"POST",1,"Excellent",157.4977
+632,"PRE",1,"Good",152.2565
+632,"POST",1,"Good",151.6089
+633,"PRE",1,"Excellent",170.1492
+633,"POST",1,"Excellent",170.2752
+634,"PRE",1,"Good",173.9215
+634,"POST",1,"Good",149.8397
+635,"PRE",1,"Very Poor",164.2507
+635,"POST",1,"Very Poor",158.2313
+636,"PRE",1,"Excellent",132.8467
+636,"POST",1,"Excellent",122.673
+637,"PRE",1,"Very Poor",146.2996
+637,"POST",1,"Poor",126.6166
+638,"PRE",1,"Excellent",174.0738
+638,"POST",1,"Excellent",163.0596
+639,"PRE",1,"Poor",162.1415
+639,"POST",1,"Very Poor",156.0565
+640,"PRE",1,"Excellent",201.0231
+640,"POST",1,"Excellent",181.4366
+641,"PRE",1,"Excellent",161.9286
+641,"POST",1,"Excellent",156.6357
+642,"PRE",1,"Excellent",196.9965
+642,"POST",1,"Excellent",166.3203
+643,"PRE",1,"Good",152.1206
+643,"POST",1,"Excellent",152.5956
+644,"PRE",1,"Good",157.7243
+644,"POST",1,"Good",148.4041
+645,"PRE",1,"Good",145.5656
+645,"POST",1,"Good",128.1785
+646,"PRE",1,"Very Poor",133.4121
+646,"POST",1,"Very Poor",131.7919
+647,"PRE",1,"Poor",140.85
+647,"POST",1,"Very Poor",123.7925
+648,"PRE",1,"Good",139.1812
+648,"POST",1,"Good",133.2907
+649,"PRE",1,"Good",153.5392
+649,"POST",1,"Satisfactory",141.6402
+650,"PRE",1,"Poor",147.6447
+650,"POST",1,"Poor",141.0198
+651,"PRE",1,"Satisfactory",158.169
+651,"POST",1,"Excellent",164.9535
+652,"PRE",1,"Very Poor",139.1872
+652,"POST",1,"Satisfactory",147.2061
+653,"PRE",1,"Good",186.3174
+653,"POST",1,"Poor",190.9565
+654,"PRE",1,"Good",114.9358
+654,"POST",1,"Good",112.4596
+655,"PRE",1,"Very Poor",191.4919
+655,"POST",1,"Very Poor",193.6834
+656,"PRE",1,"Satisfactory",161.1255
+656,"POST",1,"Excellent",143.1928
+657,"PRE",1,"Excellent",183.2489
+657,"POST",1,"Excellent",167.488
+658,"PRE",1,"Very Poor",159.0089
+658,"POST",1,"Very Poor",157.8641
+659,"PRE",1,"Satisfactory",120.8727
+659,"POST",1,"Excellent",120.4891
+660,"PRE",1,"Good",154.9982
+660,"POST",1,"Good",155.3498
+661,"PRE",1,"Very Poor",158.5042
+661,"POST",1,"Satisfactory",135.8702
+662,"PRE",1,"Poor",164.5627
+662,"POST",1,"Poor",161.2389
+663,"PRE",1,"Poor",149.176
+663,"POST",1,"Satisfactory",139.0676
+664,"PRE",1,"Poor",189.5099
+664,"POST",1,"Poor",188.7478
+665,"PRE",1,"Excellent",144.7483
+665,"POST",1,"Excellent",142.7027
+666,"PRE",1,"Very Poor",137.4264
+666,"POST",1,"Very Poor",136.6292
+667,"PRE",1,"Satisfactory",151.5103
+667,"POST",1,"Poor",151.9693
+668,"PRE",1,"Poor",165.7617
+668,"POST",1,"Very Poor",167.1315
+669,"PRE",1,"Excellent",130.1743
+669,"POST",1,"Excellent",126.6131
+670,"PRE",1,"Very Poor",159.4271
+670,"POST",1,"Good",149.1013
+671,"PRE",1,"Poor",162.3383
+671,"POST",1,"Satisfactory",149.0852
+672,"PRE",1,"Satisfactory",158.4798
+672,"POST",1,"Excellent",153.6031
+673,"PRE",1,"Excellent",123.6325
+673,"POST",1,"Excellent",116.0861
+674,"PRE",1,"Satisfactory",146.1463
+674,"POST",1,"Satisfactory",141.6199
+675,"PRE",1,"Excellent",200.4207
+675,"POST",1,"Excellent",181.4778
+676,"PRE",1,"Excellent",141.9941
+676,"POST",1,"Excellent",134.7827
+677,"PRE",1,"Excellent",160.3846
+677,"POST",1,"Excellent",167.6951
+678,"PRE",1,"Very Poor",163.0394
+678,"POST",1,"Satisfactory",145.1934
+679,"PRE",1,"Good",203.0251
+679,"POST",1,"Satisfactory",187.9488
+680,"PRE",1,"Very Poor",161.3358
+680,"POST",1,"Very Poor",140.4855
+681,"PRE",1,"Poor",136.3344
+681,"POST",1,"Satisfactory",114.7793
+682,"PRE",1,"Satisfactory",162.1784
+682,"POST",1,"Satisfactory",160.0536
+683,"PRE",1,"Very Poor",96.16446
+683,"POST",1,"Very Poor",91.25481
+684,"PRE",1,"Very Poor",196.882
+684,"POST",1,"Good",191.1389
+685,"PRE",1,"Very Poor",196.2669
+685,"POST",1,"Satisfactory",175.3885
+686,"PRE",1,"Excellent",171.1134
+686,"POST",1,"Excellent",156.7009
+687,"PRE",1,"Excellent",161.867
+687,"POST",1,"Excellent",148.7922
+688,"PRE",1,"Poor",157.5506
+688,"POST",1,"Good",151.8041
+689,"PRE",1,"Excellent",155.6103
+689,"POST",1,"Excellent",148.6808
+690,"PRE",1,"Very Poor",170.1339
+690,"POST",1,"Satisfactory",152.8925
+691,"PRE",1,"Satisfactory",157.4256
+691,"POST",1,"Excellent",150.3157
+692,"PRE",1,"Excellent",177.9681
+692,"POST",1,"Excellent",170.6965
+693,"PRE",1,"Poor",189.0831
+693,"POST",1,"Satisfactory",166.8497
+694,"PRE",1,"Very Poor",131.9059
+694,"POST",1,"Poor",126.2033
+695,"PRE",1,"Very Poor",172.7516
+695,"POST",1,"Satisfactory",149.3183
+696,"PRE",1,"Very Poor",159.3391
+696,"POST",1,"Poor",155.988
+697,"PRE",1,"Excellent",151.5689
+697,"POST",1,"Excellent",139.5653
+698,"PRE",1,"Poor",196.8585
+698,"POST",1,"Good",176.8152
+699,"PRE",1,"Satisfactory",163.8551
+699,"POST",1,"Very Poor",171.6651
+700,"PRE",1,"Poor",142.3124
+700,"POST",1,"Poor",132.6672
+701,"PRE",1,"Very Poor",144.5159
+701,"POST",1,"Very Poor",146.7909
+702,"PRE",1,"Excellent",143.4015
+702,"POST",1,"Excellent",124.5399
+703,"PRE",1,"Excellent",206.658
+703,"POST",1,"Excellent",190.687
+704,"PRE",1,"Excellent",153.0902
+704,"POST",1,"Excellent",149.9613
+705,"PRE",1,"Good",147.847
+705,"POST",1,"Very Poor",139.4676
+706,"PRE",1,"Satisfactory",156.8206
+706,"POST",1,"Excellent",140.1126
+707,"PRE",1,"Poor",167.7503
+707,"POST",1,"Good",151.0825
+708,"PRE",1,"Excellent",197.0543
+708,"POST",1,"Excellent",200.8426
+709,"PRE",1,"Satisfactory",143.5275
+709,"POST",1,"Excellent",143.9558
+710,"PRE",1,"Poor",187.2704
+710,"POST",1,"Very Poor",180.4256
+711,"PRE",1,"Excellent",165.3805
+711,"POST",1,"Excellent",172.0999
+712,"PRE",1,"Good",177.0356
+712,"POST",1,"Excellent",151.2192
+713,"PRE",1,"Poor",161.1462
+713,"POST",1,"Excellent",159.5203
+714,"PRE",1,"Very Poor",180.6236
+714,"POST",1,"Satisfactory",170.4785
+715,"PRE",1,"Good",141.3478
+715,"POST",1,"Good",134.2262
+716,"PRE",1,"Excellent",135.2827
+716,"POST",1,"Excellent",110.4131
+717,"PRE",1,"Very Poor",175.6651
+717,"POST",1,"Satisfactory",169.777
+718,"PRE",1,"Poor",187.7823
+718,"POST",1,"Poor",179.432
+719,"PRE",1,"Satisfactory",145.0328
+719,"POST",1,"Satisfactory",129.528
+720,"PRE",1,"Very Poor",155.2966
+720,"POST",1,"Good",143.0133
+721,"PRE",1,"Satisfactory",190.9308
+721,"POST",1,"Excellent",177.6923
+722,"PRE",1,"Excellent",166.941
+722,"POST",1,"Excellent",155.0942
+723,"PRE",1,"Poor",196.498
+723,"POST",1,"Satisfactory",178.7809
+724,"PRE",1,"Very Poor",155.651
+724,"POST",1,"Satisfactory",139.081
+725,"PRE",1,"Excellent",150.6171
+725,"POST",1,"Excellent",127.8922
+726,"PRE",1,"Poor",154.0438
+726,"POST",1,"Poor",152.6916
+727,"PRE",1,"Very Poor",129.2036
+727,"POST",1,"Good",124.8254
+728,"PRE",1,"Excellent",152.9922
+728,"POST",1,"Excellent",148.0257
+729,"PRE",1,"Excellent",176.6731
+729,"POST",1,"Excellent",164.7634
+730,"PRE",1,"Poor",179.6068
+730,"POST",1,"Good",172.2655
+731,"PRE",1,"Excellent",133.173
+731,"POST",1,"Excellent",117.5178
+732,"PRE",1,"Excellent",153.9033
+732,"POST",1,"Excellent",140.0306
+733,"PRE",1,"Satisfactory",145.482
+733,"POST",1,"Excellent",144.1713
+734,"PRE",1,"Very Poor",141.1438
+734,"POST",1,"Satisfactory",125.2981
+735,"PRE",1,"Excellent",148.7948
+735,"POST",1,"Excellent",129.4319
+736,"PRE",1,"Very Poor",142.5434
+736,"POST",1,"Very Poor",132.3174
+737,"PRE",1,"Very Poor",130.0819
+737,"POST",1,"Satisfactory",122.1846
+738,"PRE",1,"Excellent",143.0233
+738,"POST",1,"Excellent",150.7664
+739,"PRE",1,"Poor",177.3041
+739,"POST",1,"Satisfactory",173.6476
+740,"PRE",1,"Poor",131.8078
+740,"POST",1,"Poor",122.2291
+741,"PRE",1,"Good",157.1558
+741,"POST",1,"Good",152.3346
+742,"PRE",1,"Satisfactory",204.0743
+742,"POST",1,"Poor",197.8054
+743,"PRE",1,"Very Poor",157.2855
+743,"POST",1,"Poor",130.0075
+744,"PRE",1,"Satisfactory",170.6295
+744,"POST",1,"Good",159.6323
+745,"PRE",1,"Satisfactory",148.7769
+745,"POST",1,"Satisfactory",142.0712
+746,"PRE",1,"Very Poor",145.9867
+746,"POST",1,"Good",135.6884
+747,"PRE",1,"Very Poor",152.6146
+747,"POST",1,"Very Poor",133.6947
+748,"PRE",1,"Poor",168.3509
+748,"POST",1,"Very Poor",148.9476
+749,"PRE",1,"Very Poor",132.2289
+749,"POST",1,"Very Poor",123.0463
+750,"PRE",1,"Very Poor",178.6704
+750,"POST",1,"Very Poor",154.4278
+751,"PRE",1,"Poor",161.525
+751,"POST",1,"Very Poor",161.3855
+752,"PRE",1,"Excellent",212.1068
+752,"POST",1,"Excellent",188.6711
+753,"PRE",1,"Excellent",170.158
+753,"POST",1,"Excellent",152.2072
+754,"PRE",1,"Very Poor",175.9028
+754,"POST",1,"Very Poor",159.5098
+755,"PRE",1,"Very Poor",159.4678
+755,"POST",1,"Poor",152.0403
+756,"PRE",1,"Poor",136.2035
+756,"POST",1,"Satisfactory",118.549
+757,"PRE",1,"Very Poor",167.7989
+757,"POST",1,"Very Poor",167.5684
+758,"PRE",1,"Good",145.4373
+758,"POST",1,"Good",140.2028
+759,"PRE",1,"Very Poor",171.8339
+759,"POST",1,"Satisfactory",152.9071
+760,"PRE",1,"Good",141.0048
+760,"POST",1,"Good",114.124
+761,"PRE",1,"Good",147.0229
+761,"POST",1,"Good",140.9759
+762,"PRE",1,"Excellent",172.21
+762,"POST",1,"Excellent",152.6312
+763,"PRE",1,"Excellent",182.2392
+763,"POST",1,"Excellent",166.5647
+764,"PRE",1,"Excellent",181.7167
+764,"POST",1,"Excellent",171.769
+765,"PRE",1,"Poor",168.5971
+765,"POST",1,"Good",149.6584
+766,"PRE",1,"Good",163.8788
+766,"POST",1,"Very Poor",162.7421
+767,"PRE",1,"Very Poor",192.3859
+767,"POST",1,"Very Poor",190.4825
+768,"PRE",1,"Very Poor",168.2513
+768,"POST",1,"Very Poor",160.5412
+769,"PRE",1,"Satisfactory",136.2353
+769,"POST",1,"Excellent",121.2083
+770,"PRE",1,"Good",136.2688
+770,"POST",1,"Good",129.4879
+771,"PRE",1,"Excellent",155.9453
+771,"POST",1,"Excellent",137.3148
+772,"PRE",1,"Excellent",180.737
+772,"POST",1,"Excellent",155.1877
+773,"PRE",1,"Satisfactory",124.3174
+773,"POST",1,"Excellent",127.1001
+774,"PRE",1,"Very Poor",174.7511
+774,"POST",1,"Good",156.3091
+775,"PRE",1,"Poor",161.4166
+775,"POST",1,"Poor",156.9377
+776,"PRE",1,"Excellent",175.3384
+776,"POST",1,"Excellent",167.6286
+777,"PRE",1,"Excellent",150.1227
+777,"POST",1,"Excellent",139.6581
+778,"PRE",1,"Very Poor",137.4228
+778,"POST",1,"Satisfactory",131.0397
+779,"PRE",1,"Very Poor",164.7832
+779,"POST",1,"Good",156.7177
+780,"PRE",1,"Excellent",141.7196
+780,"POST",1,"Excellent",134.0115
+781,"PRE",1,"Excellent",177.7829
+781,"POST",1,"Excellent",184.5136
+782,"PRE",1,"Excellent",175.075
+782,"POST",1,"Excellent",163.6045
+783,"PRE",1,"Poor",166.6527
+783,"POST",1,"Good",158.5861
+784,"PRE",1,"Very Poor",161.6134
+784,"POST",1,"Good",140.6337
+785,"PRE",1,"Excellent",145.865
+785,"POST",1,"Excellent",140.9212
+786,"PRE",1,"Good",133.3682
+786,"POST",1,"Good",126.7531
+787,"PRE",1,"Very Poor",176.8178
+787,"POST",1,"Satisfactory",160.841
+788,"PRE",1,"Satisfactory",151.2125
+788,"POST",1,"Excellent",143.0015
+789,"PRE",1,"Very Poor",152.7253
+789,"POST",1,"Very Poor",149.2045
+790,"PRE",1,"Good",177.138
+790,"POST",1,"Satisfactory",166.2213
+791,"PRE",1,"Excellent",124.9118
+791,"POST",1,"Excellent",113.7872
+792,"PRE",1,"Poor",164.2004
+792,"POST",1,"Good",159.778
+793,"PRE",1,"Satisfactory",189.9796
+793,"POST",1,"Good",171.3853
+794,"PRE",1,"Good",150.4656
+794,"POST",1,"Poor",150.4896
+795,"PRE",1,"Excellent",161.1534
+795,"POST",1,"Excellent",152.1792
+796,"PRE",1,"Satisfactory",149.8354
+796,"POST",1,"Very Poor",146.3725
+797,"PRE",1,"Excellent",137.1854
+797,"POST",1,"Excellent",132.7923
+798,"PRE",1,"Very Poor",148.0618
+798,"POST",1,"Very Poor",141.2343
+799,"PRE",1,"Satisfactory",142.7913
+799,"POST",1,"Good",133.172
+800,"PRE",1,"Excellent",176.0536
+800,"POST",1,"Excellent",168.0981
+801,"PRE",1,"Poor",179.3188
+801,"POST",1,"Good",149.037
+802,"PRE",1,"Good",142.1079
+802,"POST",1,"Good",121.7181
+803,"PRE",1,"Excellent",166.102
+803,"POST",1,"Excellent",156.132
+804,"PRE",1,"Satisfactory",142.3808
+804,"POST",1,"Poor",140.5126
+805,"PRE",1,"Poor",162.183
+805,"POST",1,"Good",139.3285
+806,"PRE",1,"Excellent",169.1224
+806,"POST",1,"Excellent",174.8394
+807,"PRE",1,"Very Poor",149.563
+807,"POST",1,"Poor",157.2096
+808,"PRE",1,"Excellent",169.4399
+808,"POST",1,"Excellent",174.4662
+809,"PRE",1,"Excellent",153.0281
+809,"POST",1,"Excellent",131.8175
+810,"PRE",1,"Very Poor",150.2344
+810,"POST",1,"Satisfactory",145.694
+811,"PRE",1,"Good",151.9307
+811,"POST",1,"Good",144.3646
+812,"PRE",1,"Satisfactory",163.771
+812,"POST",1,"Excellent",162.1151
+813,"PRE",1,"Satisfactory",134.1943
+813,"POST",1,"Excellent",142.1853
+814,"PRE",1,"Poor",183.2211
+814,"POST",1,"Satisfactory",181.605
+815,"PRE",1,"Very Poor",157.9456
+815,"POST",1,"Very Poor",134.1343
+816,"PRE",1,"Poor",184.4756
+816,"POST",1,"Excellent",173.9378
+817,"PRE",1,"Very Poor",160.7803
+817,"POST",1,"Good",143.7013
+818,"PRE",1,"Satisfactory",151.2269
+818,"POST",1,"Excellent",126.5553
+819,"PRE",1,"Poor",124.1139
+819,"POST",1,"Satisfactory",109.5992
+820,"PRE",1,"Good",165.5154
+820,"POST",1,"Excellent",137.467
+821,"PRE",1,"Poor",189.2562
+821,"POST",1,"Excellent",171.742
+822,"PRE",1,"Poor",208.6913
+822,"POST",1,"Excellent",197.9653
+823,"PRE",1,"Good",161.6651
+823,"POST",1,"Good",141.9517
+824,"PRE",1,"Satisfactory",165.4102
+824,"POST",1,"Satisfactory",166.7082
+825,"PRE",1,"Poor",173.5251
+825,"POST",1,"Very Poor",172.7282
+826,"PRE",1,"Poor",173.3468
+826,"POST",1,"Very Poor",160.397
+827,"PRE",1,"Satisfactory",151.5575
+827,"POST",1,"Satisfactory",152.9449
+828,"PRE",1,"Excellent",156.9572
+828,"POST",1,"Excellent",149.9316
+829,"PRE",1,"Poor",169.8654
+829,"POST",1,"Good",151.4767
+830,"PRE",1,"Poor",175.8039
+830,"POST",1,"Satisfactory",147.7374
+831,"PRE",1,"Good",150.9536
+831,"POST",1,"Very Poor",154.2196
+832,"PRE",1,"Very Poor",159.9518
+832,"POST",1,"Very Poor",164.6483
+833,"PRE",1,"Good",192.7596
+833,"POST",1,"Excellent",187.0324
+834,"PRE",1,"Excellent",146.6009
+834,"POST",1,"Excellent",135.4462
+835,"PRE",1,"Excellent",181.5264
+835,"POST",1,"Excellent",164.3546
+836,"PRE",1,"Excellent",160.2688
+836,"POST",1,"Excellent",141.9823
+837,"PRE",1,"Poor",144.2436
+837,"POST",1,"Satisfactory",132.0298
+838,"PRE",1,"Very Poor",160.8318
+838,"POST",1,"Good",144.9727
+839,"PRE",1,"Very Poor",168.9616
+839,"POST",1,"Very Poor",160.4033
+840,"PRE",1,"Very Poor",145.8174
+840,"POST",1,"Very Poor",130.3159
+841,"PRE",1,"Excellent",146.7391
+841,"POST",1,"Excellent",154.7787
+842,"PRE",1,"Very Poor",138.8284
+842,"POST",1,"Satisfactory",114.1999
+843,"PRE",1,"Excellent",170.8452
+843,"POST",1,"Excellent",170.3578
+844,"PRE",1,"Very Poor",157.2704
+844,"POST",1,"Very Poor",159.054
+845,"PRE",1,"Very Poor",114.108
+845,"POST",1,"Very Poor",122.2051
+846,"PRE",1,"Satisfactory",125.7042
+846,"POST",1,"Excellent",117.9795
+847,"PRE",1,"Excellent",125.5042
+847,"POST",1,"Excellent",110.5993
+848,"PRE",1,"Poor",197.964
+848,"POST",1,"Satisfactory",184.969
+849,"PRE",1,"Good",112.2786
+849,"POST",1,"Excellent",107.5753
+850,"PRE",1,"Satisfactory",149.1703
+850,"POST",1,"Excellent",136.8679
+851,"PRE",1,"Poor",174.88
+851,"POST",1,"Good",156.9664
+852,"PRE",1,"Satisfactory",157.3105
+852,"POST",1,"Satisfactory",153.2278
+853,"PRE",1,"Excellent",142.3261
+853,"POST",1,"Excellent",134.2303
+854,"PRE",1,"Good",151.8353
+854,"POST",1,"Good",142.1931
+855,"PRE",1,"Excellent",194.9239
+855,"POST",1,"Excellent",178.0757
+856,"PRE",1,"Poor",164.6948
+856,"POST",1,"Excellent",152.5841
+857,"PRE",1,"Good",148.4412
+857,"POST",1,"Good",149.0017
+858,"PRE",1,"Very Poor",169.0425
+858,"POST",1,"Very Poor",157.4566
+859,"PRE",1,"Excellent",143.1783
+859,"POST",1,"Excellent",134.3904
+860,"PRE",1,"Very Poor",168.2621
+860,"POST",1,"Very Poor",152.6513
+861,"PRE",1,"Satisfactory",150.3339
+861,"POST",1,"Excellent",130.4474
+862,"PRE",1,"Good",114.8704
+862,"POST",1,"Poor",113.8881
+863,"PRE",1,"Very Poor",135.772
+863,"POST",1,"Very Poor",133.4759
+864,"PRE",1,"Very Poor",170.3078
+864,"POST",1,"Satisfactory",152.1508
+865,"PRE",1,"Excellent",165.2119
+865,"POST",1,"Excellent",153.562
+866,"PRE",1,"Good",151.4547
+866,"POST",1,"Excellent",152.5529
+867,"PRE",1,"Very Poor",197.8174
+867,"POST",1,"Poor",188.6067
+868,"PRE",1,"Poor",137.147
+868,"POST",1,"Very Poor",131.978
+869,"PRE",1,"Excellent",168.827
+869,"POST",1,"Excellent",151.5304
+870,"PRE",1,"Satisfactory",176.9819
+870,"POST",1,"Good",164.7553
+871,"PRE",1,"Excellent",175.1013
+871,"POST",1,"Excellent",160.5883
+872,"PRE",1,"Excellent",130.901
+872,"POST",1,"Excellent",129.759
+873,"PRE",1,"Poor",148.809
+873,"POST",1,"Good",140.9952
+874,"PRE",1,"Poor",151.3786
+874,"POST",1,"Satisfactory",147.1664
+875,"PRE",1,"Poor",140.8054
+875,"POST",1,"Good",124.7997
+876,"PRE",1,"Excellent",137.7364
+876,"POST",1,"Excellent",133.0323
+877,"PRE",1,"Good",121.3391
+877,"POST",1,"Very Poor",99.08476
+878,"PRE",1,"Satisfactory",186.3258
+878,"POST",1,"Excellent",170.3123
+879,"PRE",1,"Excellent",145.7697
+879,"POST",1,"Excellent",136.6021
+880,"PRE",1,"Excellent",179.8675
+880,"POST",1,"Excellent",169.8789
+881,"PRE",1,"Satisfactory",183.5388
+881,"POST",1,"Good",165.1022
+882,"PRE",1,"Poor",182.2543
+882,"POST",1,"Satisfactory",172.0999
+883,"PRE",1,"Very Poor",148.1267
+883,"POST",1,"Good",125.5607
+884,"PRE",1,"Good",143.046
+884,"POST",1,"Good",137.5477
+885,"PRE",1,"Poor",168.9196
+885,"POST",1,"Poor",166.3574
+886,"PRE",1,"Excellent",145.223
+886,"POST",1,"Excellent",142.4229
+887,"PRE",1,"Excellent",151.3034
+887,"POST",1,"Excellent",142.2492
+888,"PRE",1,"Very Poor",118.4351
+888,"POST",1,"Satisfactory",106.0007
+889,"PRE",1,"Poor",177.9001
+889,"POST",1,"Satisfactory",166.3561
+890,"PRE",1,"Good",169.0712
+890,"POST",1,"Poor",159.5271
+891,"PRE",1,"Very Poor",177.2825
+891,"POST",1,"Poor",186.5453
+892,"PRE",1,"Satisfactory",129.2855
+892,"POST",1,"Satisfactory",112.779
+893,"PRE",1,"Excellent",135.4059
+893,"POST",1,"Excellent",128.504
+894,"PRE",1,"Very Poor",132.7064
+894,"POST",1,"Very Poor",135.9384
+895,"PRE",1,"Very Poor",159.8623
+895,"POST",1,"Satisfactory",161.2103
+896,"PRE",1,"Poor",163.8702
+896,"POST",1,"Good",154.2198
+897,"PRE",1,"Satisfactory",134.0709
+897,"POST",1,"Excellent",122.1997
+898,"PRE",1,"Excellent",152.8984
+898,"POST",1,"Excellent",149.2506
+899,"PRE",1,"Excellent",166.3
+899,"POST",1,"Excellent",144.3581
+900,"PRE",1,"Satisfactory",167.3052
+900,"POST",1,"Good",141.6243
+901,"PRE",1,"Poor",167.9372
+901,"POST",1,"Satisfactory",157.7582
+902,"PRE",1,"Poor",135.1837
+902,"POST",1,"Poor",128.7227
+903,"PRE",1,"Satisfactory",175.1735
+903,"POST",1,"Excellent",166.5738
+904,"PRE",1,"Poor",160.1222
+904,"POST",1,"Good",144.9542
+905,"PRE",1,"Excellent",156.3318
+905,"POST",1,"Excellent",144.5149
+906,"PRE",1,"Excellent",170.717
+906,"POST",1,"Excellent",157.114
+907,"PRE",1,"Poor",152.3362
+907,"POST",1,"Very Poor",146.3944
+908,"PRE",1,"Very  Poor",212.3199
+908,"POST",1,"Excellent",196.6613
+909,"PRE",1,"Excellent",172.1328
+909,"POST",1,"Excellent",165.335
+910,"PRE",1,"Excellent",178.3564
+910,"POST",1,"Excellent",169.8058
+911,"PRE",1,"Excellent",151.598
+911,"POST",1,"Excellent",126.69
+912,"PRE",1,"Satisfactory",142.0184
+912,"POST",1,"Excellent",137.3281
+913,"PRE",1,"Excellent",127.6431
+913,"POST",1,"Excellent",125.7717
+914,"PRE",1,"Very Poor",146.5069
+914,"POST",1,"Poor",154.1741
+915,"PRE",1,"Excellent",152.3319
+915,"POST",1,"Excellent",140.4883
+916,"PRE",1,"Excellent",159.3198
+916,"POST",1,"Excellent",163.6737
+917,"PRE",1,"Very Poor",158.8608
+917,"POST",1,"Very Poor",138.7361
+918,"PRE",1,"Satisfactory",143.0293
+918,"POST",1,"Excellent",156.2227
+919,"PRE",1,"Excellent",165.5358
+919,"POST",1,"Excellent",161.5239
+920,"PRE",1,"Good",165.9416
+920,"POST",1,"Satisfactory",152.0143
+921,"PRE",1,"Good",161.2568
+921,"POST",1,"Satisfactory",134.8711
+922,"PRE",1,"Good",158.6457
+922,"POST",1,"Excellent",156.9284
+923,"PRE",1,"Excellent",141.964
+923,"POST",1,"Excellent",130.4443
+924,"PRE",1,"Poor",168.6268
+924,"POST",1,"Poor",161.6701
+925,"PRE",1,"Very Poor",82.80379
+925,"POST",1,"Very Poor",78.09087
+926,"PRE",1,"Good",158.3419
+926,"POST",1,"Good",155.9253
+927,"PRE",1,"Excellent",145.3616
+927,"POST",1,"Excellent",146.559
+928,"PRE",1,"Poor",162.2544
+928,"POST",1,"Good",164.656
+929,"PRE",1,"Good",108.6252
+929,"POST",1,"Good",110.7681
+930,"PRE",1,"Excellent",156.1308
+930,"POST",1,"Excellent",157.2019
+931,"PRE",1,"Excellent",163.7665
+931,"POST",1,"Excellent",155.1313
+932,"PRE",1,"Excellent",193.9626
+932,"POST",1,"Excellent",176.0199
+933,"PRE",1,"Excellent",152.5323
+933,"POST",1,"Excellent",160.2549
+934,"PRE",1,"Very Poor",157.7346
+934,"POST",1,"Poor",152.8289
+935,"PRE",1,"Good",138.0846
+935,"POST",1,"Poor",129.1834
+936,"PRE",1,"Good",178.3958
+936,"POST",1,"Good",162.0001
+937,"PRE",1,"Very Poor",142.4832
+937,"POST",1,"Very Poor",126.0618
+938,"PRE",1,"Satisfactory",145.2115
+938,"POST",1,"Satisfactory",125.1988
+939,"PRE",1,"Very Poor",124.4541
+939,"POST",1,"Very Poor",109.0358
+940,"PRE",1,"Very Poor",171.819
+940,"POST",1,"Satisfactory",160.1796
+941,"PRE",1,"Satisfactory",138.7509
+941,"POST",1,"Excellent",135.5172
+942,"PRE",1,"Good",148.4549
+942,"POST",1,"Satisfactory",153.3588
+943,"PRE",1,"Poor",163.1498
+943,"POST",1,"Good",167.7814
+944,"PRE",1,"Poor",184.4207
+944,"POST",1,"Very Poor",183.6528
+945,"PRE",1,"Satisfactory",206.2658
+945,"POST",1,"Good",187.5347
+946,"PRE",1,"Excellent",134.3879
+946,"POST",1,"Excellent",137.1436
+947,"PRE",1,"Satisfactory",190.3314
+947,"POST",1,"Good",166.1306
+948,"PRE",1,"Excellent",124.8203
+948,"POST",1,"Excellent",115.2758
+949,"PRE",1,"Poor",137.3044
+949,"POST",1,"Very Poor",123.1409
+950,"PRE",1,"Satisfactory",158.5526
+950,"POST",1,"Excellent",143.3476
+951,"PRE",1,"Good",163.3364
+951,"POST",1,"Good",160.9765
+952,"PRE",1,"Very Poor",190.1714
+952,"POST",1,"Satisfactory",170.8492
+953,"PRE",1,"Good",129.8878
+953,"POST",1,"Good",118.9166
+954,"PRE",1,"Very Poor",169.7281
+954,"POST",1,"Satisfactory",152.6952
+955,"PRE",1,"Good",147.6263
+955,"POST",1,"Good",145.5912
+956,"PRE",1,"Very Poor",143.1135
+956,"POST",1,"Satisfactory",132.1364
+957,"PRE",1,"Good",142.0415
+957,"POST",1,"Good",129.9117
+958,"PRE",1,"Good",156.6084
+958,"POST",1,"Good",127.697
+959,"PRE",1,"Excellent",220.1608
+959,"POST",1,"Excellent",207.2983
+960,"PRE",1,"Good",145.0731
+960,"POST",1,"Good",131.8051
+961,"PRE",1,"Very Poor",169.7014
+961,"POST",1,"Very Poor",163.3165
+962,"PRE",1,"Satisfactory",155.4129
+962,"POST",1,"Satisfactory",159.7976
+963,"PRE",1,"Satisfactory",177.6136
+963,"POST",1,"Good",157.1084
+964,"PRE",1,"Very Poor",202.9086
+964,"POST",1,"Very Poor",197.3719
+965,"PRE",1,"Excellent",178.6544
+965,"POST",1,"Excellent",160.993
+966,"PRE",1,"Poor",151.2084
+966,"POST",1,"Poor",124.9635
+967,"PRE",1,"Poor",144.9072
+967,"POST",1,"Poor",138.392
+968,"PRE",1,"Satisfactory",158.562
+968,"POST",1,"Poor",160.6125
+969,"PRE",1,"Very Poor",181.9941
+969,"POST",1,"Satisfactory",176.2718
+970,"PRE",1,"Very Poor",104.2896
+970,"POST",1,"Very Poor",95.70747
+971,"PRE",1,"Very Poor",146.198
+971,"POST",1,"Poor",137.265
+972,"PRE",1,"Good",142.8174
+972,"POST",1,"Good",138.0743
+973,"PRE",1,"Satisfactory",152.0658
+973,"POST",1,"Satisfactory",161.7855
+974,"PRE",1,"Very Poor",137.2267
+974,"POST",1,"Very Poor",140.1269
+975,"PRE",1,"Very Poor",157.9489
+975,"POST",1,"Satisfactory",144.6428
+976,"PRE",1,"Excellent",146.6166
+976,"POST",1,"Excellent",131.1694
+977,"PRE",1,"Very Poor",143.1347
+977,"POST",1,"Good",131.3853
+978,"PRE",1,"Excellent",155.3069
+978,"POST",1,"Excellent",142.7594
+979,"PRE",1,"Poor",169.4116
+979,"POST",1,"Good",165.8086
+980,"PRE",1,"Very Poor",155.3119
+980,"POST",1,"Good",139.7861
+981,"PRE",1,"Excellent",148.4344
+981,"POST",1,"Excellent",140.1702
+982,"PRE",1,"Very Poor",122.6312
+982,"POST",1,"Very Poor",121.1486
+983,"PRE",1,"Good",185.6589
+983,"POST",1,"Poor",178.6901
+984,"PRE",1,"Poor",166.0523
+984,"POST",1,"Satisfactory",142.7833
+985,"PRE",1,"Very Poor",181.935
+985,"POST",1,"Poor",178.2323
+986,"PRE",1,"Satisfactory",155.8424
+986,"POST",1,"Excellent",142.7307
+987,"PRE",1,"Good",175.9998
+987,"POST",1,"Good",152.5312
+988,"PRE",1,"Excellent",123.4725
+988,"POST",1,"Excellent",111.813
+989,"PRE",1,"Poor",156.9898
+989,"POST",1,"Poor",152.1833
+990,"PRE",1,"Good",147.848
+990,"POST",1,"Excellent",142.5723
+991,"PRE",1,"Good",187.7961
+991,"POST",1,"Good",166.4368
+992,"PRE",1,"Poor",181.9265
+992,"POST",1,"Satisfactory",170.8808
+993,"PRE",1,"Good",167.437
+993,"POST",1,"Good",153.7927
+994,"PRE",1,"Good",145.9464
+994,"POST",1,"Good",138.6557
+995,"PRE",1,"Excellent",193.8706
+995,"POST",1,"Excellent",203.4316
+996,"PRE",1,"Very Poor",139.3659
+996,"POST",1,"Very Poor",141.4105
+997,"PRE",1,"Poor",175.4438
+997,"POST",1,"Good",180.8942
+998,"PRE",1,"Excellent",141.0906
+998,"POST",1,"Excellent",134.522
+999,"PRE",1,"Poor",165.4166
+999,"POST",1,"Good",170.4518
+1000,"PRE",1,"Very Poor",209.2232
+1000,"POST",1,"Very Poor",184.9065
+2501,"PRE",0,"Poor",159.7587
+2501,"POST",0,"Poor",158.692
+2502,"PRE",0,"Very Poor",176.1611
+2502,"POST",0,"Very Poor",174.827
+2503,"PRE",0,"Good",181.3907
+2503,"POST",0,"Satisfactory",179.9042
+2504,"PRE",0,"Excellent",175.6615
+2504,"POST",0,"Excellent",175.2032
+2505,"PRE",0,"Satisfactory",136.5405
+2505,"POST",0,"Poor",137.9253
+2506,"PRE",0,"Very Poor",160.0882
+2506,"POST",0,"Very Poor",159.6655
+2507,"PRE",0,"Excellent",153.7626
+2507,"POST",0,"Excellent",155.2803
+2508,"PRE",0,"Excellent",163.1849
+2508,"POST",0,"Very  Poor",164.3772
+2509,"PRE",0,"Poor",161.6024
+2509,"POST",0,"Poor",160.351
+2510,"PRE",0,"Excellent",178.8497
+2510,"POST",0,"Excellent",177.6406
+2511,"PRE",0,"Poor",183.6635
+2511,"POST",0,"Poor",181.5804
+2512,"PRE",0,"Good",182.6125
+2512,"POST",0,"Very Poor",182.2411
+2513,"PRE",0,"Good",131.7189
+2513,"POST",0,"Satisfactory",130.9443
+2514,"PRE",0,"Very Poor",167.8159
+2514,"POST",0,"Very Poor",164.8404
+2515,"PRE",0,"Satisfactory",141.5016
+2515,"POST",0,"Poor",142.1702
+2516,"PRE",0,"Excellent",180.3232
+2516,"POST",0,"Excellent",178.8561
+2517,"PRE",0,"Poor",171.0396
+2517,"POST",0,"Poor",168.6409
+2518,"PRE",0,"Satisfactory",140.9155
+2518,"POST",0,"Excellent",138.3358
+2519,"PRE",0,"Excellent",148.8002
+2519,"POST",0,"Excellent",148.2964
+2520,"PRE",0,"Very Poor",180.0249
+2520,"POST",0,"Poor",176.5997
+2521,"PRE",0,"Excellent",176.3809
+2521,"POST",0,"Excellent",176.5553
+2522,"PRE",0,"Excellent",143.4406
+2522,"POST",0,"Excellent",144.5304
+2523,"PRE",0,"Poor",151.3823
+2523,"POST",0,"Very Poor",149.1197
+2524,"PRE",0,"Satisfactory",131.916
+2524,"POST",0,"Excellent",132.1414
+2525,"PRE",0,"Excellent",163.8931
+2525,"POST",0,"Excellent",163.36
+2526,"PRE",0,"Good",193.5489
+2526,"POST",0,"Very Poor",192.4978
+2527,"PRE",0,"Excellent",133.9701
+2527,"POST",0,"Excellent",131.1549
+2528,"PRE",0,"Poor",144.1133
+2528,"POST",0,"Poor",142.1483
+2529,"PRE",0,"Very Poor",141.5676
+2529,"POST",0,"Very Poor",143.1775
+2530,"PRE",0,"Good",140.9904
+2530,"POST",0,"Good",141.1889
+2531,"PRE",0,"Excellent",157.9386
+2531,"POST",0,"Excellent",157.8375
+2532,"PRE",0,"Poor",183.2974
+2532,"POST",0,"Poor",183.8177
+2533,"PRE",0,"Excellent",148.3662
+2533,"POST",0,"Excellent",147.7289
+2534,"PRE",0,"Poor",143.4335
+2534,"POST",0,"Poor",143.2539
+2535,"PRE",0,"Poor",183.6675
+2535,"POST",0,"Poor",184.5175
+2536,"PRE",0,"Poor",156.9152
+2536,"POST",0,"Poor",155.2758
+2537,"PRE",0,"Very Poor",196.3588
+2537,"POST",0,"Poor",194.8092
+2538,"PRE",0,"Excellent",182.3203
+2538,"POST",0,"Excellent",181.9536
+2539,"PRE",0,"Poor",160.7198
+2539,"POST",0,"Very Poor",158.5549
+2540,"PRE",0,"Good",197.2147
+2540,"POST",0,"Good",196.3241
+2541,"PRE",0,"Very Poor",212.2633
+2541,"POST",0,"Very Poor",209.9334
+2542,"PRE",0,"Satisfactory",130.1461
+2542,"POST",0,"Satisfactory",128.7094
+2543,"PRE",0,"Excellent",157.7878
+2543,"POST",0,"Excellent",155.8864
+2544,"PRE",0,"Excellent",113.2887
+2544,"POST",0,"Excellent",113.4053
+2545,"PRE",0,"Poor",190.2413
+2545,"POST",0,"Very Poor",185.6544
+2546,"PRE",0,"Very Poor",164.0949
+2546,"POST",0,"Very Poor",163.4042
+2547,"PRE",0,"Good",191.6147
+2547,"POST",0,"Very Poor",189.98
+2548,"PRE",0,"Very Poor",173.1977
+2548,"POST",0,"Poor",172.9955
+2549,"PRE",0,"Satisfactory",152.4772
+2549,"POST",0,"Poor",150.9322
+2550,"PRE",0,"Excellent",179.7699
+2550,"POST",0,"Excellent",177.9917
+2551,"PRE",0,"Excellent",109.3454
+2551,"POST",0,"Excellent",109.7377
+2552,"PRE",0,"Satisfactory",195.3702
+2552,"POST",0,"Poor",194.5449
+2553,"PRE",0,"Good",150.8364
+2553,"POST",0,"Poor",151.6935
+2554,"PRE",0,"Very Poor",176.7609
+2554,"POST",0,"Very Poor",176.7145
+2555,"PRE",0,"Poor",148.4143
+2555,"POST",0,"Good",147.2455
+2556,"PRE",0,"Poor",151.0487
+2556,"POST",0,"Good",151.5566
+2557,"PRE",0,"Good",200.2033
+2557,"POST",0,"Satisfactory",200.5214
+2558,"PRE",0,"Very Poor",168.0217
+2558,"POST",0,"Very Poor",166.3003
+2559,"PRE",0,"Good",152.6161
+2559,"POST",0,"Good",152.0765
+2560,"PRE",0,"Poor",127.2084
+2560,"POST",0,"Poor",126.5284
+2561,"PRE",0,"Very Poor",163.5804
+2561,"POST",0,"Poor",164.0579
+2562,"PRE",0,"Satisfactory",159.9404
+2562,"POST",0,"Satisfactory",159.5523
+2563,"PRE",0,"Excellent",184.7076
+2563,"POST",0,"Good",181.3239
+2564,"PRE",0,"Satisfactory",133.2223
+2564,"POST",0,"Satisfactory",131.2493
+2565,"PRE",0,"Excellent",180.3487
+2565,"POST",0,"Excellent",178.2895
+2566,"PRE",0,"Very Poor",208.2291
+2566,"POST",0,"Poor",207.3327
+2567,"PRE",0,"Satisfactory",148.0323
+2567,"POST",0,"Satisfactory",148.0136
+2568,"PRE",0,"Excellent",149.0152
+2568,"POST",0,"Excellent",149.0434
+2569,"PRE",0,"Satisfactory",188.1805
+2569,"POST",0,"Satisfactory",187.2761
+2570,"PRE",0,"Excellent",182.5715
+2570,"POST",0,"Excellent",182.3116
+2571,"PRE",0,"Good",191.8299
+2571,"POST",0,"Satisfactory",188.8972
+2572,"PRE",0,"Excellent",126.6603
+2572,"POST",0,"Excellent",124.5103
+2573,"PRE",0,"Satisfactory",127.9179
+2573,"POST",0,"Satisfactory",126.9342
+2574,"PRE",0,"Excellent",161.5948
+2574,"POST",0,"Excellent",161.595
+2575,"PRE",0,"Very Poor",170.2397
+2575,"POST",0,"Very Poor",167.4751
+2576,"PRE",0,"Very Poor",156.6079
+2576,"POST",0,"Satisfactory",157.6564
+2577,"PRE",0,"Good",121.6912
+2577,"POST",0,"Good",121.8497
+2578,"PRE",0,"Good",174.7099
+2578,"POST",0,"Satisfactory",175.2909
+2579,"PRE",0,"Excellent",169.2397
+2579,"POST",0,"Excellent",171.3327
+2580,"PRE",0,"Poor",145.9244
+2580,"POST",0,"Very Poor",145.0611
+2581,"PRE",0,"Excellent",148.7937
+2581,"POST",0,"Excellent",147.1803
+2582,"PRE",0,"Excellent",179.1107
+2582,"POST",0,"Excellent",176.5696
+2583,"PRE",0,"Poor",141.9686
+2583,"POST",0,"Poor",141.8087
+2584,"PRE",0,"Very Poor",160.4223
+2584,"POST",0,"Poor",159.4469
+2585,"PRE",0,"Very Poor",141.7283
+2585,"POST",0,"Satisfactory",143.8848
+2586,"PRE",0,"Excellent",168.7549
+2586,"POST",0,"Excellent",167.5492
+2587,"PRE",0,"Very Poor",189.2494
+2587,"POST",0,"Very Poor",186.799
+2588,"PRE",0,"Excellent",176.6674
+2588,"POST",0,"Satisfactory",178.1633
+2589,"PRE",0,"Satisfactory",130.743
+2589,"POST",0,"Good",130.5215
+2590,"PRE",0,"Good",150.5189
+2590,"POST",0,"Good",147.3602
+2591,"PRE",0,"Very Poor",174.6097
+2591,"POST",0,"Very Poor",175.7143
+2592,"PRE",0,"Good",156.9004
+2592,"POST",0,"Good",151.2559
+2593,"PRE",0,"Poor",166.9152
+2593,"POST",0,"Very Poor",166.5896
+2594,"PRE",0,"Very Poor",149.1519
+2594,"POST",0,"Poor",146.1511
+2595,"PRE",0,"Satisfactory",177.5493
+2595,"POST",0,"Very Poor",176.1925
+2596,"PRE",0,"Very Poor",180.8025
+2596,"POST",0,"Poor",179.9783
+2597,"PRE",0,"Very Poor",160.241
+2597,"POST",0,"Poor",160.0259
+2598,"PRE",0,"Very Poor",167.416
+2598,"POST",0,"Poor",166.8866
+2599,"PRE",0,"Good",128.5129
+2599,"POST",0,"Good",130.4951
+2600,"PRE",0,"Very Poor",175.7482
+2600,"POST",0,"Very Poor",172.3604
+2601,"PRE",0,"Poor",145.7011
+2601,"POST",0,"Very Poor",146.3048
+2602,"PRE",0,"Poor",154.0849
+2602,"POST",0,"Very Poor",149.5418
+2603,"PRE",0,"Very Poor",163.5857
+2603,"POST",0,"Very Poor",164.9654
+2604,"PRE",0,"Excellent",172.6953
+2604,"POST",0,"Satisfactory",171.5215
+2605,"PRE",0,"Excellent",155.3511
+2605,"POST",0,"Excellent",151.4888
+2606,"PRE",0,"Excellent",167.3119
+2606,"POST",0,"Excellent",165.6431
+2607,"PRE",0,"Poor",131.4338
+2607,"POST",0,"Poor",131.8781
+2608,"PRE",0,"Satisfactory",139.999
+2608,"POST",0,"Satisfactory",139.1489
+2609,"PRE",0,"Good",150.8829
+2609,"POST",0,"Excellent",149.0972
+2610,"PRE",0,"Excellent",179.3841
+2610,"POST",0,"Excellent",174.8335
+2611,"PRE",0,"Very Poor",144.0329
+2611,"POST",0,"Very Poor",142.2953
+2612,"PRE",0,"Excellent",126.0756
+2612,"POST",0,"Excellent",124.6998
+2613,"PRE",0,"Excellent",153.7002
+2613,"POST",0,"Excellent",151.3754
+2614,"PRE",0,"Excellent",177.712
+2614,"POST",0,"Excellent",175.965
+2615,"PRE",0,"Very Poor",186.1541
+2615,"POST",0,"Good",185.4331
+2616,"PRE",0,"Satisfactory",128.1164
+2616,"POST",0,"Good",127.7231
+2617,"PRE",0,"Good",152.3522
+2617,"POST",0,"Good",152.3024
+2618,"PRE",0,"Very Poor",156.1935
+2618,"POST",0,"Very Poor",156.6267
+2619,"PRE",0,"Excellent",164.5655
+2619,"POST",0,"Excellent",160.1976
+2620,"PRE",0,"Very Poor",171.0081
+2620,"POST",0,"Satisfactory",169.2999
+2621,"PRE",0,"Excellent",189.8619
+2621,"POST",0,"Excellent",190.248
+2622,"PRE",0,"Excellent",168.6875
+2622,"POST",0,"Excellent",167.2226
+2623,"PRE",0,"Poor",159.9888
+2623,"POST",0,"Poor",155.3443
+2624,"PRE",0,"Excellent",119.4836
+2624,"POST",0,"Excellent",117.1833
+2625,"PRE",0,"Very Poor",121.879
+2625,"POST",0,"Poor",119.0362
+2626,"PRE",0,"Poor",165.3992
+2626,"POST",0,"Poor",162.5925
+2627,"PRE",0,"Excellent",126.6257
+2627,"POST",0,"Excellent",125.419
+2628,"PRE",0,"Good",148.463
+2628,"POST",0,"Good",147.0885
+2629,"PRE",0,"Satisfactory",147.3777
+2629,"POST",0,"Excellent",150.3483
+2630,"PRE",0,"Excellent",153.833
+2630,"POST",0,"Excellent",152.6437
+2631,"PRE",0,"Poor",151.9681
+2631,"POST",0,"Very Poor",151.0361
+2632,"PRE",0,"Very Poor",191.5014
+2632,"POST",0,"Poor",190.1806
+2633,"PRE",0,"Very Poor",164.8412
+2633,"POST",0,"Poor",162.7912
+2634,"PRE",0,"Excellent",146.0903
+2634,"POST",0,"Excellent",143.4096
+2635,"PRE",0,"Satisfactory",148.9606
+2635,"POST",0,"Satisfactory",148.1728
+2636,"PRE",0,"Good",158.7679
+2636,"POST",0,"Poor",158.3904
+2637,"PRE",0,"Poor",172.3676
+2637,"POST",0,"Very Poor",170.792
+2638,"PRE",0,"Very Poor",145.3713
+2638,"POST",0,"Very Poor",144.5385
+2639,"PRE",0,"Poor",175.1643
+2639,"POST",0,"Very Poor",174.3505
+2640,"PRE",0,"Excellent",157.5867
+2640,"POST",0,"Excellent",155.7697
+2641,"PRE",0,"Very Poor",149.8333
+2641,"POST",0,"Very Poor",151.3766
+2642,"PRE",0,"Poor",138.0148
+2642,"POST",0,"Satisfactory",138.1789
+2643,"PRE",0,"Excellent",122.1046
+2643,"POST",0,"Excellent",120.6369
+2644,"PRE",0,"Excellent",208.7475
+2644,"POST",0,"Excellent",205.8087
+2645,"PRE",0,"Good",106.9506
+2645,"POST",0,"Good",105.9536
+2646,"PRE",0,"Very Poor",157.453
+2646,"POST",0,"Very Poor",156.0449
+2647,"PRE",0,"Excellent",115.1145
+2647,"POST",0,"Excellent",115.3033
+2648,"PRE",0,"Very Poor",160.1941
+2648,"POST",0,"Poor",159.7023
+2649,"PRE",0,"Very Poor",206.0256
+2649,"POST",0,"Very Poor",206.4525
+2650,"PRE",0,"Satisfactory",124.6568
+2650,"POST",0,"Satisfactory",123.2211
+2651,"PRE",0,"Very Poor",180.3294
+2651,"POST",0,"Very Poor",178.8444
+2652,"PRE",0,"Very Poor",167.726
+2652,"POST",0,"Satisfactory",167.0241
+2653,"PRE",0,"Good",179.2962
+2653,"POST",0,"Very Poor",177.8929
+2654,"PRE",0,"Very Poor",167.373
+2654,"POST",0,"Very Poor",166.577
+2655,"PRE",0,"Satisfactory",154.545
+2655,"POST",0,"Satisfactory",155.5321
+2656,"PRE",0,"Satisfactory",176.1616
+2656,"POST",0,"Satisfactory",176.711
+2657,"PRE",0,"Excellent",153.2042
+2657,"POST",0,"Satisfactory",153.2903
+2658,"PRE",0,"Excellent",147.4225
+2658,"POST",0,"Excellent",144.7307
+2659,"PRE",0,"Good",149.864
+2659,"POST",0,"Good",151.6021
+2660,"PRE",0,"Excellent",161.1114
+2660,"POST",0,"Excellent",158.289
+2661,"PRE",0,"Good",151.0779
+2661,"POST",0,"Very Poor",151.5677
+2662,"PRE",0,"Poor",136.1152
+2662,"POST",0,"Very Poor",134.1818
+2663,"PRE",0,"Excellent",185.3854
+2663,"POST",0,"Excellent",183.1809
+2664,"PRE",0,"Excellent",164.4184
+2664,"POST",0,"Excellent",163.5939
+2665,"PRE",0,"Good",179.0433
+2665,"POST",0,"Poor",177.9078
+2666,"PRE",0,"Poor",160.8184
+2666,"POST",0,"Poor",162.4468
+2667,"PRE",0,"Excellent",133.7131
+2667,"POST",0,"Excellent",133.2712
+2668,"PRE",0,"Very Poor",166.5341
+2668,"POST",0,"Good",166.5146
+2669,"PRE",0,"Very Poor",162.6764
+2669,"POST",0,"Poor",163.4069
+2670,"PRE",0,"Good",159.8887
+2670,"POST",0,"Good",159.6819
+2671,"PRE",0,"Excellent",173.9736
+2671,"POST",0,"Excellent",172.3125
+2672,"PRE",0,"Poor",141.7836
+2672,"POST",0,"Very Poor",142.2979
+2673,"PRE",0,"Poor",194.006
+2673,"POST",0,"Very Poor",192.9335
+2674,"PRE",0,"Excellent",137.6919
+2674,"POST",0,"Excellent",136.8655
+2675,"PRE",0,"Excellent",162.8812
+2675,"POST",0,"Excellent",159.9397
+2676,"PRE",0,"Very Poor",169.0985
+2676,"POST",0,"Good",170.4738
+2677,"PRE",0,"Very Poor",177.2611
+2677,"POST",0,"Very Poor",176.8841
+2678,"PRE",0,"Very Poor",174.8367
+2678,"POST",0,"Very Poor",173.6168
+2679,"PRE",0,"Good",152.8219
+2679,"POST",0,"Good",151.4351
+2680,"PRE",0,"Good",151.7666
+2680,"POST",0,"Good",148.8508
+2681,"PRE",0,"Excellent",168.4231
+2681,"POST",0,"Excellent",168.6055
+2682,"PRE",0,"Satisfactory",192.1241
+2682,"POST",0,"Excellent",193.4488
+2683,"PRE",0,"Very  Poor",178.2815
+2683,"POST",0,"Excellent",179.2825
+2684,"PRE",0,"Poor",163.1741
+2684,"POST",0,"Poor",162.7029
+2685,"PRE",0,"Excellent",141.8258
+2685,"POST",0,"Excellent",139.9818
+2686,"PRE",0,"Excellent",130.8925
+2686,"POST",0,"Excellent",131.0124
+2687,"PRE",0,"Excellent",156.3746
+2687,"POST",0,"Excellent",156.024
+2688,"PRE",0,"Excellent",159.1041
+2688,"POST",0,"Excellent",160.3019
+2689,"PRE",0,"Very Poor",197.9183
+2689,"POST",0,"Very Poor",198.7882
+2690,"PRE",0,"Satisfactory",127.3045
+2690,"POST",0,"Satisfactory",128.1405
+2691,"PRE",0,"Excellent",135.5144
+2691,"POST",0,"Excellent",132.9122
+2692,"PRE",0,"Excellent",178.3938
+2692,"POST",0,"Very Poor",176.7657
+2693,"PRE",0,"Excellent",149.2258
+2693,"POST",0,"Satisfactory",147.3587
+2694,"PRE",0,"Very Poor",165.8081
+2694,"POST",0,"Good",164.048
+2695,"PRE",0,"Excellent",175.8243
+2695,"POST",0,"Excellent",177.3804
+2696,"PRE",0,"Poor",187.9669
+2696,"POST",0,"Poor",186.424
+2697,"PRE",0,"Good",154.2352
+2697,"POST",0,"Good",153.7791
+2698,"PRE",0,"Poor",144.163
+2698,"POST",0,"Very Poor",146.5298
+2699,"PRE",0,"Poor",204.8673
+2699,"POST",0,"Very Poor",203.5117
+2700,"PRE",0,"Excellent",152.1188
+2700,"POST",0,"Satisfactory",153.2612
+2701,"PRE",0,"Good",149.7626
+2701,"POST",0,"Good",148.6006
+2702,"PRE",0,"Poor",150.5949
+2702,"POST",0,"Very Poor",149.5941
+2703,"PRE",0,"Good",152.2628
+2703,"POST",0,"Poor",149.7671
+2704,"PRE",0,"Poor",169.0735
+2704,"POST",0,"Very Poor",166.9256
+2705,"PRE",0,"Excellent",144.5724
+2705,"POST",0,"Excellent",142.8506
+2706,"PRE",0,"Good",151.5891
+2706,"POST",0,"Good",148.0096
+2707,"PRE",0,"Excellent",151.0791
+2707,"POST",0,"Excellent",149.4466
+2708,"PRE",0,"Poor",117.9356
+2708,"POST",0,"Poor",116.5197
+2709,"PRE",0,"Very Poor",174.0146
+2709,"POST",0,"Poor",174.1938
+2710,"PRE",0,"Excellent",170.4568
+2710,"POST",0,"Excellent",167.8962
+2711,"PRE",0,"Excellent",167.7052
+2711,"POST",0,"Excellent",168.5084
+2712,"PRE",0,"Poor",144.7799
+2712,"POST",0,"Poor",143.9078
+2713,"PRE",0,"Very Poor",169.5292
+2713,"POST",0,"Satisfactory",168.9056
+2714,"PRE",0,"Excellent",184.751
+2714,"POST",0,"Excellent",183.5205
+2715,"PRE",0,"Very Poor",140.469
+2715,"POST",0,"Very Poor",139.7525
+2716,"PRE",0,"Good",145.47
+2716,"POST",0,"Poor",143.399
+2717,"PRE",0,"Good",155.7202
+2717,"POST",0,"Good",159.0661
+2718,"PRE",0,"Excellent",151.6099
+2718,"POST",0,"Excellent",150.8878
+2719,"PRE",0,"Poor",176.2922
+2719,"POST",0,"Poor",177.0598
+2720,"PRE",0,"Very Poor",159.0601
+2720,"POST",0,"Very Poor",157.5768
+2721,"PRE",0,"Excellent",154.2431
+2721,"POST",0,"Excellent",152.1193
+2722,"PRE",0,"Excellent",150.3179
+2722,"POST",0,"Excellent",149.1886
+2723,"PRE",0,"Good",147.1882
+2723,"POST",0,"Satisfactory",143.258
+2724,"PRE",0,"Good",152.3986
+2724,"POST",0,"Good",154.3906
+2725,"PRE",0,"Satisfactory",156.8957
+2725,"POST",0,"Satisfactory",157.5343
+2726,"PRE",0,"Very Poor",179.104
+2726,"POST",0,"Poor",176.5504
+2727,"PRE",0,"Very Poor",194.5438
+2727,"POST",0,"Good",193.3605
+2728,"PRE",0,"Very Poor",161.175
+2728,"POST",0,"Poor",162.0203
+2729,"PRE",0,"Very Poor",178.8186
+2729,"POST",0,"Poor",178.7526
+2730,"PRE",0,"Very Poor",168.0995
+2730,"POST",0,"Good",169.3497
+2731,"PRE",0,"Excellent",177.0365
+2731,"POST",0,"Excellent",175.1789
+2732,"PRE",0,"Excellent",144.6473
+2732,"POST",0,"Good",143.5497
+2733,"PRE",0,"Excellent",135.006
+2733,"POST",0,"Excellent",134.078
+2734,"PRE",0,"Good",162.1108
+2734,"POST",0,"Satisfactory",160.6447
+2735,"PRE",0,"Very Poor",183.4106
+2735,"POST",0,"Very Poor",181.6701
+2736,"PRE",0,"Excellent",185.9435
+2736,"POST",0,"Excellent",182.1697
+2737,"PRE",0,"Very Poor",172.8363
+2737,"POST",0,"Good",169.4247
+2738,"PRE",0,"Very Poor",193.1249
+2738,"POST",0,"Very Poor",192.301
+2739,"PRE",0,"Very Poor",208.1306
+2739,"POST",0,"Poor",207.9956
+2740,"PRE",0,"Good",151.4782
+2740,"POST",0,"Good",152.3073
+2741,"PRE",0,"Excellent",110.016
+2741,"POST",0,"Excellent",109.3122
+2742,"PRE",0,"Satisfactory",158.5661
+2742,"POST",0,"Satisfactory",160.0368
+2743,"PRE",0,"Very Poor",142.8933
+2743,"POST",0,"Very Poor",142.137
+2744,"PRE",0,"Excellent",109.0759
+2744,"POST",0,"Excellent",108.1764
+2745,"PRE",0,"Poor",157.7886
+2745,"POST",0,"Poor",153.9205
+2746,"PRE",0,"Poor",189.9163
+2746,"POST",0,"Poor",189.268
+2747,"PRE",0,"Excellent",160.3335
+2747,"POST",0,"Excellent",163.3317
+2748,"PRE",0,"Excellent",172.8051
+2748,"POST",0,"Excellent",172.0937
+2749,"PRE",0,"Excellent",160.4032
+2749,"POST",0,"Excellent",160.2439
+2750,"PRE",0,"Very Poor",180.6952
+2750,"POST",0,"Poor",179.3646
+2751,"PRE",0,"Satisfactory",155.4134
+2751,"POST",0,"Satisfactory",152.2774
+2752,"PRE",0,"Very Poor",156.0204
+2752,"POST",0,"Satisfactory",156.3384
+2753,"PRE",0,"Excellent",154.9214
+2753,"POST",0,"Excellent",153.0143
+2754,"PRE",0,"Satisfactory",129.703
+2754,"POST",0,"Satisfactory",130.6216
+2755,"PRE",0,"Excellent",166.8083
+2755,"POST",0,"Excellent",165.1428
+2756,"PRE",0,"Excellent",117.3137
+2756,"POST",0,"Excellent",115.2801
+2757,"PRE",0,"Poor",169.0744
+2757,"POST",0,"Very Poor",169.3884
+2758,"PRE",0,"Very Poor",171.2785
+2758,"POST",0,"Good",167.9882
+2759,"PRE",0,"Poor",154.0256
+2759,"POST",0,"Satisfactory",154.8074
+2760,"PRE",0,"Very Poor",172.1382
+2760,"POST",0,"Poor",171.1089
+2761,"PRE",0,"Very Poor",145.6924
+2761,"POST",0,"Good",145.0078
+2762,"PRE",0,"Very Poor",127.3275
+2762,"POST",0,"Very Poor",125.4494
+2763,"PRE",0,"Excellent",173.1266
+2763,"POST",0,"Excellent",174.9889
+2764,"PRE",0,"Excellent",186.9208
+2764,"POST",0,"Excellent",185.315
+2765,"PRE",0,"Poor",148.7799
+2765,"POST",0,"Very Poor",148.3616
+2766,"PRE",0,"Very Poor",133.0719
+2766,"POST",0,"Satisfactory",132.0429
+2767,"PRE",0,"Good",175.9391
+2767,"POST",0,"Good",172.5938
+2768,"PRE",0,"Excellent",147.0414
+2768,"POST",0,"Excellent",147.6836
+2769,"PRE",0,"Satisfactory",145.5222
+2769,"POST",0,"Very Poor",144.5403
+2770,"PRE",0,"Excellent",144.2921
+2770,"POST",0,"Excellent",142.7851
+2771,"PRE",0,"Excellent",152.8436
+2771,"POST",0,"Satisfactory",152.752
+2772,"PRE",0,"Poor",170.2624
+2772,"POST",0,"Very Poor",170.1765
+2773,"PRE",0,"Good",149.1694
+2773,"POST",0,"Good",149.2054
+2774,"PRE",0,"Very Poor",163.8129
+2774,"POST",0,"Very Poor",162.9559
+2775,"PRE",0,"Satisfactory",158.089
+2775,"POST",0,"Satisfactory",159.0501
+2776,"PRE",0,"Excellent",176.9366
+2776,"POST",0,"Excellent",175.8111
+2777,"PRE",0,"Satisfactory",152.0748
+2777,"POST",0,"Satisfactory",149.3476
+2778,"PRE",0,"Very Poor",184.6672
+2778,"POST",0,"Poor",182.1562
+2779,"PRE",0,"Poor",144.0523
+2779,"POST",0,"Good",143.2249
+2780,"PRE",0,"Excellent",142.2098
+2780,"POST",0,"Excellent",142.737
+2781,"PRE",0,"Satisfactory",151.6053
+2781,"POST",0,"Very Poor",149.961
+2782,"PRE",0,"Satisfactory",132.0687
+2782,"POST",0,"Satisfactory",134.3625
+2783,"PRE",0,"Poor",174.9681
+2783,"POST",0,"Very Poor",173.5508
+2784,"PRE",0,"Very Poor",188.2592
+2784,"POST",0,"Very Poor",187.1098
+2785,"PRE",0,"Very Poor",159.1937
+2785,"POST",0,"Very Poor",159.6767
+2786,"PRE",0,"Satisfactory",173.0596
+2786,"POST",0,"Good",171.4298
+2787,"PRE",0,"Poor",189.2908
+2787,"POST",0,"Good",186.4089
+2788,"PRE",0,"Very Poor",159.9999
+2788,"POST",0,"Very Poor",158.146
+2789,"PRE",0,"Very Poor",152.9083
+2789,"POST",0,"Very Poor",150.935
+2790,"PRE",0,"Satisfactory",146.9874
+2790,"POST",0,"Poor",144.2839
+2791,"PRE",0,"Poor",162.9891
+2791,"POST",0,"Poor",162.7452
+2792,"PRE",0,"Good",172.4981
+2792,"POST",0,"Satisfactory",173.7747
+2793,"PRE",0,"Good",153.6011
+2793,"POST",0,"Poor",151.5316
+2794,"PRE",0,"Poor",195.0262
+2794,"POST",0,"Poor",192.9242
+2795,"PRE",0,"Excellent",173.9277
+2795,"POST",0,"Excellent",171.1702
+2796,"PRE",0,"Poor",168.3799
+2796,"POST",0,"Poor",165.0246
+2797,"PRE",0,"Very Poor",188.0166
+2797,"POST",0,"Very Poor",185.9057
+2798,"PRE",0,"Excellent",204.4171
+2798,"POST",0,"Excellent",201.527
+2799,"PRE",0,"Excellent",162.9682
+2799,"POST",0,"Excellent",163.9343
+2800,"PRE",0,"Very Poor",139.1558
+2800,"POST",0,"Satisfactory",139.2012
+2801,"PRE",0,"Excellent",176.9343
+2801,"POST",0,"Excellent",174.6144
+2802,"PRE",0,"Satisfactory",130.5068
+2802,"POST",0,"Poor",128.9947
+2803,"PRE",0,"Satisfactory",158.9934
+2803,"POST",0,"Satisfactory",157.0673
+2804,"PRE",0,"Excellent",147.8274
+2804,"POST",0,"Excellent",148.5223
+2805,"PRE",0,"Excellent",155.3809
+2805,"POST",0,"Good",156.1518
+2806,"PRE",0,"Good",193.1698
+2806,"POST",0,"Good",189.3447
+2807,"PRE",0,"Excellent",164.9987
+2807,"POST",0,"Excellent",165.3687
+2808,"PRE",0,"Very Poor",164.6588
+2808,"POST",0,"Very Poor",165.5671
+2809,"PRE",0,"Good",148.2111
+2809,"POST",0,"Poor",146.3746
+2810,"PRE",0,"Good",192.4206
+2810,"POST",0,"Poor",189.1472
+2811,"PRE",0,"Very Poor",147.516
+2811,"POST",0,"Very Poor",147.941
+2812,"PRE",0,"Good",139.8163
+2812,"POST",0,"Good",140.4995
+2813,"PRE",0,"Excellent",173.4061
+2813,"POST",0,"Satisfactory",171.9038
+2814,"PRE",0,"Poor",180.7176
+2814,"POST",0,"Satisfactory",178.2419
+2815,"PRE",0,"Excellent",164.1034
+2815,"POST",0,"Good",161.5882
+2816,"PRE",0,"Very Poor",194.425
+2816,"POST",0,"Poor",191.8208
+2817,"PRE",0,"Excellent",123.7985
+2817,"POST",0,"Excellent",124.3368
+2818,"PRE",0,"Satisfactory",152.1248
+2818,"POST",0,"Satisfactory",152.1786
+2819,"PRE",0,"Excellent",199.3733
+2819,"POST",0,"Excellent",197.9873
+2820,"PRE",0,"Very Poor",198.7489
+2820,"POST",0,"Poor",197.6259
+2821,"PRE",0,"Good",133.652
+2821,"POST",0,"Good",134.6622
+2822,"PRE",0,"Satisfactory",154.8833
+2822,"POST",0,"Poor",154.4429
+2823,"PRE",0,"Excellent",156.7222
+2823,"POST",0,"Excellent",155.4764
+2824,"PRE",0,"Very Poor",176.0909
+2824,"POST",0,"Satisfactory",176.3178
+2825,"PRE",0,"Very Poor",150.4858
+2825,"POST",0,"Good",149.5297
+2826,"PRE",0,"Very Poor",177.2831
+2826,"POST",0,"Very Poor",179.3713
+2827,"PRE",0,"Very Poor",186.0385
+2827,"POST",0,"Satisfactory",184.2579
+2828,"PRE",0,"Very Poor",186.3141
+2828,"POST",0,"Very Poor",185.417
+2829,"PRE",0,"Good",162.6853
+2829,"POST",0,"Poor",161.02
+2830,"PRE",0,"Poor",140.309
+2830,"POST",0,"Very Poor",141.8874
+2831,"PRE",0,"Satisfactory",142.4127
+2831,"POST",0,"Satisfactory",140.8633
+2832,"PRE",0,"Excellent",160.9142
+2832,"POST",0,"Excellent",160.5056
+2833,"PRE",0,"Poor",163.839
+2833,"POST",0,"Very Poor",159.9354
+2834,"PRE",0,"Very Poor",150.7516
+2834,"POST",0,"Very Poor",149.3468
+2835,"PRE",0,"Excellent",181.1787
+2835,"POST",0,"Excellent",179.9189
+2836,"PRE",0,"Good",154.7706
+2836,"POST",0,"Satisfactory",153.7867
+2837,"PRE",0,"Poor",171.7302
+2837,"POST",0,"Poor",175.4566
+2838,"PRE",0,"Satisfactory",129.9849
+2838,"POST",0,"Satisfactory",129.2631
+2839,"PRE",0,"Satisfactory",177.4086
+2839,"POST",0,"Excellent",176.6375
+2840,"PRE",0,"Very Poor",180.5543
+2840,"POST",0,"Poor",181.4344
+2841,"PRE",0,"Good",172.5589
+2841,"POST",0,"Good",173.389
+2842,"PRE",0,"Excellent",150.1539
+2842,"POST",0,"Excellent",147.7964
+2843,"PRE",0,"Satisfactory",195.2594
+2843,"POST",0,"Excellent",192.2018
+2844,"PRE",0,"Excellent",147.303
+2844,"POST",0,"Excellent",148.2995
+2845,"PRE",0,"Excellent",199.6456
+2845,"POST",0,"Excellent",197.2334
+2846,"PRE",0,"Very Poor",150.4002
+2846,"POST",0,"Very Poor",151.6884
+2847,"PRE",0,"Satisfactory",153.8473
+2847,"POST",0,"Satisfactory",153.1784
+2848,"PRE",0,"Satisfactory",140.6802
+2848,"POST",0,"Satisfactory",140.9259
+2849,"PRE",0,"Good",130.3032
+2849,"POST",0,"Poor",129.3878
+2850,"PRE",0,"Poor",168.6122
+2850,"POST",0,"Poor",168.6548
+2851,"PRE",0,"Very Poor",148.6977
+2851,"POST",0,"Good",149.6996
+2852,"PRE",0,"Satisfactory",149.4094
+2852,"POST",0,"Satisfactory",143.9075
+2853,"PRE",0,"Poor",177.9284
+2853,"POST",0,"Poor",178.0577
+2854,"PRE",0,"Poor",153.286
+2854,"POST",0,"Good",153.7439
+2855,"PRE",0,"Good",118.9694
+2855,"POST",0,"Satisfactory",119.3966
+2856,"PRE",0,"Good",172.8355
+2856,"POST",0,"Good",173.7124
+2857,"PRE",0,"Excellent",148.606
+2857,"POST",0,"Excellent",147.7578
+2858,"PRE",0,"Very Poor",157.1861
+2858,"POST",0,"Very Poor",158.6022
+2859,"PRE",0,"Very Poor",163.3051
+2859,"POST",0,"Satisfactory",162.9826
+2860,"PRE",0,"Satisfactory",136.7931
+2860,"POST",0,"Very Poor",133.2655
+2861,"PRE",0,"Excellent",141.5728
+2861,"POST",0,"Excellent",139.8783
+2862,"PRE",0,"Excellent ",138.753
+2862,"POST",0,"Very Poor",137.93
+2863,"PRE",0,"Very Poor",147.4876
+2863,"POST",0,"Very Poor",145.8642
+2864,"PRE",0,"Poor",170.8649
+2864,"POST",0,"Satisfactory",169.0737
+2865,"PRE",0,"Poor",123.5842
+2865,"POST",0,"Satisfactory",123.9828
+2866,"PRE",0,"Good",185.5875
+2866,"POST",0,"Very Poor",187.1521
+2867,"PRE",0,"Poor",158.892
+2867,"POST",0,"Poor",160.4182
+2868,"PRE",0,"Good",135.0194
+2868,"POST",0,"Poor",137.8342
+2869,"PRE",0,"Excellent",158.1294
+2869,"POST",0,"Excellent",157.5155
+2870,"PRE",0,"Excellent",139.0307
+2870,"POST",0,"Excellent",138.0284
+2871,"PRE",0,"Poor",119.9819
+2871,"POST",0,"Good",119.0208
+2872,"PRE",0,"Poor",158.4582
+2872,"POST",0,"Very Poor",156.5553
+2873,"PRE",0,"Very Poor",162.5416
+2873,"POST",0,"Very Poor",162.6975
+2874,"PRE",0,"Excellent",179.712
+2874,"POST",0,"Excellent",175.0118
+2875,"PRE",0,"Good",187.9838
+2875,"POST",0,"Satisfactory",188.6531
+2876,"PRE",0,"Very Poor",166.5623
+2876,"POST",0,"Very Poor",169.7439
+2877,"PRE",0,"Excellent",193.618
+2877,"POST",0,"Excellent",195.7035
+2878,"PRE",0,"Excellent",180.4535
+2878,"POST",0,"Excellent",178.6291
+2879,"PRE",0,"Very Poor",166.5385
+2879,"POST",0,"Very Poor",164.763
+2880,"PRE",0,"Very Poor",175.3012
+2880,"POST",0,"Very Poor",176.0686
+2881,"PRE",0,"Very Poor",154.6909
+2881,"POST",0,"Good",152.5243
+2882,"PRE",0,"Poor",165.9703
+2882,"POST",0,"Very Poor",164.558
+2883,"PRE",0,"Excellent",153.9168
+2883,"POST",0,"Excellent",148.8847
+2884,"PRE",0,"Poor",208.2483
+2884,"POST",0,"Very Poor",207.8515
+2885,"PRE",0,"Poor",190.012
+2885,"POST",0,"Poor",187.2278
+2886,"PRE",0,"Satisfactory",135.2625
+2886,"POST",0,"Very Poor",134.5532
+2887,"PRE",0,"Satisfactory",174.4304
+2887,"POST",0,"Satisfactory",170.3491
+2888,"PRE",0,"Good",199.0248
+2888,"POST",0,"Good",196.593
+2889,"PRE",0,"Very Poor",143.0644
+2889,"POST",0,"Poor",141.7295
+2890,"PRE",0,"Poor",140.2397
+2890,"POST",0,"Very Poor",137.7534
+2891,"PRE",0,"Poor",164.4942
+2891,"POST",0,"Poor",163.2903
+2892,"PRE",0,"Excellent",165.2407
+2892,"POST",0,"Excellent",165.6065
+2893,"PRE",0,"Excellent",186.4058
+2893,"POST",0,"Excellent",184.2609
+2894,"PRE",0,"Good",168.5918
+2894,"POST",0,"Good",167.4337
+2895,"PRE",0,"Excellent",161.9868
+2895,"POST",0,"Excellent",159.4141
+2896,"PRE",0,"Excellent",159.0018
+2896,"POST",0,"Excellent",158.4113
+2897,"PRE",0,"Very Poor",162.1923
+2897,"POST",0,"Very Poor",162.1049
+2898,"PRE",0,"Excellent",181.0556
+2898,"POST",0,"Excellent",181.5568
+2899,"PRE",0,"Excellent",160.8572
+2899,"POST",0,"Excellent",159.7901
+2900,"PRE",0,"Excellent",171.5569
+2900,"POST",0,"Excellent",173.0369
+2901,"PRE",0,"Very Poor",181.7172
+2901,"POST",0,"Satisfactory",183.5973
+2902,"PRE",0,"Satisfactory",146.4659
+2902,"POST",0,"Excellent",145.8121
+2903,"PRE",0,"Good",126.091
+2903,"POST",0,"Good",125.611
+2904,"PRE",0,"Excellent",146.7495
+2904,"POST",0,"Excellent",145.8512
+2905,"PRE",0,"Excellent",198.494
+2905,"POST",0,"Excellent",196.9506
+2906,"PRE",0,"Excellent",142.0382
+2906,"POST",0,"Satisfactory",142.2766
+2907,"PRE",0,"Poor",106.4089
+2907,"POST",0,"Very Poor",105.8728
+2908,"PRE",0,"Poor",153.0675
+2908,"POST",0,"Very Poor",153.9934
+2909,"PRE",0,"Satisfactory",180.1619
+2909,"POST",0,"Very Poor",179.1616
+2910,"PRE",0,"Good",137.8775
+2910,"POST",0,"Good",138.2003
+2911,"PRE",0,"Excellent",127.9661
+2911,"POST",0,"Excellent",127.6407
+2912,"PRE",0,"Excellent",166.3857
+2912,"POST",0,"Excellent",168.6598
+2913,"PRE",0,"Satisfactory",126.5554
+2913,"POST",0,"Poor",125.8459
+2914,"PRE",0,"Satisfactory",157.052
+2914,"POST",0,"Satisfactory",156.9567
+2915,"PRE",0,"Poor",187.8382
+2915,"POST",0,"Very Poor",188.5605
+2916,"PRE",0,"Excellent",190.2737
+2916,"POST",0,"Excellent",191.0102
+2917,"PRE",0,"Excellent",180.8996
+2917,"POST",0,"Satisfactory",181.2796
+2918,"PRE",0,"Poor",193.8098
+2918,"POST",0,"Poor",191.152
+2919,"PRE",0,"Poor",167.1774
+2919,"POST",0,"Very Poor",167.974
+2920,"PRE",0,"Very Poor",187.0843
+2920,"POST",0,"Very Poor",183.7025
+2921,"PRE",0,"Very Poor",168.7273
+2921,"POST",0,"Very Poor",165.1711
+2922,"PRE",0,"Excellent",174.448
+2922,"POST",0,"Excellent",172.2699
+2923,"PRE",0,"Excellent",182.1907
+2923,"POST",0,"Excellent",180.0139
+2924,"PRE",0,"Poor",157.8299
+2924,"POST",0,"Very Poor",159.8006
+2925,"PRE",0,"Satisfactory",129.7982
+2925,"POST",0,"Very Poor",129.6931
+2926,"PRE",0,"Good",163.5376
+2926,"POST",0,"Very Poor",164.8025
+2927,"PRE",0,"Poor",146.4577
+2927,"POST",0,"Poor",143.4301
+2928,"PRE",0,"Very Poor",164.5377
+2928,"POST",0,"Poor",163.5512
+2929,"PRE",0,"Very Poor",119.0488
+2929,"POST",0,"Poor",117.6488
+2930,"PRE",0,"Poor",168.1872
+2930,"POST",0,"Poor",165.6859
+2931,"PRE",0,"Good",158.3381
+2931,"POST",0,"Poor",155.4586
+2932,"PRE",0,"Satisfactory",141.5498
+2932,"POST",0,"Very Poor",138.9721
+2933,"PRE",0,"Poor",139.8904
+2933,"POST",0,"Poor",139.0425
+2934,"PRE",0,"Very Poor",145.3633
+2934,"POST",0,"Very Poor",146.2509
+2935,"PRE",0,"Satisfactory",154.469
+2935,"POST",0,"Satisfactory",153.7621
+2936,"PRE",0,"Good",118.402
+2936,"POST",0,"Excellent",119.6317
+2937,"PRE",0,"Good",131.6625
+2937,"POST",0,"Good",132.7368
+2938,"PRE",0,"Excellent",148.5199
+2938,"POST",0,"Excellent",148.8891
+2939,"PRE",0,"Poor",140.6091
+2939,"POST",0,"Good",140.5715
+2940,"PRE",0,"Poor",131.7728
+2940,"POST",0,"Poor",132.0921
+2941,"PRE",0,"Good",113.6305
+2941,"POST",0,"Poor",114.6219
+2942,"PRE",0,"Very Poor",153.2513
+2942,"POST",0,"Poor",151.1165
+2943,"PRE",0,"Excellent",134.3632
+2943,"POST",0,"Excellent",132.7221
+2944,"PRE",0,"Satisfactory",161.4197
+2944,"POST",0,"Excellent",159.9682
+2945,"PRE",0,"Satisfactory",157.7988
+2945,"POST",0,"Satisfactory",156.5397
+2946,"PRE",0,"Poor",153.2183
+2946,"POST",0,"Poor",150.9363
+2947,"PRE",0,"Good",129.7694
+2947,"POST",0,"Poor",130.2753
+2948,"PRE",0,"Satisfactory",139.278
+2948,"POST",0,"Satisfactory",137.4742
+2949,"PRE",0,"Good",146.2234
+2949,"POST",0,"Satisfactory",143.9529
+2950,"PRE",0,"Satisfactory",155.4927
+2950,"POST",0,"Satisfactory",155.0071
+2951,"PRE",0,"Good",159.4868
+2951,"POST",0,"Good",157.6585
+2952,"PRE",0,"Excellent",146.9806
+2952,"POST",0,"Excellent",144.6402
+2953,"PRE",0,"Very Poor",163.1107
+2953,"POST",0,"Very Poor",159.6701
+2954,"PRE",0,"Excellent",124.2564
+2954,"POST",0,"Satisfactory",124.5611
+2955,"PRE",0,"Good",163.7402
+2955,"POST",0,"Satisfactory",161.4924
+2956,"PRE",0,"Good",165.7968
+2956,"POST",0,"Very Poor",168.1459
+2957,"PRE",0,"Good",154.3851
+2957,"POST",0,"Very Poor",154.9756
+2958,"PRE",0,"Poor",195.0667
+2958,"POST",0,"Good",191.7486
+2959,"PRE",0,"Excellent",158.5512
+2959,"POST",0,"Excellent",157.4109
+2960,"PRE",0,"Excellent",160.7646
+2960,"POST",0,"Excellent",161.2055
+2961,"PRE",0,"Poor",155.6466
+2961,"POST",0,"Poor",153.8447
+2962,"PRE",0,"Good",161.7046
+2962,"POST",0,"Poor",161.1397
+2963,"PRE",0,"Excellent",156.7264
+2963,"POST",0,"Excellent",158.8084
+2964,"PRE",0,"Excellent",130.9155
+2964,"POST",0,"Good",130.2047
+2965,"PRE",0,"Excellent",145.0025
+2965,"POST",0,"Excellent",145.6584
+2966,"PRE",0,"Excellent",175.3994
+2966,"POST",0,"Excellent",177.2552
+2967,"PRE",0,"Satisfactory",167.2438
+2967,"POST",0,"Excellent",164.291
+2968,"PRE",0,"Satisfactory",149.2786
+2968,"POST",0,"Satisfactory",150.3971
+2969,"PRE",0,"Satisfactory",163.9053
+2969,"POST",0,"Poor",163.5237
+2970,"PRE",0,"Very Poor",173.2151
+2970,"POST",0,"Satisfactory",172.9474
+2971,"PRE",0,"Excellent",183.547
+2971,"POST",0,"Excellent",185.3752
+2972,"PRE",0,"Satisfactory",134.8148
+2972,"POST",0,"Satisfactory",133.0744
+2973,"PRE",0,"Satisfactory",185.0976
+2973,"POST",0,"Poor",183.6498
+2974,"PRE",0,"Satisfactory",144.6324
+2974,"POST",0,"Satisfactory",143.5948
+2975,"PRE",0,"Very Poor",154.8693
+2975,"POST",0,"Very Poor",155.2661
+2976,"PRE",0,"Very Poor",173.3037
+2976,"POST",0,"Very Poor",172.1267
+2977,"PRE",0,"Excellent",144.1184
+2977,"POST",0,"Excellent",144.5692
+2978,"PRE",0,"Satisfactory",176.4308
+2978,"POST",0,"Good",174.8713
+2979,"PRE",0,"Very Poor",141.1251
+2979,"POST",0,"Very Poor",142.3423
+2980,"PRE",0,"Good",187.4934
+2980,"POST",0,"Very Poor",187.9281
+2981,"PRE",0,"Very Poor",152.0346
+2981,"POST",0,"Satisfactory",152.1347
+2982,"PRE",0,"Poor",143.1884
+2982,"POST",0,"Very Poor",142.5614
+2983,"PRE",0,"Poor",148.3557
+2983,"POST",0,"Good",146.1239
+2984,"PRE",0,"Excellent",160.2578
+2984,"POST",0,"Excellent",160.7236
+2985,"PRE",0,"Good",142.7637
+2985,"POST",0,"Good",142.3822
+2986,"PRE",0,"Poor",157.18
+2986,"POST",0,"Very Poor",155.4343
+2987,"PRE",0,"Excellent",192.3614
+2987,"POST",0,"Excellent",190.7447
+2988,"PRE",0,"Very Poor",147.6993
+2988,"POST",0,"Very Poor",147.583
+2989,"PRE",0,"Poor",161.4058
+2989,"POST",0,"Poor",156.3927
+2990,"PRE",0,"Excellent",150.8514
+2990,"POST",0,"Excellent",152.0037
+2991,"PRE",0,"Very Poor",170.2084
+2991,"POST",0,"Very Poor",170.2326
+2992,"PRE",0,"Very Poor",150.8237
+2992,"POST",0,"Very Poor",150.7585
+2993,"PRE",0,"Poor",146.3953
+2993,"POST",0,"Poor",146.7828
+2994,"PRE",0,"Excellent",130.399
+2994,"POST",0,"Excellent",130.2061
+2995,"PRE",0,"Poor",135.806
+2995,"POST",0,"Good",135.0054
+2996,"PRE",0,"Excellent",185.8541
+2996,"POST",0,"Excellent",183.121
+2997,"PRE",0,"Very Poor",186.0719
+2997,"POST",0,"Very Poor",184.754
+2998,"PRE",0,"Poor",158.4254
+2998,"POST",0,"Very Poor",158.5226
+2999,"PRE",0,"Very Poor",149.0626
+2999,"POST",0,"Poor",148.1829
+3000,"PRE",0,"Good",138.2168
+3000,"POST",0,"Good",137.2914
+3001,"PRE",0,"Very Poor",156.1352
+3001,"POST",0,"Very Poor",156.1753
+3002,"PRE",0,"Poor",157.419
+3002,"POST",0,"Poor",160.118
+3003,"PRE",0,"Very Poor",128.43
+3003,"POST",0,"Poor",126.6826
+3004,"PRE",0,"Excellent",112.2979
+3004,"POST",0,"Excellent",112.7488
+3005,"PRE",0,"Excellent",156.8972
+3005,"POST",0,"Excellent",155.0079
+3006,"PRE",0,"Very Poor",174.3218
+3006,"POST",0,"Very Poor",173.5984
+3007,"PRE",0,"Very Poor",210.0039
+3007,"POST",0,"Very Poor",206.9306
+3008,"PRE",0,"Excellent",157.5887
+3008,"POST",0,"Excellent",156.1293
+3009,"PRE",0,"Good",126.6849
+3009,"POST",0,"Good",128.9152
+3010,"PRE",0,"Very Poor",155.5245
+3010,"POST",0,"Very Poor",152.8203
+3011,"PRE",0,"Excellent",140.5783
+3011,"POST",0,"Excellent",137.9332
+3012,"PRE",0,"Very Poor",127.1492
+3012,"POST",0,"Good",127.7058
+3013,"PRE",0,"Excellent",183.5744
+3013,"POST",0,"Excellent",182.1082
+3014,"PRE",0,"Excellent",133.3264
+3014,"POST",0,"Excellent",133.0854
+3015,"PRE",0,"Very Poor",173.9009
+3015,"POST",0,"Satisfactory",172.4093
+3016,"PRE",0,"Very Poor",173.5152
+3016,"POST",0,"Very Poor",172.1301
+3017,"PRE",0,"Excellent",168.3056
+3017,"POST",0,"Excellent",168.4739
+3018,"PRE",0,"Very Poor",168.7764
+3018,"POST",0,"Very Poor",167.6781
+3019,"PRE",0,"Excellent",171.2116
+3019,"POST",0,"Excellent",167.6939
+3020,"PRE",0,"Excellent",183.9918
+3020,"POST",0,"Excellent",182.711
+3021,"PRE",0,"Poor",165.1765
+3021,"POST",0,"Very Poor",164.4241
+3022,"PRE",0,"Satisfactory",149.9205
+3022,"POST",0,"Satisfactory",152.4653
+3023,"PRE",0,"Very Poor",158.462
+3023,"POST",0,"Very Poor",160.055
+3024,"PRE",0,"Good",160.4498
+3024,"POST",0,"Satisfactory",161.4388
+3025,"PRE",0,"Excellent",167.5453
+3025,"POST",0,"Excellent",164.8395
+3026,"PRE",0,"Excellent",126.0913
+3026,"POST",0,"Excellent",126.4311
+3027,"PRE",0,"Very Poor",184.3939
+3027,"POST",0,"Satisfactory",183.4393
+3028,"PRE",0,"Very Poor",155.7248
+3028,"POST",0,"Very Poor",151.4698
+3029,"PRE",0,"Excellent",135.9319
+3029,"POST",0,"Excellent",134.7513
+3030,"PRE",0,"Poor",201.9485
+3030,"POST",0,"Poor",199.8764
+3031,"PRE",0,"Very Poor",175.2171
+3031,"POST",0,"Very Poor",174.0366
+3032,"PRE",0,"Very Poor",167.2596
+3032,"POST",0,"Poor",167.4014
+3033,"PRE",0,"Very Poor",214.7066
+3033,"POST",0,"Poor",210.8802
+3034,"PRE",0,"Very  Poor",162.8591
+3034,"POST",0,"Excellent",162.9666
+3035,"PRE",0,"Very Poor",150.9439
+3035,"POST",0,"Poor",150.576
+3036,"PRE",0,"Poor",169.3677
+3036,"POST",0,"Poor",166.5656
+3037,"PRE",0,"Good",138.3066
+3037,"POST",0,"Good",136.5187
+3038,"PRE",0,"Poor",172.8703
+3038,"POST",0,"Very Poor",171.7223
+3039,"PRE",0,"Excellent",143.3114
+3039,"POST",0,"Good",141.0523
+3040,"PRE",0,"Poor",168.455
+3040,"POST",0,"Poor",170.1624
+3041,"PRE",0,"Satisfactory",141.7455
+3041,"POST",0,"Very Poor",139.6317
+3042,"PRE",0,"Very Poor",181.6444
+3042,"POST",0,"Satisfactory",178.7459
+3043,"PRE",0,"Very Poor",184.5932
+3043,"POST",0,"Very Poor",182.819
+3044,"PRE",0,"Poor",161.8992
+3044,"POST",0,"Satisfactory",158.001
+3045,"PRE",0,"Good",184.0774
+3045,"POST",0,"Satisfactory",183.3355
+3046,"PRE",0,"Excellent",149.6579
+3046,"POST",0,"Excellent",149.0296
+3047,"PRE",0,"Good",120.1767
+3047,"POST",0,"Very Poor",120.3758
+3048,"PRE",0,"Good",158.7322
+3048,"POST",0,"Good",158.1033
+3049,"PRE",0,"Very Poor",189.7738
+3049,"POST",0,"Satisfactory",189.2164
+3050,"PRE",0,"Poor",143.6821
+3050,"POST",0,"Poor",145.056
+3051,"PRE",0,"Very Poor",222.0865
+3051,"POST",0,"Poor",219.2055
+3052,"PRE",0,"Excellent",167.7652
+3052,"POST",0,"Excellent",167.3544
+3053,"PRE",0,"Poor",159.5535
+3053,"POST",0,"Very Poor",158.3066
+3054,"PRE",0,"Good",148.5887
+3054,"POST",0,"Satisfactory",148.7578
+3055,"PRE",0,"Excellent",190.3977
+3055,"POST",0,"Excellent",189.0256
+3056,"PRE",0,"Poor",121.6067
+3056,"POST",0,"Poor",119.9567
+3057,"PRE",0,"Good",162.7183
+3057,"POST",0,"Good",162.5034
+3058,"PRE",0,"Very Poor",159.9705
+3058,"POST",0,"Satisfactory",161.3939
+3059,"PRE",0,"Excellent",217.4741
+3059,"POST",0,"Excellent",215.8051
+3060,"PRE",0,"Good",135.513
+3060,"POST",0,"Good",135.8322
+3061,"PRE",0,"Very Poor",161.2067
+3061,"POST",0,"Very Poor",163.8478
+3062,"PRE",0,"Poor",179.0889
+3062,"POST",0,"Very Poor",176.6356
+3063,"PRE",0,"Very Poor",158.389
+3063,"POST",0,"Very Poor",154.9602
+3064,"PRE",0,"Good",153.2997
+3064,"POST",0,"Good",153.8609
+3065,"PRE",0,"Very Poor",142.6634
+3065,"POST",0,"Very Poor",141.3873
+3066,"PRE",0,"Poor",203.7858
+3066,"POST",0,"Poor",200.2392
+3067,"PRE",0,"Excellent",145.6243
+3067,"POST",0,"Excellent",145.8248
+3068,"PRE",0,"Very Poor",170.7785
+3068,"POST",0,"Very Poor",168.1538
+3069,"PRE",0,"Good",136.9013
+3069,"POST",0,"Satisfactory",136.8994
+3070,"PRE",0,"Very Poor",187.6593
+3070,"POST",0,"Very Poor",188.1242
+3071,"PRE",0,"Excellent",148.9157
+3071,"POST",0,"Excellent",147.3699
+3072,"PRE",0,"Excellent",146.5386
+3072,"POST",0,"Good",145.3148
+3073,"PRE",0,"Excellent",172.9612
+3073,"POST",0,"Excellent",174.5822
+3074,"PRE",0,"Excellent",157.7759
+3074,"POST",0,"Excellent",157.6637
+3075,"PRE",0,"Poor",147.7644
+3075,"POST",0,"Poor",147.4331
+3076,"PRE",0,"Satisfactory",137.7857
+3076,"POST",0,"Satisfactory",137.0893
+3077,"PRE",0,"Excellent",169.3901
+3077,"POST",0,"Excellent",168.2812
+3078,"PRE",0,"Very Poor",181.3138
+3078,"POST",0,"Excellent",180.5161
+3079,"PRE",0,"Excellent",184.8721
+3079,"POST",0,"Excellent",180.9825
+3080,"PRE",0,"Excellent",128.1446
+3080,"POST",0,"Excellent",125.9997
+3081,"PRE",0,"Poor",135.5171
+3081,"POST",0,"Very Poor",133.1756
+3082,"PRE",0,"Satisfactory",157.582
+3082,"POST",0,"Excellent",159.4093
+3083,"PRE",0,"Very Poor",174.1315
+3083,"POST",0,"Good",169.8459
+3084,"PRE",0,"Satisfactory",165.8284
+3084,"POST",0,"Very Poor",166.3263
+3085,"PRE",0,"Excellent",184.371
+3085,"POST",0,"Excellent",181.7525
+3086,"PRE",0,"Satisfactory",165.7215
+3086,"POST",0,"Poor",165.329
+3087,"PRE",0,"Very Poor",175.1718
+3087,"POST",0,"Very Poor",174.8681
+3088,"PRE",0,"Excellent",132.1273
+3088,"POST",0,"Good",133.5427
+3089,"PRE",0,"Satisfactory",148.7763
+3089,"POST",0,"Satisfactory",149.0034
+3090,"PRE",0,"Very Poor",171.897
+3090,"POST",0,"Good",170.6544
+3091,"PRE",0,"Satisfactory",136.7926
+3091,"POST",0,"Satisfactory",133.3332
+3092,"PRE",0,"Excellent",160.356
+3092,"POST",0,"Excellent",157.1768
+3093,"PRE",0,"Good",157.4257
+3093,"POST",0,"Good",156.8652
+3094,"PRE",0,"Satisfactory",176.956
+3094,"POST",0,"Very Poor",175.4662
+3095,"PRE",0,"Very Poor",166.8244
+3095,"POST",0,"Satisfactory",163.0562
+3096,"PRE",0,"Excellent",138.3126
+3096,"POST",0,"Excellent",137.9759
+3097,"PRE",0,"Excellent",147.3871
+3097,"POST",0,"Excellent",147.9866
+3098,"PRE",0,"Very Poor",152.4402
+3098,"POST",0,"Very Poor",148.4074
+3099,"PRE",0,"Good",141.6713
+3099,"POST",0,"Satisfactory",139.5786
+3100,"PRE",0,"Good",132.7737
+3100,"POST",0,"Good",134.5344
+3101,"PRE",0,"Good",166.697
+3101,"POST",0,"Good",165.209
+3102,"PRE",0,"Very Poor",171.819
+3102,"POST",0,"Good",168.6261
+3103,"PRE",0,"Good",163.9864
+3103,"POST",0,"Good",162.5419
+3104,"PRE",0,"Good",198.9326
+3104,"POST",0,"Poor",196.9134
+3105,"PRE",0,"Excellent",159.7617
+3105,"POST",0,"Excellent",161.3025
+3106,"PRE",0,"Excellent",178.9571
+3106,"POST",0,"Excellent",176.5309
+3107,"PRE",0,"Very Poor",183.5735
+3107,"POST",0,"Very Poor",183.8562
+3108,"PRE",0,"Poor",126.3444
+3108,"POST",0,"Poor",124.7336
+3109,"PRE",0,"Excellent",193.543
+3109,"POST",0,"Excellent",195.839
+3110,"PRE",0,"Good",174.7819
+3110,"POST",0,"Excellent",178.1252
+3111,"PRE",0,"Very Poor",175.1861
+3111,"POST",0,"Very Poor",171.5458
+3112,"PRE",0,"Excellent",143.1468
+3112,"POST",0,"Excellent",140.8934
+3113,"PRE",0,"Good",139.5871
+3113,"POST",0,"Satisfactory",138.4377
+3114,"PRE",0,"Excellent",158.9874
+3114,"POST",0,"Excellent",158.4604
+3115,"PRE",0,"Excellent",170.6567
+3115,"POST",0,"Excellent",168.466
+3116,"PRE",0,"Satisfactory",140.388
+3116,"POST",0,"Poor",142.1478
+3117,"PRE",0,"Satisfactory",144.9603
+3117,"POST",0,"Very Poor",143.4753
+3118,"PRE",0,"Good",143.4101
+3118,"POST",0,"Good",145.5816
+3119,"PRE",0,"Excellent",147.4733
+3119,"POST",0,"Excellent",149.9993
+3120,"PRE",0,"Poor",166.3553
+3120,"POST",0,"Very Poor",164.334
+3121,"PRE",0,"Excellent",183.3525
+3121,"POST",0,"Excellent",183.1277
+3122,"PRE",0,"Satisfactory",174.806
+3122,"POST",0,"Excellent",172.4331
+3123,"PRE",0,"Good",140.8696
+3123,"POST",0,"Very Poor",139.1974
+3124,"PRE",0,"Excellent",150.5403
+3124,"POST",0,"Excellent",149.1643
+3125,"PRE",0,"Good",163.3994
+3125,"POST",0,"Very Poor",162.0694
+3126,"PRE",0,"Poor",188.9524
+3126,"POST",0,"Poor",186.7332
+3127,"PRE",0,"Poor",154.2912
+3127,"POST",0,"Satisfactory",154.5347
+3128,"PRE",0,"Excellent",105.8031
+3128,"POST",0,"Satisfactory",103.5141
+3129,"PRE",0,"Poor",149.3874
+3129,"POST",0,"Poor",146.1447
+3130,"PRE",0,"Good",174.4602
+3130,"POST",0,"Poor",170.9704
+3131,"PRE",0,"Excellent",179.4536
+3131,"POST",0,"Excellent",177.6885
+3132,"PRE",0,"Very Poor",164.8954
+3132,"POST",0,"Very Poor",161.6948
+3133,"PRE",0,"Excellent",137.8277
+3133,"POST",0,"Excellent",134.2198
+3134,"PRE",0,"Poor",177.6194
+3134,"POST",0,"Satisfactory",176.9573
+3135,"PRE",0,"Excellent",128.7678
+3135,"POST",0,"Excellent",130.7937
+3136,"PRE",0,"Satisfactory",151.6564
+3136,"POST",0,"Satisfactory",154.2115
+3137,"PRE",0,"Very Poor",175.1779
+3137,"POST",0,"Satisfactory",175.7772
+3138,"PRE",0,"Very Poor",179.8228
+3138,"POST",0,"Very Poor",176.0031
+3139,"PRE",0,"Poor",156.8374
+3139,"POST",0,"Very Poor",156.2325
+3140,"PRE",0,"Very Poor",206.9391
+3140,"POST",0,"Good",205.5604
+3141,"PRE",0,"Satisfactory",142.5001
+3141,"POST",0,"Satisfactory",142.423
+3142,"PRE",0,"Excellent",153.6873
+3142,"POST",0,"Excellent",151.3604
+3143,"PRE",0,"Excellent",170.0822
+3143,"POST",0,"Excellent",169.1781
+3144,"PRE",0,"Excellent",191.5355
+3144,"POST",0,"Excellent",190.7231
+3145,"PRE",0,"Very Poor",162.2946
+3145,"POST",0,"Poor",163.4766
+3146,"PRE",0,"Very Poor",180.0552
+3146,"POST",0,"Very Poor",176.448
+3147,"PRE",0,"Very Poor",201.3176
+3147,"POST",0,"Very Poor",201.275
+3148,"PRE",0,"Very Poor",147.2077
+3148,"POST",0,"Very Poor",147.9888
+3149,"PRE",0,"Excellent",157.3129
+3149,"POST",0,"Excellent",159.2377
+3150,"PRE",0,"Excellent",171.1094
+3150,"POST",0,"Excellent",169.1599
+3151,"PRE",0,"Poor",180.473
+3151,"POST",0,"Very Poor",180.8287
+3152,"PRE",0,"Excellent",172.3987
+3152,"POST",0,"Excellent",169.7852
+3153,"PRE",0,"Very Poor",162.0971
+3153,"POST",0,"Very Poor",163.6897
+3154,"PRE",0,"Poor",173.497
+3154,"POST",0,"Very Poor",173.7618
+3155,"PRE",0,"Very Poor",164.8075
+3155,"POST",0,"Poor",163.6832
+3156,"PRE",0,"Poor",183.9464
+3156,"POST",0,"Very Poor",181.9202
+3157,"PRE",0,"Satisfactory",192.2374
+3157,"POST",0,"Very Poor",189.7608
+3158,"PRE",0,"Good",161.7384
+3158,"POST",0,"Poor",161.787
+3159,"PRE",0,"Excellent",177.9643
+3159,"POST",0,"Excellent",176.7328
+3160,"PRE",0,"Very Poor",144.6011
+3160,"POST",0,"Poor",143.3903
+3161,"PRE",0,"Very Poor",217.0188
+3161,"POST",0,"Poor",212.9776
+3162,"PRE",0,"Poor",170.3932
+3162,"POST",0,"Poor",173.4983
+3163,"PRE",0,"Excellent",192.081
+3163,"POST",0,"Satisfactory",189.0513
+3164,"PRE",0,"Very Poor",157.7675
+3164,"POST",0,"Very Poor",157.5166
+3165,"PRE",0,"Very Poor",181.7332
+3165,"POST",0,"Very Poor",180.1178
+3166,"PRE",0,"Very Poor",142.8539
+3166,"POST",0,"Good",142.4628
+3167,"PRE",0,"Satisfactory",147.3261
+3167,"POST",0,"Good",147.5432
+3168,"PRE",0,"Excellent",178.1826
+3168,"POST",0,"Excellent",175.2649
+3169,"PRE",0,"Very Poor",163.5144
+3169,"POST",0,"Poor",162.5521
+3170,"PRE",0,"Satisfactory",122.1694
+3170,"POST",0,"Good",122.9132
+3171,"PRE",0,"Good",150.3403
+3171,"POST",0,"Good",148.6041
+3172,"PRE",0,"Poor",184.2217
+3172,"POST",0,"Very Poor",179.4311
+3173,"PRE",0,"Excellent",182.8363
+3173,"POST",0,"Excellent",182.1279
+3174,"PRE",0,"Satisfactory",157.88
+3174,"POST",0,"Satisfactory",156.2972
+3175,"PRE",0,"Excellent",141.5616
+3175,"POST",0,"Excellent",140.138
+3176,"PRE",0,"Poor",150.1522
+3176,"POST",0,"Poor",147.1859
+3177,"PRE",0,"Poor",210.4001
+3177,"POST",0,"Very Poor",206.5025
+3178,"PRE",0,"Good",152.7973
+3178,"POST",0,"Poor",151.3947
+3179,"PRE",0,"Good",189.4492
+3179,"POST",0,"Satisfactory",187.4835
+3180,"PRE",0,"Excellent",181.8747
+3180,"POST",0,"Excellent",180.5477
+3181,"PRE",0,"Good",167.5921
+3181,"POST",0,"Very Poor",166.4054
+3182,"PRE",0,"Good",164.842
+3182,"POST",0,"Satisfactory",159.7111
+3183,"PRE",0,"Good",151.6451
+3183,"POST",0,"Good",150.3937
+3184,"PRE",0,"Satisfactory",135.1702
+3184,"POST",0,"Satisfactory",134.3031
+3185,"PRE",0,"Satisfactory",129.2
+3185,"POST",0,"Excellent",129.1293
+3186,"PRE",0,"Poor",202.1574
+3186,"POST",0,"Good",199.0717
+3187,"PRE",0,"Excellent",123.3412
+3187,"POST",0,"Excellent",122.7779
+3188,"PRE",0,"Poor",147.686
+3188,"POST",0,"Poor",146.8759
+3189,"PRE",0,"Excellent",146.4771
+3189,"POST",0,"Excellent",147.493
+3190,"PRE",0,"Excellent",166.4795
+3190,"POST",0,"Excellent",165.4825
+3191,"PRE",0,"Excellent",148.0935
+3191,"POST",0,"Excellent",147.5363
+3192,"PRE",0,"Excellent",156.4648
+3192,"POST",0,"Excellent",157.297
+3193,"PRE",0,"Poor",195.5565
+3193,"POST",0,"Poor",193.3655
+3194,"PRE",0,"Good",146.94
+3194,"POST",0,"Good",146.0455
+3195,"PRE",0,"Excellent",168.617
+3195,"POST",0,"Satisfactory",164.8418
+3196,"PRE",0,"Good",168.5996
+3196,"POST",0,"Poor",169.1447
+3197,"PRE",0,"Very Poor",147.4272
+3197,"POST",0,"Very Poor",148.8634
+3198,"PRE",0,"Poor",121.8204
+3198,"POST",0,"Very Poor",123.4536
+3199,"PRE",0,"Good",156.4165
+3199,"POST",0,"Good",153.3855
+3200,"PRE",0,"Poor",145.877
+3200,"POST",0,"Poor",145.0988
+3201,"PRE",0,"Satisfactory",197.5153
+3201,"POST",0,"Satisfactory",196.2746
+3202,"PRE",0,"Excellent",179.0618
+3202,"POST",0,"Satisfactory",177.6525
+3203,"PRE",0,"Good",148.9149
+3203,"POST",0,"Good",148.1814
+3204,"PRE",0,"Poor",150.7499
+3204,"POST",0,"Very Poor",151.4849
+3205,"PRE",0,"Excellent",116.9336
+3205,"POST",0,"Excellent",116.3558
+3206,"PRE",0,"Very Poor",143.0072
+3206,"POST",0,"Very Poor",144.08
+3207,"PRE",0,"Satisfactory",172.0823
+3207,"POST",0,"Excellent",173.635
+3208,"PRE",0,"Poor",150.5261
+3208,"POST",0,"Satisfactory",148.5517
+3209,"PRE",0,"Very Poor",158.0529
+3209,"POST",0,"Very Poor",157.7099
+3210,"PRE",0,"Poor",179.9121
+3210,"POST",0,"Very Poor",180.1503
+3211,"PRE",0,"Poor",199.0302
+3211,"POST",0,"Very Poor",196.5209
+3212,"PRE",0,"Good",123.5906
+3212,"POST",0,"Good",123.4943
+3213,"PRE",0,"Excellent",182.6138
+3213,"POST",0,"Excellent",181.3712
+3214,"PRE",0,"Satisfactory",121.1984
+3214,"POST",0,"Satisfactory",121.6184
+3215,"PRE",0,"Poor",139.7196
+3215,"POST",0,"Very Poor",137.7821
+3216,"PRE",0,"Excellent",169.1362
+3216,"POST",0,"Excellent",165.5984
+3217,"PRE",0,"Poor",212.6933
+3217,"POST",0,"Poor",209.7724
+3218,"PRE",0,"Very Poor",129.4013
+3218,"POST",0,"Very Poor",130.9811
+3219,"PRE",0,"Excellent",146.1668
+3219,"POST",0,"Excellent",143.3265
+3220,"PRE",0,"Very Poor",151.8517
+3220,"POST",0,"Very Poor",153.5238
+3221,"PRE",0,"Satisfactory",131.1158
+3221,"POST",0,"Satisfactory",129.2517
+3222,"PRE",0,"Excellent",211.8998
+3222,"POST",0,"Satisfactory",208.3737
+3223,"PRE",0,"Excellent",132.0904
+3223,"POST",0,"Excellent",129.3419
+3224,"PRE",0,"Very Poor",155.4114
+3224,"POST",0,"Very Poor",153.5145
+3225,"PRE",0,"Poor",150.2287
+3225,"POST",0,"Poor",148.5509
+3226,"PRE",0,"Excellent",155.2304
+3226,"POST",0,"Excellent",153.9353
+3227,"PRE",0,"Good",145.8479
+3227,"POST",0,"Good",146.1083
+3228,"PRE",0,"Excellent",157.8625
+3228,"POST",0,"Excellent",158.343
+3229,"PRE",0,"Excellent",147.3787
+3229,"POST",0,"Satisfactory",148.5273
+3230,"PRE",0,"Excellent",171.9024
+3230,"POST",0,"Excellent",170.7989
+3231,"PRE",0,"Excellent",136.5338
+3231,"POST",0,"Excellent",136.7932
+3232,"PRE",0,"Satisfactory",141.527
+3232,"POST",0,"Satisfactory",140.1526
+3233,"PRE",0,"Very Poor",170.6158
+3233,"POST",0,"Poor",171.0123
+3234,"PRE",0,"Satisfactory",173.6051
+3234,"POST",0,"Good",173.9185
+3235,"PRE",0,"Excellent",169.3295
+3235,"POST",0,"Excellent",168.7393
+3236,"PRE",0,"Poor",156.8212
+3236,"POST",0,"Very Poor",158.5655
+3237,"PRE",0,"Very Poor",154.0282
+3237,"POST",0,"Poor",156.5831
+3238,"PRE",0,"Poor",200.3419
+3238,"POST",0,"Poor",197.6724
+3239,"PRE",0,"Excellent",188.3196
+3239,"POST",0,"Excellent",185.8735
+3240,"PRE",0,"Excellent",209.5071
+3240,"POST",0,"Excellent",208.6008
+3241,"PRE",0,"Poor",188.9792
+3241,"POST",0,"Very Poor",190.5068
+3242,"PRE",0,"Excellent",127.2156
+3242,"POST",0,"Good",127.7666
+3243,"PRE",0,"Very Poor",141.0706
+3243,"POST",0,"Excellent ",140.6661
+3244,"PRE",0,"Excellent",168.221
+3244,"POST",0,"Excellent",166.6864
+3245,"PRE",0,"Satisfactory",153.4238
+3245,"POST",0,"Satisfactory",152.3044
+3246,"PRE",0,"Poor",183.8959
+3246,"POST",0,"Poor",179.5541
+3247,"PRE",0,"Excellent",190.4493
+3247,"POST",0,"Excellent",188.8196
+3248,"PRE",0,"Very Poor",133.9963
+3248,"POST",0,"Satisfactory",133.7507
+3249,"PRE",0,"Excellent",180.3723
+3249,"POST",0,"Excellent",178.7756
+3250,"PRE",0,"Very Poor",161.2012
+3250,"POST",0,"Poor",161.2106
+3251,"PRE",0,"Excellent",144.8264
+3251,"POST",0,"Excellent",144.4333
+3252,"PRE",0,"Excellent",153.3506
+3252,"POST",0,"Poor",152.4123
+3253,"PRE",0,"Very Poor",118.5373
+3253,"POST",0,"Poor",117.3191
+3254,"PRE",0,"Very Poor",185.6827
+3254,"POST",0,"Poor",185.5345
+3255,"PRE",0,"Excellent",155.7594
+3255,"POST",0,"Excellent",155.0657
+3256,"PRE",0,"Poor",128.3652
+3256,"POST",0,"Poor",126.7664
+3257,"PRE",0,"Good",158.5731
+3257,"POST",0,"Good",158.6142
+3258,"PRE",0,"Very Poor",161.274
+3258,"POST",0,"Satisfactory",163.1436
+3259,"PRE",0,"Excellent",163.7013
+3259,"POST",0,"Excellent",164.9037
+3260,"PRE",0,"Excellent",167.7735
+3260,"POST",0,"Excellent",168.2182
+3261,"PRE",0,"Very Poor",157.9834
+3261,"POST",0,"Very Poor",158.0875
+3262,"PRE",0,"Excellent",157.4326
+3262,"POST",0,"Excellent",155.2056
+3263,"PRE",0,"Excellent",166.6973
+3263,"POST",0,"Excellent",166.1311
+3264,"PRE",0,"Very Poor",129.1272
+3264,"POST",0,"Very Poor",128.9585
+3265,"PRE",0,"Very Poor",185.543
+3265,"POST",0,"Very Poor",182.0706
+3266,"PRE",0,"Good",142.0186
+3266,"POST",0,"Poor",142.9544
+3267,"PRE",0,"Excellent",177.3985
+3267,"POST",0,"Excellent",177.3577
+3268,"PRE",0,"Excellent",156.2684
+3268,"POST",0,"Excellent",153.4596
+3269,"PRE",0,"Excellent",159.1765
+3269,"POST",0,"Satisfactory",158.6529
+3270,"PRE",0,"Very Poor",138.6306
+3270,"POST",0,"Satisfactory",138.5333
+3271,"PRE",0,"Good",143.0723
+3271,"POST",0,"Poor",142.589
+3272,"PRE",0,"Satisfactory",177.2682
+3272,"POST",0,"Poor",179.3832
+3273,"PRE",0,"Very Poor",171.8269
+3273,"POST",0,"Good",171.195
+3274,"PRE",0,"Very Poor",135.8216
+3274,"POST",0,"Very Poor",135.386
+3275,"PRE",0,"Poor",182.9433
+3275,"POST",0,"Poor",178.8163
+3276,"PRE",0,"Excellent",153.8998
+3276,"POST",0,"Excellent",155.1596
+3277,"PRE",0,"Excellent",167.8093
+3277,"POST",0,"Excellent",168.6648
+3278,"PRE",0,"Excellent",123.1047
+3278,"POST",0,"Excellent",123.0054
+3279,"PRE",0,"Good",182.7286
+3279,"POST",0,"Satisfactory",181.9553
+3280,"PRE",0,"Excellent",164.4719
+3280,"POST",0,"Excellent",163.6628
+3281,"PRE",0,"Very Poor",187.3093
+3281,"POST",0,"Poor",185.7688
+3282,"PRE",0,"Very Poor",143.4088
+3282,"POST",0,"Very Poor",144.7458
+3283,"PRE",0,"Very Poor",178.3129
+3283,"POST",0,"Very Poor",179.383
+3284,"PRE",0,"Very Poor",165.3432
+3284,"POST",0,"Very Poor",160.8556
+3285,"PRE",0,"Excellent",186.2622
+3285,"POST",0,"Excellent",183.8297
+3286,"PRE",0,"Poor",191.7786
+3286,"POST",0,"Very Poor",190.3831
+3287,"PRE",0,"Very Poor",156.273
+3287,"POST",0,"Poor",157.6483
+3288,"PRE",0,"Satisfactory",127.5275
+3288,"POST",0,"Poor",126.9913
+3289,"PRE",0,"Very Poor",136.6428
+3289,"POST",0,"Very Poor",133.7756
+3290,"PRE",0,"Poor",152.128
+3290,"POST",0,"Very Poor",149.7186
+3291,"PRE",0,"Very Poor",133.1615
+3291,"POST",0,"Very Poor",134.0676
+3292,"PRE",0,"Good",130.2852
+3292,"POST",0,"Poor",128.9775
+3293,"PRE",0,"Poor",162.7698
+3293,"POST",0,"Poor",161.6166
+3294,"PRE",0,"Very Poor",165.9734
+3294,"POST",0,"Very Poor",164.2217
+3295,"PRE",0,"Very Poor",152.0016
+3295,"POST",0,"Satisfactory",150.8349
+3296,"PRE",0,"Poor",132.6607
+3296,"POST",0,"Good",134.2855
+3297,"PRE",0,"Good",152.37
+3297,"POST",0,"Poor",150.954
+3298,"PRE",0,"Poor",158.0919
+3298,"POST",0,"Satisfactory",158.1608
+3299,"PRE",0,"Poor",170.335
+3299,"POST",0,"Very Poor",170.4956
+3300,"PRE",0,"Excellent",178.8888
+3300,"POST",0,"Satisfactory",178.7266
+3301,"PRE",0,"Excellent",152.8874
+3301,"POST",0,"Excellent",149.7201
+3302,"PRE",0,"Good",196.0867
+3302,"POST",0,"Excellent",192.2666
+3303,"PRE",0,"Very Poor",148.653
+3303,"POST",0,"Very Poor",148.0926
+3304,"PRE",0,"Satisfactory",175.5991
+3304,"POST",0,"Satisfactory",171.8279
+3305,"PRE",0,"Very Poor",138.5097
+3305,"POST",0,"Very Poor",137.811
+3306,"PRE",0,"Poor",143.9476
+3306,"POST",0,"Very Poor",141.8704
+3307,"PRE",0,"Satisfactory",131.7518
+3307,"POST",0,"Very Poor",133.8286
+3308,"PRE",0,"Very Poor",184.7075
+3308,"POST",0,"Very Poor",182.9459
+3309,"PRE",0,"Satisfactory",144.7876
+3309,"POST",0,"Satisfactory",142.2517
+3310,"PRE",0,"Very Poor",175.3987
+3310,"POST",0,"Very Poor",171.5543
+3311,"PRE",0,"Satisfactory",153.0273
+3311,"POST",0,"Very Poor",148.4585
+3312,"PRE",0,"Excellent",162.0334
+3312,"POST",0,"Excellent",160.2045
+3313,"PRE",0,"Very Poor",194.7542
+3313,"POST",0,"Very Poor",196.0954
+3314,"PRE",0,"Excellent",143.3951
+3314,"POST",0,"Excellent",141.9214
+3315,"PRE",0,"Excellent",154.2786
+3315,"POST",0,"Excellent",151.9437
+3316,"PRE",0,"Poor",165.6472
+3316,"POST",0,"Poor",163.2098
+3317,"PRE",0,"Poor",174.6178
+3317,"POST",0,"Poor",175.2272
+3318,"PRE",0,"Very Poor",183.2941
+3318,"POST",0,"Very Poor",183.2839
+3319,"PRE",0,"Poor",149.1571
+3319,"POST",0,"Very Poor",150.1486
+3320,"PRE",0,"Excellent",125.9877
+3320,"POST",0,"Excellent",126.9127
+3321,"PRE",0,"Excellent",194.5125
+3321,"POST",0,"Excellent",190.3604
+3322,"PRE",0,"Very Poor",185.5508
+3322,"POST",0,"Very Poor",185.3338
+3323,"PRE",0,"Poor",167.3283
+3323,"POST",0,"Very Poor",165.3592
+3324,"PRE",0,"Satisfactory",140.9985
+3324,"POST",0,"Satisfactory",139.4798
+3325,"PRE",0,"Good",141.1978
+3325,"POST",0,"Very Poor",139.7525
+3326,"PRE",0,"Poor",157.6732
+3326,"POST",0,"Very Poor",155.4734
+3327,"PRE",0,"Good",161.2963
+3327,"POST",0,"Very Poor",161.3182
+3328,"PRE",0,"Satisfactory",152.5815
+3328,"POST",0,"Poor",155.662
+3329,"PRE",0,"Excellent",152.3079
+3329,"POST",0,"Excellent",149.1917
+3330,"PRE",0,"Good",161.329
+3330,"POST",0,"Poor",160.778
+3331,"PRE",0,"Very Poor",200.3135
+3331,"POST",0,"Good",198.9188
+3332,"PRE",0,"Poor",161.3297
+3332,"POST",0,"Very Poor",161.119
+3333,"PRE",0,"Good",176.4009
+3333,"POST",0,"Good",175.0297
+3334,"PRE",0,"Good",150.5563
+3334,"POST",0,"Excellent",149.4688
+3335,"PRE",0,"Poor",142.6076
+3335,"POST",0,"Poor",143.0304
+3336,"PRE",0,"Very Poor",138.202
+3336,"POST",0,"Very Poor",137.8672
+3337,"PRE",0,"Poor",195.2829
+3337,"POST",0,"Very Poor",195.1439
+3338,"PRE",0,"Poor",140.8445
+3338,"POST",0,"Satisfactory",138.5168
+3339,"PRE",0,"Poor",186.7565
+3339,"POST",0,"Very Poor",187.2163
+3340,"PRE",0,"Satisfactory",156.3613
+3340,"POST",0,"Satisfactory",157.0781
+3341,"PRE",0,"Poor",145.0157
+3341,"POST",0,"Poor",143.331
+3342,"PRE",0,"Excellent",155.3635
+3342,"POST",0,"Excellent",157.5639
+3343,"PRE",0,"Very Poor",189.3024
+3343,"POST",0,"Good",185.5909
+3344,"PRE",0,"Excellent",150.8308
+3344,"POST",0,"Excellent",150.1952
+3345,"PRE",0,"Very Poor",157.7933
+3345,"POST",0,"Good",158.3213
+3346,"PRE",0,"Excellent",137.3702
+3346,"POST",0,"Excellent",135.7324
+3347,"PRE",0,"Very Poor",158.2762
+3347,"POST",0,"Very Poor",157.8934
+3348,"PRE",0,"Good",186.9191
+3348,"POST",0,"Good",184.0895
+3349,"PRE",0,"Very Poor",137.0566
+3349,"POST",0,"Poor",137.9808
+3350,"PRE",0,"Very Poor",154.5952
+3350,"POST",0,"Poor",155.2424
+3351,"PRE",0,"Very Poor",175.8813
+3351,"POST",0,"Good",173.0972
+3352,"PRE",0,"Good",149.9704
+3352,"POST",0,"Good",149.985
+3353,"PRE",0,"Excellent",155.3013
+3353,"POST",0,"Excellent",158.0404
+3354,"PRE",0,"Excellent",190.057
+3354,"POST",0,"Excellent",190.1151
+3355,"PRE",0,"Satisfactory",176.3286
+3355,"POST",0,"Good",176.8251
+3356,"PRE",0,"Very Poor",165.2467
+3356,"POST",0,"Very Poor",165.292
+3357,"PRE",0,"Very Poor",162.5246
+3357,"POST",0,"Poor",159.6407
+3358,"PRE",0,"Excellent",174.0527
+3358,"POST",0,"Excellent",175.6763
+3359,"PRE",0,"Excellent",157.7304
+3359,"POST",0,"Excellent",158.144
+3360,"PRE",0,"Very Poor",175.5601
+3360,"POST",0,"Good",172.5984
+3361,"PRE",0,"Excellent",171.3278
+3361,"POST",0,"Excellent",168.8142
+3362,"PRE",0,"Very Poor",168.209
+3362,"POST",0,"Good",168.1361
+3363,"PRE",0,"Excellent",131.6792
+3363,"POST",0,"Excellent",130.1703
+3364,"PRE",0,"Poor",168.4584
+3364,"POST",0,"Excellent",164.2363
+3365,"PRE",0,"Poor",154.2936
+3365,"POST",0,"Very Poor",150.5033
+3366,"PRE",0,"Poor",147.0761
+3366,"POST",0,"Poor",144.7503
+3367,"PRE",0,"Very Poor",166.7996
+3367,"POST",0,"Satisfactory",167.8878
+3368,"PRE",0,"Excellent",167.2787
+3368,"POST",0,"Excellent",167.7427
+3369,"PRE",0,"Very Poor",190.9986
+3369,"POST",0,"Poor",188.8041
+3370,"PRE",0,"Satisfactory",130.1086
+3370,"POST",0,"Poor",129.6426
+3371,"PRE",0,"Very Poor",183.0498
+3371,"POST",0,"Very Poor",182.4821
+3372,"PRE",0,"Very Poor",144.8082
+3372,"POST",0,"Poor",142.8318
+3373,"PRE",0,"Very Poor",169.8559
+3373,"POST",0,"Good",170.9485
+3374,"PRE",0,"Very Poor",175.5935
+3374,"POST",0,"Very Poor",173.1525
+3375,"PRE",0,"Very Poor",164.3032
+3375,"POST",0,"Poor",163.6781
+3376,"PRE",0,"Excellent",153.2345
+3376,"POST",0,"Satisfactory",151.9957
+3377,"PRE",0,"Very Poor",150.9206
+3377,"POST",0,"Very Poor",148.0125
+3378,"PRE",0,"Satisfactory",149.6729
+3378,"POST",0,"Very Poor",151.1585
+3379,"PRE",0,"Satisfactory",141.8565
+3379,"POST",0,"Very Poor",140.5833
+3380,"PRE",0,"Excellent",146.9848
+3380,"POST",0,"Excellent",147.6642
+3381,"PRE",0,"Very Poor",173.5359
+3381,"POST",0,"Poor",172.4346
+3382,"PRE",0,"Poor",183.2549
+3382,"POST",0,"Very Poor",182.7352
+3383,"PRE",0,"Very Poor",157.4728
+3383,"POST",0,"Poor",155.5037
+3384,"PRE",0,"Very Poor",162.7358
+3384,"POST",0,"Poor",160.4341
+3385,"PRE",0,"Very Poor",170.8004
+3385,"POST",0,"Very Poor",170.775
+3386,"PRE",0,"Poor",153.2456
+3386,"POST",0,"Very Poor",149.9369
+3387,"PRE",0,"Good",138.044
+3387,"POST",0,"Poor",138.6398
+3388,"PRE",0,"Good",151.339
+3388,"POST",0,"Good",153.0549
+3389,"PRE",0,"Poor",136.856
+3389,"POST",0,"Poor",135.9327
+3390,"PRE",0,"Excellent",202.6024
+3390,"POST",0,"Excellent",202.8274
+3391,"PRE",0,"Satisfactory",173.1945
+3391,"POST",0,"Very Poor",174.0931
+3392,"PRE",0,"Satisfactory",147.0612
+3392,"POST",0,"Good",149.4438
+3393,"PRE",0,"Excellent",136.8861
+3393,"POST",0,"Excellent",134.8396
+3394,"PRE",0,"Excellent",159.4183
+3394,"POST",0,"Excellent",156.1595
+3395,"PRE",0,"Poor",115.9836
+3395,"POST",0,"Satisfactory",114.482
+3396,"PRE",0,"Poor",142.5645
+3396,"POST",0,"Poor",142.4694
+3397,"PRE",0,"Satisfactory",154.7349
+3397,"POST",0,"Satisfactory",154.9335
+3398,"PRE",0,"Poor",182.1042
+3398,"POST",0,"Poor",179.1946
+3399,"PRE",0,"Very Poor",152.1571
+3399,"POST",0,"Poor",150.2992
+3400,"PRE",0,"Poor",134.414
+3400,"POST",0,"Very Poor",135.0693
+3401,"PRE",0,"Excellent",154.2538
+3401,"POST",0,"Good",154.958
+3402,"PRE",0,"Good",163.174
+3402,"POST",0,"Good",162.1499
+3403,"PRE",0,"Good",156.4057
+3403,"POST",0,"Excellent",155.0695
+3404,"PRE",0,"Satisfactory",142.693
+3404,"POST",0,"Satisfactory",142.5403
+3405,"PRE",0,"Excellent",191.7667
+3405,"POST",0,"Excellent",191.9948
+3406,"PRE",0,"Poor",128.5157
+3406,"POST",0,"Poor",127.338
+3407,"PRE",0,"Good",171.095
+3407,"POST",0,"Good",168.9224
+3408,"PRE",0,"Poor",169.0926
+3408,"POST",0,"Poor",171.6253
+3409,"PRE",0,"Good",167.5169
+3409,"POST",0,"Satisfactory",163.1117
+3410,"PRE",0,"Excellent",147.5257
+3410,"POST",0,"Excellent",144.2879
+3411,"PRE",0,"Very Poor",150.2397
+3411,"POST",0,"Very Poor",151.0617
+3412,"PRE",0,"Good",148.2555
+3412,"POST",0,"Excellent",150.5808
+3413,"PRE",0,"Excellent",111.711
+3413,"POST",0,"Excellent",110.3267
+3414,"PRE",0,"Excellent",176.7422
+3414,"POST",0,"Excellent",176.7805
+3415,"PRE",0,"Poor",138.5025
+3415,"POST",0,"Poor",136.5362
+3416,"PRE",0,"Satisfactory",152.4684
+3416,"POST",0,"Good",150.532
+3417,"PRE",0,"Poor",174.2695
+3417,"POST",0,"Poor",174.0831
+3418,"PRE",0,"Excellent",183.3072
+3418,"POST",0,"Excellent",180.7639
+3419,"PRE",0,"Poor",146.1374
+3419,"POST",0,"Very Poor",143.5338
+3420,"PRE",0,"Excellent",213.2186
+3420,"POST",0,"Excellent",213.4546
+3421,"PRE",0,"Poor",130.3472
+3421,"POST",0,"Good",130.7779
+3422,"PRE",0,"Very Poor",171.4432
+3422,"POST",0,"Very Poor",171.3443
+3423,"PRE",0,"Very Poor",151.499
+3423,"POST",0,"Poor",147.4376
+3424,"PRE",0,"Poor",141.5614
+3424,"POST",0,"Very Poor",138.9002
+3425,"PRE",0,"Very Poor",165.7914
+3425,"POST",0,"Good",164.068
+3426,"PRE",0,"Good",128.4204
+3426,"POST",0,"Good",129.8594
+3427,"PRE",0,"Poor",177.2535
+3427,"POST",0,"Satisfactory",174.7438
+3428,"PRE",0,"Excellent",159.6133
+3428,"POST",0,"Excellent",161.5799
+3429,"PRE",0,"Satisfactory",146.4993
+3429,"POST",0,"Poor",147.4889
+3430,"PRE",0,"Poor",105.7516
+3430,"POST",0,"Very Poor",107.4745
+3431,"PRE",0,"Very Poor",168.1521
+3431,"POST",0,"Poor",168.1628
+3432,"PRE",0,"Very Poor",162.1752
+3432,"POST",0,"Poor",163.0669
+3433,"PRE",0,"Satisfactory",149.3113
+3433,"POST",0,"Satisfactory",146.2093
+3434,"PRE",0,"Good",218.3766
+3434,"POST",0,"Poor",217.4863
+3435,"PRE",0,"Poor",150.7679
+3435,"POST",0,"Very Poor",149.9353
+3436,"PRE",0,"Very Poor",166.8914
+3436,"POST",0,"Very Poor",165.4695
+3437,"PRE",0,"Very Poor",164.5682
+3437,"POST",0,"Satisfactory",165.0293
+3438,"PRE",0,"Very Poor",131.5493
+3438,"POST",0,"Very Poor",133.7032
+3439,"PRE",0,"Excellent",133.58
+3439,"POST",0,"Excellent",133.0086
+3440,"PRE",0,"Poor",142.3741
+3440,"POST",0,"Very Poor",139.3492
+3441,"PRE",0,"Good",131.8257
+3441,"POST",0,"Good",133.7655
+3442,"PRE",0,"Very Poor",202.6199
+3442,"POST",0,"Satisfactory",201.5712
+3443,"PRE",0,"Satisfactory",186.455
+3443,"POST",0,"Satisfactory",185.3335
+3444,"PRE",0,"Excellent",175.4989
+3444,"POST",0,"Excellent",172.7414
+3445,"PRE",0,"Very Poor",168.1301
+3445,"POST",0,"Poor",167.0065
+3446,"PRE",0,"Very Poor",148.3417
+3446,"POST",0,"Very Poor",149.6337
+3447,"PRE",0,"Good",156.816
+3447,"POST",0,"Good",158.6181
+3448,"PRE",0,"Excellent",117.0591
+3448,"POST",0,"Excellent",117.5368
+3449,"PRE",0,"Good",159.5189
+3449,"POST",0,"Good",159.6504
+3450,"PRE",0,"Satisfactory",134.3543
+3450,"POST",0,"Poor",134.6256
+3451,"PRE",0,"Very Poor",185.1261
+3451,"POST",0,"Poor",183.9725
+3452,"PRE",0,"Good",173.1323
+3452,"POST",0,"Poor",172.9912
+3453,"PRE",0,"Poor",171.8816
+3453,"POST",0,"Poor",169.0071
+3454,"PRE",0,"Excellent",180.3568
+3454,"POST",0,"Excellent",177.5413
+3455,"PRE",0,"Satisfactory",152.5308
+3455,"POST",0,"Good",151.6473
+3456,"PRE",0,"Excellent",173.7929
+3456,"POST",0,"Excellent",171.7023
+3457,"PRE",0,"Very Poor",103.451
+3457,"POST",0,"Poor",106.0811
+3458,"PRE",0,"Excellent",152.0605
+3458,"POST",0,"Excellent",150.6444
+3459,"PRE",0,"Good",141.7525
+3459,"POST",0,"Good",140.5367
+3460,"PRE",0,"Satisfactory",201.5887
+3460,"POST",0,"Satisfactory",196.6185
+3461,"PRE",0,"Very Poor",165.3894
+3461,"POST",0,"Good",163.0373
+3462,"PRE",0,"Satisfactory",172.9888
+3462,"POST",0,"Good",171.2946
+3463,"PRE",0,"Poor",158.3661
+3463,"POST",0,"Satisfactory",159.0798
+3464,"PRE",0,"Excellent",152.7307
+3464,"POST",0,"Excellent",150.5405
+3465,"PRE",0,"Very Poor",157.1369
+3465,"POST",0,"Very Poor",157.4737
+3466,"PRE",0,"Very Poor",148.3227
+3466,"POST",0,"Poor",145.1495
+3467,"PRE",0,"Poor",111.4328
+3467,"POST",0,"Poor",110.1534
+3468,"PRE",0,"Excellent",124.7375
+3468,"POST",0,"Excellent",125.3221
+3469,"PRE",0,"Satisfactory",139.2525
+3469,"POST",0,"Very Poor",137.1378
+3470,"PRE",0,"Excellent",145.6983
+3470,"POST",0,"Excellent",145.4747
+3471,"PRE",0,"Excellent",91.23792
+3471,"POST",0,"Excellent",90.15613
+3472,"PRE",0,"Good",144.7387
+3472,"POST",0,"Good",144.2855
+3473,"PRE",0,"Very Poor",158.7931
+3473,"POST",0,"Very Poor",158.4576
+3474,"PRE",0,"Poor",205.1596
+3474,"POST",0,"Good",203.631
+3475,"PRE",0,"Good",139.5419
+3475,"POST",0,"Satisfactory",138.9606
+3476,"PRE",0,"Poor",174.141
+3476,"POST",0,"Satisfactory",171.1587
+3477,"PRE",0,"Excellent",175.0526
+3477,"POST",0,"Excellent",177.3058
+3478,"PRE",0,"Satisfactory",192.0227
+3478,"POST",0,"Very Poor",191.2754
+3479,"PRE",0,"Good",158.7976
+3479,"POST",0,"Good",159.1241
+3480,"PRE",0,"Satisfactory",149.0839
+3480,"POST",0,"Very Poor",150.9054
+3481,"PRE",0,"Very Poor",194.3678
+3481,"POST",0,"Good",194.237
+3482,"PRE",0,"Satisfactory",170.2129
+3482,"POST",0,"Satisfactory",171.2884
+3483,"PRE",0,"Good",124.2155
+3483,"POST",0,"Good",121.6204
+3484,"PRE",0,"Very Poor",191.0046
+3484,"POST",0,"Very Poor",191.2489
+3485,"PRE",0,"Very Poor",160.6064
+3485,"POST",0,"Good",159.0574
+3486,"PRE",0,"Good",183.9534
+3486,"POST",0,"Very Poor",183.5738
+3487,"PRE",0,"Poor",216.1058
+3487,"POST",0,"Poor",215.2591
+3488,"PRE",0,"Very Poor",156.1825
+3488,"POST",0,"Very Poor",152.8981
+3489,"PRE",0,"Satisfactory",157.8448
+3489,"POST",0,"Very Poor",160.5565
+3490,"PRE",0,"Very Poor",185.8529
+3490,"POST",0,"Very Poor",185.8465
+3491,"PRE",0,"Very Poor",184.9904
+3491,"POST",0,"Very Poor",183.4461
+3492,"PRE",0,"Excellent",166.4504
+3492,"POST",0,"Excellent",167.5165
+3493,"PRE",0,"Excellent",166.802
+3493,"POST",0,"Excellent",165.4974
+3494,"PRE",0,"Excellent",174.459
+3494,"POST",0,"Excellent",169.9351
+3495,"PRE",0,"Good",186.1281
+3495,"POST",0,"Very Poor",187.2053
+3496,"PRE",0,"Excellent",143.4059
+3496,"POST",0,"Excellent",140.6495
+3497,"PRE",0,"Poor",158.4421
+3497,"POST",0,"Very Poor",158.161
+3498,"PRE",0,"Excellent",130.072
+3498,"POST",0,"Excellent",130.2895
+3499,"PRE",0,"Excellent",161.519
+3499,"POST",0,"Excellent",162.5065
+3500,"PRE",0,"Excellent",168.2009
+3500,"POST",0,"Excellent",168.4989
