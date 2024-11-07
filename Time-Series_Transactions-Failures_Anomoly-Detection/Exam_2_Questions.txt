@@ -1,0 +1,34 @@
+Problem Statement:
+You work as a Data Scientist at a Payments processor company.
+On, Feb 14, 2020, you get calls from many merchants. Merchants tell you that they are seeing a spike in customer 
+complaints and want you to check if there are any issues. You tell them that you are going to revert to them in a few hours.
+
+Goal:
+To identify what exactly happened to these merchants and which other merchants got impacted and understand the magnitude of the impact.
+
+Data
+You have the payment transactions data for Feb 12, 13 and 14 in a file.
+
+Below is a description of different columns in the data set
+hr : Start hour of the transaction
+mid : Merchant Identifier
+t : Total number of transactions
+success : Total number of successful transactions
+pg : Payment Gateway, who collects money on behalf of the merchant
+pmt : Payment Method Type such as cards, UPI etc.,
+sub_type : The subtype of payment option chosen by the customer
+bank : The customer bank account from which the money is sent
+
+Questions:
+
+1.1.1 Which dimension combination caused the issue?
+Explore the data and visualization to understand when the issue (possibly a significant number of failures in transactions ) 
+happened and which combination of dimension (pmt, pg, bank and sub_type) has the impact.
+Tip: Identify the method to detect an anomaly in a metric across 4+ dimensions and apply that method to find the above.
+
+1.1.2 When did the issue happen?
+What is the starting hour and ending hour of the reported issue?
+Illustrate your answer with a plot
+
+1.1.3 For whom did the issue happen?
+Which all merchants were impacted because of the issue and which all merchants were not? Illustrate your answer with a plot and a table.
