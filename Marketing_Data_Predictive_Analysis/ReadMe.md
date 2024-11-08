@@ -1,5 +1,7 @@
 ## Marketing Data Predictive Analysis
-
+<div align="center">
+  ## Marketing Data Predictive Analysis
+</div>
 
 ``` r
 responders_data_sheet <- read.csv(file="data.csv",header=TRUE)
