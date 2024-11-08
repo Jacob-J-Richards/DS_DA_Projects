@@ -1,14 +1,16 @@
 ---
-title: "Untitled"
+title: "Marketing Data Predictive Analysis"
 output: html_document
 date: "2024-11-05"
 ---
 
 ```{r}
-setwd("C:/Users/jake pc/Desktop/DS_assesment")
+setwd("/Users/jacobrichards/Desktop/DS assesment/DS_Exam_1")
 responders_data_sheet <- read.csv(file="data.csv",header=TRUE)
 ```
+
 Normality test for responders. 
+
 ```{r}
 target_1_ages <- responders_data_sheet[responders_data_sheet[,7] == 1,2]
 hist(target_1_ages)
@@ -200,11 +202,11 @@ baseline_observations <- obs_with_prediction_prob
 
 totall_responces <- (sum(lift_observation[,6]=="response"))
 
-lift_chart_data <- function() {
+lift_chart_cumulative_percentage <- function() {
   
         percent_contacted <- seq(0,1,by=.1)
-        cumulative_responses_percentage = numeric(10)
-        cumulative_responses_percentage_baseline <- numeric(10)
+        cumulative_responses_percentage = numeric(length(percent_contacted))
+        cumulative_responses_percentage_baseline <- numeric(length(percent_contacted))
    
         for (i in 1:11) {
           
@@ -214,13 +216,38 @@ lift_chart_data <- function() {
         }
         
   results_dataframe <- as.data.frame(cbind(percent_contacted,cumulative_responses_percentage,cumulative_responses_percentage_baseline))
-  print(results_dataframe)
+  print(tail(results_dataframe,10))
   plot(x=percent_contacted,y=cumulative_responses_percentage,type="o",col="red",xlim=range(0,1),ylim=range(0,100))
   lines(x=percent_contacted,y=cumulative_responses_percentage_baseline,col="blue",type="o")
-
+  
 }
 
-lift_chart_data()
+
+
+  lift_chart_lift_advantage <- function() {
+    
+    percent_contacted <- seq(.1,1,by=.1)
+  cumulative_responses_lift <- numeric(length(percent_contacted))
+  cumulative_responses_baseline <- numeric(length(percent_contacted))
+  
+  for (i in 1:10) {
+  
+  cumulative_responses_lift[i] =  sum(lift_observation[seq(1,percent_contacted[i]*nrow(lift_observation),by=1),6]=="response")/sum(responders_data_sheet[seq(1,percent_contacted[i]*nrow(responders_data_sheet),by=1),6]=="response")
+  
+  cumulative_responses_baseline[i] = sum(responders_data_sheet[seq(1,percent_contacted[i]*nrow(responders_data_sheet),by=1),6]=="response")/sum(responders_data_sheet[seq(1,percent_contacted[i]*nrow(responders_data_sheet),by=1),6]=="response")
+  
+  }
+
+  results_dataframe <- as.data.frame(cbind(percent_contacted,cumulative_responses_lift,cumulative_responses_baseline))
+  print(tail(results_dataframe))
+  plot(x=percent_contacted,y=cumulative_responses_lift,type="o",col="red",xlim=range(0,1),ylim=range(0,2.6),main="ratio of responce yeild by % of data set contacted")
+  lines(x=percent_contacted,y=cumulative_responses_baseline,col="blue",type="o")
+  
+}
+
+
+lift_chart_cumulative_percentage()
+lift_chart_lift_advantage()
 ```
 In utilization of this model, only 30% of observations need to be contacted to yield 97.9% of the responses. Thus, evaluation of this model is recommended in selecting 
 by utilizing this model by contacting only 30% of the observations, we yield 97.9% of the responses
