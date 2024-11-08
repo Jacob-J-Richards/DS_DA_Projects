@@ -1,10 +1,6 @@
----
-title: "Marketing Data Predictive Analysis"
-output: 
-  html_document: 
-    keep_md: true
-date: "2024-11-05"
----
+
+## Marketing Data Predictive Analysis
+
 
 
 ``` r
