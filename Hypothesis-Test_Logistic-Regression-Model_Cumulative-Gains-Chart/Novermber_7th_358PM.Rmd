@@ -266,7 +266,31 @@ cumulative sum chart using this model
 
 obs_with_prediction_prob
 
+lift_observation <- obs_with_prediction_prob[order(obs_with_prediction_prob[,7],decreasing = TRUE),]
 
+baseline_observations <- obs_with_prediction_prob
+
+(sum(lift_observation[,6]=="responce"))
+
+lift_chart_data <- function() {
+  
+     rows = 0
+     cumulative_responces_percentage = numeric(10)
+    cumulative_responces_percentage[1] = 0
+     interation_responces_lift = 0 
+     sum_responses = 0
+    
+        for (i in 1:10) {
+        rows = rows + 400
+        interation_responces_lift = length(lift_observation[sequence(rows,rows+400,by=1),6] == "responce")
+        sum_responses = sum_responses + interation_responces_lift
+        cumulative_responces_percentage[i] =  sum_responses/(sum(lift_observation[,6]=="responce"))*100
+        }
+    
+  plot(x=seq(.1,1,by=.1),y=cumulative_responces_percentage)
+}
+
+lift_chart_data()
 
 ```
 
