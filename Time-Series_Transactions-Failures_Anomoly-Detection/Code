@@ -10,15 +10,18 @@ setwd("/Users/jacobrichards/Desktop/DS assesment/DS_Exam_2")
 transactions <- read.csv(file="transactions(1).csv",header=TRUE)
 ```
 
-lets plot percentage of failed transactions (per hour) over the time span of the dataset 
+1.1.1 Which dimension combination caused the issue?
+Explore the data and visualization to understand when the issue (possibly a significant number of failures in transactions ) 
+happened and which combination of dimension (pmt, pg, bank and sub_type) has the impact.
+Tip: Identify the method to detect an anomaly in a metric across 4+ dimensions and apply that method to find the above.
+
 
 ```{r}
 failed_transactions <- transactions[,1] - transactions[,2]
 transactions <- cbind(failed_transactions,transactions)
 
-
 transactions <- transactions[order(as.POSIXct(transactions[,8], format = "%Y-%m-%d %H")),]
-unique_hours <- unique(transactions[,8])
+(unique_hours <- unique(transactions[,8]))
 
 
 percentage_of_failed_transactions_per_hour <- numeric(length(unique_hours))
@@ -26,15 +29,116 @@ for (i in 1:72) {
   percentage_of_failed_transactions_per_hour[i] <- sum(transactions[transactions[,8] == unique_hours[i],1])/sum(transactions[transactions[,8] == unique_hours[i],2])
 }
 
+plot(x=seq(1,72,by=1),y=percentage_of_failed_transactions_per_hour,type="o")
+abline(v = 70, col = "red", lty = 2) 
+abline(v = 20, col = "blue", lty = 2) 
+abline(v = 45, col = "green", lty = 2) 
 
-plot(1:length(factored_hours), percentage_of_failed_transactions_per_hour,type="o")
-points(1:length(factored_hours), failed_transactions_per_hour)
-axis(1, at = 1:length(factored_hours), labels = FALSE, tck = -0.02)
+percentage_of_failed_transactions_per_hour[45]
+
+(unique_hours[1])
+(unique_hours[70])
+(unique_hours[45])
+
+
 ```
 
-%of failed tranactions per hour
-SOMETHING IS INCREASING FORM 25 TO 45 AND DECREASING FROM 45 TO 65 
+partition hours 25 to 65, "2020-02-13 00" to "2020-02-14 16"
+```{r}
+vector <- seq(25,65,by=1)
+
+hours_to_match <- unique_hours[25:65]
+
+percentages_to_match <- percentage_of_failed_transactions_per_hour[25:65]
 
 
-ok what if it's the sum of a categorical variable 
+failure_percent_match <- percentage_of_failed_transactions_per_hour[25:65]
+
+isolate_error_origin <- transactions[transactions[,8] %in% hours_to_match, ]
+
+isolate_error_origin$pmt <- factor(isolate_error_origin$pmt)
+
+isolate_error_origin$pg <- factor(isolate_error_origin$pg)
+
+isolate_error_origin$bank <- factor(isolate_error_origin$bank)
+
+isolate_error_origin$sub_type <- factor(isolate_error_origin$sub_type)
+
+#remove mid - worked
+isolate_error_origin = subset(isolate_error_origin, select = -c(mid))
+
+
+library(dplyr)
+
+isolate_error_origin$add_failure_percentage <- numeric(nrow(isolate_error_origin))
+
+isolate_error_origin <- isolate_error_origin %>% mutate(add_failure_percentage = ifelse(isolate_error_origin[, 7] %in% hours_to_match, 
+                  percentages_to_match[match(isolate_error_origin[, 7], hours_to_match)], NA))
+
+isolate_error_origin <- isolate_error_origin %>% mutate(hr = ifelse(isolate_error_origin[, 7] %in% hours_to_match, 
+                  vector[match(isolate_error_origin[, 7], hours_to_match)], NA))
+
+isolate_error_origin = subset(isolate_error_origin, select = -c(failed_transactions))
+
+isolate_error_origin = subset(isolate_error_origin, select = -c(t))
+
+isolate_error_origin = subset(isolate_error_origin, select = -c(success))
+
+isolate_error_origin
+```
+
+
+```{r}
+
+library(isotree)
+isolation.forest(
+  data,
+  sample_size = min(nrow(data), 10000L),
+  ntrees = 500,
+  ndim = 1,
+  ntry = 1,
+  categ_cols = NULL,
+  max_depth = ceiling(log2(sample_size)),
+  ncols_per_tree = ncol(data),
+  prob_pick_pooled_gain = 0,
+  prob_pick_avg_gain = 0,
+  prob_pick_full_gain = 0,
+  prob_pick_dens = 0,
+  prob_pick_col_by_range = 0,
+  prob_pick_col_by_var = 0,
+  prob_pick_col_by_kurt = 0,
+  min_gain = 0,
+  missing_action = ifelse(ndim > 1, "impute", "divide"),
+  new_categ_action = ifelse(ndim > 1, "impute", "weighted"),
+  categ_split_type = ifelse(ndim > 1, "subset", "single_categ"),
+  all_perm = FALSE,
+  coef_by_prop = FALSE,
+  recode_categ = FALSE,
+  weights_as_sample_prob = TRUE,
+  sample_with_replacement = FALSE,
+  penalize_range = FALSE,
+  standardize_data = TRUE,
+  scoring_metric = "depth",
+  fast_bratio = TRUE,
+  weigh_by_kurtosis = FALSE,
+  coefs = "uniform",
+  assume_full_distr = TRUE,
+  build_imputer = FALSE,
+  output_imputations = FALSE,
+  min_imp_obs = 3,
+  depth_imp = "higher",
+  weigh_imp_rows = "inverse",
+  output_score = FALSE,
+  output_dist = FALSE,
+  square_dist = FALSE,
+  sample_weights = NULL,
+  column_weights = NULL,
+  lazy_serialization = TRUE,
+  seed = 1,
+  use_long_double = FALSE,
+  nthreads = parallel::detectCores()
+)
+```
+
+
 
