@@ -9,11 +9,12 @@ responders_data_sheet <- read.csv(file="data.csv",header=TRUE)
 
 Normality test for responders.
 
-
 ``` r
 target_1_ages <- responders_data_sheet[responders_data_sheet[,7] == 1,2]
 hist(target_1_ages)
 ```
+![unnamed-chunk-2-1](https://github.com/user-attachments/assets/bb4afd95-2654-426c-91ad-bb599beb6b5e)
+
 
 ![](Final_Project_One_Nov_8_8AM_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
 
@@ -33,6 +34,7 @@ shapiro.test(target_1_ages)
 qqnorm(target_1_ages)
 qqline(target_1_ages, col = "red")
 ```
+![unnamed-chunk-2-2](https://github.com/user-attachments/assets/b7e32052-d8c6-4776-9aa9-038d1c252198)
 
 ![](Final_Project_One_Nov_8_8AM_files/figure-html/unnamed-chunk-2-2.png)<!-- -->
 
@@ -45,6 +47,7 @@ Normality test for non responders.
 target_0_ages <- responders_data_sheet[responders_data_sheet[,7] == 0,2]
 hist(target_0_ages)
 ```
+![unnamed-chunk-3-1](https://github.com/user-attachments/assets/7e724f91-2a19-4c21-a5a7-d6f9ca05fb5e)
 
 ![](Final_Project_One_Nov_8_8AM_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
@@ -64,6 +67,7 @@ shapiro.test(target_0_ages)
 qqnorm(target_0_ages)
 qqline(target_0_ages, col = "red")
 ```
+![unnamed-chunk-3-2](https://github.com/user-attachments/assets/e4971003-ce3b-4a76-a1cf-911acfe4880a)
 
 ![](Final_Project_One_Nov_8_8AM_files/figure-html/unnamed-chunk-3-2.png)<!-- -->
 
