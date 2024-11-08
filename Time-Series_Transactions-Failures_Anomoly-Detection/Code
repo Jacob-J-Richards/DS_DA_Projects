@@ -36,23 +36,25 @@ abline(v = 45, col = "green", lty = 2)
 
 percentage_of_failed_transactions_per_hour[45]
 
-(unique_hours[1])
+(unique_hours[20])
 (unique_hours[70])
 (unique_hours[45])
 
 
 ```
 
+
+
+
 partition hours 25 to 65, "2020-02-13 00" to "2020-02-14 16"
 ```{r}
-vector <- seq(25,65,by=1)
+vector <- seq(1,72,by=1)
 
-hours_to_match <- unique_hours[25:65]
+hours_to_match <- unique_hours[1:72]
 
-percentages_to_match <- percentage_of_failed_transactions_per_hour[25:65]
+percentages_to_match <- percentage_of_failed_transactions_per_hour[1:72]
 
-
-failure_percent_match <- percentage_of_failed_transactions_per_hour[25:65]
+failure_percent_match <- percentage_of_failed_transactions_per_hour[1:72]
 
 isolate_error_origin <- transactions[transactions[,8] %in% hours_to_match, ]
 
@@ -67,7 +69,6 @@ isolate_error_origin$sub_type <- factor(isolate_error_origin$sub_type)
 #remove mid - worked
 isolate_error_origin = subset(isolate_error_origin, select = -c(mid))
 
-
 library(dplyr)
 
 isolate_error_origin$add_failure_percentage <- numeric(nrow(isolate_error_origin))
@@ -75,70 +76,174 @@ isolate_error_origin$add_failure_percentage <- numeric(nrow(isolate_error_origin
 isolate_error_origin <- isolate_error_origin %>% mutate(add_failure_percentage = ifelse(isolate_error_origin[, 7] %in% hours_to_match, 
                   percentages_to_match[match(isolate_error_origin[, 7], hours_to_match)], NA))
 
-isolate_error_origin <- isolate_error_origin %>% mutate(hr = ifelse(isolate_error_origin[, 7] %in% hours_to_match, 
-                  vector[match(isolate_error_origin[, 7], hours_to_match)], NA))
-
 isolate_error_origin = subset(isolate_error_origin, select = -c(failed_transactions))
 
 isolate_error_origin = subset(isolate_error_origin, select = -c(t))
 
 isolate_error_origin = subset(isolate_error_origin, select = -c(success))
 
-isolate_error_origin
+write.csv(file="setup_anamoly_detection.csv",isolate_error_origin)
 ```
 
 
 ```{r}
+# Define the target hours
+target_hours <- c("2020-02-12 19", "2020-02-14 21", "2020-02-13 20")
 
-library(isotree)
-isolation.forest(
-  data,
-  sample_size = min(nrow(data), 10000L),
+# Filter the data for these hours
+filtered_data <- isolate_error_origin %>%
+  filter(substr(hr, 1, 13) %in% target_hours)
+
+# Ensure the filtered data has the same structure as the predictors used in the model
+filtered_predictors <- filtered_data[, names(predictors)]
+
+# Get anomaly scores for the filtered data
+filtered_scores <- predict(iso_forest, newdata = filtered_predictors)
+
+# Add scores back to the filtered data
+filtered_data$anomaly_score <- filtered_scores
+
+
+# Filter for high-anomaly scores (e.g., top 10% highest scores)
+high_anomaly_threshold <- quantile(filtered_data$anomaly_score, 0.9)
+high_anomalies <- filtered_data %>%
+  filter(anomaly_score >= high_anomaly_threshold)
+
+# Group by categorical variables and summarize
+anomaly_combinations <- high_anomalies %>%
+  group_by(pg, sub_type, bank, pmt) %>%
+  summarize(mean_anomaly_score = mean(anomaly_score, na.rm = TRUE),
+            mean_failure_rate = mean(add_failure_percentage, na.rm = TRUE),
+            count = n()) %>%
+  arrange(desc(mean_anomaly_score))
+
+# View the combinations with highest mean anomaly scores and failure rates
+print(anomaly_combinations)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+partition hours 25 to 65, "2020-02-13 00" to "2020-02-14 16"
+```{r}
+
+# Encode categorical columns
+isolate_error_origin$pg <- as.numeric(factor(isolate_error_origin$pg))
+isolate_error_origin$sub_type <- as.numeric(factor(isolate_error_origin$sub_type))
+isolate_error_origin$bank <- as.numeric(factor(isolate_error_origin$bank))
+isolate_error_origin$pmt <- as.numeric(factor(isolate_error_origin$pmt))
+
+
+# Select predictors with all relevant columns including the categorical ones
+predictors <- isolate_error_origin[, !(names(isolate_error_origin) %in% c("hr"))]
+
+# Run Isolation Forest
+iso_forest <- isolation.forest(
+  data = predictors,
+  sample_size = min(nrow(predictors), 10000L),
   ntrees = 500,
   ndim = 1,
   ntry = 1,
-  categ_cols = NULL,
-  max_depth = ceiling(log2(sample_size)),
-  ncols_per_tree = ncol(data),
-  prob_pick_pooled_gain = 0,
-  prob_pick_avg_gain = 0,
-  prob_pick_full_gain = 0,
-  prob_pick_dens = 0,
-  prob_pick_col_by_range = 0,
-  prob_pick_col_by_var = 0,
-  prob_pick_col_by_kurt = 0,
-  min_gain = 0,
-  missing_action = ifelse(ndim > 1, "impute", "divide"),
-  new_categ_action = ifelse(ndim > 1, "impute", "weighted"),
-  categ_split_type = ifelse(ndim > 1, "subset", "single_categ"),
-  all_perm = FALSE,
-  coef_by_prop = FALSE,
-  recode_categ = FALSE,
+  max_depth = ceiling(log2(min(nrow(predictors), 10000L))),
+  ncols_per_tree = ncol(predictors),
+  scoring_metric = "depth",
+  standardize_data = TRUE,
   weights_as_sample_prob = TRUE,
   sample_with_replacement = FALSE,
-  penalize_range = FALSE,
-  standardize_data = TRUE,
-  scoring_metric = "depth",
-  fast_bratio = TRUE,
-  weigh_by_kurtosis = FALSE,
-  coefs = "uniform",
-  assume_full_distr = TRUE,
-  build_imputer = FALSE,
-  output_imputations = FALSE,
-  min_imp_obs = 3,
-  depth_imp = "higher",
-  weigh_imp_rows = "inverse",
-  output_score = FALSE,
-  output_dist = FALSE,
-  square_dist = FALSE,
-  sample_weights = NULL,
-  column_weights = NULL,
   lazy_serialization = TRUE,
   seed = 1,
-  use_long_double = FALSE,
-  nthreads = parallel::detectCores()
+  nthreads = 1 # Ensuring single-threaded processing
 )
+
+# Get anomaly scores
+scores <- predict(iso_forest, newdata = predictors)
+
+# Add scores to the data
+isolate_error_origin$anomaly_score <- scores
+
+# View data with scores to inspect high-score patterns
+high_anomalies <- isolate_error_origin %>%
+  arrange(desc(anomaly_score)) %>%
+  head(10)
+
+print(high_anomalies)
+
 ```
+
+
+
+YOU NEED TO LET IT COMPUTE THE FAILURE RATE SO THAT YOU CAN COMPAIR THE ROW OBSERVATION FAILURE RATE TO THE MEAN OF THAT HOUR 
+
+```{r}
+# Required libraries
+library(isotree)
+library(dplyr)
+
+
+
+# Step 2: Encode categorical variables for the isolation forest model
+isolate_error_origin$pg <- as.numeric(factor(isolate_error_origin$pg))
+isolate_error_origin$pmt <- as.numeric(factor(isolate_error_origin$pmt))
+isolate_error_origin$sub_type <- as.numeric(factor(isolate_error_origin$sub_type))
+isolate_error_origin$bank <- as.numeric(factor(isolate_error_origin$bank))
+
+# Define predictors including failure_rate
+predictors <- isolate_error_origin[, !(names(isolate_error_origin) %in% c("Unnamed: 0", "hr", "mid"))]
+
+# Step 3: Train Isolation Forest model on the full dataset
+iso_forest <- isolation.forest(
+  data = predictors,
+  sample_size = min(nrow(predictors), 10000L),
+  ntrees = 500,
+  ndim = 1,
+  ntry = 1,
+  max_depth = ceiling(log2(min(nrow(predictors), 10000L))),
+  ncols_per_tree = ncol(predictors),
+  scoring_metric = "depth",
+  standardize_data = TRUE,
+  weights_as_sample_prob = TRUE,
+  sample_with_replacement = FALSE,
+  lazy_serialization = TRUE,
+  seed = 1,
+  nthreads = 1 # Single-threaded processing
+)
+
+# Step 4: Filter for Feb 14, 2020, and score this subset
+feb_14_data <- isolate_error_origin %>% filter(grepl("2020-02-14", hr))
+feb_14_predictors <- feb_14_data[, names(predictors)]
+feb_14_scores <- predict(iso_forest, newdata = feb_14_predictors)
+
+# Add scores to the Feb 14 data
+feb_14_data$anomaly_score <- feb_14_scores
+
+# Step 5: Identify high anomaly scores and group by pmt, pg, bank, sub_type
+high_anomalies <- feb_14_data %>%
+  arrange(desc(anomaly_score)) %>%
+  filter(anomaly_score >= quantile(anomaly_score, 0.9))  # Top 10% of anomalies
+
+# Group by dimension combinations to identify high-impact patterns
+anomaly_combinations <- high_anomalies %>%
+  group_by(pmt, pg, bank, sub_type) %>%
+  summarize(mean_anomaly_score = mean(anomaly_score, na.rm = TRUE),
+            mean_failure_rate = mean(failure_rate, na.rm = TRUE),
+            count = n()) %>%
+  arrange(desc(mean_anomaly_score))
+
+# View top combinations contributing to the anomaly
+print(anomaly_combinations)
+
+```
+
 
 
 
