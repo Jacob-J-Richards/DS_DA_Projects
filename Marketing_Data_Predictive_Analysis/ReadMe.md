@@ -415,7 +415,7 @@ In utilization of this model, only 30% of observations need to be contacted to y
 
 The lift chart advantage is less at .1 then .2 because by chance the baseline did better at rows 1-800 than 1-400 proportionally. The chart is correct, the baseline and lift were calculated by the actual distribution of unmodified data set rather than theoretically is which responces and non-responces will be evenly distributed into subdivisions of the data set.
 
-Conclusion:
+## Conclusion
 
 In analysis of the historical data, highly associated predictors of response were found; from a model was built and and outcomes of usage in future advertising campaigns visualized. Firstly, Age was highly associated with response, income was highly negatively associated with response, and distance was modestly negatively associated with response. In order to utilize the categorical data provided (gender, marital status), the random Forest binary classifier algorithm was used and produced a predicted probability of response for each observation. In testing this model on 20% of historical data after being trained by 80% of the data, an accuracy of 73% was obtained in prediction of response.
 
