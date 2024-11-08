@@ -13,8 +13,9 @@ target_1_ages <- responders_data_sheet[responders_data_sheet[,7] == 1,2]
 hist(target_1_ages)
 ```
 
-![unnamed-chunk-2-1](https://github.com/user-attachments/assets/4838ad45-d769-4632-9b29-83d3dbc12c18)
-
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/4838ad45-d769-4632-9b29-83d3dbc12c18" alt="unnamed-chunk-2-1">
+</div>
 
 ``` r
 shapiro.test(target_1_ages)
