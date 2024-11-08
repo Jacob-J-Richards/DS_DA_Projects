@@ -13,7 +13,8 @@ target_1_ages <- responders_data_sheet[responders_data_sheet[,7] == 1,2]
 hist(target_1_ages)
 ```
 
-![](Final_Project_One_Nov_8_8AM_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+![unnamed-chunk-2-1](https://github.com/user-attachments/assets/4838ad45-d769-4632-9b29-83d3dbc12c18)
+
 
 ``` r
 shapiro.test(target_1_ages)
@@ -32,7 +33,8 @@ qqnorm(target_1_ages)
 qqline(target_1_ages, col = "red")
 ```
 
-![](Final_Project_One_Nov_8_8AM_files/figure-html/unnamed-chunk-2-2.png)<!-- -->
+![unnamed-chunk-2-2](https://github.com/user-attachments/assets/7dce4876-f090-462d-9cf3-e9ce5a336f49)
+
 
 reject null hypothesis that the sample is normally distributed.
 
@@ -43,8 +45,9 @@ Normality test for non responders.
 target_0_ages <- responders_data_sheet[responders_data_sheet[,7] == 0,2]
 hist(target_0_ages)
 ```
+![unnamed-chunk-3-1](https://github.com/user-attachments/assets/4a2aeba6-6756-4463-822b-bf943235647d)
 
-![](Final_Project_One_Nov_8_8AM_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
 
 ``` r
 shapiro.test(target_0_ages)
@@ -62,8 +65,9 @@ shapiro.test(target_0_ages)
 qqnorm(target_0_ages)
 qqline(target_0_ages, col = "red")
 ```
+![unnamed-chunk-3-2](https://github.com/user-attachments/assets/c2f0ed87-afa3-43ec-a769-752f7e6d614f)
 
-![](Final_Project_One_Nov_8_8AM_files/figure-html/unnamed-chunk-3-2.png)<!-- -->
+
 
 reject the null hypothesis that the sample is normally distributed.
 
@@ -183,8 +187,8 @@ binary_classifier(responders_data_sheet$dist,responders_data_sheet,c("black"))
 #age
 binary_classifier(responders_data_sheet$age,responders_data_sheet,c("red"))
 ```
+![unnamed-chunk-7-1](https://github.com/user-attachments/assets/f5e4dff9-ab56-4ea3-ad99-6e64d83c1f06)
 
-![](Final_Project_One_Nov_8_8AM_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 ```
 ## [1] 0.3144231
@@ -211,7 +215,9 @@ deltas <- numeric(6)
 deltas <- mapply(binary_classifier, predictor = predictors, clean_data = clean_data_list, color = colors)
 ```
 
-![](Final_Project_One_Nov_8_8AM_files/figure-html/unnamed-chunk-8-1.png)<!-- -->![](Final_Project_One_Nov_8_8AM_files/figure-html/unnamed-chunk-8-2.png)<!-- -->![](Final_Project_One_Nov_8_8AM_files/figure-html/unnamed-chunk-8-3.png)<!-- -->
+![unnamed-chunk-8-1](https://github.com/user-attachments/assets/94266666-19d6-4b36-be24-4b5b206fdf74)
+![unnamed-chunk-8-2](https://github.com/user-attachments/assets/6fe326d3-1419-409f-baf2-13affa6980d4)
+![unnamed-chunk-8-3](https://github.com/user-attachments/assets/0dcfccb6-1b56-43d8-8ea3-8e1c73b11dd2)
 
 ``` r
 delta_mat <- matrix(data = deltas, nrow = 3, ncol = 2, byrow = TRUE,
@@ -360,7 +366,8 @@ lift_chart_cumulative_percentage()
 ## 11               1.0               100.0                 100.0
 ```
 
-![](Final_Project_One_Nov_8_8AM_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+![unnamed-chunk-12-1](https://github.com/user-attachments/assets/1685f432-a035-4820-b334-a9e454ddc448)
+
 
 ``` r
 lift_chart_lift_advantage()
@@ -380,7 +387,9 @@ lift_chart_lift_advantage()
 ## 10               1.0      1.000000                 1
 ```
 
-![](Final_Project_One_Nov_8_8AM_files/figure-html/unnamed-chunk-12-2.png)<!-- -->
+![unnamed-chunk-12-2](https://github.com/user-attachments/assets/3a5910f9-7bef-4413-8f59-a59ce73fe6f1)
+
+
 
 In utilization of this model, only 30% of observations need to be contacted to yield 97.9% of the responses. Thus, evaluation of this model is recommended in selecting by utilizing this model by contacting only 30% of the observations, we yield 97.9% of the responses
 
