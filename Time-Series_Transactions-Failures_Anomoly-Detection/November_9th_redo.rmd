@@ -1,0 +1,126 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-11-09"
+---
+
+1.1.1 Which dimension combination caused the issue?
+Explore the data and visualization to understand when the issue (possibly a significant number of failures in transactions ) 
+happened and which combination of dimension (pmt, pg, bank and sub_type) has the impact.
+Tip: Identify the method to detect an anomaly in a metric across 4+ dimensions and apply that method to find the above.
+
+
+```{r}
+setwd("C:/Users/jake pc/Desktop/DS_Exam_2")
+transactions <- read.csv(file="transactions(1).csv",header=TRUE)
+```
+
+add column for failure % of each observation 
+```{r}
+failure_percent <- numeric(nrow(transactions))
+failure_percent <- (1 - transactions[,2]/transactions[,1])*100
+transactions$failure_percent <- failure_percent
+
+
+transactions <- transactions[order(as.POSIXct(transactions[,7], format = "%Y-%m-%d %H")),]
+(unique_hours <- unique(transactions[,7]))
+
+percentage_of_failed_transactions_per_hour <- numeric(length(unique_hours))
+for (i in 1:72) {
+  percentage_of_failed_transactions_per_hour[i] <- ( 1 - sum(transactions[transactions[,7] == unique_hours[i],2])/sum(transactions[transactions[,7] == unique_hours[i],1]))
+}
+
+plot(x=seq(1,72,by=1),y=percentage_of_failed_transactions_per_hour,type="o")
+abline(v = 70, col = "red", lty = 2) 
+abline(v = 20, col = "blue", lty = 2) 
+abline(v = 45, col = "green", lty = 2) 
+
+percentage_of_failed_transactions_per_hour[45]
+print(order(percentage_of_failed_transactions_per_hour,decreasing = TRUE))
+
+```
+
+we know the highest failure rate over of all transactions over the entire hour is on 
+
+
+[1] "2020-02-13 20"
+[1] "2020-02-13 19"
+[1] "2020-02-14 21"
+[1] "2020-02-14 20"
+[1] "2020-02-13 23"
+[1] "2020-02-12 20"
+
+we know what the anomoly is, we know what days it's the highest, so for those days lets look to see if there is a combination of variables 
+that they have in common 
+
+
+lets start by visualising failure % by variables other than hour 
+```{r}
+
+
+(unique_pmt <- unique(transactions[,4]))
+
+
+
+percentage_of_failed_transactions_per_pmt <- numeric(length(unique_pmt))
+for (i in 1:5) {
+  percentage_of_failed_transactions_per_pmt[i] <- ( 1 - sum(transactions[transactions[,4] == unique_pmt[i],2])/sum(transactions[transactions[,4] == unique_pmt[i],1]))
+}
+
+unique_pmt <- factor(unique_pmt)
+
+print(unique_pmt)
+
+plot(x=as.numeric(unique_pmt),y=percentage_of_failed_transactions_per_pmt,type="p")
+
+
+```
+
+highest failure at CONSUMER_FINANCE
+
+
+
+
+```{r}
+
+transactions[transactions[,5] == "",5] <- "not_availible"
+
+(unique_pg <- unique(transactions[,5]))
+
+
+percentage_of_failed_transactions_per_pg <- numeric(length(unique_pg))
+for (i in 1:20) {
+  percentage_of_failed_transactions_per_pg[i] <- ( 1 - sum(transactions[transactions[,5] == unique_pg[i],2])/sum(transactions[transactions[,5] == unique_pg[i],1]))
+}
+
+unique_pg <- factor(unique_pg)
+
+print(unique_pg)
+
+plot(x=as.numeric(unique_pg),y=percentage_of_failed_transactions_per_pg,type="p")
+
+print(levels(unique_pg)[10])
+```
+
+the highest failure rate by pg was "not_avaible" which before was a empty element
+
+
+```{r}
+
+(subtype <- unique(transactions[,6]))
+
+
+
+percentage_of_failed_transactions_per_pmt <- numeric(length(unique_pmt))
+for (i in 1:5) {
+  percentage_of_failed_transactions_per_pmt[i] <- ( 1 - sum(transactions[transactions[,4] == unique_pmt[i],2])/sum(transactions[transactions[,4] == unique_pmt[i],1]))
+}
+
+unique_pmt <- factor(unique_pmt)
+
+print(unique_pmt)
+
+plot(x=as.numeric(unique_pmt),y=percentage_of_failed_transactions_per_pmt,type="p")
+
+```
+
