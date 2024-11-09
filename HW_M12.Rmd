@@ -1,0 +1,278 @@
+---
+title: "Module 12 Homework"
+output: html_document
+date: "2024-11-08"
+---
+1.) (Use R) Use the mpg data from ggplot2 package and create R codes necessary to
+generate the following graphs.
+```{r}
+library(ggplot2)
+data(mpg)
+```
+
+a.)
+```{r}
+ggplot(data=mpg, aes(x=displ,y=hwy)) + geom_point() + geom_smooth() + xlim(1.75,7) + ylim(10,45)
+```
+
+b.)
+```{r}
+ggplot(data=mpg, aes(x=displ,y=hwy, color=drv)) + geom_point() + geom_smooth(se=FALSE) + xlim(1.75,7) + ylim(10,45)
+```
+
+c.)
+```{r}
+ggplot(data=mpg, aes(x=displ, y=hwy)) + geom_point(aes(color=drv)) + geom_smooth(se = FALSE) + xlim(1.75, 7) + ylim(10, 45)
+```
+
+d.)
+```{r}
+ggplot(data=mpg, aes(x=displ, y=hwy, color=drv, linetype=drv)) + geom_point() + 
+  geom_smooth(data = subset(mpg, drv == "4"), se = FALSE, color = "blue") + 
+  geom_smooth(data = subset(mpg, drv == "f"), se = FALSE, color = "blue") + 
+  geom_smooth(data = subset(mpg, drv == "r"), se = FALSE, color = "blue") + xlim(1.75, 7) + ylim(10, 45) + 
+  scale_linetype_manual(values = c("4" = "solid", "f" = "dotted", "r" = "dotted")) 
+```
+
+2.) (Use R) The iris is a data frame with 150 cases (rows) and 5 variables (columns)
+named Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, and Species. Use the iris
+data and create R codes necessary to generate the following graphs.
+a.)
+```{r}
+data(iris)
+ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width, color = Species, shape = Species)) + 
+  geom_point() + scale_shape_manual(values = c("setosa" = 16, "versicolor" = 17, "virginica" = 15)) + 
+  labs(x = "Petal Length", y = "Petal Width", title = "Scatter plot")
+```
+
+b.)
+```{r}
+ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width, color = Species, shape = Species)) + 
+  geom_point() + labs(x = "Petal Length", y = "Petal Width", title = "Scatter plot with linear Model") +
+  geom_smooth(method="lm")
+```
+
+c.)
+```{r}
+ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width, color = Species, shape = Species)) + 
+  geom_point() + labs(x = "Petal Length", y = "Petal Width", title = "Scatter plot with local polynomial regression") +
+  geom_smooth(method = "loess")
+```
+
+
+```{r}
+ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width, color = Species)) + 
+  geom_line(aes(group = Species)) +  
+  labs(x = "Petal Length", y = "Petal Width", title = "Scatter plot with local polynomial regression") 
+```
+
+e.) 
+```{r}
+ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width, color = Species, shape = Species)) + 
+  geom_point() + 
+  geom_smooth(method = "lm") + 
+  labs(x = "Petal Length", y = "Petal Width", title = "Faceting") +
+  facet_wrap(vars(Species), scales = "free") + ylim(0,2.6)
+```
+
+f.)
+```{r}
+ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width, color = Species, shape = Species)) + 
+  geom_point() + labs(x = "Petal Length", y = "Petal Width", title = "Faceting") +
+  geom_smooth(method = "loess") + facet_wrap(vars(Species), scales = "free")
+```
+
+g.)
+```{r}
+ggplot(data = iris, aes(x = Species, y = Petal.Length, fill = Species)) + 
+  geom_boxplot(position = "dodge") + 
+  labs(y = "Petal Length", title = "Box Plot") 
+```
+
+h.) 
+```{r}
+ggplot(data = iris, aes(x = Species, y = Petal.Length, fill = Species)) + 
+  geom_violin(position = "dodge") + 
+  labs(y = "Petal Length", title = "Violin Plot")
+```
+
+i.)
+```{r}
+ggplot(data = iris, aes(x = Species, y = Petal.Length, fill = Species)) + 
+  geom_violin(trim = FALSE, position = "dodge") + 
+  geom_boxplot(width = 0.1, position = position_dodge(width = 0.9), fill = "orange") +
+  labs(y = "Petal Length", title = "Violin/Box") 
+```
+
+j.)
+```{r}
+library(ggridges)
+ggplot(data = iris, aes(x = Petal.Length, y = Species, fill = Species)) + 
+  geom_hline(yintercept = c(1, 2, 3), color = "black", size = .6) +  # Adds thick horizontal lines for each Species level
+  geom_density_ridges(scale = 1.75, rel_min_height = 0.01) + 
+  labs(x = "Petal Length",y="frequency", title = "Ridgeline Plot of Petal Length by Species") + 
+  theme_bw() + 
+  theme(
+    plot.title = element_text(face = "bold", size = 12), 
+    legend.background = element_rect(fill = "white", linewidth = 2, colour = "white"),
+    panel.grid.minor = element_blank()
+  ) +   
+  expand_limits(y = c(0.5, 3.75))  # Adds a bit of space around the plot
+
+```
+
+k.)
+```{r}
+library(ggplot2)
+species_counts <- as.data.frame(table(iris$Species))
+colnames(species_counts) <- c("Species", "Count")
+ggplot(species_counts, aes(x = "", y = Count, fill = Species)) + 
+  geom_bar(stat = "identity", width = 1, color = "black") +  
+  coord_polar("y") + 
+  theme_void()
+```
+
+l.)
+```{r}
+library(ggplot2)
+ggplot(iris, aes(Petal.Length, fill = Species)) + 
+geom_bar(position = "stack", color = "black", size = 0.25) + 
+labs(y = "Frequency", title = "Histogram")
+
+
+```
+
+m.) 
+```{r}
+library(ggplot2)
+scaling_factor <- nrow(iris) * diff(range(iris$Petal.Length)) / 55  
+ggplot(iris, aes(x = Petal.Length)) + 
+  geom_bar(fill = "red", color = "black", binwidth = .10) +  
+  geom_density(aes(y = ..density.. * scaling_factor), size = 1, color = "blue",fill="blue",alpha=0.15) + 
+  labs(y = "Frequency", title = "Histogram of Petal Length with Density Curve") +
+  theme_minimal()
+```
+
+n.) 
+```{r}
+ggplot(iris, aes(x = Petal.Length, fill = Species, color = Species)) + 
+  geom_density(alpha = 0.4) +  # Add semi-transparent density curves for each species
+  labs(x = "Petal Length", y = "Density", title = "Kernel Density Plot of Petal Length by Species") +
+  theme_minimal()
+```
+
+3.) (Use R) Consider the ‘College Rankings 2014’ dataset. Use any graphing or plotting
+techniques to glean some insight from the data. At the very least include an interesting plot
+of each of the following:
+a. Two categorical variables
+b. Two quantitative variables
+c. A categorical and quantitative variable
+d. Any single variables of interest.
+e. Any other interesting plots you may find.
+
+
+```{r}
+setwd("/Users/jacobrichards/Desktop/Stat_405_R/Module 12")
+college_rankings <- read.csv(file="College_Rankings_2014.csv",header=TRUE)
+```
+
+a. Two categorical variables
+```{r}
+counts <- table(college_rankings$Type)
+totall <- sum(counts)
+Type_percentage <- as.data.frame(counts / totall)
+Type_percentage$Group <- "Type"  
+
+state_counts <- table(college_rankings$State)
+totall_totall <- sum(state_counts)
+state_percentages <- as.data.frame(state_counts / totall_totall)
+state_percentages$Group <- "State"  
+
+concontenate <- rbind(Type_percentage, state_percentages)
+
+concontenate$Facet_Group <- ifelse(concontenate$Group == "Type", "Type (Private/Public)", "State Distribution")
+
+categorical <- ggplot(concontenate, aes(x = Var1, y = Freq, fill = Freq)) + 
+  geom_bar(stat = "identity", color = "black") +
+  labs(title = "Percentage of Private vs Public Colleges and State Distribution", y = "Percentage", x = "Category") + 
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(size = 3, angle = 45, hjust = 1)  # Sets x-axis text to a small size
+  ) +
+  facet_wrap(~ Facet_Group, scales = "free") 
+```
+
+b. Two quantitative variables
+```{r}
+library(ggplot2)
+library(tidyr)
+conc <- cbind(college_rankings$Acceptance.rate,college_rankings$X6yr.Grad.rate)
+quant <- as.data.frame(conc)
+
+quant_long <- quant %>%
+  pivot_longer(cols = everything(), names_to = "Variable", values_to = "Value")
+
+ggplot(quant_long, aes(x = Value, fill = Variable, color = Variable)) + 
+  geom_density(alpha = 0.4) + 
+  labs(title = "Distribution of Each Variable in Quant", x = "Value", y = "Density of rate") +
+  theme_minimal() +
+  xlim(-15, 130) +
+  scale_fill_manual(values = c("V1" = "blue", "V2" = "red"),
+                    labels = c("V1" = "Acceptance Rate", "V2" = "6-Year Graduation Rate")) +
+  scale_color_manual(values = c("V1" = "blue", "V2" = "red"),
+                     labels = c("V1" = "Acceptance Rate", "V2" = "6-Year Graduation Rate"))
+
+```
+
+c. A categorical and quantitative variable
+```{r}
+Public_enrollment <- college_rankings[college_rankings$Type == "Public", "Enrollment"]
+Private_enrollment <- college_rankings[college_rankings$Type == "Private", "Enrollment"]
+enrollment_data <- data.frame(Enrollment = c(Public_enrollment, Private_enrollment),
+Type = c(rep("Public", length(Public_enrollment)), rep("Private", length(Private_enrollment))))
+ggplot(enrollment_data, aes(x = Enrollment, fill = Type, color = Type)) + 
+  geom_density(alpha = 0.4) + labs(title = "Distribution of Enrollment for Public and Private Universities",
+  x = "Enrollment", y = "Density") + theme_minimal() + xlim(-5000,70000) + 
+  scale_fill_manual(values = c("Public" = "blue", "Private" = "red")) +
+  scale_color_manual(values = c("Public" = "blue", "Private" = "red"))
+```
+
+d. Any single variables of interest.
+plotting the mean of in-state and out of state tuition for each university by university rank 
+```{r}
+college_rankings$Rank <- as.numeric(college_rankings$Rank)
+ggplot(data = college_rankings, aes(x = Rank, y = Tuition.in.state)) + 
+  geom_point() + geom_smooth(method = "loess") + scale_x_reverse() + labs(x = "Rank (Descending)",
+  y = "In-State Tuition", title = "In-State Tuition as a Function of Rank")
+```
+
+e. Any other interesting plots you may find.
+```{r}
+college_rankings$Rank <- as.numeric(college_rankings$Rank)
+ggplot(data = college_rankings, aes(x = Rank, y = Freshman.retention.rate)) + geom_point() + 
+  geom_smooth(method = "loess") + scale_x_reverse() + labs(x = "Rank (Descending)", y = "In-State Tuition",
+  title = "Freshman retention rate as a function of rank")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
