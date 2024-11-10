@@ -43,8 +43,6 @@ print(order(percentage_of_failed_transactions_per_hour,decreasing = TRUE))
 
 ```
 
-we know the highest failure rate over of all transactions over the entire hour is on 
-
 
 [1] "2020-02-13 20"
 [1] "2020-02-13 19"
@@ -53,34 +51,10 @@ we know the highest failure rate over of all transactions over the entire hour i
 [1] "2020-02-13 23"
 [1] "2020-02-12 20"
 
-we know what the anomoly is, we know what days it's the highest, so for those days lets look to see if there is a combination of variables 
-that they have in common 
-
-
-
-highest failure at CONSUMER_FINANCE
-
-
-
-
-the highest failure rate by pg was "not_avaible" which before was a empty element
-
-
-
-I have identified that these variables are most highly associated with the peak transaction failure rate. What i need to do now is use a isolated forest model to determine which specific combination of these variables was the most highly associated with transaction failure rate. So i can know what was causing the trans action failure rate in the first place. 
-
-CONSUMER_FINANCE
-pg was "not_avaible"
-UPI_Collect 
-
-
-
-
 
 ```{r}
 
 transactions$weighted_failure_score <- transactions[,9] * transactions[,1] *100
-
 
 test_pmt <- as.factor(transactions$pmt)
 (levels(test_pmt))
@@ -122,12 +96,17 @@ anamolous
 ```
 
 
-[1] "2020-02-13 20"
-[1] "2020-02-13 19"
-[1] "2020-02-14 21"
-[1] "2020-02-14 20"
-[1] "2020-02-13 23"
-[1] "2020-02-12 20"
+4170	1391	1086	fanfight	UPI	PAYTM_UPI	UPI_PAY	2020-02-12 02	UPI
+3913	369	200	urbanclap	UPI	PAYTM_V2	UPI_PAY	2020-02-12 04	UPI
+4442	422	209	urbanclap	UPI	PAYTM_V2	UPI_PAY	2020-02-12 05	UPI
+3908	538	359	fanfight	UPI	PAYTM_UPI	UPI_PAY	2020-02-12 07	UPI
+4169	550	365	fanfight	UPI	PAYTM_UPI	UPI_PAY	2020-02-12 11	UPI
+3914	722	470	fanfight	UPI	PAYTM_UPI	UPI_PAY	2020-02-12 12	UPI
+3910	1025	639	fanfight	UPI	PAYTM_UPI	UPI_PAY	2020-02-12 13	UPI
+3944	1258	767	fanfight	UPI	PAYTM_UPI	UPI_PAY	2020-02-12 14	UPI
+4467	3340	2462	fanfight	UPI	PAYTM_UPI	UPI_PAY	2020-02-12 15	UPI
+4970	1197	952	fanfight	WALLET	PAYTM	DIRECT_WALLET_DEBIT	2020-02-12 15	PAYTM
+
 
 
 
