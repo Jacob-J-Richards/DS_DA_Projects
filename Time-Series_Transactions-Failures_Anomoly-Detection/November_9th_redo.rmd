@@ -4,25 +4,21 @@ output: html_document
 date: "2024-11-09"
 ---
 
-1.1.1 Which dimension combination caused the issue?
-Explore the data and visualization to understand when the issue (possibly a significant number of failures in transactions ) 
-happened and which combination of dimension (pmt, pg, bank and sub_type) has the impact.
-Tip: Identify the method to detect an anomaly in a metric across 4+ dimensions and apply that method to find the above.
-
+1.1.1 Which dimension combination caused the issue? Explore the data and visualization to understand when the issue (possibly a significant number of failures in transactions ) happened and which combination of dimension (pmt, pg, bank and sub_type) has the impact. Tip: Identify the method to detect an anomaly in a metric across 4+ dimensions and apply that method to find the above.
 
 ```{r}
-setwd("/Users/jacobrichards/Desktop/DS assesment/DS_Exam_2")
+setwd("C:/Users/jake pc/Desktop/DS_Exam_2")
 transactions <- read.csv(file="transactions(1).csv",header=TRUE)
 
 transactions_original <- transactions
 ```
 
-add column for failure % of each observation 
+add column for failure % of each observation
+
 ```{r}
 failure_percent <- numeric(nrow(transactions))
 failure_percent <- (1 - transactions[,2]/transactions[,1])*100
 transactions$failure_percent <- failure_percent
-
 
 transactions <- transactions[order(as.POSIXct(transactions[,7], format = "%Y-%m-%d %H")),]
 (unique_hours <- unique(transactions[,7]))
@@ -32,24 +28,16 @@ for (i in 1:72) {
   percentage_of_failed_transactions_per_hour[i] <- ( 1 - sum(transactions[transactions[,7] == unique_hours[i],2])/sum(transactions[transactions[,7] == unique_hours[i],1]))
 }
 
+failed_transactions_per_hour <- numeric(length(unique_hours))
+for (i in 1:72) {
+  percentage_of_failed_transactions_per_hour[i] <- ( 1 - sum(transactions[transactions[,7] == unique_hours[i],2]))
+}
+
+plot(x=seq(1,72,by=1),y=failed_transactions_per_hour,type="o")
 
 plot(x=seq(1,72,by=1),y=percentage_of_failed_transactions_per_hour,type="o")
-abline(v = 70, col = "red", lty = 2) 
-abline(v = 20, col = "blue", lty = 2) 
-abline(v = 45, col = "green", lty = 2) 
-
-percentage_of_failed_transactions_per_hour[45]
-print(order(percentage_of_failed_transactions_per_hour,decreasing = TRUE))
-
 ```
 
-
-[1] "2020-02-13 20"
-[1] "2020-02-13 19"
-[1] "2020-02-14 21"
-[1] "2020-02-14 20"
-[1] "2020-02-13 23"
-[1] "2020-02-12 20"
 
 
 ```{r}
@@ -95,21 +83,8 @@ anamolous <- transactions_original[row.names(high_mahalanobis_transactions),]
 anamolous
 ```
 
+1.1.2 When did the issue happen? What is the starting hour and ending hour of the reported issue? Illustrate your answer with a plot
 
-4170	1391	1086	fanfight	UPI	PAYTM_UPI	UPI_PAY	2020-02-12 02	UPI
-3913	369	200	urbanclap	UPI	PAYTM_V2	UPI_PAY	2020-02-12 04	UPI
-4442	422	209	urbanclap	UPI	PAYTM_V2	UPI_PAY	2020-02-12 05	UPI
-3908	538	359	fanfight	UPI	PAYTM_UPI	UPI_PAY	2020-02-12 07	UPI
-4169	550	365	fanfight	UPI	PAYTM_UPI	UPI_PAY	2020-02-12 11	UPI
-3914	722	470	fanfight	UPI	PAYTM_UPI	UPI_PAY	2020-02-12 12	UPI
-3910	1025	639	fanfight	UPI	PAYTM_UPI	UPI_PAY	2020-02-12 13	UPI
-3944	1258	767	fanfight	UPI	PAYTM_UPI	UPI_PAY	2020-02-12 14	UPI
-4467	3340	2462	fanfight	UPI	PAYTM_UPI	UPI_PAY	2020-02-12 15	UPI
-4970	1197	952	fanfight	WALLET	PAYTM	DIRECT_WALLET_DEBIT	2020-02-12 15	PAYTM
+```{r}
 
-
-
-
-
-
-
+```
