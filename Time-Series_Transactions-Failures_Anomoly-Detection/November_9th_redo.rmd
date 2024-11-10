@@ -11,8 +11,10 @@ Tip: Identify the method to detect an anomaly in a metric across 4+ dimensions a
 
 
 ```{r}
-setwd("C:/Users/jake pc/Desktop/DS_Exam_2")
+setwd("/Users/jacobrichards/Desktop/DS assesment/DS_Exam_2")
 transactions <- read.csv(file="transactions(1).csv",header=TRUE)
+
+transactions_original <- transactions
 ```
 
 add column for failure % of each observation 
@@ -29,6 +31,7 @@ percentage_of_failed_transactions_per_hour <- numeric(length(unique_hours))
 for (i in 1:72) {
   percentage_of_failed_transactions_per_hour[i] <- ( 1 - sum(transactions[transactions[,7] == unique_hours[i],2])/sum(transactions[transactions[,7] == unique_hours[i],1]))
 }
+
 
 plot(x=seq(1,72,by=1),y=percentage_of_failed_transactions_per_hour,type="o")
 abline(v = 70, col = "red", lty = 2) 
@@ -54,73 +57,80 @@ we know what the anomoly is, we know what days it's the highest, so for those da
 that they have in common 
 
 
-lets start by visualising failure % by variables other than hour 
-```{r}
-
-
-(unique_pmt <- unique(transactions[,4]))
-
-
-
-percentage_of_failed_transactions_per_pmt <- numeric(length(unique_pmt))
-for (i in 1:5) {
-  percentage_of_failed_transactions_per_pmt[i] <- ( 1 - sum(transactions[transactions[,4] == unique_pmt[i],2])/sum(transactions[transactions[,4] == unique_pmt[i],1]))
-}
-
-unique_pmt <- factor(unique_pmt)
-
-print(unique_pmt)
-
-plot(x=as.numeric(unique_pmt),y=percentage_of_failed_transactions_per_pmt,type="p")
-
-
-```
 
 highest failure at CONSUMER_FINANCE
 
 
 
 
-```{r}
-
-transactions[transactions[,5] == "",5] <- "not_availible"
-
-(unique_pg <- unique(transactions[,5]))
-
-
-percentage_of_failed_transactions_per_pg <- numeric(length(unique_pg))
-for (i in 1:20) {
-  percentage_of_failed_transactions_per_pg[i] <- ( 1 - sum(transactions[transactions[,5] == unique_pg[i],2])/sum(transactions[transactions[,5] == unique_pg[i],1]))
-}
-
-unique_pg <- factor(unique_pg)
-
-print(unique_pg)
-
-plot(x=as.numeric(unique_pg),y=percentage_of_failed_transactions_per_pg,type="p")
-
-print(levels(unique_pg)[10])
-```
-
 the highest failure rate by pg was "not_avaible" which before was a empty element
 
 
+
+I have identified that these variables are most highly associated with the peak transaction failure rate. What i need to do now is use a isolated forest model to determine which specific combination of these variables was the most highly associated with transaction failure rate. So i can know what was causing the trans action failure rate in the first place. 
+
+CONSUMER_FINANCE
+pg was "not_avaible"
+UPI_Collect 
+
+
+
+
+
 ```{r}
 
-(subtype <- unique(transactions[,6]))
+transactions$weighted_failure_score <- transactions[,9] * transactions[,1] *100
+
+
+test_pmt <- as.factor(transactions$pmt)
+(levels(test_pmt))
+
+test_pg <- as.factor(transactions$pg)
+(levels(test_pg))
+
+(transactions$bank[levels(as.factor(transactions$bank == 304))])
+
+# Convert categorical features to numeric (using dummy encoding or integer encoding)
+transactions$pmt <- as.numeric(as.factor(transactions$pmt))
+transactions$pg <- as.numeric(as.factor(transactions$pg))
+transactions$bank <- as.numeric(as.factor(transactions$bank))
+transactions$sub_type <- as.numeric(as.factor(transactions$sub_type))
+
+# Select relevant features for anomaly detection
+features <- transactions[, c("weighted_failure_score", "pmt", "pg", "bank", "sub_type")]
+
+# Calculate the Mahalanobis distance for each observation
+center <- colMeans(features)
+cov_matrix <- cov(features)
+mahalanobis_distances <- mahalanobis(features, center, cov_matrix)
+
+# Append Mahalanobis distances to the transactions dataframe
+transactions$mahalanobis_score <- mahalanobis_distances
+
+# Determine a threshold for high anomaly scores (e.g., 95th percentile)
+threshold <- quantile(mahalanobis_distances, 0.999)
+high_mahalanobis_transactions <- transactions[transactions$mahalanobis_score > threshold, ]
+
+# Display the top anomalous transactions
+head(high_mahalanobis_transactions, 100)
 
 
 
-percentage_of_failed_transactions_per_pmt <- numeric(length(unique_pmt))
-for (i in 1:5) {
-  percentage_of_failed_transactions_per_pmt[i] <- ( 1 - sum(transactions[transactions[,4] == unique_pmt[i],2])/sum(transactions[transactions[,4] == unique_pmt[i],1]))
-}
+anamolous <- transactions_original[row.names(high_mahalanobis_transactions),]
 
-unique_pmt <- factor(unique_pmt)
-
-print(unique_pmt)
-
-plot(x=as.numeric(unique_pmt),y=percentage_of_failed_transactions_per_pmt,type="p")
-
+anamolous
 ```
+
+
+[1] "2020-02-13 20"
+[1] "2020-02-13 19"
+[1] "2020-02-14 21"
+[1] "2020-02-14 20"
+[1] "2020-02-13 23"
+[1] "2020-02-12 20"
+
+
+
+
+
 
