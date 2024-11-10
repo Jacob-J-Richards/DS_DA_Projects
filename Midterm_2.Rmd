@@ -1,0 +1,119 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-11-10"
+---
+# Module 7
+- Data points (x,y) are naturally paired samples as x and y come from the same observation
+
+## Pearson Correlation Coefficient 
+
+### Proc corr - correlation coeffient matrix 
+will produce matrix of cooraltion coeficients, rows = with, columns = vards, with output in order of rank corr coef largest to least
+```{r,eval=FALSE}
+PROC CORR DATA= fitness RANK;
+  VAR Runtime Age Weight Run_Pulse Rest_Pulse
+      Maximum_Pulse Performance;
+  WITH Oxygen_Consumption;
+RUN;
+```
+
+output:
+the p-values are testing H0: population corr coef = 0
+```{r,eval=FALSE}
+Pearson Correlation Coefficients, N = 31
+                        Prob > |r| under H0: Rho=0
+Oxygen_Consumption   Performance        Runtime      Rest_Pulse
+                         0.86377       -0.86219        -0.39935
+
+         PVALUE          <.0001         <.0001          0.0260
+
+Oxygen_Consumption     Run_Pulse          Age     Maximum_Pulse
+                        -0.39808       -0.31162        -0.23677
+        PVALUE           0.0266         0.0879          0.1997
+
+Oxygen_Consumption        Weight
+                        -0.16289
+            PVALUE       0.3813
+
+```
+
+
+```{r,eval=FALSE}
+± 1.00 	Perfect Correlation
+± 0.80 	Strong Correlation
+± 0.50 	Moderate Correlation
+± 0.20 	Weak Correlation
+± 0.00 	No Correlation
+```
+
+### Proc corr - NOSIMPLE
+will produce matrix of pearson corr coef's with pvalue directly beneath it, all var variables will be the rows and columns so the main diagonal will be all 1's. 
+```{r,eval=FALSE}
+PROC CORR DATA= fitness NOSIMPLE;
+  VAR Runtime Age Weight Run_Pulse Rest_Pulse Maximum_Pulse Performance;
+RUN;
+```
+output 
+
+### R-square - aka coef of determination
+is just the (pearson correlation coef)^2
+variables corresponding to signifigant R^2 p-values have a significant linear correlation between each other.
+
+
+### conditions of regression analysis validity
+errors are the residual at each point
+```{r,eval=FALSE}
+The errors have a mean of 0 at each value of the independent variable.
+The errors have the same variance at each value of the independent variable.
+The errors are independent.
+The errors are normally distributed (for confidence intervals and tests).
+```
+
+plot the following to verify these conditions are met
+
+residuals vs. linear model estimated response variable (modeled dependent variable)
+Residuals vs. actual predictor values given to produce regression line 
+```{r,eval=FALSE}
+GOPTIONS RESET=ALL;
+PROC REG DATA= fitness;
+MODEL Oxygen_Consumption=Performance;
+ PLOT R.*(P. Performance);
+PLOT STUDENT.*OBS. / 
+VREF=3 2 -2 -3
+VAXIS=-4 TO 4 BY 1
+HAXIS=0 TO 32 BY 1;
+PLOT RESIDUAL.* NQQ.;
+SYMBOL V=DOT;
+TITLE "Plots Of Diagnostic Statistics";
+RUN;
+QUIT;
+```
+
+Plot of residuals vs. predicted values of Oxygen_Consumption (dependent variable)
+
+  * randomly scattered about the reference line at 0
+  * no apparent trends or patterns
+  * check
+
+
+Plot of residuals vs. observed values of Performance (independent variable)
+  
+  Since residuals scatter around 0, we can verify the assumption:
+  
+  * Have a mean of 0 at each value of the independent variable.
+  * Because of no apparent trends or patterns in the residuals, we can verify the assumption:
+  * Have the same variance at each value of the independent variable.
+  * check
+  
+  
+Studentized Residuals vs. actual predictor values given to produce regression line 
+
+  * produce studentship residuals vs observation number
+  * no unusually large residuals -> check 
+  * produce residuals vs normal quantiles 
+  * straight qq line --> normal -> check 
+  
+
+
+left off at 7.4.5
