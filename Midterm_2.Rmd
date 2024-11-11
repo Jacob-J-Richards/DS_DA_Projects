@@ -246,4 +246,226 @@ and the natural logarithim LOG() was better for Diastolic blood pressure
 
 
 
+# Module 10 
+
+## reading in data
+
+```{r,eval=FALSE}
+setwd("C:/Users/jake pc/Desktop/test_file") #file path 
+flowers <- read.table(file = 'flower(1).txt', header = TRUE, sep = "\t", stringsAsFactors = TRUE) #only needs file name
+```
+additional function arguments 
+```{r,eval=FALSE}
+dec = "," #if you're in europe 
+na.strings = "*" #if they represent an empty element by somehing other than NA
+sep = "\t" #tab delimeted 
+sep = "," # for csv 
+```
+
+## indexing data frames
+
+```{r,eval=FALSE}
+flowers[-(1:85), -c(4, 7, 8)]
+##    treat nitrogen block weight leafarea
+## 86 notip      low     1   6.01     17.6
+## 87 notip      low     1   9.93     12.0
+## 88 notip      low     1   7.03      7.9
+## 89 notip      low     2   9.10     14.5
+## 90 notip      low     2   9.05      9.6
+## 91 notip      low     2   8.10     10.5
+## 92 notip      low     2   7.45     14.1
+## 93 notip      low     2   9.19     12.4
+## 94 notip      low     2   8.92     11.6
+## 95 notip      low     2   8.44     13.5
+## 96 notip      low     2  10.60     16.2
+```
+
+
+## ordering data frames
+the rows of the data frame will be ordered such that both conditions are satisfied 
+```{r,eval=FALSE}
+block_height_ord <- flowers[order(flowers$block, flowers$height), ]        
+block_height_ord
+```
+
+same thing but reverse the desired order for one of the variables 
+```{r,eval=FALSE}
+block_revheight_ord <- flowers[order(flowers$block, -flowers$height), ]        
+block_revheight_ord
+```
+
+reverse the order of a factor column - now the df has been ordered by least to greatest of height and reverse alphebetical order of nitrogren, mutually satisfied
+```{r,eval=FALSE}
+block_revheight_ord <- flowers[order(-xtfrm(flowers$nitrogen), flowers$height), ]        
+block_revheight_ord
+```
+
+## factor - order
+
+this will print the data frame rows ordered by low medium high of nitrogen
+```{r,eval=FALSE}
+flowers$nitrogen <- factor(flowers$nitrogen, 
+                           levels = c("low", "medium", "high"))    
+nit_ord <- flowers[order(flowers$nitrogen),]
+nit_ord
+```
+
+
+## merging data frames 
+
+if two data frames have at leat one variable in common you can just merge them
+the merged data set will only contain observations which have a value for the common variable.
+```{r,eval=FALSE}
+taxa <- data.frame(GENUS = c("Patella", "Littorina", "Halichondria", "Semibalanus"),
+         species = c("vulgata", "littoria", "panacea", "balanoides"),
+         family = c("patellidae", "Littorinidae", "Halichondriidae", "Archaeobalanidae"))
+
+
+zone <- data.frame(genus = c("Laminaria", "Halichondria", "Xanthoria", "Littorina", 
+                             "Semibalanus", "Fucus"),
+                   species = c("digitata", "panacea", "parietina", "littoria", 
+                               "balanoides", "serratus"),
+                   zone = c( "v_low", "low", "v_high", "low_mid", "high", "low_mid"))
+
+
+taxa_zone <- merge(x = taxa, y = zone)
+taxa_zone
+```
+
+
+
+ If we want even the rows without any common variable entry, then we use option 
+```{r,eval=FALSE}
+taxa_zone <- merge(x = taxa, y = zone, all = TRUE)
+taxa_zone
+#the missing value will just be NA
+```
+
+
+if we want to merge data frames by a variable but the variable names in each are different then we
+```{r,eval=FALSE}
+taxa_zone <- merge(x = taxa, y = zone, by.x = "GENUS", by.y = "genus", all = TRUE)
+taxa_zone
+```
+
+or multiple variable names 
+```{r,eval=FALSE}
+taxa_zone <- merge(x = taxa, y = zone, by.x = c("species", "GENUS"), 
+                    by.y = c("species", "genus"), all = TRUE)
+```
+
+
+left off 10.4.7
+
+
+
+
+
+
+
+
+# Module 12
+
+
+## general form
+```{r,eval=FALSE}
+ggplot(data = diamonds, aes(x = carat, y = price, color = color)) + 
+  geom_point()
+
+# layer one 
+ggplot(data = diamonds, aes(x = carat, y = price, color = stratificaion_category))
+#data, variables of data, stratify variables by category and plot that by color dimension just as price is plotted by the y dimension
+
+# layer two 
+ geom_point() 
+# represent these specified variables and representation distinctions as points 
+
+ # you can hard code the color if you want 
+   geom_point(color = "blue")
+```
+
+other options for aesthetic mapping, (how the values of the data relate to its visual representation)
+```{r,eval=FALSE}
+
+  variable =   position (e.g., x and y coordinates)
+    color (outside color)
+    fill (inside color)
+    shape (of points; e.g., circle, triangle)
+    linetype (e.g., solid line, dotted line)
+    size
+    alpha (transparency)
+
+
+```
+
+
+simplify the addition of plot layers 
+```{r,eval=FALSE}
+p1 <- ggplot(mpg, aes(displ, hwy)) +
+        geom_point()
+p1  +  scale_x_continuous("Engine displacement (L)") + scale_y_continuous("Highway MPG") # all of these options can be included in here
+
+p1 + labs(x = "Engine displacement (L)", y = "Highway MPG") #label axis
+
+p1 + scale_x_continuous(limits = c(2, 6)) # range
+
+p1 + xlim(2, 6) 
+
+p1 + scale_x_continuous(breaks = c(2, 4, 6)) # this will set where the grid lines of the backround are drawn
+
+
+p1 + scale_x_continuous(breaks = c(2, 4, 6), label = c("two", "four", "six"))
+#will label selected breaks with text instead of numbers 
+```
+
+
+## additional layers 
+
+the color dimension is assaigned to the categories of drv
+```{r,eval=FALSE}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color=drv)) + 
+  geom_point() + geom_smooth(method="lm") + 
+  labs(title ="MPG vs Engine size", x = "Engine size", y = "MPG") + 
+  
+  # allows us to assign that dimension representation manually
+  scale_colour_manual(name = "Drive", values = c("lightpink", "darkseagreen", "lightblue"))
+```
+
+
+
+in this case cty is a continuous variable, so the color assaignment will be likewise continous shades of blue
+```{r,eval=FALSE}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color=cty)) + 
+  geom_point() 
+```
+
+
+if we don't like the automatic color gradient, we can specify the one desired
+```{r,eval=FALSE}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color=cty)) + 
+  geom_point() + 
+  scale_color_gradient(name = "City MPG", low = "red", high = "blue")
+```
+
+
+
+
+## statistical layers
+
+### histograms
+#change lengthout of bins or specify a width
+```{r}
+(data(diamonds))
+ggplot(data = diamonds, aes(x = carat)) + geom_histogram(bins=100)
+#or 
+#geom_histogram(binwidth=0.001) 
+```
+
+### histogram of density
+```{r}
+# Create histogram with density
+# the variable `density` is created by stat_bin()
+ggplot(diamonds, aes(carat)) + 
+  geom_histogram(aes(y = ..density..), binwidth = 0.1)
+```
 
