@@ -132,10 +132,6 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 ![failed_transactions_plot](https://github.com/user-attachments/assets/8b0ba13e-4337-4773-bc82-414068e5dd2c)
 
 
-``` r
-ggsave("failed_transactions_plot.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
-```
-
 The table is the top 6 anomalies, the red dots in the plot of transactions failures per hour are these top 6 anomalies. 
 
 This is a sports event gambling service, the top 6 anomalies all occurred from users failure to repay gambling debts.
