@@ -137,7 +137,6 @@ It appears that the issue got better on Febuary 14th because from the graph of f
 failures <- transactions_original[,1] - transactions_original[,2]
 failures_set <- cbind(failures,transactions_original)
 
-anamolous
 merchants <- table(anamolous[,3])
 
 merchants_failures <- aggregate(failures_set$failures, by = list(failures_set$mid), FUN = sum)
@@ -145,18 +144,33 @@ merchants_t <- aggregate(failures_set$t, by = list(failures_set$mid), FUN = sum)
 
 merchants_failure_rate <- merchants_failures[,2]/merchants_t[,2]
 
-
 merchants_sums <- cbind(merchants_failures,merchants_failure_rate)
-merchants_sums
 merchants_sums <- merchants_sums[order(merchants_sums[,2],decreasing = TRUE),]
 merchants_sums <- as.data.frame(merchants_sums)
+colnames(merchants_sums) <- c("merchant","failures","failure_rate")
 
-merchants_sums 
+(merchants_sums)
 
+library(ggplot2)
+
+# Load the data
+merchants_data <- merchants_sums
+
+# Create the plot
+ggplot(merchants_data, aes(x = reorder(merchant, -failures), y = failures)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  geom_line(aes(y = failure_rate * max(failures), group = 1), color = "red", size = 1) +
+  geom_point(aes(y = failure_rate * max(failures)), color = "red", size = 2) +
+  scale_y_continuous(
+    name = "Number of Failures",
+    sec.axis = sec_axis(~ . / max(merchants_data$failures), name = "Failure Rate")
+  ) +
+  labs(title = "Failures and Failure Rate by Merchant", x = "Merchant") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 1.1.3 For whom did the issue happen?
 Which all merchants were impacted because of the issue and which all merchants were not? Illustrate your answer with a plot and a table.
 
-All of the merchants were effected. 
+All of the merchants were effected. The failure rates for the merchants were not significantly different from each other. The top two merchants had error events of significantly greater magnitude than the other merchants highlighting the relevant combination of predictor variables for the anomaly detection model. 
 
