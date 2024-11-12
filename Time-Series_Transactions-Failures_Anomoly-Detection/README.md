@@ -133,7 +133,7 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 
 These red dots and spikes on top of a typical transaction failure curve are from a sports gambling service. The red dots represent the top 6 transactions in terms of anamoly rating (among 20,000) by the mahalanobis method. All users in these observations used the exact same Payment Gateway, Payment Method, sub-type, and bank which is suspicious but inconclusive. The transaction failures not along the spike are actually completely normal. Notice how the spike deviated from the rest of the pattern of the data set. 
 
-In futher explanation: the dips in the failed transaction curve is simply lack of consumer activity overnight. 
+Further explanation: the dips in the failed transaction curve is simply lack of consumer activity overnight. Aswell, the failure curve which the spikes are plotted on are expected for transactions. 
 
 
 
