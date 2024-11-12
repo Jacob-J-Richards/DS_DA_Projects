@@ -1,9 +1,18 @@
+---
+title: "Transaction Failures Anamoly Detection"
+output:
+  html_document: 
+    keep_md: true
+  pdf_document: default
+date: "Completed November 12th 2024"
+---
+Given: the following Data sheet (abbreviated)
 
-Given: the following Data sheet 
+
 
 
 ``` r
-print(head(transactions,10))
+print(head(transactions[,1:6],10))
 ```
 
 ```
@@ -17,18 +26,7 @@ print(head(transactions,10))
 ## 7  2       1      fanfight   CARD  GOCASHFREE                      
 ## 8  1       1        zivame   CARD        PAYU                      
 ## 9  2       2   purplle.com   CARD       PAYTM                      
-## 10 1       1       drivezy   CARD  GOCASHFREE                      
-##               hr                                bank
-## 1  2020-02-14 06                             NB_CITI
-## 2  2020-02-14 06                             NB_SYNB
-## 3  2020-02-14 11                         AIRTELMONEY
-## 4  2020-02-14 12 THE SATARA SAHAKARI BANK LTD MUMBAI
-## 5  2020-02-14 06                                 DCB
-## 6  2020-02-14 07           SARVA HARYANA GRAMIN BANK
-## 7  2020-02-14 09          Abhyudaya Cooperative Bank
-## 8  2020-02-14 09                   South Indian Bank
-## 9  2020-02-14 07          Abhyudaya Cooperative Bank
-## 10 2020-02-14 02                    Karur Vysya Bank
+## 10 1       1       drivezy   CARD  GOCASHFREE
 ```
 
 Calculate and append failure totals and percentages by hour.

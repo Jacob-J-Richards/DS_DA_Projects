@@ -1,16 +1,20 @@
 ---
 title: "Transaction Failures Anamoly Detection"
 output:
-  html_document:
+  html_document: 
     keep_md: true
   pdf_document: default
 date: "Completed November 12th 2024"
 ---
+Given: the following Data sheet (abbreviated)
 
 ```{r,include=FALSE}
 setwd("/Users/jacobrichards/Desktop/DS assesment/DS_Exam_2")
 transactions <- read.csv(file="transactions(1).csv",header=TRUE)
+```
 
+```{r}
+print(head(transactions[,1:6],10))
 ```
 
 Calculate and append failure totals and percentages by hour.
@@ -24,19 +28,21 @@ transactions <- transactions[order(as.POSIXct(transactions[,7], format = "%Y-%m-
 unique_hours <- unique(transactions[,7])
 
 percentage_of_failed_transactions_per_hour <- numeric(length(unique_hours))
-
-
 for (i in 1:72) {
   percentage_of_failed_transactions_per_hour[i] <- ( 1 - sum(transactions[transactions[,7] == unique_hours[i],2])/sum(transactions[transactions[,7] == unique_hours[i],1]))
 }
+
 failed_transactions_per_hour <- numeric(length(unique_hours))
-
-
 for (i in 1:72) {
   failed_transactions_per_hour[i] <- sum(transactions[transactions[,7] == unique_hours[i],1]) - sum(transactions[transactions[,7] == unique_hours[i],2])
 }
+```
 
+```{r,include=FALSE}
 library('dplyr')
+```
+
+```{r}
 unique_hours_df <- data.frame(unique_hour = unique_hours, index = 1:length(unique_hours))
 transactions <- transactions %>%
   mutate(unique_hour = transactions[[7]]) %>%
@@ -72,14 +78,16 @@ anamolous
 
 Plot failed transactions per hour by line with red dots highlighting the top 6 anomalous observations.
 
+```{r,include=FALSE}
+library('ggplot2')
+```
+
 ```{r}
 failed_transactions_per_hour_anamoly <- failed_transactions_per_hour[anamolous$index]
 
 failed_transactions <- data.frame(hours = unique_hours, failedTransactions = failed_transactions_per_hour, x_index = seq(1:72))
 
 anomalous_data <- data.frame(hour_anamoly = anamolous$index,FailedTransactions_anamoly = failed_transactions_per_hour[anamolous$index])
-
-library('ggplot2')
 
 ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + 
   geom_area(fill = "blue", alpha = 0.25) + 
