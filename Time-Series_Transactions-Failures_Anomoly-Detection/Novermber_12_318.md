@@ -1,13 +1,5 @@
----
-title: "Transaction Failures Anamoly Detection"
-output:
-  html_document: 
-    keep_md: true
-  pdf_document: default
-date: "Completed November 12th 2024"
----
 
-
+## Transaction Failures Anamoly Detection
 
 Calculate and append failure totals and percentages by hour.
 
