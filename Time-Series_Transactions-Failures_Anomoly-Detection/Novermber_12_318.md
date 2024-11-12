@@ -127,7 +127,8 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
            panel.grid.major.x = element_blank())
 ```
 
-![](Novermber_12_318_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+![failed_transactions_plot](https://github.com/user-attachments/assets/8b0ba13e-4337-4773-bc82-414068e5dd2c)
+
 
 ``` r
 ggsave("failed_transactions_plot.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
