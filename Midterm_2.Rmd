@@ -1,8 +1,8 @@
 ---
 title: "Untitled"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 date: "2024-11-10"
 ---
 
@@ -246,6 +246,25 @@ and the natural logarithim LOG() was better for Diastolic blood pressure
 
 # Module 9 
 
+## base functions 
+
+```{r,eval=FALSE}
+my_seq3 <- rep(2, times = 10)   # repeats 2, 10 times
+my_seq3
+##  [1] 2 2 2 2 2 2 2 2 2 2
+
+
+my_seq7 <- rep(c(3, 1, 10, 7), each = 3) # repeats each 
+                                         # element of the 
+                                         # series 3 times
+my_seq7
+##  [1]  3  3  3  1  1  1 10 10 10  7  7  7
+
+
+
+
+```
+
 
 
 # Module 10 
@@ -360,7 +379,7 @@ taxa_zone <- merge(x = taxa, y = zone, by.x = c("species", "GENUS"),
 ### reshaping data frames 
 
 melt() for wide to long df formats 
-```{r}
+```{r,eval=FALSE}
 library(reshape2)
 wide_data <- read.csv(file="wide_format_example.csv",header=TRUE)
 wide_data
@@ -371,7 +390,7 @@ long_data <- melt(data = wide_data, id.vars = c("StudentID", "Name"),
 ```
 
 dcast() for long to wide formatting
-```{r}
+```{r,eval=FALSE}
 # StudentID + Name ~ Subject, value.var = "Scores"
 #columns which will remain unchanged ~ column_of_categories, value.var = "value of those categories when it was wide"
 back_to_wide <- dcast(data = long_data, StudentID + Name ~ Subject, value.var = "Scores")
@@ -380,13 +399,13 @@ back_to_wide
 
 ### table function
 will give you the counts of whatever inputted stratification categories , factors and numeric
-```{r}
+```{r,eval=FALSE}
 flowers <- read.csv(file="flowers.csv",header=TRUE)
 table(flowers$nitrogen, flowers$treat)
 ```
 
 ### xtabs - ftable - tapply 
-```{r}
+```{r,eval=FALSE}
 # the right side of the ~ is all variables we would like to stratify and produce counts for 
 xtabs(~ nitrogen + treat + block, data = flowers)
 # will take care of data if not already factored 
@@ -406,7 +425,7 @@ tapply(flowers$height, flowers$nitrogen, summary, na.rm=TRUE)
 tapply(flowers$height, list(flowers$nitrogen,flowers$treat), summary, na.rm=TRUE)
 ```
 ### aggregate
-```{r}
+```{r,eval=FALSE}
 #input variables for function - stratification categories - function to apply 
 aggregate(flowers[, 4:7], by = list(nitrogen = flowers$nitrogen, treat = flowers$treat), FUN = mean)
 
@@ -420,7 +439,7 @@ aggregate(height ~ nitrogen + treat, FUN = mean, subset = block == "1", data = f
 
 # Module 11 
 
-```{r}
+```{r,eval=FALSE}
 
 ```
 
@@ -703,7 +722,6 @@ last_plot() + theme(panel.background = element_blank())
 ```
 
 
-
 ggsave
 ```{r,eval=FALSE}
 ggsave("test.pdf") #call underneath the plot command to save the last one 
@@ -711,4 +729,3 @@ ggsave("test.pdf") #call underneath the plot command to save the last one
 
 
 check and submit homework 12 
-
