@@ -1,6 +1,8 @@
 ---
 title: "Untitled"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 date: "2024-11-10"
 ---
 
@@ -355,7 +357,76 @@ taxa_zone <- merge(x = taxa, y = zone, by.x = c("species", "GENUS"),
 ```
 
 
-left off 10.4.7
+### reshaping data frames 
+
+melt() for wide to long df formats 
+```{r}
+library(reshape2)
+wide_data <- read.csv(file="wide_format_example.csv",header=TRUE)
+wide_data
+
+long_data <- melt(data = wide_data, id.vars = c("StudentID", "Name"),
+                   measured.vars = c("Math_Score", "English_Score", "Science_Score"),
+                   variable.name = "Subject", value.name = "Scores")
+```
+
+dcast() for long to wide formatting
+```{r}
+# StudentID + Name ~ Subject, value.var = "Scores"
+#columns which will remain unchanged ~ column_of_categories, value.var = "value of those categories when it was wide"
+back_to_wide <- dcast(data = long_data, StudentID + Name ~ Subject, value.var = "Scores")
+back_to_wide
+```
+
+### table function
+will give you the counts of whatever inputted stratification categories , factors and numeric
+```{r}
+flowers <- read.csv(file="flowers.csv",header=TRUE)
+table(flowers$nitrogen, flowers$treat)
+```
+
+### xtabs - ftable - tapply 
+```{r}
+# the right side of the ~ is all variables we would like to stratify and produce counts for 
+xtabs(~ nitrogen + treat + block, data = flowers)
+# will take care of data if not already factored 
+
+ftable(xtabs(~ nitrogen + treat + block, data = flowers))
+
+#evaluate the mean height of each category of nitrogen 
+tapply(flowers$height, flowers$nitrogen, mean)
+#the third argument is any function you would like, first is what it will be applied on, and second is the categories of division of the first variable 
+
+tapply(flowers$height, flowers$nitrogen, sd)
+
+# if there are NA's in the data and want to remove them 
+tapply(flowers$height, flowers$nitrogen, summary, na.rm=TRUE)
+
+# you can even pass lists of categories to stratify the variables to be evaluated by the function
+tapply(flowers$height, list(flowers$nitrogen,flowers$treat), summary, na.rm=TRUE)
+```
+### aggregate
+```{r}
+#input variables for function - stratification categories - function to apply 
+aggregate(flowers[, 4:7], by = list(nitrogen = flowers$nitrogen, treat = flowers$treat), FUN = mean)
+
+
+# and if we want to apply the previous to a subset we can do this 
+aggregate(height ~ nitrogen + treat, FUN = mean, subset = flowers < 7, data = flowers)
+
+aggregate(height ~ nitrogen + treat, FUN = mean, subset = block == "1", data = flowers)
+
+```
+
+# Module 11 
+
+```{r}
+
+```
+
+
+
+
 
 
 
@@ -454,7 +525,7 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color=cty)) +
 
 ### histograms
 #change lengthout of bins or specify a width
-```{r}
+```{r,eval=FALSE}
 (data(diamonds))
 ggplot(data = diamonds, aes(x = carat)) + geom_histogram(bins=100)
 #or 
@@ -462,10 +533,182 @@ ggplot(data = diamonds, aes(x = carat)) + geom_histogram(bins=100)
 ```
 
 ### histogram of density
-```{r}
+```{r,eval=FALSE}
 # Create histogram with density
 # the variable `density` is created by stat_bin()
 ggplot(diamonds, aes(carat)) + 
   geom_histogram(aes(y = ..density..), binwidth = 0.1)
 ```
+
+## bar plots 
+```{r,eval=FALSE}
+s <- ggplot(mpg, aes(fl, fill = drv))
+#fl is x axis variables, fill = drv means to stratify the color of sections of the bar plot by categories subset to the fl category.
+s + geom_bar()
+#create a bar plot with this, frequency 
+
+# Stack elements on top of one another
+s + geom_bar(position = "stack") 
+#does the same thing 
+
+# Arrange elements side by side
+s + geom_bar(position = "dodge")
+#instead of the categories of fl being within one bar, they're just next to each other now 
+
+
+# Stack elements on top of one another,normalize height
+s + geom_bar(position = "fill")
+# all bars will be the same height, the categories will be stacked to demonstraight the distribution of drv categories within fl categories 
+```
+
+
+
+## faceting
+
+```{r,eval=FALSE}
+ggplot(data = diamonds, aes(x = carat)) + 
+  geom_histogram(bins=30) + 
+  facet_grid(rows = vars(color))
+#plot a new row for each different color of carot 
+
+#or columns 
+
+ggplot(data = diamonds, aes(x = carat)) + 
+  geom_histogram(bins=30) + 
+  facet_grid(cols = vars(color))
+```
+
+
+## grouping
+
+
+```{r,eval=FALSE}
+base_plot <- ggplot(Oxboys, aes(age, height, group = Subject)) + geom_line() 
+
+base_plot + geom_smooth() #not specifying which group
+
+base_plot + geom_smooth(group=1) #specify which group
+
+base_plot + facet_wrap(vars(Subject)) # give each group (subject) their own facet
+
+```
+
+
+## themes 
+
+```{r,eval=FALSE}
+library(ggplot2)
+base <- ggplot(mpg, aes(cty, hwy, color = factor(cyl))) +
+  geom_jitter() + 
+  geom_abline(color = "grey50", linewidth = 2)
+base
+
+
+labelled <- base +
+  labs(x = "City mileage/gallon",
+       y = "Highway mileage/gallon",
+       color = "Cylinders",
+       title = "Highway and city mileage are highly correlated") +
+       scale_color_brewer(type = "seq", palette = "Spectral")
+labelled
+
+
+styled <- labelled +
+  theme_bw() + 
+  theme(plot.title = element_text(face = "bold", size = 12),
+    legend.background = element_rect(fill = "white", linewidth = 4, color = "white"),
+    legend.justification = c(0, 1),
+    legend.position = c(0, 1),
+    axis.ticks = element_line(color = "grey70", linewidth = 0.2),
+    panel.grid.major = element_line(color = "grey70", linewidth = 0.2),
+    panel.grid.minor = element_blank())
+styled
+```
+
+## themes list 
+
+```{r,eval=FALSE}
+theme_grey(): the signature ggplot2 theme with a light grey background and white gridlines.
+theme_bw(): a variation on theme_grey() that uses a white background and thin grey gridlines.
+theme_linedraw(): a theme with only black lines of various widths on white backgrounds, reminiscent of a line drawing.
+theme_light(): similar to theme_linedraw() but with light grey lines and axes, to direct more attention towards the data.
+theme_dark(): the dark cousin of theme_light(), with similar line sizes but a dark background. Useful to make thin colored lines pop out.
+theme_minimal(): a minimalistic theme with no background annotations.
+theme_classic(): a classic-looking theme, with x and y-axis lines and no gridlines.
+theme_void(): a completely empty theme.
+```
+
+## modifying theme components 
+
+### element text
+```{r,eval=FALSE}
+base_t <- base + labs(title = "This is a ggplot") + xlab(NULL) + ylab(NULL)
+base_t + theme(plot.title = element_text(size = 16))
+
+base_t + theme(plot.title = element_text(face = "bold", color = "red"))
+
+base_t + theme(plot.title = element_text(hjust = 1))
+
+# The margins here look asymmetric because there are also plot margins
+#input arguments of margin is amount of space in points to separate the text from whatever 
+#margin(t=top,r=right,b=bottom,l=left)
+base_t + theme(plot.title = element_text(margin = margin()))
+
+base_t + theme(plot.title = element_text(margin = margin(t=10,b=10)))
+```
+
+### element line
+element_line() draws lines parameterized by color, size, and linetype:
+```{r,eval=FALSE}
+base <- base + labs(title = "This is a ggplot") + xlab(NULL) + ylab(NULL)
+
+#make the backround grid major lines black
+base + theme(panel.grid.major = element_line(color = "black"))
+
+#change the thickness of the backround grid lines 
+base + theme(panel.grid.major = element_line(linewidth = 2))
+
+#make the major grin lines dotted 
+base + theme(panel.grid.major = element_line(linetype = "dotted"))
+
+```
+
+### element rect
+element_rect() draws rectangles, mostly used for backgrounds, parameterized by fill color and border color, size, and linetype.
+```{r,eval=FALSE}
+base + theme(plot.background = element_rect(fill = "grey80", color = NA))
+
+base + theme(plot.background = element_rect(color = "red", linewidth = 2))
+
+base + theme(panel.background = element_rect(fill = "linen"))
+```
+
+### element blank 
+
+remove elements 
+```{r,eval=FALSE}
+last_plot() + theme(panel.grid.minor = element_blank())
+#remove minor grid marks 
+```
+
+remove major grid marks
+```{r,eval=FALSE}
+last_plot() + theme(panel.grid.major = element_blank())
+ggsave("test.pdf")
+```
+
+remove the backround 
+```{r,eval=FALSE}
+last_plot() + theme(panel.background = element_blank())
+```
+
+
+
+ggsave
+```{r,eval=FALSE}
+ggsave("test.pdf") #call underneath the plot command to save the last one 
+```
+
+
+check and submit homework 12 
 
