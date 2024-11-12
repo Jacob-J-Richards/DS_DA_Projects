@@ -1,6 +1,7 @@
 
 ## Transaction Failures Anamoly Detection
 
+
 Calculate and append failure totals and percentages by hour.
 
 
