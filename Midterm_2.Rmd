@@ -350,16 +350,12 @@ flowers <- read.csv("flower(1).csv")
 
 tipplants <- subset(flowers, treat == "tip" & nitrogen == "medium" & block == 2, 
                     select = c("treat", "nitrogen", "leafarea"))
-tipplants"
-tip_med_2 <- subset(flowers, treat == "tip" & nitrogen == "medium" & block == 2)
-
+#select to chose which variables of the satisfying rows to extract
+tipplants
 
 tip_med_2 <- subset(flowers, treat == "tip" & nitrogen == "medium" & block == 2)
 tip_med_2
 
-tipplants <- subset(flowers, treat == "tip" & nitrogen == "medium" & block == 2, 
-                    select = c("treat", "nitrogen", "leafarea"))
-tipplants
 ```
 
 
