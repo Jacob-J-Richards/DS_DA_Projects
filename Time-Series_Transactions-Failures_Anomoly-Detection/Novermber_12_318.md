@@ -25,25 +25,8 @@ for (i in 1:72) {
   failed_transactions_per_hour[i] <- sum(transactions[transactions[,7] == unique_hours[i],1]) - sum(transactions[transactions[,7] == unique_hours[i],2])
 }
 
-library('dplyr')
 ```
 
-```
-## 
-## Attaching package: 'dplyr'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
 
 ``` r
 unique_hours_df <- data.frame(unique_hour = unique_hours, index = 1:length(unique_hours))
