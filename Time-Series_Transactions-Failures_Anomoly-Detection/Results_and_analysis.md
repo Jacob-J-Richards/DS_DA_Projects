@@ -1,10 +1,9 @@
 
 
 ## Transaction Failures Anamoly Detection
-Given: the following Data sheet (abbreviated)
+Given: the following Data sheet (abbreviated) containing transaction observations grouped by combinations of categorical variables, number of transactions, how many were sucessfull, and the hour in which the observation occured.
 
-
-
+Goal: Something went wrong in the last 72 hours, find out what happened. 
 
 ``` r
 print(head(transactions[,1:6],10))
@@ -58,7 +57,8 @@ transactions <- transactions %>%
 transactions_original <- transactions 
 ```
 
-Evaluate mahalanobis anamoly detection method.
+In examination of which combination of categorical variables caused problems: Evaluate mahalanobis anamoly detection method.
+
 
 
 ``` r
@@ -85,6 +85,8 @@ anamolous <- transactions_original[row.names(high_mahalanobis_transactions),]
 anamolous
 ```
 
+We find the top 6 anamolous observations, of which all were with the same merchant, used the same payment method, payment gateway, sub-type, and bank.
+
 ```
 ##          t success      mid pmt        pg sub_type            hr bank
 ## 4145  1025     639 fanfight UPI PAYTM_UPI  UPI_PAY 2020-02-12 13  UPI
@@ -102,60 +104,22 @@ anamolous
 ## 17688        24.99257    64
 ```
 
-Plot failed transactions per hour by line with red dots highlighting the top 6 anomalous observations.
+Lets see how these anamolies corespond to a plot of number of transaction failures per hour and percentage of transaction failures per hour. (red dots)
 
-
-
-
-
+Aswell the hour in which the % of failed transactions was greatest is the big green dot.
 
 ![failed_transactions_plot856](https://github.com/user-attachments/assets/83da3c80-a417-4df8-9d96-9285fad263a3)
 
+These red dots and spikes on top of a typical transaction failure curve are from a sports gambling service. The red dots represent the top 6 transactions in terms of anamoly rating (among 20,000) by the mahalanobis method. All users in these observations used the exact same Payment Gateway, Payment Method, sub-type, and bank which is suspicious but inconclusive. The transaction failures not along the spike are actually completely normal. Notice how the spike is a deviation from the the pattern of the rest of the failure count curve.
 
+We recomend that this merchant does not allow this combination of payment services in the future. 
 
-These red dots and spikes on top of a typical transaction failure curve are from a sports gambling service. The red dots represent the top 6 transactions in terms of anamoly rating (among 20,000) by the mahalanobis method. All users in these observations used the exact same Payment Gateway, Payment Method, sub-type, and bank which is suspicious but inconclusive. The transaction failures not along the spike are actually completely normal. Notice how the spike deviated from the rest of the pattern of the data set.
-
-Further explanation: the dips in the failed transaction curve is simply lack of consumer activity overnight. Aswell, the failure curve which the spikes are plotted on are expected for transactions.
-
-
-``` r
-failed_transactions_per_hour_anamoly <- failed_transactions_per_hour[anamolous$index]
-failed_transactions <- data.frame(hours = unique_hours, failedTransactions = percentage_of_failed_transactions_per_hour, x_index = seq(1:72))
-anomalous_data <- data.frame(hour_anamoly = anamolous$index, FailedTransactions_anamoly = percentage_of_failed_transactions_per_hour[anamolous$index])
-
-ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + 
-  geom_area(fill = "blue", alpha = 0.25) + 
-  geom_line(color = "black") +  
-  scale_x_continuous(
-    breaks = seq(1, 72, by = 6),  # Major breaks every 6 units for labels
-    minor_breaks = 1:72,  # Minor breaks to show all grid lines
-    labels = unique_hours[seq(1, length(unique_hours), by = 6)]
-  ) + 
-  coord_cartesian(ylim = c(0.26, 0.48)) +  
-  geom_point(data = anomalous_data, aes(x = hour_anamoly, y = FailedTransactions_anamoly),
-             color = "red", size = 2) + 
-  geom_point(aes(x = 45, y = 0.4553846), color = "#088F8F", size = 5) +
-  labs(title = "Failed Transactions Percentage by Hour with Anomalous Transactions in Red", 
-       x = "Hour (72)", 
-       y = "Failed Transactions Per Hour") +
-  theme(
-    axis.text.x = element_text(angle = 60, hjust = 1, size = 5), 
-    plot.background = element_rect(fill = "white", color = NA),
-    panel.background = element_rect(fill = "white", color = NA),
-    panel.grid.major.x = element_line(color = "lightgray", linewidth = 0.1),  # Very thin major x grid lines
-    panel.grid.minor.x = element_line(color = "lightgray", linewidth = 0.1),  # Very thin minor x grid lines
-    panel.grid.major.y = element_blank(), 
-    legend.position = c(0.09, 0.9),  
-    legend.background = element_rect(fill = "white", color = "black", size = 0.5),  
-    legend.key.size = unit(0.01, "lines"),  
-    legend.title = element_blank(),  
-    legend.text = element_text(size = 6)
-  )
-```
-
+Further explanation: the dips in the failed transaction curve is simply lack of consumer activity overnight. Aswell, the failure curve which the spikes are plotted on are expected for transactions. 
 
 ![percentage_failed_transactions_plot856](https://github.com/user-attachments/assets/eb5dc813-d885-4a29-8c68-de3772ff1fd1)
 
+It may be suprising that the plots of failure percentages and failure counts per hour are so dissimilar but there is an explanation. There is a consistent baseline of transaction failures that occur every hour, i.e. the steady stream of staggered automatic payments combined with random service interuptions and networking failures which cause failures of such payments etc.. Duiring the day, this baseline of transaction failures is proportioanlly diluted by the numeracy of sucessful transactions by actual people. Hence the top occurances of payment failures and highest failure percentages were no where near each other on the plot. In this context, percentage of transaction failures is not a meaningful measurement of there being something wrong as this measurement is so highly dependent upon totall transactions. 
 
 
-The big green dot is where failed transactions percentage is at it's maximum 
+
+
