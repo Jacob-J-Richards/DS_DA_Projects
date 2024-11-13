@@ -5,7 +5,7 @@ Given: the following Data sheet (abbreviated) containing transaction observation
 
 Goal: Something went wrong in the last 72 hours, find out what happened. 
 
-![data](https://github.com/user-attachments/assets/41ab66e8-e73c-4644-ae96-8668443fcdc0)
+![data](https://github.com/user-attachments/assets/3367830e-ba1f-490e-8db1-e219e7a87075)
 
 
 Calculate and append failure totals and percentages by hour.
