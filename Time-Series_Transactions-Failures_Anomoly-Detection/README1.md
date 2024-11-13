@@ -1,18 +1,6 @@
----
-title: "Untitled"
-output: 
-  html_document: 
-    keep_md: true
-date: "2024-11-13"
----
----
-title: "Transaction Failures Anamoly Detection"
-output:
-  html_document: 
-    keep_md: true
-  pdf_document: default
-date: "Completed November 12th 2024"
----
+
+
+## Transaction Failures Anamoly Detection
 Given: the following Data sheet (abbreviated)
 
 
