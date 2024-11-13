@@ -1,9 +1,4 @@
 ---
-title: "Untitled"
-output: html_document
-date: "2024-11-13"
----
----
 title: "Transaction Failures Anamoly Detection"
 output:
   html_document: 
@@ -14,13 +9,15 @@ date: "Completed November 12th 2024"
 Given: the following Data sheet (abbreviated)
 
 ```{r,include=FALSE}
-setwd("/Users/jacobrichards/Desktop/DS assesment/DS_Exam_2")
+setwd("C:/Users/jake pc/Desktop/DS_Exam_2")
 transactions <- read.csv(file="transactions(1).csv",header=TRUE)
 ```
 
 ```{r}
-print(head(transactions[,1:6],10))
+print(head(transactions,6))
 ```
+
+
 
 Calculate and append failure totals and percentages by hour.
 
@@ -126,7 +123,7 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
     legend.text = element_text(size = 6)
   )
 
-ggsave("failed_transactions_plot856.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
+ggsave("failed_transactions_plot835.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
 
 ```
 
@@ -163,8 +160,8 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
     axis.text.x = element_text(angle = 60, hjust = 1, size = 5), 
     plot.background = element_rect(fill = "white", color = NA),
     panel.background = element_rect(fill = "white", color = NA),
-    panel.grid.major.x = element_line(color = "lightgray", linewidth = 0.1),  # Very thin major x grid lines
-    panel.grid.minor.x = element_line(color = "lightgray", linewidth = 0.1),  # Very thin minor x grid lines
+    panel.grid.major.x = element_line(color = "gray", linewidth = 0.1),  # Thin major x grid lines
+    panel.grid.minor.x = element_line(color = "lightgray", linewidth = 0.05),  # Even thinner minor x grid lines
     panel.grid.major.y = element_blank(), 
     legend.position = c(0.09, 0.9),  
     legend.background = element_rect(fill = "white", color = "black", size = 0.5),  
@@ -176,7 +173,7 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 
 
 
-ggsave("percentage_failed_transactions_plot856.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
+ggsave("percentage_failed_transactions_plot.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
 
 ```
 
