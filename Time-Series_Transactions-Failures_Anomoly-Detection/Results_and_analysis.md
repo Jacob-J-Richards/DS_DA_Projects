@@ -5,23 +5,8 @@ Given: the following Data sheet (abbreviated) containing transaction observation
 
 Goal: Something went wrong in the last 72 hours, find out what happened. 
 
-``` r
-print(head(transactions[,1:6],10))
-```
+![data](https://github.com/user-attachments/assets/41ab66e8-e73c-4644-ae96-8668443fcdc0)
 
-```
-##    t success           mid    pmt          pg              sub_type
-## 1  2       1        zivame     NB        PAYU                      
-## 2  1       0     urbanclap     NB       PAYTM                      
-## 3  5       1 pharmeasytech WALLET AIRTELMONEY REDIRECT_WALLET_DEBIT
-## 4  1       1 pharmeasytech   CARD        PAYU                      
-## 5  1       1      fanfight   CARD    RAZORPAY                      
-## 6  3       3      fanfight   CARD  GOCASHFREE                      
-## 7  2       1      fanfight   CARD  GOCASHFREE                      
-## 8  1       1        zivame   CARD        PAYU                      
-## 9  2       2   purplle.com   CARD       PAYTM                      
-## 10 1       1       drivezy   CARD  GOCASHFREE
-```
 
 Calculate and append failure totals and percentages by hour.
 
