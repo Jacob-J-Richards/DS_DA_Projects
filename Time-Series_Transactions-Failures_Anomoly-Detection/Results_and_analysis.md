@@ -1,15 +1,13 @@
 
 
 ## Transaction Failures Anamoly Detection
-Given: the following Data sheet (abbreviated) containing transaction observations grouped by combinations of categorical variables, number of transactions, how many were sucessfull, and the hour in which the observation occured.
+Given: the following data sheet (abbreviated) containing transaction observations grouped by combinations of categorical variables, number of transactions, how many were sucessfull, and the hour in which the observation occured.
 
 Goal: Something went wrong in the last 72 hours, find out what happened. 
 
 ![data](https://github.com/user-attachments/assets/3367830e-ba1f-490e-8db1-e219e7a87075)
 
-
 Calculate and append failure totals and percentages by hour.
-
 
 ``` r
 failure_percent <- numeric(nrow(transactions))
@@ -30,9 +28,6 @@ for (i in 1:72) {
 }
 ```
 
-
-
-
 ``` r
 unique_hours_df <- data.frame(unique_hour = unique_hours, index = 1:length(unique_hours))
 transactions <- transactions %>%
@@ -43,8 +38,6 @@ transactions_original <- transactions
 ```
 
 In examination of which combination of categorical variables caused problems: Evaluate mahalanobis anamoly detection method.
-
-
 
 ``` r
 transactions$weighted_failure_score <- transactions[,9] * transactions[,1] *100 
@@ -64,7 +57,6 @@ high_mahalanobis_transactions <- transactions[transactions$mahalanobis_score > t
 
 anamolous <- transactions_original[row.names(high_mahalanobis_transactions),]
 ```
-
 
 ``` r
 anamolous
@@ -95,15 +87,15 @@ Aswell the hour in which the % of failed transactions was greatest is the big gr
 
 ![failed_transactions_plot856](https://github.com/user-attachments/assets/83da3c80-a417-4df8-9d96-9285fad263a3)
 
-These red dots and spikes on top of a typical transaction failure curve are from a sports gambling service. The red dots represent the top 6 transactions in terms of anamoly rating (among 20,000) by the mahalanobis method. All users in these observations used the exact same Payment Gateway, Payment Method, sub-type, and bank which is suspicious but inconclusive. The transaction failures not along the spike are actually completely normal. Notice how the spike is a deviation from the the pattern of the rest of the failure count curve.
+These red dots and spikes on top of a typical transaction failure curve are from a sports gambling service. The red dots represent the top 6 transactions in terms of anamoly rating (among 20,000 observations) by the mahalanobis method. All users in these observations used the exact same Payment Gateway, Payment Method, sub-type, and bank. The transaction failures not along the spike are actually completely normal. Notice how the spike is a deviation from the the pattern of the rest of the failure count curve.
 
-We recomend that this merchant does not allow this combination of payment services in the future. 
+We recomend that this merchant does not allow this combination of payment services in the future as it is abnormally failure prone even in this context where payment failures are very normal and expected.
 
 Further explanation: the dips in the failed transaction curve is simply lack of consumer activity overnight. Aswell, the failure curve which the spikes are plotted on are expected for transactions. 
 
 ![percentage_failed_transactions_plot856](https://github.com/user-attachments/assets/eb5dc813-d885-4a29-8c68-de3772ff1fd1)
 
-It may be suprising that the plots of failure percentages and failure counts per hour are so dissimilar but there is an explanation. There is a consistent baseline of transaction failures that occur every hour, i.e. the steady stream of staggered automatic payments combined with random service interuptions and networking failures which cause failures of such payments etc.. Duiring the day, this baseline of transaction failures is proportioanlly diluted by the numeracy of sucessful transactions by actual people. Hence the top occurances of payment failures and highest failure percentages were no where near each other on the plot. In this context, percentage of transaction failures is not a meaningful measurement of there being something wrong as this measurement is so highly dependent upon totall transactions. 
+It may be suprising that the plots of failure percentages and failure counts per hour are so dissimilar but there is an explanation. There is a consistent baseline of transaction failures that occur every hour, i.e. the steady stream of staggered automatic payments combined with random frequent service interuptions and networking failures which cause failures of such payments etc.. Duiring the day, this baseline of transaction failures is proportioanlly diluted by the numeracy of sucessful transactions by actual people. Hence the top occurances of payment failures and highest failure percentages were no where near each other on the plot. In this context, percentage of transaction failures is not a meaningful measurement of there being something wrong as this measurement is so highly dependent upon totall transactions. 
 
 
 
