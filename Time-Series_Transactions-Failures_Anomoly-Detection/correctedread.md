@@ -3,6 +3,7 @@
 Given: the following data sheet (abbreviated) containing transaction observations grouped by combinations of categorical variables, number of transactions, how many were successful, and the hour in which the observation occurred.
 
 Goal: Something went wrong in the last 72 hours, find out what happened.
+![data](https://github.com/user-attachments/assets/c9ddb426-0a15-421c-b22d-265910db38d7)
 
 Calculate and append failure totals and percentages by hour.
 
