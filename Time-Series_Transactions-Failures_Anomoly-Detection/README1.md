@@ -130,7 +130,8 @@ Plot failed transactions per hour by line with red dots highlighting the top 6 a
 ##   a single row.
 ```
 
-![](R_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+![failed_transactions_plot856](https://github.com/user-attachments/assets/83da3c80-a417-4df8-9d96-9285fad263a3)
+
 
 ```
 ## Warning in geom_point(aes(x = 45, y = 296, color = "Maximum % of Transaction Failure"), : All aesthetics have length 1, but the data has 72 rows.
@@ -188,7 +189,8 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 ##   a single row.
 ```
 
-![](R_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![percentage_failed_transactions_plot856](https://github.com/user-attachments/assets/eb5dc813-d885-4a29-8c68-de3772ff1fd1)
+
 
 ``` r
 ggsave("percentage_failed_transactions_plot856.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
