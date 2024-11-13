@@ -1,4 +1,9 @@
 ---
+title: "Untitled"
+output: html_document
+date: "2024-11-13"
+---
+---
 title: "Transaction Failures Anamoly Detection"
 output:
   html_document: 
@@ -9,7 +14,7 @@ date: "Completed November 12th 2024"
 Given: the following Data sheet (abbreviated)
 
 ```{r,include=FALSE}
-setwd("/Users/jacobrichards/Desktop/DS assesment/DS_Exam_2")
+setwd("C:/Users/jake pc/Desktop/DS_Exam_2")
 transactions <- read.csv(file="transactions(1).csv",header=TRUE)
 ```
 
@@ -111,79 +116,6 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
     axis.text.x = element_text(angle = 60, hjust = 1, size = 7), 
     plot.background = element_rect(fill = "white", color = NA),
     panel.background = element_rect(fill = "white", color = NA),
-    panel.grid.major = element_blank(), 
-    panel.grid.minor.x = element_blank(),  # Add minor grid lines
-    panel.grid.major.y = element_blank(), 
-    panel.grid.major.x = element_blank(),
-    legend.position = c(0.09, 0.9),  
-    legend.background = element_rect(fill = "white", color = "black", size = 0.1),  
-    legend.key.size = unit(0.01, "lines"),  
-    legend.title = element_blank(),  # Remove legend title
-    legend.text = element_text(size = 6)
-  )
-
-ggsave("failed_transactions_plot.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
-```
-
-
-```{r}
-ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + 
-  geom_area(fill = "blue", alpha = 0.25) + 
-  geom_line(color = "black") +
-  scale_x_continuous(
-    breaks = seq(1, 72, by = 6), 
-    labels = unique_hours[seq(1, length(unique_hours), by = 6)],
-    minor_breaks = seq(1, 72, by = 1)  # Minor ticks at each integer hour
-  ) + 
-  geom_point(data = anomalous_data, aes(x = hour_anamoly, y = FailedTransactions_anamoly, color = "Top 6 Anomalous"), size = 2) + 
-  geom_segment(data = anomalous_data, aes(x = hour_anamoly, xend = hour_anamoly, y = 0, yend = FailedTransactions_anamoly), color = "red", linetype = "dashed") +
-  geom_point(aes(x = 45, y = 296, color = "Maximum % of Transaction Failure"), size = 5) +
-  scale_color_manual(
-    values = c("Top 6 Anomalous" = "red", "Maximum % of Transaction Failure" = "#088F8F"),
-    labels = c("Top 6 Anomalous" = "Top 6 Anomalous", "Maximum % of Transaction Failure" = "Maximum % of Transaction Failure")
-  ) +
-  labs(title = "Failed Transactions by Hour with Anomalous Transactions in Red", 
-       x = "Hour (72)", 
-       y = "Failed Transactions Per Hour") +
-  theme(
-    axis.text.x = element_text(angle = 60, hjust = 1, size = 7), 
-    plot.background = element_rect(fill = "white", color = NA),
-    panel.background = element_rect(fill = "white", color = NA),
-    panel.grid.major.x = element_blank(),  # Remove major x grid lines
-    panel.grid.minor.x = element_blank(),  # Remove minor x grid lines
-    panel.grid.major.y = element_blank(), 
-    legend.position = c(0.09, 0.9),  
-    legend.background = element_rect(fill = "white", color = "black", size = 0.1),  
-    legend.key.size = unit(0.01, "lines"),  
-    legend.title = element_blank(),  # Remove legend title
-    legend.text = element_text(size = 6)
-  )
-
-```
-
-```{r}
-ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + 
-  geom_area(fill = "blue", alpha = 0.25) + 
-  geom_line(color = "black") +
-  scale_x_continuous(
-    breaks = seq(1, 72, by = 6), 
-    labels = unique_hours[seq(1, length(unique_hours), by = 6)],
-    minor_breaks = seq(1, 72, by = 1)  # Minor ticks at each integer hour
-  ) + 
-  geom_point(data = anomalous_data, aes(x = hour_anamoly, y = FailedTransactions_anamoly, color = "Top 6 Anomalous"), size = 2) + 
-  geom_segment(data = anomalous_data, aes(x = hour_anamoly, xend = hour_anamoly, y = 0, yend = FailedTransactions_anamoly), color = "red", linetype = "dashed") +
-  geom_point(aes(x = 45, y = 296, color = "Maximum % of Transaction Failure"), size = 5) +
-  scale_color_manual(
-    values = c("Top 6 Anomalous" = "red", "Maximum % of Transaction Failure" = "#088F8F"),
-    labels = c("Top 6 Anomalous" = "Top 6 Anomalous", "Maximum % of Transaction Failure" = "Maximum % of Transaction Failure")
-  ) +
-  labs(title = "Failed Transactions by Hour with Anomalous Transactions in Red", 
-       x = "Hour (72)", 
-       y = "Failed Transactions Per Hour") +
-  theme(
-    axis.text.x = element_text(angle = 60, hjust = 1, size = 7), 
-    plot.background = element_rect(fill = "white", color = NA),
-    panel.background = element_rect(fill = "white", color = NA),
     panel.grid.major.x = element_line(color = "lightgray", linewidth = 0.1),  # Very thin major x grid lines
     panel.grid.minor.x = element_line(color = "lightgray", linewidth = 0.1),  # Very thin minor x grid lines
     panel.grid.major.y = element_blank(), 
@@ -196,52 +128,7 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 
 ggsave("failed_transactions_plot835.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
 
-
 ```
-
-
-
-
-```{r}
-ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + 
-  geom_area(fill = "blue", alpha = 0.25) + 
-  geom_line(color = "black") +
-  scale_x_continuous(
-    breaks = seq(1, 72, by = 6), 
-    labels = unique_hours[seq(1, length(unique_hours), by = 6)],
-    minor_breaks = seq(1, 72, by = 1)  # Minor ticks at each integer hour
-  ) + 
-  geom_point(data = anomalous_data, aes(x = hour_anamoly, y = FailedTransactions_anamoly, color = "Top 6 Anomalous"), size = 2) + 
-  geom_segment(data = anomalous_data, aes(x = hour_anamoly, xend = hour_anamoly, y = 0, yend = FailedTransactions_anamoly), color = "red", linetype = "dashed") +
-  geom_point(aes(x = 45, y = 296, color = "Maximum % of Transaction Failure"), size = 5) +
-  scale_color_manual(
-    values = c("Top 6 Anomalous" = "red", "Maximum % of Transaction Failure" = "#088F8F"),
-    labels = c("Top 6 Anomalous" = "Top 6 Anomalous", "Maximum % of Transaction Failure" = "Maximum % of Transaction Failure")
-  ) +
-  labs(title = "Failed Transactions by Hour with Anomalous Transactions in Red", 
-       x = "Hour (72)", 
-       y = "Failed Transactions Per Hour") +
-  theme(
-    axis.text.x = element_text(angle = 60, hjust = 1, size = 7), 
-    plot.background = element_rect(fill = "white", color = NA),
-    panel.background = element_rect(fill = "white", color = NA),
-    panel.grid.major.x = element_blank(),  # Remove major x grid lines
-    panel.grid.minor.x = element_blank(),  # Remove minor x grid lines
-    panel.grid.major.y = element_blank(), 
-    panel.grid.minor = element_blank(),   # Ensures no minor grid lines
-    axis.ticks.x = element_line(color = "black"),  # Keep x-axis ticks
-    legend.position = c(0.09, 0.9),  
-    legend.background = element_rect(fill = "white", color = "black", size = 0.1),  
-    legend.key.size = unit(0.01, "lines"),  
-    legend.title = element_blank(),  # Remove legend title
-    legend.text = element_text(size = 6)
-  )
-
-```
-
-
-
-
 
 The table is the top 6 anomalies, the red dots in the plot of transactions failures per hour are these top 6 anomalies. 
 
@@ -260,7 +147,11 @@ anomalous_data <- data.frame(hour_anamoly = anamolous$index, FailedTransactions_
 ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + 
   geom_area(fill = "blue", alpha = 0.25) + 
   geom_line(color = "black") +  
-  scale_x_continuous(breaks = 1:72, labels = unique_hours) + 
+  scale_x_continuous(
+    breaks = seq(1, 72, by = 6),  # Major breaks every 6 units for labels
+    minor_breaks = 1:72,  # Minor breaks to show all grid lines
+    labels = unique_hours[seq(1, length(unique_hours), by = 6)]
+  ) + 
   coord_cartesian(ylim = c(0.26, 0.48)) +  
   geom_point(data = anomalous_data, aes(x = hour_anamoly, y = FailedTransactions_anamoly),
              color = "red", size = 2) + 
@@ -268,57 +159,27 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
   labs(title = "Failed Transactions Percentage by Hour with Anomalous Transactions in Red", 
        x = "Hour (72)", 
        y = "Failed Transactions Per Hour") +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 5), 
-        plot.background = element_rect(fill = "white", color = NA),
-        panel.background = element_rect(fill = "white", color = NA),
-        panel.grid.major = element_line(color = "black", linewidth = 0.05), 
-        panel.grid.major.y = element_blank(), 
-        panel.grid.major.x = element_blank(),
-        legend.position = c(0.09, 0.9),  
-        legend.background = element_rect(fill = "white", color = "black", size = 0.5),  
-        legend.key.size = unit(0.01, "lines"),  
-        legend.title = element_blank(),  
-        legend.text = element_text(size = 6))
+  theme(
+    axis.text.x = element_text(angle = 60, hjust = 1, size = 5), 
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "white", color = NA),
+    panel.grid.major.x = element_line(color = "gray", linewidth = 0.1),  # Thin major x grid lines
+    panel.grid.minor.x = element_line(color = "lightgray", linewidth = 0.05),  # Even thinner minor x grid lines
+    panel.grid.major.y = element_blank(), 
+    legend.position = c(0.09, 0.9),  
+    legend.background = element_rect(fill = "white", color = "black", size = 0.5),  
+    legend.key.size = unit(0.01, "lines"),  
+    legend.title = element_blank(),  
+    legend.text = element_text(size = 6)
+  )
+
+
+
 
 ggsave("percentage_failed_transactions_plot.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
 
 ```
 
-```{r}
-ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + 
-  geom_area(fill = "blue", alpha = 0.25) + 
-  geom_line(color = "black") +
-  scale_x_continuous(
-    breaks = seq(1, 72, by = 6), 
-    labels = unique_hours[seq(1, length(unique_hours), by = 6)],
-    minor_breaks = seq(1, 72, by = 1)  # Minor ticks at each integer hour
-  ) + 
-  geom_point(data = anomalous_data, aes(x = hour_anamoly, y = FailedTransactions_anamoly, color = "Top 6 Anomalous"), size = 2) + 
-  geom_segment(data = anomalous_data, aes(x = hour_anamoly, xend = hour_anamoly, y = 0, yend = FailedTransactions_anamoly), color = "red", linetype = "dashed") +
-  geom_point(aes(x = 45, y = 296, color = "Maximum % of Transaction Failure"), size = 5) +
-  scale_color_manual(
-    values = c("Top 6 Anomalous" = "red", "Maximum % of Transaction Failure" = "#088F8F"),
-    labels = c("Top 6 Anomalous" = "Top 6 Anomalous", "Maximum % of Transaction Failure" = "Maximum % of Transaction Failure")
-  ) +
-  labs(title = "Failed Transactions by Hour with Anomalous Transactions in Red", 
-       x = "Hour (72)", 
-       y = "Failed Transactions Per Hour") +
-  theme(
-    axis.text.x = element_text(angle = 60, hjust = 1, size = 7), 
-    plot.background = element_rect(fill = "white", color = NA),
-    panel.background = element_rect(fill = "white", color = NA),
-    panel.grid.major.x = element_line(color = "gray", linewidth = 0.1),  # Very thin major x grid lines
-    panel.grid.minor.x = element_line(color = "lightgray", linewidth = 0.05),  # Very thin minor x grid lines
-    panel.grid.major.y = element_blank(), 
-    legend.position = c(0.09, 0.9),  
-    legend.background = element_rect(fill = "white", color = "black", size = 0.1),  
-    legend.key.size = unit(0.01, "lines"),  
-    legend.title = element_blank(),  # Remove legend title
-    legend.text = element_text(size = 6)
-  )
-
-```
 
 
 The big green dot is where failed transactions percentage is at it's maximum 
-
