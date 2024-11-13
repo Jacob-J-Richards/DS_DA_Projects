@@ -62,22 +62,8 @@ anomalous
 
 We find the top 6 anomalous observations, of which all were with the same merchant, used the same payment method, payment gateway, sub-type, and bank.
 
-```
-##          t success      mid pmt        pg sub_type            hr bank
-## 4145  1025     639 fanfight UPI PAYTM_UPI  UPI_PAY 2020-02-12 13  UPI
-## 4523  1258     767 fanfight UPI PAYTM_UPI  UPI_PAY 2020-02-12 14  UPI
-## 4911  3340    2462 fanfight UPI PAYTM_UPI  UPI_PAY 2020-02-12 15  UPI
-## 10806  794     417 fanfight UPI PAYTM_UPI  UPI_PAY 2020-02-13 14  UPI
-## 17292 1357     918 fanfight UPI PAYTM_UPI  UPI_PAY 2020-02-14 14  UPI
-## 17688 3365    2524 fanfight UPI PAYTM_UPI  UPI_PAY 2020-02-14 15  UPI
-##       failure_percent index
-## 4145         37.65854    14
-## 4523         39.03021    15
-## 4911         26.28743    16
-## 10806        47.48111    39
-## 17292        32.35077    63
-## 17688        24.99257    64
-```
+![anomalies](https://github.com/user-attachments/assets/8ad3c78f-a637-4daa-b4bc-d621fc799457)
+
 
 Let's see how these anomalies correspond to a plot of number of transaction failures per hour and percentage of transaction failures per hour (red dots).
 
