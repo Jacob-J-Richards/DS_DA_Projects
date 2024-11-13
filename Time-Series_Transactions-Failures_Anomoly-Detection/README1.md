@@ -113,14 +113,10 @@ Plot failed transactions per hour by line with red dots highlighting the top 6 a
 
 
 
-The table is the top 6 anomalies, the red dots in the plot of transactions failures per hour are these top 6 anomalies. 
+These red dots and spikes on top of a typical transaction failure curve are from a sports gambling service. The red dots represent the top 6 transactions in terms of anamoly rating (among 20,000) by the mahalanobis method. All users in these observations used the exact same Payment Gateway, Payment Method, sub-type, and bank which is suspicious but inconclusive. The transaction failures not along the spike are actually completely normal. Notice how the spike deviated from the rest of the pattern of the data set.
 
-This is a sports event gambling service, the top 6 anomalies all occurred from users failure to repay gambling debts.
-All delinquent users in these observations used the exact same Payment Gateway, Payment Method, sub-type, and bank which 
-cannot be a coincidence. Delinquent users most likely used this combination of services as an exploit, perhaps to avoid 
-repayment. 
+Further explanation: the dips in the failed transaction curve is simply lack of consumer activity overnight. Aswell, the failure curve which the spikes are plotted on are expected for transactions.
 
-In futher explanation: the dips in the failed transaction curve is simply lack of consumer activity overnight. 
 
 ``` r
 failed_transactions_per_hour_anamoly <- failed_transactions_per_hour[anamolous$index]
