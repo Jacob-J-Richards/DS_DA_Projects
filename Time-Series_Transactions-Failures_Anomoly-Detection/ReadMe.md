@@ -62,7 +62,7 @@ anomalous
 
 We find the top 6 anomalous observations, of which all were with the same merchant, used the same payment method, payment gateway, sub-type, and bank.
 
-![anomalies](https://github.com/user-attachments/assets/8ad3c78f-a637-4daa-b4bc-d621fc799457)
+![anomalies](https://github.com/user-attachments/assets/729aa973-8dde-4864-9558-272eeab8ae34)
 
 
 Let's see how these anomalies correspond to a plot of number of transaction failures per hour and percentage of transaction failures per hour (red dots).
