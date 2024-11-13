@@ -107,37 +107,11 @@ Plot failed transactions per hour by line with red dots highlighting the top 6 a
 
 
 
-```
-## Warning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.
-## ℹ Please use the `linewidth` argument instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-## generated.
-```
 
-```
-## Warning: A numeric `legend.position` argument in `theme()` was deprecated in ggplot2
-## 3.5.0.
-## ℹ Please use the `legend.position.inside` argument of `theme()` instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-## generated.
-```
-
-```
-## Warning in geom_point(aes(x = 45, y = 296, color = "Maximum % of Transaction Failure"), : All aesthetics have length 1, but the data has 72 rows.
-## ℹ Please consider using `annotate()` or provide this layer with data containing
-##   a single row.
-```
 
 ![failed_transactions_plot856](https://github.com/user-attachments/assets/83da3c80-a417-4df8-9d96-9285fad263a3)
 
 
-```
-## Warning in geom_point(aes(x = 45, y = 296, color = "Maximum % of Transaction Failure"), : All aesthetics have length 1, but the data has 72 rows.
-## ℹ Please consider using `annotate()` or provide this layer with data containing
-##   a single row.
-```
 
 The table is the top 6 anomalies, the red dots in the plot of transactions failures per hour are these top 6 anomalies. 
 
@@ -183,24 +157,8 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
   )
 ```
 
-```
-## Warning in geom_point(aes(x = 45, y = 0.4553846), color = "#088F8F", size = 5): All aesthetics have length 1, but the data has 72 rows.
-## ℹ Please consider using `annotate()` or provide this layer with data containing
-##   a single row.
-```
 
 ![percentage_failed_transactions_plot856](https://github.com/user-attachments/assets/eb5dc813-d885-4a29-8c68-de3772ff1fd1)
-
-
-``` r
-ggsave("percentage_failed_transactions_plot856.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
-```
-
-```
-## Warning in geom_point(aes(x = 45, y = 0.4553846), color = "#088F8F", size = 5): All aesthetics have length 1, but the data has 72 rows.
-## ℹ Please consider using `annotate()` or provide this layer with data containing
-##   a single row.
-```
 
 
 
