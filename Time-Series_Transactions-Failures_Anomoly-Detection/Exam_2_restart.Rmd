@@ -5,8 +5,7 @@ date: "2024-11-13"
 ---
 
 ```{r}
-setwd("/Users/jacobrichards/Desktop/DS_exam_2")
-#setwd("C:/Users/jake pc/Desktop/exam_2_restart")
+setwd("C:/Users/jake pc/Desktop/exam_2_restart")
 transactions <- read.csv(file="trans.csv", na.strings = c("", "NA"))
 transactions[is.na(transactions)] <- "notprovided"
 data <- transactions
@@ -15,66 +14,62 @@ weighted_failure_rate <- numeric(nrow(data))
 weighted_failure_rate <- data[,1] - data[,2] / data[,1] * log(1+data[,1])
 data$weighted <- weighted_failure_rate
 data_original <- data 
-data
-(unique(data$pmt))
+(head(data,5))
 ```
 
 
-this is not it 
-
-
-subset all rows with the suspicious payment gateways 
 ```{r}
-paytm_subset <- data[(data[,5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI","notprovided")) & (data[,4] == "UPI"),]
-
-paytm_compliment <- data[data[,5] != "PAYTM" | data[,5] != "PAYTM_V2" | data[,5] != "PAYTM_UPI",]
-```
-plot % failure by hour
-```{r}
-paytm_subset
-unique_hours <- unique(paytm_subset$hr)
-t <- aggregate(paytm_subset$t,by=list(paytm_subset$hr),sum)
-s <- aggregate(paytm_subset$s,by=list(paytm_subset$hr),sum)
+unique_hours <- unique(data$hr)
+t <- aggregate(data$t,by=list(data$hr),sum)
+s <- aggregate(data$s,by=list(data$hr),sum)
 
 f <- t[,2] - s[,2]
 
-proportion <- f/t[,2]
+failure_rate <- f/t[,2]
 
-proportion
-plot(x=seq(1,72,1),y=proportion,type="o")
+failure_count <- f
+
+unique_hours <- unique(data$hr)
+unique_hours <- sort(unique_hours)
 ```
+
 
 ```{r}
-unique_hours <- unique(paytm_compliment$hr)
-t <- aggregate(paytm_compliment$t,by=list(paytm_compliment$hr),sum)
-s <- aggregate(paytm_compliment$s,by=list(paytm_compliment$hr),sum)
-
-f <- t[,2] - s[,2]
-
-proportion_c <- f/t[,2]
-
-proportion_c
-plot(x=seq(1,72,1),y=proportion_c,type="o")
+failed_transactions_rate <- data.frame(hours = unique_hours, failedTransactions = failure_rate, x_index = seq(1, 72, by = 1))
+ggplot(data = failed_transactions_rate, aes(x = x_index, y = failedTransactions)) + 
+geom_area(fill = "blue", alpha = 0.25) + 
+geom_line(color = "black") +  
+scale_x_continuous(breaks = seq(1, 72, by = 6), minor_breaks = 1:72, labels = unique_hours[seq(1, length(unique_hours), by = 6)]) + 
+coord_cartesian(ylim = range(failed_transactions_rate$failedTransactions, na.rm = TRUE)) +  
+labs(title = "Failed Transactions Percentage by Hour", x = "Hour (72)", y = "Failed Transactions Per Hour") +
+theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 8), 
+axis.title.x = element_text(size = 10), axis.title.y = element_text(size = 10),
+plot.background = element_rect(fill = "white", color = NA),panel.background = element_rect(fill = "white", color = NA),
+panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(), panel.grid.major.y = element_blank(), 
+legend.position = "none")
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
 ```{r}
-(unique(data$pg))
+failed_transactions <- data.frame(hours = unique_hours, failedTransactions = failure_count, x_index = seq(1, 72, by = 1))
+ggplot(data = failed_transactions_rate, aes(x = x_index, y = failedTransactions)) + 
+geom_area(fill = "blue", alpha = 0.25) + 
+geom_line(color = "black") +  
+scale_x_continuous(breaks = seq(1, 72, by = 6), minor_breaks = 1:72, labels = unique_hours[seq(1, length(unique_hours), by = 6)]) + 
+coord_cartesian(ylim = range(failed_transactions_rate$failedTransactions, na.rm = TRUE)) +  
+labs(title = "Failed Transactions Percentage by Hour", x = "Hour (72)", y = "Failed Transactions Per Hour") +
+theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 8), 
+axis.title.x = element_text(size = 10), axis.title.y = element_text(size = 10),
+plot.background = element_rect(fill = "white", color = NA),panel.background = element_rect(fill = "white", color = NA),
+panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(), panel.grid.major.y = element_blank(), 
+legend.position = "none")
+data_before_anamoly_analysis_chunk <- data 
+```
+
+
+
+```{r}
 data$pmt <- as.numeric(as.factor(data$pmt))
 data$pg <- as.numeric(as.factor(data$pg))
 data$bank <- as.numeric(as.factor(data$bank))
@@ -90,23 +85,43 @@ data$mahalanobis_score <- mahalanobis_distances
 
 data <- data[order(data$mahalanobis_score,decreasing = TRUE),]
 
-top_quartile <- quantile(data$weighted, 0.995)
+top_quartile <- quantile(data$weighted, 0.999)
 
 filtered_data <- data[data$weighted >= top_quartile, ]
 
 filtered_data <- filtered_data[order(filtered_data$mahalanobis_score, decreasing = TRUE), ]
 
-back <- data_original[rownames(filtered_data),]
-back
-write.csv(file="top_point995percentileanamolies.csv",back)
+original_observations_found_anamolous <- data_original[rownames(filtered_data),]
+
+original_observations_found_anamolous
+
+data <- data_before_anamoly_analysis_chunk
 ```
 
 
 
 
+```{r}
+paytm_subset <- data[(data[,5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI", "notprovided")) & (data[,6] %in% c("UPI_COLLECT")) & (data[,4] == "UPI"),]
+unique_hours <- unique(data$hr)
+unique_hours <- sort(unique_hours)
 
+t <- aggregate(paytm_subset$t,by=list(paytm_subset$hr),sum)
+s <- aggregate(paytm_subset$s,by=list(paytm_subset$hr),sum)
+f <- t[,2] - s[,2]
 
+proportion <- f/t[,2] * 100
+failed_transactions <- data.frame(hours = unique_hours, failedTransactions = proportion, x_index = seq(1, 72, by = 1))
 
-
+ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + geom_area(fill = "blue", alpha = 0.25) + 
+  geom_line(color = "black") + scale_x_continuous(breaks = seq(1, 72, by = 6), minor_breaks = 1:72, 
+  labels = unique_hours[seq(1, length(unique_hours), by = 6)]) + 
+  coord_cartesian(ylim = range(failed_transactions$failedTransactions, na.rm = TRUE)) +  
+  labs(title = "Failed Transactions Percentage by Hour", x = "Hour (72)", y = "Failed Transactions Per Hour") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 8), axis.title.x = element_text(size = 10),
+  axis.title.y = element_text(size = 10), plot.background = element_rect(fill = "white", color = NA),
+  panel.background = element_rect(fill = "white", color = NA), panel.grid.major.x = element_blank(),  
+  panel.grid.minor.x = element_blank(), panel.grid.major.y = element_blank(), legend.position = "none")
+```
 
 
