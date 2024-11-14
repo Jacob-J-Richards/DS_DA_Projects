@@ -1,0 +1,60 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-11-13"
+---
+```{r}
+setwd("/Users/jacobrichards/Desktop/DS_exam_2")
+transactions <- read.csv(file="transactions.csv", na.strings = c("", "NA"))
+transactions[is.na(transactions)] <- "notprovided"
+data <- transactions
+colnames(data) <- c("t","s","mid","pmt","pg","subtype","hr","bank")
+weighted_failure_rate <- numeric(nrow(data))
+weighted_failure_rate <- data[,1] - data[,2] / data[,1] * log(1+data[,1])
+data$weighted <- weighted_failure_rate
+data_original <- data 
+```
+
+```{r}
+data$pmt <- as.numeric(as.factor(data$pmt))
+data$pg <- as.numeric(as.factor(data$pg))
+data$bank <- as.numeric(as.factor(data$bank))
+data$subtype <- as.numeric(as.factor(data$subtype))
+
+
+features <- data[, c("weighted", "pmt", "pg", "bank", "subtype")]
+center <- colMeans(features)
+cov_matrix <- cov(features)
+mahalanobis_distances <- mahalanobis(features, center, cov_matrix)
+
+data$mahalanobis_score <- mahalanobis_distances
+
+data <- data[order(data$mahalanobis_score,decreasing = TRUE),]
+
+top_quartile <- quantile(data$weighted, 0.9997)
+
+filtered_data <- data[data$weighted >= top_quartile, ]
+
+filtered_data <- filtered_data[order(filtered_data$mahalanobis_score, decreasing = TRUE), ]
+
+back <- data_original[rownames(filtered_data),]
+
+back
+
+```
+
+```{r}
+data <- data[order(data$hr),]
+weighted_fr_sum_per_hour <- aggregate(data$weighted,by=list(data$hr),sum)
+plot(x=seq(1,72,1),y=weighted_fr_sum_per_hour[,2],type="o")
+
+unique(data$pmt)
+write.csv(file="by_dimension.csv",data)
+```
+
+
+
+
+
+
+
