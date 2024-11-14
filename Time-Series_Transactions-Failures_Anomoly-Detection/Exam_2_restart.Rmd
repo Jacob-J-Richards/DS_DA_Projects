@@ -3,9 +3,11 @@ title: "Untitled"
 output: html_document
 date: "2024-11-13"
 ---
+
 ```{r}
-setwd("C:/Users/jake pc/Desktop/exam_2_restart")
-transactions <- read.csv(file="transactions.csv", na.strings = c("", "NA"))
+setwd("/Users/jacobrichards/Desktop/DS_exam_2")
+#setwd("C:/Users/jake pc/Desktop/exam_2_restart")
+transactions <- read.csv(file="trans.csv", na.strings = c("", "NA"))
 transactions[is.na(transactions)] <- "notprovided"
 data <- transactions
 colnames(data) <- c("t","s","mid","pmt","pg","subtype","hr","bank")
@@ -13,13 +15,59 @@ weighted_failure_rate <- numeric(nrow(data))
 weighted_failure_rate <- data[,1] - data[,2] / data[,1] * log(1+data[,1])
 data$weighted <- weighted_failure_rate
 data_original <- data 
+data
+(unique(data$pmt))
 ```
+
+
+this is not it 
+
 
 subset all rows with the suspicious payment gateways 
 ```{r}
-paytm_subset <- data[data[,5] == "PAYTM" | data[,5] == "PAYTM_V2" | data[,5] == "PAYTM_UPI",]
-paytm_subset
+paytm_subset <- data[(data[,5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI","notprovided")) & (data[,4] == "UPI"),]
+
+paytm_compliment <- data[data[,5] != "PAYTM" | data[,5] != "PAYTM_V2" | data[,5] != "PAYTM_UPI",]
 ```
+plot % failure by hour
+```{r}
+paytm_subset
+unique_hours <- unique(paytm_subset$hr)
+t <- aggregate(paytm_subset$t,by=list(paytm_subset$hr),sum)
+s <- aggregate(paytm_subset$s,by=list(paytm_subset$hr),sum)
+
+f <- t[,2] - s[,2]
+
+proportion <- f/t[,2]
+
+proportion
+plot(x=seq(1,72,1),y=proportion,type="o")
+```
+
+```{r}
+unique_hours <- unique(paytm_compliment$hr)
+t <- aggregate(paytm_compliment$t,by=list(paytm_compliment$hr),sum)
+s <- aggregate(paytm_compliment$s,by=list(paytm_compliment$hr),sum)
+
+f <- t[,2] - s[,2]
+
+proportion_c <- f/t[,2]
+
+proportion_c
+plot(x=seq(1,72,1),y=proportion_c,type="o")
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -52,6 +100,12 @@ back <- data_original[rownames(filtered_data),]
 back
 write.csv(file="top_point995percentileanamolies.csv",back)
 ```
+
+
+
+
+
+
 
 
 
