@@ -11,24 +11,9 @@ weighted_failure_rate <- numeric(nrow(data))
 weighted_failure_rate <- data[,1] - data[,2] / data[,1] * log(1+data[,1])
 data$weighted <- weighted_failure_rate
 data_original <- data 
-(head(data,5))
 ```
 
-```
-##   t s           mid    pmt          pg               subtype            hr
-## 1 2 1        zivame     NB        PAYU           notprovided 2020-02-14 06
-## 2 1 0     urbanclap     NB       PAYTM           notprovided 2020-02-14 06
-## 3 5 1 pharmeasytech WALLET AIRTELMONEY REDIRECT_WALLET_DEBIT 2020-02-14 11
-## 4 1 1 pharmeasytech   CARD        PAYU           notprovided 2020-02-14 12
-## 5 1 1      fanfight   CARD    RAZORPAY           notprovided 2020-02-14 06
-##                                  bank  weighted
-## 1                             NB_CITI 1.4506939
-## 2                             NB_SYNB 1.0000000
-## 3                         AIRTELMONEY 4.6416481
-## 4 THE SATARA SAHAKARI BANK LTD MUMBAI 0.3068528
-## 5                                 DCB 0.3068528
-```
-
+<img width="1259" alt="Screenshot 2024-11-14 at 8 09 57 AM" src="https://github.com/user-attachments/assets/2bd0532e-25c7-492a-b3cf-53e1e8297240">
 
 
 ``` r
@@ -63,9 +48,6 @@ legend.position = "none")
 
 ![percent_failed_before](https://github.com/user-attachments/assets/845cd636-6765-4766-a2f9-e7053b7cc4dc)
 
-``` r
-ggsave("percent_failed_before.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
-```
 
 
 
@@ -88,10 +70,6 @@ legend.position = "none")
 
 ![806](https://github.com/user-attachments/assets/aaea92b0-aeda-4073-97c1-8601085deb52)
 
-
-``` r
-ggsave("failed_count_before.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
-```
 
 
 
@@ -201,6 +179,3 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + g
 
 ![failure_percent_by_category_combination](https://github.com/user-attachments/assets/b605f4bc-e1e4-400b-91bc-4bba14bd0173)
 
-``` r
-  ggsave("failure_percent_by_category_combination.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
-```
