@@ -80,3 +80,6 @@ Further explanation: the dips in the failed transaction curve are simply a lack 
 ![percentage_failed_transactions_plot856](https://github.com/user-attachments/assets/eb5dc813-d885-4a29-8c68-de3772ff1fd1)
 
 It may be surprising that the plots of failure percentages and failure counts per hour are so dissimilar, but there is an explanation. There is a consistent baseline of transaction failures that occur every hour, i.e., the steady stream of staggered automatic payments combined with random frequent service interruptions and networking failures, which cause failures of such payments, etc. During the day, this baseline of transaction failures is proportionally diluted by the numeracy of successful transactions by actual people. Hence the top occurrences of payment failures and highest failure percentages were nowhere near each other on the plot. In this context, the percentage of transaction failures is not a meaningful measurement of something being wrong, as this measurement is so highly dependent upon total transactions.
+
+![failure_percent_by_category_combination](https://github.com/user-attachments/assets/83aad33a-f3d3-4fe0-ac53-e255d021e950)
+
