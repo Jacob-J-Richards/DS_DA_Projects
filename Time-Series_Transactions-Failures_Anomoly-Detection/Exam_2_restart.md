@@ -101,57 +101,12 @@ original_observations_found_anamolous <- data_original[rownames(filtered_data),]
 original_observations_found_anamolous
 ```
 
-```
-##         t    s      mid    pmt        pg             subtype            hr
-## 3872 3365 2524 fanfight    UPI PAYTM_UPI             UPI_PAY 2020-02-14 15
-## 4467 3340 2462 fanfight    UPI PAYTM_UPI             UPI_PAY 2020-02-12 15
-## 4170 1391 1086 fanfight    UPI PAYTM_UPI             UPI_PAY 2020-02-12 02
-## 4134 1357  918 fanfight    UPI PAYTM_UPI             UPI_PAY 2020-02-14 14
-## 4889 1230 1001 fanfight WALLET     PAYTM DIRECT_WALLET_DEBIT 2020-02-14 15
-## 4970 1197  952 fanfight WALLET     PAYTM DIRECT_WALLET_DEBIT 2020-02-12 15
-## 3944 1258  767 fanfight    UPI PAYTM_UPI             UPI_PAY 2020-02-12 14
-## 3838 1156  884 fanfight    UPI PAYTM_UPI             UPI_PAY 2020-02-14 11
-## 3866 1078  754 fanfight    UPI PAYTM_UPI             UPI_PAY 2020-02-14 13
-## 3910 1025  639 fanfight    UPI PAYTM_UPI             UPI_PAY 2020-02-12 13
-## 4544  794  417 fanfight    UPI PAYTM_UPI             UPI_PAY 2020-02-13 14
-## 3914  722  470 fanfight    UPI PAYTM_UPI             UPI_PAY 2020-02-12 12
-## 4369  658  484 fanfight    UPI PAYTM_UPI             UPI_PAY 2020-02-14 07
-## 4247  597  373 fanfight    UPI PAYTM_UPI             UPI_PAY 2020-02-13 13
-## 4944  501  395 fanfight WALLET     PAYTM DIRECT_WALLET_DEBIT 2020-02-12 02
-## 4862  478  396 fanfight WALLET     PAYTM DIRECT_WALLET_DEBIT 2020-02-14 11
-## 4169  550  365 fanfight    UPI PAYTM_UPI             UPI_PAY 2020-02-12 11
-## 3908  538  359 fanfight    UPI PAYTM_UPI             UPI_PAY 2020-02-12 07
-## 4168  496  379 fanfight    UPI PAYTM_UPI             UPI_PAY 2020-02-12 03
-## 3912  480  332 fanfight    UPI PAYTM_UPI             UPI_PAY 2020-02-12 06
-##       bank  weighted
-## 3872   UPI 3358.9083
-## 4467   UPI 3334.0189
-## 4170   UPI 1385.3487
-## 4134   UPI 1352.1199
-## 4889 PAYTM 1224.2092
-## 4970 PAYTM 1191.3624
-## 3944   UPI 1253.6479
-## 3838   UPI 1150.6061
-## 3866   UPI 1073.1152
-## 3910   UPI 1020.6776
-## 4544   UPI  790.4926
-## 3914   UPI  717.7144
-## 4369   UPI  653.2257
-## 4247   UPI  593.0053
-## 4944 PAYTM  496.0971
-## 4862 PAYTM  472.8870
-## 4169   UPI  545.8113
-## 3908   UPI  533.8030
-## 4168   UPI  491.2559
-## 3912   UPI  475.7284
-```
+<img width="1308" alt="Screenshot 2024-11-14 at 8 12 03 AM" src="https://github.com/user-attachments/assets/77fc52c6-a3c3-4cdc-9b5f-6e9600e78f19">
+
 
 ``` r
 data <- data_original
 ```
-
-
-
 
 
 ``` r
