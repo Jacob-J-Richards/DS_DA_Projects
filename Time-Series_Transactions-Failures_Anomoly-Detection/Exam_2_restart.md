@@ -1,10 +1,3 @@
----
-title: "Untitled"
-output: 
-  html_document: 
-    keep_md: true
-date: "2024-11-13"
----
 
 
 ``` r
