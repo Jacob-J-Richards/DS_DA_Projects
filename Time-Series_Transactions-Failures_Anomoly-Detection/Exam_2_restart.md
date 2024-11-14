@@ -1,4 +1,3 @@
-![806](https://github.com/user-attachments/assets/bc987768-ffb8-4a62-8255-60458dd92e90)
 
 
 ``` r
