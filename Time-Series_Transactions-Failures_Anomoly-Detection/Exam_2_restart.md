@@ -61,7 +61,7 @@ panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(), pane
 legend.position = "none")
 ```
 
-![](Exam_2_restart_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+![percent_failed_before](https://github.com/user-attachments/assets/845cd636-6765-4766-a2f9-e7053b7cc4dc)
 
 ``` r
 ggsave("percent_failed_before.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
@@ -85,7 +85,8 @@ panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(), pane
 legend.position = "none")
 ```
 
-![](Exam_2_restart_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+![failed_count_before](https://github.com/user-attachments/assets/eeee5c5a-3c0c-40f7-9943-9a698c76c5b5)
+
 
 ``` r
 ggsave("failed_count_before.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
@@ -197,7 +198,7 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + g
   panel.grid.minor.x = element_blank(), panel.grid.major.y = element_blank(), legend.position = "none")
 ```
 
-![](Exam_2_restart_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+![failure_percent_by_category_combination](https://github.com/user-attachments/assets/b605f4bc-e1e4-400b-91bc-4bba14bd0173)
 
 ``` r
   ggsave("failure_percent_by_category_combination.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
