@@ -191,22 +191,34 @@ entire_set_failures_by_merchant
 
 
 ```{r}
-entire_set_failures_by_merchant
-
-
 entire_set_failures_by_merchant$diff <- entire_set_failures_by_merchant[,4] - entire_set_failures_by_merchant[,3]
 
+colnames(entire_set_failures_by_merchant) <- c("Merchant","Failures","Failure_rate_Before_Anamoly",
+                                               "Failure_Rate_During_Anamoly", "Difference_between_Failure_Rate")
+
+entire_set_failures_by_merchant <- entire_set_failures_by_merchant[c("Merchant","Failure_rate_Before_Anamoly","Failure_Rate_During_Anamoly",
+                                  "Difference_between_Failure_Rate")]
+
 entire_set_failures_by_merchant
 
-#fanfight,countrydelight,pharmeasytech,purplle was 
 
-#drivezy maybe
-
-#zivame,medlife_prod,urban clap was not 
+long_set_failures_by_merchant <-melt(data = entire_set_failures_by_merchant, id.vars =c("Merchant"),measured.vars =c("Failure_rate_Before_Anamoly", "Failure_Rate_During_Anamoly", "Difference_between_Failure_Rate"),variable.name = "Before_after_difference", value.name = "Rate")
 
 
-
+ggplot(data=long_set_failures_by_merchant,aes(x=Merchant,y=Rate,fill=Before_after_difference)) + geom_bar(position = "dodge", stat="identity")
 ```
+
+```{r}
+ggplot(data = long_set_failures_by_merchant, 
+       aes(x = Before_after_difference, y = Rate, fill = Merchant)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Failure Rates Before and During Anomaly by Merchant",
+       x = "Period (Before or During Anomaly)",
+       y = "Failure Rate") + theme_minimal()
+```
+
+
+all were effected except ubran clap 
 
 
 
