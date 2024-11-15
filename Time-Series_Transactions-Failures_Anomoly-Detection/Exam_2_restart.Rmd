@@ -1,7 +1,8 @@
 ---
 title: "Untitled"
-output: 
-  html_document: 
+output:
+  pdf_document: default
+  html_document:
     keep_md: true
 date: "2024-11-13"
 ---
@@ -12,13 +13,11 @@ setwd("/Users/jacobrichards/Desktop/DS assesment/DS_exam_2")
 transactions <- read.csv(file="trans.csv", na.strings = c("", "NA"))
 transactions[is.na(transactions)] <- "notprovided"
 data <- transactions
-data
 colnames(data) <- c("t","s","mid","pmt","pg","subtype","hr","bank")
 weighted_failure_rate <- numeric(nrow(data))
 weighted_failure_rate <- data[,1] - data[,2] / data[,1] * log(1+data[,1])
 data$weighted <- weighted_failure_rate
 data_original <- data 
-data
 ```
 
 
@@ -154,9 +153,9 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + g
 
 ```{r}
 paytm_subset <- data[(data[,5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI", "notprovided")) & (data[,6] %in% c("UPI_COLLECT")) & (data[,4] == "UPI"),]
-paytm_subset
 
-paytm_subset
+
+(head(paytm_subset,5))
 
 (unique(paytm_subset$mid))
 
@@ -174,7 +173,6 @@ failure_sum_by_merchant$failue_rate_merchant <- failure_sum_by_merchant[,2]/fail
 
 subset_failures_by_merchant <- failure_sum_by_merchant
 
-#then compair this to the failure rates in the rest of the rest of the data 
 
 
 ```
@@ -186,7 +184,6 @@ rest_of_data_set_failure_count_by_merchant <- aggregate(data[,10],by=list(data$m
 rest_of_data_transaction_count_by_merchant <- aggregate(data[,1],by=list(data$mid),sum)
 rest_of_data_transaction_count_by_merchant$failure_rate <- rest_of_data_set_failure_count_by_merchant[,2]/rest_of_data_transaction_count_by_merchant[,2]
 entire_set_failures_by_merchant <- rest_of_data_transaction_count_by_merchant
-entire_set_failures_by_merchant
 entire_set_failures_by_merchant$subset_rate <- subset_failures_by_merchant[,4]
 ```
 
@@ -198,23 +195,9 @@ colnames(entire_set_failures_by_merchant) <- c("Merchant","Failures","Failure_ra
 entire_set_failures_by_merchant <- entire_set_failures_by_merchant[c("Merchant","Failure_rate_Before_Anamoly","Failure_Rate_During_Anamoly","Difference_between_Failure_Rate")]
 
 entire_set_failures_by_merchant
-
-long_set_failures_by_merchant <-melt(data = entire_set_failures_by_merchant, id.vars =c("Merchant"),measured.vars =c("Failure_rate_Before_Anamoly", "Failure_Rate_During_Anamoly", "Difference_between_Failure_Rate"),variable.name = "Before_after_difference", value.name = "Rate")
-
-ggplot(data=long_set_failures_by_merchant,aes(x=Merchant,y=Rate,fill=Before_after_difference)) + geom_bar(position = "dodge", stat="identity")
-```
-
-```{r}
-ggplot(data = long_set_failures_by_merchant, 
-       aes(x = Before_after_difference, y = Rate, fill = Merchant)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  labs(title = "Failure Rates Before and During Anomaly by Merchant",
-       x = "Period (Before or During Anomaly)",
-       y = "Failure Rate") + theme_minimal()
-```
-
-```{r}
-library(ggplot2)
+library('reshape2')
+long_set_failures_by_merchant <-melt(data = entire_set_failures_by_merchant, id.vars =c("Merchant"),measured.vars =c("Failure_rate_Before_Anamoly",
+        "Failure_Rate_During_Anamoly", "Difference_between_Failure_Rate"),variable.name = "Before_after_difference", value.name = "Rate")
 
 ggplot(data = long_set_failures_by_merchant, 
        aes(x = Before_after_difference, y = Rate, fill = Merchant)) +
@@ -230,10 +213,7 @@ ggplot(data = long_set_failures_by_merchant,
 ```
 
 
-
 all were effected except ubran clap 
-
-
 
 
 ```{r}
@@ -241,16 +221,13 @@ paytm_subset <- data[(data[,5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI", "notprov
 unique_hours <- unique(data$hr)
 unique_hours <- sort(unique_hours)
 
-
 t <- aggregate(paytm_subset$t,by=list(paytm_subset$hr),sum)
 s <- aggregate(paytm_subset$s,by=list(paytm_subset$hr),sum)
 f <- t[,2] - s[,2]
 
 proportion_subset <- f/t[,2] * 100
 
-
 paytm_compliment <- data[!(rownames(data) %in% rownames(paytm_subset)), ]
-
 
 t <- aggregate(paytm_compliment$t,by=list(paytm_compliment$hr),sum)
 s <- aggregate(paytm_compliment$s,by=list(paytm_compliment$hr),sum)
@@ -258,64 +235,32 @@ f <- t[,2] - s[,2]
 proportion_c <- numeric(72)
 proportion_c <- f/t[,2] * 100
 
-
-
-
 hours <- seq(1,72,1)
 
 plot <- cbind(hours,proportion_c,proportion_subset)
 
 try <- as.data.frame(plot)
 
-try
-
 long_data <- melt(data = try, id.vars = c("hours"),
 measured.vars = c("proportion_c", "proportion_subset"),
 variable.name = "percentage_failure")
 
-long_data
 
 ggplot(data=long_data,aes(x=hours,y=value,group=percentage_failure,color=percentage_failure)) + geom_smooth() 
-
 ggplot(data=long_data,aes(x=hours,y=value,group=percentage_failure,color=percentage_failure)) + geom_line()
+```
 
 
-plot(x=hours,y=proportion_c,type="o")
-
-
-#is the 
-       
-
-try
-
+```{r}
 ggplot(data=try,aes(proportion_c)) + geom_density()
-
-
-
 ggplot(data=try,aes(proportion_subset)) + geom_density()
-
-
-mean_before_shift_subset <- mean(proportion_subset[1:40])
-mean_before_shift_subset
-mean_before_shift_compliment <- mean(proportion_c[1:40])
-mean_before_shift_compliment
 
 compliment_before_shift <- proportion_c[1:40]
 subset_before_shift <- proportion_subset[1:40]
 
-36.07035
-
-34.55524
-
-
-
-
-# Perform Shapiro-Wilk test
 shapiro_test <- shapiro.test(compliment_before_shift)
-
 shapiro_test <- shapiro.test(subset_before_shift)
 
-# Print the results
 print(shapiro_test)
 
 # Interpretation
@@ -325,20 +270,11 @@ if (shapiro_test$p.value > 0.05) {
   print("Reject H₀: Sample does not appear to be from a normal distribution.")
 }
 
-
-
-
-
-
-
 t_test_result <- t.test(compliment_before_shift, subset_before_shift, paired = TRUE, alternative = "two.sided")
 
-# View the result
 print(t_test_result)
-
-
-
 ```
 
-#no there was not signifigant evidence to see this coming 
+
+ 
 
