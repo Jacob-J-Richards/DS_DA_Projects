@@ -1,9 +1,10 @@
 ---
 title: "Untitled"
 output:
-  pdf_document: default
   html_document:
     keep_md: true
+  pdf_document: default
+geometry: margin=0.10in
 date: "2024-11-13"
 ---
 
@@ -142,8 +143,6 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + g
   panel.background = element_rect(fill = "white", color = NA), panel.grid.major.x = element_blank(),  
   panel.grid.minor.x = element_blank(), panel.grid.major.y = element_blank(), legend.position = "none")
   ggsave("failure_percent_by_category_combination.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
-  
- 
 ```
 
 
@@ -153,41 +152,21 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + g
 
 ```{r}
 paytm_subset <- data[(data[,5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI", "notprovided")) & (data[,6] %in% c("UPI_COLLECT")) & (data[,4] == "UPI"),]
-
-
-(head(paytm_subset,5))
-
-(unique(paytm_subset$mid))
-
 paytm_subset$f <- paytm_subset[,1] - paytm_subset[,2]
-
-#sum transactions and failures stratified by merchants to calculate the failure rate for each merchant 
-
 failure_sum_by_merchant <- aggregate(paytm_subset[,10],by=list(paytm_subset$mid),sum)
-
 transaction_sum_by_merchant <- aggregate(paytm_subset[,1],by=list(paytm_subset$mid),sum)
-
 failure_sum_by_merchant$transction_sum <- transaction_sum_by_merchant[,2]
-
 failure_sum_by_merchant$failue_rate_merchant <- failure_sum_by_merchant[,2]/failure_sum_by_merchant[,3]
-
 subset_failures_by_merchant <- failure_sum_by_merchant
+subset_failures_by_merchant
 
-
-
-```
-
-
-```{r}
 data$failures <- data[,1] - data[,2]
 rest_of_data_set_failure_count_by_merchant <- aggregate(data[,10],by=list(data$mid),sum)
 rest_of_data_transaction_count_by_merchant <- aggregate(data[,1],by=list(data$mid),sum)
 rest_of_data_transaction_count_by_merchant$failure_rate <- rest_of_data_set_failure_count_by_merchant[,2]/rest_of_data_transaction_count_by_merchant[,2]
 entire_set_failures_by_merchant <- rest_of_data_transaction_count_by_merchant
 entire_set_failures_by_merchant$subset_rate <- subset_failures_by_merchant[,4]
-```
 
-```{r}
 entire_set_failures_by_merchant$diff <- entire_set_failures_by_merchant[,4] - entire_set_failures_by_merchant[,3]
 
 colnames(entire_set_failures_by_merchant) <- c("Merchant","Failures","Failure_rate_Before_Anamoly","Failure_Rate_During_Anamoly", "Difference_between_Failure_Rate")
@@ -196,24 +175,22 @@ entire_set_failures_by_merchant <- entire_set_failures_by_merchant[c("Merchant",
 
 entire_set_failures_by_merchant
 library('reshape2')
-long_set_failures_by_merchant <-melt(data = entire_set_failures_by_merchant, id.vars =c("Merchant"),measured.vars =c("Failure_rate_Before_Anamoly",
-        "Failure_Rate_During_Anamoly", "Difference_between_Failure_Rate"),variable.name = "Before_after_difference", value.name = "Rate")
+long_set_failures_by_merchant <-melt(data = entire_set_failures_by_merchant, 
+   id.vars =c("Merchant"),
+   measured.vars =c("Failure_rate_Before_Anamoly", "Failure_Rate_During_Anamoly","Difference_between_Failure_Rate"),
+   variable.name = "Before_after_difference", value.name = "Rate")
 
 ggplot(data = long_set_failures_by_merchant, 
        aes(x = Before_after_difference, y = Rate, fill = Merchant)) +
   geom_bar(stat = "identity", position = "dodge") +
   scale_fill_brewer(palette = "Set2") +  # Choose a cohesive color palette
-  labs(
-    title = "Failure Rates Before and During Anomaly by Merchant",
+  labs(title = "Failure Rates Before and During Anomaly by Merchant",
     x = "Period (Before or During Anomaly)",
-    y = "Failure Rate"
-  ) +
-  theme_minimal()
-
+    y = "Failure Rate") +theme_minimal()
 ```
 
 
-all were effected except ubran clap 
+All of the merchants were effected except UrbanClap. 
 
 
 ```{r}
@@ -226,7 +203,6 @@ s <- aggregate(paytm_subset$s,by=list(paytm_subset$hr),sum)
 f <- t[,2] - s[,2]
 
 proportion_subset <- f/t[,2] * 100
-
 paytm_compliment <- data[!(rownames(data) %in% rownames(paytm_subset)), ]
 
 t <- aggregate(paytm_compliment$t,by=list(paytm_compliment$hr),sum)
@@ -236,15 +212,12 @@ proportion_c <- numeric(72)
 proportion_c <- f/t[,2] * 100
 
 hours <- seq(1,72,1)
-
 plot <- cbind(hours,proportion_c,proportion_subset)
-
 try <- as.data.frame(plot)
 
 long_data <- melt(data = try, id.vars = c("hours"),
 measured.vars = c("proportion_c", "proportion_subset"),
 variable.name = "percentage_failure")
-
 
 ggplot(data=long_data,aes(x=hours,y=value,group=percentage_failure,color=percentage_failure)) + geom_smooth() 
 ggplot(data=long_data,aes(x=hours,y=value,group=percentage_failure,color=percentage_failure)) + geom_line()
@@ -252,29 +225,37 @@ ggplot(data=long_data,aes(x=hours,y=value,group=percentage_failure,color=percent
 
 
 ```{r}
-ggplot(data=try,aes(proportion_c)) + geom_density()
-ggplot(data=try,aes(proportion_subset)) + geom_density()
+ggplot(data=try,aes(proportion_c)) + geom_density() + labs(title="distribution of normal entire span")
+ggplot(data=try,aes(proportion_subset)) + geom_density() + labs(title="distribution of anamoly entire span")
 
 compliment_before_shift <- proportion_c[1:40]
 subset_before_shift <- proportion_subset[1:40]
+subset_during_shift <- proportion_subset[42:57]
+subset_zero_to_sixty <- proportion_subset[1:60]
 
-shapiro_test <- shapiro.test(compliment_before_shift)
-shapiro_test <- shapiro.test(subset_before_shift)
 
-print(shapiro_test)
+before_shift <- as.data.frame(cbind(compliment_before_shift,subset_before_shift,subset_during_shift,subset_zero_to_sixty))
 
-# Interpretation
-if (shapiro_test$p.value > 0.05) {
-  print("Fail to reject H₀: Sample appears to be from a normal distribution.")
-} else {
-  print("Reject H₀: Sample does not appear to be from a normal distribution.")
-}
+ggplot(data=before_shift,aes(compliment_before_shift)) + geom_density() + labs(title="distribution of normal before shift")
+ggplot(data=before_shift,aes(subset_before_shift)) + geom_density()  + labs(title="distribution of anamoly before shift")
 
-t_test_result <- t.test(compliment_before_shift, subset_before_shift, paired = TRUE, alternative = "two.sided")
+(shapiro_test_compliment <- shapiro.test(compliment_before_shift))
+(shapiro_test_subset <- shapiro.test(subset_before_shift))
 
-print(t_test_result)
+(t_test_result <- t.test(compliment_before_shift, subset_before_shift, paired = TRUE, alternative = "two.sided"))
 ```
 
 
  
+```{r}
+ggplot(data=try,aes(proportion_subset)) + geom_density(fill="blue") + labs(title="distribution of anamoly entire span")
+ggplot(data=before_shift,aes(subset_before_shift)) + geom_density(fill="blue")  + labs(title="distribution of anamoly before shift")
+ggplot(data=before_shift,aes(compliment_before_shift)) + geom_density(fill="red") + labs(title="distribution of normal before shift")
+ggplot(data=before_shift,aes(subset_during_shift)) + geom_density(fill="blue")  + labs(title="distribution of anamoly during shift")
+ggplot(data=before_shift,aes(subset_zero_to_sixty)) + geom_density(fill="blue")  + labs(title="Hours before ")
+```
+
+
+
+
 
