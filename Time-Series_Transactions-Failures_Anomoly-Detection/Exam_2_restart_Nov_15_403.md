@@ -1,11 +1,4 @@
----
-title: "Untitled"
-output:
-  html_document:
-    keep_md: true
-  pdf_document: default
-date: "2024-11-13"
----
+
 
 
 ``` r
