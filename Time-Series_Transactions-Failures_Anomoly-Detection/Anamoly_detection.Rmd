@@ -10,7 +10,8 @@ date: "2024-11-13"
 
 ```{r}
 library('ggplot2')
-setwd("/Users/jacobrichards/Desktop/DS assesment/DS_exam_2")
+#setwd("/Users/jacobrichards/Desktop/DS assesment/DS_exam_2")
+setwd("C:/Users/jake pc/Desktop/exam_2_restart")
 transactions <- read.csv(file="trans.csv", na.strings = c("", "NA"))
 transactions[is.na(transactions)] <- "notprovided"
 data <- transactions
@@ -95,26 +96,18 @@ data$pg <- as.numeric(as.factor(data$pg))
 data$bank <- as.numeric(as.factor(data$bank))
 data$subtype <- as.numeric(as.factor(data$subtype))
 
-
 features <- data[, c("weighted", "pmt", "pg", "bank", "subtype")]
 center <- colMeans(features)
 cov_matrix <- cov(features)
 mahalanobis_distances <- mahalanobis(features, center, cov_matrix)
-
 data$mahalanobis_score <- mahalanobis_distances
-
 data <- data[order(data$mahalanobis_score,decreasing = TRUE),]
-
 top_quartile <- quantile(data$weighted, 0.999)
-
 filtered_data <- data[data$weighted >= top_quartile, ]
 
 filtered_data <- filtered_data[order(filtered_data$mahalanobis_score, decreasing = TRUE), ]
-
 original_observations_found_anamolous <- data_original[rownames(filtered_data),]
-
 original_observations_found_anamolous
-
 data <- data_original
 ```
 
@@ -158,9 +151,8 @@ transaction_sum_by_merchant <- aggregate(paytm_subset[,1],by=list(paytm_subset$m
 failure_sum_by_merchant$transction_sum <- transaction_sum_by_merchant[,2]
 failure_sum_by_merchant$failue_rate_merchant <- failure_sum_by_merchant[,2]/failure_sum_by_merchant[,3]
 subset_failures_by_merchant <- failure_sum_by_merchant
-subset_failures_by_merchant
-
 data$failures <- data[,1] - data[,2]
+
 rest_of_data_set_failure_count_by_merchant <- aggregate(data[,10],by=list(data$mid),sum)
 rest_of_data_transaction_count_by_merchant <- aggregate(data[,1],by=list(data$mid),sum)
 rest_of_data_transaction_count_by_merchant$failure_rate <- rest_of_data_set_failure_count_by_merchant[,2]/rest_of_data_transaction_count_by_merchant[,2]
@@ -168,20 +160,18 @@ entire_set_failures_by_merchant <- rest_of_data_transaction_count_by_merchant
 entire_set_failures_by_merchant$subset_rate <- subset_failures_by_merchant[,4]
 
 entire_set_failures_by_merchant$diff <- entire_set_failures_by_merchant[,4] - entire_set_failures_by_merchant[,3]
-
 colnames(entire_set_failures_by_merchant) <- c("Merchant","Failures","Failure_rate_Before_Anamoly","Failure_Rate_During_Anamoly", "Difference_between_Failure_Rate")
-
 entire_set_failures_by_merchant <- entire_set_failures_by_merchant[c("Merchant","Failure_rate_Before_Anamoly","Failure_Rate_During_Anamoly","Difference_between_Failure_Rate")]
 
 entire_set_failures_by_merchant
 library('reshape2')
-long_set_failures_by_merchant <-melt(data = entire_set_failures_by_merchant, 
+long_set_failures_by_merchant <- melt(data = entire_set_failures_by_merchant, 
    id.vars =c("Merchant"),
    measured.vars =c("Failure_rate_Before_Anamoly", "Failure_Rate_During_Anamoly","Difference_between_Failure_Rate"),
    variable.name = "Before_after_difference", value.name = "Rate")
 
 ggplot(data = long_set_failures_by_merchant, 
-       aes(x = Before_after_difference, y = Rate, fill = Merchant)) +
+  aes(x = Before_after_difference, y = Rate, fill = Merchant)) +
   geom_bar(stat = "identity", position = "dodge") +
   scale_fill_brewer(palette = "Set2") +  # Choose a cohesive color palette
   labs(title = "Failure Rates Before and During Anomaly by Merchant",
@@ -205,63 +195,30 @@ f <- t[,2] - s[,2]
 proportion_subset <- f/t[,2] * 100
 ```
 
-
-
 ```{r}
-
 paytm_compliment <- data[!(rownames(data) %in% rownames(paytm_subset)), ]
-
-sampled_rows <- paytm_compliment[sample(nrow(paytm_compliment), 500, replace = TRUE), ]
-
-uniform_values <- runif(500, min = 0, max = 1)
-
-sampled_rows <- sampled_rows[, !(names(sampled_rows) %in% "uniform_random")]
-
-
-
-
-
-paytm_compliment <- sampled_rows
-
-paytm_compliment
 
 t <- aggregate(paytm_compliment$t,by=list(paytm_compliment$hr),sum)
 s <- aggregate(paytm_compliment$s,by=list(paytm_compliment$hr),sum)
 f <- t[,2] - s[,2]
-proportion_c <- numeric(72)
+
 proportion_c <- f/t[,2] * 100
+```
 
-hours <- seq(1,72,1)
-plot <- cbind(hours,proportion_c,proportion_subset)
-try <- as.data.frame(plot)
+```{r}
 
-long_data <- melt(data = try, id.vars = c("hours"),
-measured.vars = c("proportion_c", "proportion_subset"),
-variable.name = "percentage_failure")
+plot <- as.data.frame(cbind(seq(1,72,1),proportion_c,proportion_subset))
 
-ggplot(data=long_data,aes(x=hours,y=value,group=percentage_failure,color=percentage_failure)) + geom_smooth() 
-ggplot(data=long_data,aes(x=hours,y=value,group=percentage_failure,color=percentage_failure)) + geom_line()
+
+long_data <- melt(data = try, id.vars = c("hours"), measured.vars = c("proportion_c", "proportion_subset"), variable.name = "percentage_failure")
+
+ggplot(data=long_data,aes(x=hours,y=value,group=percentage_failure,color=percentage_failure)) + geom_smooth() + labs(title="smoothed failure percentage curve") 
+ggplot(data=long_data,aes(x=hours,y=value,group=percentage_failure,color=percentage_failure)) + geom_line() + labs(title="failure percentage line")
 ```
 
 
 ```{r}
-ggplot(data=try,aes(proportion_c),color="blue") + geom_density() + labs(title="distribution of normal entire span") +
-geom_density(data=try,aes(proportion_subset),color="red")
 
-
-
-compliment_before_shift <- proportion_c[1:40]
-write.csv(file="compliment_before_shift.csv",compliment_before_shift)
-subset_before_shift <- proportion_subset[1:40]
-write.csv(file="subset_before_shift.csv",subset_before_shift)
-subset_during_shift <- proportion_subset[42:57]
-subset_zero_to_sixty <- proportion_subset[1:60]
-
-
-before_shift <- as.data.frame(cbind(compliment_before_shift,subset_before_shift,subset_during_shift,subset_zero_to_sixty))
-
-#ggplot(data=before_shift,aes(compliment_before_shift)) + geom_density() + labs(title="distribution of normal before shift")
-#ggplot(data=before_shift,aes(subset_before_shift)) + geom_density()  + labs(title="distribution of anamoly before shift")
 
 (shapiro_test_compliment <- shapiro.test(compliment_before_shift))
 (shapiro_test_subset <- shapiro.test(subset_before_shift))
@@ -271,16 +228,4 @@ before_shift <- as.data.frame(cbind(compliment_before_shift,subset_before_shift,
 
 
 
-
- 
-```{r}
-ggplot(data=try,aes(proportion_subset)) + geom_density(fill="blue") + labs(title="distribution of anamoly entire span")
-ggplot(data=before_shift,aes(subset_before_shift)) + geom_density(fill="blue")  + labs(title="distribution of anamoly before shift")
-ggplot(data=before_shift,aes(compliment_before_shift)) + geom_density(fill="red") + labs(title="distribution of normal before shift")
-ggplot(data=before_shift,aes(subset_during_shift)) + geom_density(fill="blue")  + labs(title="distribution of anamoly during shift")
-ggplot(data=before_shift,aes(subset_zero_to_sixty)) + geom_density(fill="blue")  + labs(title="Hours before ")
-```
-
-
-No you couldn't had predicted the anamoly, the mean clealry shifted and re-normalized. If you take 500 random samples from the rest of the data set and compair the curve between that and the subset to adjsut for sample size, the 500 sample from the non anamoly data set will actually be worse. 
 
