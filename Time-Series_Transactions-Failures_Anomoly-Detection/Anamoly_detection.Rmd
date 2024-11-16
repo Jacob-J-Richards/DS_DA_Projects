@@ -203,7 +203,27 @@ s <- aggregate(paytm_subset$s,by=list(paytm_subset$hr),sum)
 f <- t[,2] - s[,2]
 
 proportion_subset <- f/t[,2] * 100
+```
+
+
+
+```{r}
+
 paytm_compliment <- data[!(rownames(data) %in% rownames(paytm_subset)), ]
+
+sampled_rows <- paytm_compliment[sample(nrow(paytm_compliment), 500, replace = TRUE), ]
+
+uniform_values <- runif(500, min = 0, max = 1)
+
+sampled_rows <- sampled_rows[, !(names(sampled_rows) %in% "uniform_random")]
+
+
+
+
+
+paytm_compliment <- sampled_rows
+
+paytm_compliment
 
 t <- aggregate(paytm_compliment$t,by=list(paytm_compliment$hr),sum)
 s <- aggregate(paytm_compliment$s,by=list(paytm_compliment$hr),sum)
@@ -225,25 +245,31 @@ ggplot(data=long_data,aes(x=hours,y=value,group=percentage_failure,color=percent
 
 
 ```{r}
-ggplot(data=try,aes(proportion_c)) + geom_density() + labs(title="distribution of normal entire span")
-ggplot(data=try,aes(proportion_subset)) + geom_density() + labs(title="distribution of anamoly entire span")
+ggplot(data=try,aes(proportion_c),color="blue") + geom_density() + labs(title="distribution of normal entire span") +
+geom_density(data=try,aes(proportion_subset),color="red")
+
+
 
 compliment_before_shift <- proportion_c[1:40]
+write.csv(file="compliment_before_shift.csv",compliment_before_shift)
 subset_before_shift <- proportion_subset[1:40]
+write.csv(file="subset_before_shift.csv",subset_before_shift)
 subset_during_shift <- proportion_subset[42:57]
 subset_zero_to_sixty <- proportion_subset[1:60]
 
 
 before_shift <- as.data.frame(cbind(compliment_before_shift,subset_before_shift,subset_during_shift,subset_zero_to_sixty))
 
-ggplot(data=before_shift,aes(compliment_before_shift)) + geom_density() + labs(title="distribution of normal before shift")
-ggplot(data=before_shift,aes(subset_before_shift)) + geom_density()  + labs(title="distribution of anamoly before shift")
+#ggplot(data=before_shift,aes(compliment_before_shift)) + geom_density() + labs(title="distribution of normal before shift")
+#ggplot(data=before_shift,aes(subset_before_shift)) + geom_density()  + labs(title="distribution of anamoly before shift")
 
 (shapiro_test_compliment <- shapiro.test(compliment_before_shift))
 (shapiro_test_subset <- shapiro.test(subset_before_shift))
 
 (t_test_result <- t.test(compliment_before_shift, subset_before_shift, paired = TRUE, alternative = "two.sided"))
 ```
+
+
 
 
  
@@ -256,6 +282,5 @@ ggplot(data=before_shift,aes(subset_zero_to_sixty)) + geom_density(fill="blue") 
 ```
 
 
-
-
+No you couldn't had predicted the anamoly, the mean clealry shifted and re-normalized. If you take 500 random samples from the rest of the data set and compair the curve between that and the subset to adjsut for sample size, the 500 sample from the non anamoly data set will actually be worse. 
 
