@@ -1,0 +1,11 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-11-19"
+---
+```{r}
+setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Project_3")
+
+```
+
+
