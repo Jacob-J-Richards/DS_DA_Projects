@@ -3,9 +3,69 @@ title: "Untitled"
 output: html_document
 date: "2024-11-19"
 ---
+
 ```{r}
 setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Project_3")
+data <- read.csv(file="lease_renewal.csv",header=TRUE)
+data
+```
+
+Important Note: Please do not build any kind of regression or classification model to address the questions below
+
+What are the key drivers that explain whether a resident will renew the lease or not? In other words, what are the renewal promoters and detractors?
+
+First lets divide the data set into tenants that renewed and those that did not.
+
+```{r}
+did_renew <- data[data[,18] == 1, ]
+did_not_renew <- data[data[,18] == 0, ]
+
+#whats the overall % of non-renewal
+
+(nrow(did_not_renew)/nrow(data))
+
+#late payments equals one means that the tenant has never been late on making a payment.
+
 
 ```
 
+lets check the effect of rent change 
+no_rent_change: 0 if rent change was less than 10% COL 2 rent_change_10: 0 if was 10% COL 3 rent_change_20: 0 if was 20% COL 4
 
+of those who's rent changed less than 10% but still changed what ratio of renewed
+
+```{r}
+less_10_rent_changed <- data[data[,2] == 0,]
+
+#how many did renew 
+less_10_rent_changed_renewed <- less_10_rent_changed[less_10_rent_changed[,18] == 1, ]
+less_10_rent_changed_did_not_renewed <- less_10_rent_changed[less_10_rent_changed[,18] == 0, ]
+
+less_10_rent_changed_renewed
+less_10_rent_changed_did_not_renewed
+
+(nrow(less_10_rent_changed_renewed)/nrow(less_10_rent_changed))
+
+(nrow(less_10_rent_changed_did_not_renewed)/nrow(less_10_rent_changed))
+
+
+
+
+```
+
+```         
+of those that did have a rent increase less than 10%, 0.1668356 renewed
+and 0.8331644 did not renew. 
+```
+
+lets check the effect of lease length
+
+```{r}
+
+```
+
+lets check the effect of age
+
+```{r}
+
+```
