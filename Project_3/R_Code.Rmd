@@ -4,6 +4,7 @@ output: html_document
 date: "2024-11-19"
 ---
 ```{r}
-setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Project_3")
+#setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Project_3")
+setwd("C:/Users/jake pc/Desktop/DS_DA_Projects/Project_3")
 ```
 
