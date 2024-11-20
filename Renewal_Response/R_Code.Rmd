@@ -5,7 +5,7 @@ date: "2024-11-19"
 ---
 
 ```{r}
-setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Project_3")
+setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Renewal_Response")
 data <- read.csv(file="lease_renewal.csv",header=TRUE)
 data
 ```
@@ -64,8 +64,6 @@ p[1] <- nrow(less_10_rent_changed_did_not_renewed)/nrow(less_10_rent_changed)
 p[2] <- nrow(did_not_renew)/nrow(data)
 
 library(epitools)
-
-
 
 ```
 
