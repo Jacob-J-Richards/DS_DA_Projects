@@ -29,25 +29,41 @@ did_not_renew <- data[data[,18] == 0, ]
 
 ```
 
-lets check the effect of rent change 
-no_rent_change: 0 if rent change was less than 10% COL 2 rent_change_10: 0 if was 10% COL 3 rent_change_20: 0 if was 20% COL 4
+lets check the effect of rent change
+
+no_rent_change: 0 if rent change was less than 10% COL 2
+
+rent_change_10: 0 if was 10% COL 3
+
+rent_change_20: 0 if was 20% COL 4
 
 of those who's rent changed less than 10% but still changed what ratio of renewed
 
 ```{r}
 less_10_rent_changed <- data[data[,2] == 0,]
 
-#how many did renew 
+
 less_10_rent_changed_renewed <- less_10_rent_changed[less_10_rent_changed[,18] == 1, ]
 less_10_rent_changed_did_not_renewed <- less_10_rent_changed[less_10_rent_changed[,18] == 0, ]
 
-less_10_rent_changed_renewed
-less_10_rent_changed_did_not_renewed
+cat("Percentage that did renew:", nrow(less_10_rent_changed_renewed) / nrow(less_10_rent_changed), "\n")
+cat("Percentage that did not renew:", nrow(less_10_rent_changed_did_not_renewed) / nrow(less_10_rent_changed), "\n")
 
-(nrow(less_10_rent_changed_renewed)/nrow(less_10_rent_changed))
 
-(nrow(less_10_rent_changed_did_not_renewed)/nrow(less_10_rent_changed))
 
+x <- numeric(2)
+x[1]<- nrow(less_10_rent_changed_did_not_renewed)
+x[2]<- nrow(did_not_renew)
+
+n <- numeric(2)
+n[1] <- nrow(less_10_rent_changed)
+n[2] <- nrow(data)
+
+p <- numeric(2)
+p[1] <- nrow(less_10_rent_changed_did_not_renewed)/nrow(less_10_rent_changed)
+p[2] <- nrow(did_not_renew)/nrow(data)
+
+library(epitools)
 
 
 
