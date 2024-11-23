@@ -5,8 +5,8 @@ date: "2024-11-19"
 ---
 
 ```{r}
-setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Renewal_Response")
-#setwd("C:/Users/jake pc/Desktop/DS_DA_Projects/Renewal_Response")
+#setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Renewal_Response")
+setwd("C:/Users/jake pc/Desktop/DS_DA_Projects/Renewal_Response")
 data <- read.csv(file="lease_renewal.csv",header=TRUE)
 data
 ```
@@ -48,50 +48,48 @@ RR[2,2] <- length(intersect(row.names(NO_RENT_INCREASE),row.names(RENEW)))
 ```
 
 
-```{r}
-#expose this time will be lease length's
-RR_lease_length <- matrix(nrow=2,ncol=2)
 
-FIRST_LEASE <- data[data[,7]==1,]
 
-FIRST_LEASE
 
-#RR_lease_length[1,1] <- length(intersect(row.names(FIRST_LEASE),row.names(NOT_RENEW)))
 
-#RR_lease_length[2,1] <- length(intersect(row.names(NO_RENT_INCREASE),row.names(NOT_RENEW)))
 
-```
 
-| Cohort_study (Risk,Ratio) | NOT_RENEW | RENEW |
-|---------------------------|-----------|-------|
-| RENT_INCREASE             | 51797     | 10372 |
-| NO_RENT_INCREASE          | 12411     | 5270  |
 
-X\
-The number of NOT_RENEW among RENT_INCREASE.
 
-Y\
-The number of NOT_RENEW among NO_RENT_INCREASE.
 
-m1\
-The number of individuals in RENT_INCREASE..
 
-m2\
-The number of individuals in NO_RENT_INCREASE.
+
+
+
 
 ```{r}
 library(fmsb)
 
-RR[1,1] <- length(intersect(row.names(RENT_INCREASE),row.names(NOT_RENEW)))
+RR[1,1] <- length(intersect(row.names(RENT_INCREASE_LT_TEN),row.names(NOT_RENEW)))
 
 RR[1,2] <- length(intersect(row.names(NO_RENT_INCREASE),row.names(NOT_RENEW)))
 
-riskratio(RR[1,1], RR[1,2], nrow(RENT_INCREASE), nrow(NO_RENT_INCREASE), conf.level=0.95, p.calc.by.independence=TRUE) 
+riskratio(RR[1,1], RR[1,2], nrow(RENT_INCREASE_LT_TEN), nrow(NO_RENT_INCREASE), conf.level=0.95, p.calc.by.independence=TRUE) 
 ```
 
-with 95% confidence the odds ratio was between 1.174866 and 1.199149. Given that your rent increased, the probability that you did not renew your lease was between 1.174866 and 1.199149 times greater than if your rent had not increased 95% of the time.
 
-This was calculated for when there is any rent change at all including less than 10%, 10% and 20%. What if we isolated and test for the risk ratio of rent increasing by 10 or 20% compaired to not at all instead of the aggregate.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```{r}
 RR[1,1] <- length(intersect(row.names(RENT_INCREASE_10),row.names(NOT_RENEW)))
@@ -100,23 +98,21 @@ RR[1,2] <- length(intersect(row.names(NO_RENT_INCREASE),row.names(NOT_RENEW)))
 
 riskratio(RR[1,1], RR[1,2], nrow(RENT_INCREASE_10), nrow(NO_RENT_INCREASE), conf.level=0.95, p.calc.by.independence=TRUE) 
 ```
-Usage
- riskratio(X, Y, m1, m2, conf.level=0.95, p.calc.by.independence=TRUE) 
-Arguments
-X	
-The number of disease occurence among exposed cohort.
 
-Y	
-The number of disease occurence among non-exposed cohort.
 
-m1	
-The number of individuals in exposed cohort group.
 
-m2	
-The number of individuals in non-exposed cohort group.
 
-conf.level	
-Probability for confidence intervals. Default is 0.95.
+
+
+
+
+
+
+
+
+
+
+
 
 ```{r}
 RR[1,1] <- length(intersect(row.names(RENT_INCREASE_20),row.names(NOT_RENEW)))
@@ -126,9 +122,49 @@ RR[1,2] <- length(intersect(row.names(NO_RENT_INCREASE),row.names(NOT_RENEW)))
 riskratio(RR[1,1], RR[1,2], nrow(RENT_INCREASE_20), nrow(NO_RENT_INCREASE), conf.level=0.95, p.calc.by.independence=TRUE) 
 ```
 
-for the rent increasing specifically to 20 percent the risk ratio was 1.2 
 
-let's look at lease length 
+
+
+
+
+
+
+
+```{r}
+RR_lease_length <- matrix(nrow=2,ncol=2)
+
+FIRST_LEASE <- data[data[,7]==1,]
+
+LEASE_GT_THIRD <- data[ data[,5]==0 & data[,6]==0 & data[,7]==0, ]
+
+
+
+RR[1,1] <- length(intersect(row.names(FIRST_LEASE),row.names(NOT_RENEW)))
+
+RR[1,2] <- length(intersect(row.names(LEASE_GT_THIRD),row.names(NOT_RENEW)))
+
+riskratio(RR[1,1], RR[1,2], nrow(FIRST_LEASE), nrow(LEASE_GT_THIRD), conf.level=0.95, p.calc.by.independence=TRUE) 
+FIRST_LEASE
+
+
+
+SECOND_LEASE <- data[data[,5]==1,]
+
+RR[1,1] <- length(intersect(row.names(SECOND_LEASE),row.names(NOT_RENEW)))
+
+riskratio(RR[1,1], RR[1,2], nrow(SECOND_LEASE), nrow(LEASE_GT_THIRD), conf.level=0.95, p.calc.by.independence=TRUE) 
+
+
+THIRD_LEASE <- data[data[,6]==1,]
+
+RR[1,1] <- length(intersect(row.names(THIRD_LEASE),row.names(NOT_RENEW)))
+
+riskratio(RR[1,1], RR[1,2], nrow(THIRD_LEASE), nrow(LEASE_GT_THIRD), conf.level=0.95, p.calc.by.independence=TRUE) 
+
+```
+
+
+
 ```{r}
 
 ```
