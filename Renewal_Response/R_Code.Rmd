@@ -5,7 +5,7 @@ date: "2024-11-19"
 ---
 
 ```{r}
-setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Renewal_Response")
+setwd("C:/Users/jake pc/Desktop/DS_DA_Projects/Renewal_Response")
 data <- read.csv(file="lease_renewal.csv",header=TRUE)
 data
 ```
@@ -35,15 +35,15 @@ RENT_INCREASE_20 <- data[data[,4] == 1,]
 #there was no rent change at all 
 NO_RENT_INCREASE <- data[data[,2] == 1,]
 
-data <- matrix(nrow=2,ncol=2)
+RR <- matrix(nrow=2,ncol=2)
 
-data[1,1] <- length(intersect(row.names(RENT_INCREASE),row.names(NOT_RENEW)))
+RR[1,1] <- length(intersect(row.names(RENT_INCREASE),row.names(NOT_RENEW)))
 
-data[1,2] <- length(intersect(row.names(RENT_INCREASE),row.names(RENEW)))
+RR[1,2] <- length(intersect(row.names(RENT_INCREASE),row.names(RENEW)))
 
-data[2,1] <- length(intersect(row.names(NO_RENT_INCREASE),row.names(NOT_RENEW)))
+RR[2,1] <- length(intersect(row.names(NO_RENT_INCREASE),row.names(NOT_RENEW)))
 
-data[2,2] <- length(intersect(row.names(NO_RENT_INCREASE),row.names(RENEW)))
+RR[2,2] <- length(intersect(row.names(NO_RENT_INCREASE),row.names(RENEW)))
 
 
 ```
@@ -53,40 +53,45 @@ data[2,2] <- length(intersect(row.names(NO_RENT_INCREASE),row.names(RENEW)))
 | RENT_INCREASE             | 51797     | 10372 |
 | NO_RENT_INCREASE          | 12411     | 5270  |
 
-
-
-
-X	
+X\
 The number of NOT_RENEW among RENT_INCREASE.
 
-Y	
+Y\
 The number of NOT_RENEW among NO_RENT_INCREASE.
 
-m1	
+m1\
 The number of individuals in RENT_INCREASE..
 
-m2	
+m2\
 The number of individuals in NO_RENT_INCREASE.
 
 ```{r}
- riskratio(data[1,1], data[2,1], nrow(RENT_INCREASE), nrow(NO_RENT_INCREASE), conf.level=0.95, p.calc.by.independence=TRUE) 
+library(fmsb)
+riskratio(RR[1,1], RR[2,1], nrow(RENT_INCREASE), nrow(NO_RENT_INCREASE), conf.level=0.95, p.calc.by.independence=TRUE) 
 ```
 
-with 95% confidence the odds ratio was between 1.174866 and 1.199149. Given that your rent increased, the probability that you did not renew your lease was between 1.174866 and 1.199149 times greater than if your rent had not increased 95% of the time. 
+with 95% confidence the odds ratio was between 1.174866 and 1.199149. Given that your rent increased, the probability that you did not renew your lease was between 1.174866 and 1.199149 times greater than if your rent had not increased 95% of the time.
 
-This was calculated for when there is any rent change at all including less than 10%, 10% and 20%. What if we isolated and test for the risk ratio of rent increasing by 10 or 20% compaired to not at all instead of the aggregate. 
+This was calculated for when there is any rent change at all including less than 10%, 10% and 20%. What if we isolated and test for the risk ratio of rent increasing by 10 or 20% compaired to not at all instead of the aggregate.
+
+```{r}
+RR[1,1] <- length(intersect(row.names(RENT_INCREASE_10),row.names(NOT_RENEW)))
+
+RR[1,2] <- length(intersect(row.names(NO_RENT_INCREASE),row.names(NOT_RENEW)))
+
+riskratio(RR[1,1], RR[2,1], nrow(RENT_INCREASE_10), nrow(NO_RENT_INCREASE), conf.level=0.95, p.calc.by.independence=TRUE) 
+```
 
 
 ```{r}
-#this is wrong
-data[1,1] <- length(intersect(row.names(RENT_INCREASE_10),row.names(NOT_RENEW)))
+RR[1,1] <- length(intersect(row.names(RENT_INCREASE_20),row.names(NOT_RENEW)))
 
-data[1,2] <- length(intersect(row.names(RENT_INCREASE_10),row.names(RENEW)))
+RR[1,2] <- length(intersect(row.names(NO_RENT_INCREASE),row.names(NOT_RENEW)))
 
-riskratio(data[1,1], data[2,1], nrow(RENT_INCREASE), nrow(NO_RENT_INCREASE), conf.level=0.95, p.calc.by.independence=TRUE) 
+riskratio(RR[1,1], RR[2,1], nrow(RENT_INCREASE_20), nrow(NO_RENT_INCREASE), conf.level=0.95, p.calc.by.independence=TRUE) 
 ```
 
-lets check the effect of lease length
+for the rent increasing specifically to 20 percent the risk ratio was 1.2 
 
 ```{r}
 
