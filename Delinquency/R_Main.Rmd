@@ -33,9 +33,10 @@ test <- read.csv(file="FITB_test.csv",header=TRUE)
 
 ```{r}
 ggplot(data=train,aes(feature_3)) + geom_density()
+ggplot(data=test,aes(feature_3)) + geom_density()
 ```
 
-Clearly this is a problem. Let's cut out the 1% tails on both ends.
+Clearly this is a problem. Let's cut out the 1% tails on both ends on the training set. 
 
 ```{r}
 feature_3_winsor <- data.frame(feature_3 = train$feature_3)
@@ -44,8 +45,12 @@ feature_3_winsor_clean <- na.omit(feature_3_winsor)
 
 feature_3_winsor_clean
 
-feature_3_winsor_clean %>%
+feature_3_winsor_clean <- feature_3_winsor_clean %>%
   mutate(z_score = (feature_3 - mean(feature_3)) / sd(feature_3),percentile = ecdf(feature_3)(feature_3) * 100)
+
+feature_3_winsor_clean <- feature_3_winsor_clean[!(feature_3_winsor_clean[, 4] < 1 | feature_3_winsor_clean[, 4] > 99), ]
+
+ggplot(data=feature_3_winsor_clean,aes(feature_3)) + geom_density()
 
 
 ```
