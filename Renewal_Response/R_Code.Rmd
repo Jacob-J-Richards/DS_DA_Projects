@@ -112,36 +112,40 @@ riskratio(RR[1,1], RR[1,2], nrow(THIRD_LEASE), nrow(LEASE_GT_THIRD), conf.level=
 append a column that indicated that the average age of the lease is over 60 if none of the other age categories are posative
 
 ```{r}
-new_column <- numeric(nrow(data))
-data$age_range_GE_60 <- new_column
-data[rowSums(data[, 8:13] == 0) == 6, 19] <- 1
-data <- data[, c(1:13, 19, 14:18)]
-data
 
 
 #of the age group under 24 only 9% renewed their lease. 
-ratio_age_under_24_renewed <- sum(data[data[,8] == 1,19])/sum(data$age_range_under_24)
+ratio_age_under_24_renewed <- sum(data[data[,8] == 1,18])/sum(data$age_range_under_24)
 ratio_age_under_24_renewed
 
 
 #24 to 29 22% renewed 
-ratio_age_24_29_renewed <- sum(data[data[,9] == 1,19])/sum(data$age_range_24_29)
+ratio_age_24_29_renewed <- sum(data[data[,9] == 1,18])/sum(data$age_range_24_29) 
 ratio_age_24_29_renewed
 
 
 # 30 to 39 66% renewed their lease 
-ratio_age_30_39_renewed <- sum(data[data[,10] == 1,19])/sum(data$age_range_30_39)
+ratio_age_30_39_renewed <- sum(data[data[,10] == 1,18])/sum(data$age_range_30_39)
 ratio_age_30_39_renewed
 
 
 # 40 to 49 
-ratio_age_40_49_renewed <- sum(data[data[,11] == 1,19])/sum(data$age_range_40_49)
+ratio_age_40_49_renewed <- sum(data[data[,11] == 1,18])/sum(data$age_range_40_49)
 ratio_age_40_49_renewed
 
+# 50 to 59 
+ratio_age_50_59_renewed <- sum(data[data[,12] == 1,18])/sum(data$age_range_50_59)
+ratio_age_50_59_renewed
+
+
+ratio_age_50_59_renewed <- sum(data[data[,12] == 1,18])/sum(data$age_range_50_59)
+ratio_age_50_59_renewed
+
+ratio_age_60_renewed <- sum(data[data[,13] == 1,18])/sum(data$age_range_60)
+ratio_age_60_renewed
 ```
 
-Let's see how age effects. column 8
 
-
+24-49 had over 20% renewal rates 
 
 
