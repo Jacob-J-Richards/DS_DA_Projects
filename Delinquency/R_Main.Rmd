@@ -39,8 +39,8 @@ ggplot(data=test,aes(feature_3)) + geom_density()
 Clearly this is a problem. Let's cut out the 1% tails on both ends on the training set. 
 
 ```{r}
-feature_3_winsor <- data.frame(feature_3 = train$feature_3)
-feature_3_winsor$row_names <- row.names(train)
+train$key <- row.names(train)
+feature_3_winsor <- data.frame(feature_3 = train$feature_3, key = row.names(train))
 feature_3_winsor_clean <- na.omit(feature_3_winsor)
 
 feature_3_winsor_clean <- feature_3_winsor_clean %>%
@@ -49,13 +49,6 @@ feature_3_winsor_clean <- feature_3_winsor_clean %>%
 feature_3_winsor_clean <- feature_3_winsor_clean[!(feature_3_winsor_clean[, 4] < 1 | feature_3_winsor_clean[, 4] > 99), ]
 
 ggplot(data=feature_3_winsor_clean,aes(feature_3)) + geom_density()
-
-colnames(feature_3_winsor_clean)[colnames(feature_3_winsor_clean) == "feature_3"] <- "feature_3_winsor"
-
-
-
-feature_3_winsor_clean
-
 
 ```
 
