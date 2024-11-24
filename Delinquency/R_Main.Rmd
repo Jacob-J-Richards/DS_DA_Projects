@@ -78,6 +78,7 @@ colnames(train)[2] <- "feature_2_impute"
 
 
 
+
 test[is.na(test[,2]) , 2] <- test[is.na(test[,2]),1]
 
 test[is.na(test[,2]) , 2] <- test[is.na(test[,2]),3]
