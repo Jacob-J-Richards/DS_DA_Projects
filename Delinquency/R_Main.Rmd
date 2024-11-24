@@ -96,6 +96,9 @@ colnames(test)[2] <- "feature_2_impute"
 
 ```{r}
 train
+
+
+
 ```
 
 
