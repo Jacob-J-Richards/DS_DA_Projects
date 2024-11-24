@@ -34,7 +34,7 @@ feature_3_winsor_clean <- na.omit(feature_3_winsor)
 feature_3_winsor_clean <- feature_3_winsor_clean %>%
   mutate(z_score = (feature_3 - mean(feature_3)) / sd(feature_3),percentile = ecdf(feature_3)(feature_3) * 100)
 
-feature_3_winsor_clean <- feature_3_winsor_clean[!(feature_3_winsor_clean[, 4] < 1 | feature_3_winsor_clean[, 4] > 99), ]
+feature_3_winsor_df <- feature_3_winsor_clean[!(feature_3_winsor_clean[, 4] < 1 | feature_3_winsor_clean[, 4] > 99), ]
 
 non_matching_keys <- anti_join(train, feature_3_winsor_df, by = "key")$key
 
@@ -51,15 +51,24 @@ ggplot(data=train,aes(feature_3_winsor)) + geom_density()
 
 3.  Identify missing values for **"feature_3_winsor"**. Then, impute the missings with median value on the training set. Name the new feature **"feature_3_impute"**. Make appropriate treatments on the testing set.
 
+
+This time i will impute the median into the testing data as well.  
 ```{r}
 train[is.na(train[,3]),3] <- median(feature_3_winsor_clean$feature_3)
 
 colnames(train)[3] <- "feature_3_impute"
+
+test[is.na(test[,3]),3] <- median(feature_3_winsor_clean$feature_3)
 ```
 
 
-
 4.  Identify missing values for **"feature_2"**. Then, for each **"id"**, impute the missings with the value from previous year, if not available, use the value from next year. Name the new feature **"feature_2_impute"**. Make appropriate treatments on the testing set.
+
+
+
+```{r}
+
+```
 
 5.  Standardize **"feature_1"**, **"feature_2_impute"**, **"feature_3_impute"**, **"feature_4"** for the training set. Make appropriate treatments on the testing set. Name the features **"feature_1_standard"**, **"feature_2_standard"**, **"feature_3_standard"**, **"feature_4_standard"**
 
