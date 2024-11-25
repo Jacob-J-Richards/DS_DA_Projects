@@ -86,6 +86,8 @@ test[is.na(test[,2]) , 2] <- test[is.na(test[,2]),3]
 test$feature_2 <- test$feature_2
 
 colnames(test)[2] <- "feature_2_impute"
+train
+(colnames(train))
 ```
 
 
@@ -94,13 +96,26 @@ colnames(test)[2] <- "feature_2_impute"
 5.  Standardize **"feature_1"**, **"feature_2_impute"**, **"feature_3_impute"**, **"feature_4"** for the training set. Make appropriate treatments on the testing set. Name the features **"feature_1_standard"**, **"feature_2_standard"**, **"feature_3_standard"**, **"feature_4_standard"**
 
 
+standardize by z-score 
+```{r}
+library(ggplot2)
+ggplot(data=train,aes(x=feature_1)) + geom_density() + geom_density(data=train,aes(x=feature_2_impute)) + geom_density(data=train,aes(x=feature_3_impute))
+train
+```
+```{r}
+library(dplyr)
+train <- train %>%
+  mutate(across(c(feature_1, feature_2_impute, feature_3_impute, feature_4), 
+                ~ (.x - mean(.x, na.rm = TRUE)) / sd(.x, na.rm = TRUE)))
+train
+ggplot(data=train,aes(x=feature_1)) + geom_density() + geom_density(data=train,aes(x=feature_2_impute)) + geom_density(data=train,aes(x=feature_3_impute))
+```
 
 ```{r}
-train
-
-
 
 ```
+
+
 
 
 
