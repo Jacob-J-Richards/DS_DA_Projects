@@ -116,15 +116,18 @@ ggplot(data=test,aes(x=feature_1)) + geom_density() + geom_density(data=test,aes
 
 colnames(test) <- c("feature_1_standard","feature_2_standard","feature_3_standard","feature_4_standard","id","date","y")
 
+
+train
 ```
 
 6.  Build a logistic regression on the training set to predict **'y'** being **(90+DPD)** using **"feature_1_standard"**, **"feature_2_standard"**, **"feature_3_standard"**, **"feature_4_standard"** as independent variables.
 
 ```{r}
+train$y <- as.numeric(as.character(factor(train$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
+library(nnet)
 
-
-
-
+model <- multinom(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, data=train,family=binomial())
+summary(model)
 ```
 
 7.  Report AUC on the **testing set**.
