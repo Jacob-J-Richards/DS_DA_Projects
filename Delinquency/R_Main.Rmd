@@ -6,9 +6,7 @@ date: "2024-11-23"
 
 # Instruction
 
-The panel dataset contains commercial customers' financial information and days past due indicator from 2000 to 2020. The goal is to build a binary classifier to predict customers 90+ days past due **(90+DPD)** probability.
-
-
+The panel data-set contains commercial customers' financial information and days past due indicator from 2000 to 2020. The goal is to build a binary classifier to predict customers 90+ days past due **(90+DPD)** probability.
 
 ```{r}
 library(tidyverse)
@@ -25,7 +23,7 @@ ggplot(data=train,aes(feature_3)) + geom_density()
 ggplot(data=test,aes(feature_3)) + geom_density()
 ```
 
-Clearly this is a problem. Let's cut out the 1% tails on both ends on the training set. Leaving the test data alone since we want to see how the model does on sub-optimal inputs. 
+Clearly this is a problem. Let's cut out the 1% tails on both ends on the training set. Leaving the test data alone since we want to see how the model does on sub-optimal inputs.
 
 ```{r}
 train$key <- row.names(train)
@@ -48,25 +46,23 @@ colnames(train)[3] <- "feature_3_winsor"
 ggplot(data=train,aes(feature_3_winsor)) + geom_density()
 ```
 
-
-
 3.  Identify missing values for **"feature_3_winsor"**. Then, impute the missings with median value on the training set. Name the new feature **"feature_3_impute"**. Make appropriate treatments on the testing set.
 
+This time i will impute the median into the testing data as well.
 
-This time i will impute the median into the testing data as well.  
 ```{r}
 train[is.na(train[,3]),3] <- median(feature_3_winsor_clean$feature_3)
 
 colnames(train)[3] <- "feature_3_impute"
 
 test[is.na(test[,3]),3] <- median(feature_3_winsor_clean$feature_3)
+colnames(test)[3] <- "feature_3_impute"
 ```
-
 
 4.  Identify missing values for **"feature_2"**. Then, for each **"id"**, impute the missings with the value from previous year, if not available, use the value from next year. Name the new feature **"feature_2_impute"**. Make appropriate treatments on the testing set.
 
+This time will do the same thing for training and testing data
 
-This time will do the same thing for training and testing data 
 ```{r}
 train_unmodified[is.na(train_unmodified[,2]) , 2] <- train_unmodified[is.na(train_unmodified[,2]),1]
 
@@ -90,18 +86,16 @@ train
 (colnames(train))
 ```
 
-
-
-
 5.  Standardize **"feature_1"**, **"feature_2_impute"**, **"feature_3_impute"**, **"feature_4"** for the training set. Make appropriate treatments on the testing set. Name the features **"feature_1_standard"**, **"feature_2_standard"**, **"feature_3_standard"**, **"feature_4_standard"**
 
+standardize by z-score for both testing and training
 
-standardize by z-score 
 ```{r}
 library(ggplot2)
 ggplot(data=train,aes(x=feature_1)) + geom_density() + geom_density(data=train,aes(x=feature_2_impute)) + geom_density(data=train,aes(x=feature_3_impute))
 train
 ```
+
 ```{r}
 library(dplyr)
 train <- train %>%
@@ -109,23 +103,31 @@ train <- train %>%
                 ~ (.x - mean(.x, na.rm = TRUE)) / sd(.x, na.rm = TRUE)))
 train
 ggplot(data=train,aes(x=feature_1)) + geom_density() + geom_density(data=train,aes(x=feature_2_impute)) + geom_density(data=train,aes(x=feature_3_impute))
+
+colnames(train) <- c("feature_1_standard","feature_2_standard","feature_3_standard","feature_4_standard","id","date","y","key")
+
+
+test <- test %>%
+  mutate(across(c(feature_1, feature_2_impute, feature_3_impute, feature_4), 
+                ~ (.x - mean(.x, na.rm = TRUE)) / sd(.x, na.rm = TRUE)))
+
+ggplot(data=test,aes(x=feature_1)) + geom_density() + geom_density(data=test,aes(x=feature_2_impute)) + geom_density(data=test,aes(x=feature_3_impute))
+
+
+colnames(test) <- c("feature_1_standard","feature_2_standard","feature_3_standard","feature_4_standard","id","date","y")
+
 ```
-
-```{r}
-
-```
-
-
-
-
 
 6.  Build a logistic regression on the training set to predict **'y'** being **(90+DPD)** using **"feature_1_standard"**, **"feature_2_standard"**, **"feature_3_standard"**, **"feature_4_standard"** as independent variables.
 
+```{r}
+
+
+
+
+```
+
 7.  Report AUC on the **testing set**.
-
 8.  Report confusion matrix on the **testing set**.
-
 9.  Identify multicollinearity in the model.
-
 10. Load both training and testing sets.
-
