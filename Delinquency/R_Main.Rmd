@@ -123,14 +123,30 @@ train
 6.  Build a logistic regression on the training set to predict **'y'** being **(90+DPD)** using **"feature_1_standard"**, **"feature_2_standard"**, **"feature_3_standard"**, **"feature_4_standard"** as independent variables.
 
 ```{r}
-train$y <- as.numeric(as.character(factor(train$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
-library(nnet)
-
 model <- multinom(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, data=train,family=binomial())
 summary(model)
 ```
 
 7.  Report AUC on the **testing set**.
+
+    #This is actually a really usefull link
+
+    <https://www.geeksforgeeks.org/auc-roc-curve/>
+
+    ```{r}
+    test$predicted_y <- predict(model, newdata = test, type = "class")
+    test$predicted_probs <- predict(model, newdata = test, type = "probs")
+    test$y_numeric <- as.numeric(as.character(factor(test$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
+    test
+
+
+    #positive_class_probs <- test[test$y == "90+DPD,]
+
+
+    ```
+
 8.  Report confusion matrix on the **testing set**.
+
 9.  Identify multicollinearity in the model.
+
 10. Load both training and testing sets.
