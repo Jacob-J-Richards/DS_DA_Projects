@@ -159,5 +159,3 @@ summary(model)
     ```
 
 9.  Identify multicollinearity in the model.
-
-10. Load both training and testing sets.
