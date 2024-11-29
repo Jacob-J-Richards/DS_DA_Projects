@@ -122,7 +122,10 @@ train
 
 6.  Build a logistic regression on the training set to predict **'y'** being **(90+DPD)** using **"feature_1_standard"**, **"feature_2_standard"**, **"feature_3_standard"**, **"feature_4_standard"** as independent variables.
 
+here i need to make the y being delinquent thee positive outcome in order to correctly interpreter the model results later because otherwise this is just too fucking complicated
+
 ```{r}
+library(nnet)
 model <- multinom(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, data=train,family=binomial())
 summary(model)
 ```
@@ -134,18 +137,26 @@ summary(model)
     <https://www.geeksforgeeks.org/auc-roc-curve/>
 
     ```{r}
+    library(pROC)
     test$predicted_y <- predict(model, newdata = test, type = "class")
     test$predicted_probs <- predict(model, newdata = test, type = "probs")
     test$y_numeric <- as.numeric(as.character(factor(test$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
+
     test
 
+    roc_curve <- roc(response = test$y_numeric, predictor = test$predicted_probs)
+    plot(roc_curve, main = "ROC Curve for Multinomial Logistic Regression", col = "blue", lwd = 2)
 
-    #positive_class_probs <- test[test$y == "90+DPD,]
-
-
+    print(paste("AUC:", auc(roc_curve)))
     ```
 
 8.  Report confusion matrix on the **testing set**.
+
+    Since we are modelling delinquency of rent payments, it's in our best interest to bias our prediction towards higher true positives then lower false positives, as business is negatively effected by failure to predict delinquencies more so than the incorrect prediction of delinquencies.
+
+    ```{r}
+
+    ```
 
 9.  Identify multicollinearity in the model.
 
