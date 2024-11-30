@@ -126,31 +126,57 @@ here i need to make the y being delinquent thee positive outcome in order to cor
 
 ```{r}
 library(nnet)
-model <- multinom(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, data=train,family=binomial())
-summary(model)
+train$y <- as.numeric(as.character(factor(train$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
+delinquency_model <- multinom(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, data=train,family=binomial())
+summary(delinquency_model)
 ```
 
 7.  Report AUC on the **testing set**.
 
-    #This is actually a really usefull link
-
     <https://www.geeksforgeeks.org/auc-roc-curve/>
 
-    ```{r}
+```{r}
     library(pROC)
-    test$predicted_y <- predict(model, newdata = test, type = "class")
-    test$predicted_probs <- predict(model, newdata = test, type = "probs")
+    test$predicted_y <- predict(delinquency_model, newdata = test, type = "class")
     test$y_numeric <- as.numeric(as.character(factor(test$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
-
-    test
+    test$predicted_probs <- predict(delinquency_model, newdata = test, type = "probs")
+    test$probs <- round(test$predicted_probs * 100, 1)
 
     roc_curve <- roc(response = test$y_numeric, predictor = test$predicted_probs)
     plot(roc_curve, main = "ROC Curve for Multinomial Logistic Regression", col = "blue", lwd = 2)
 
     print(paste("AUC:", auc(roc_curve)))
-    ```
+  
+    roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
+    roc_metrics
 
-8.  Report confusion matrix on the **testing set**.
+```
+
+```{r}
+library(pROC)
+
+# Compute ROC metrics
+roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"), transpose = FALSE)
+
+# Filter for thresholds with high sensitivity
+desired_sensitivity <- 0.8  # Example: sensitivity >= 90%
+filtered_metrics <- roc_metrics[roc_metrics$sensitivity >= desired_sensitivity, ]
+
+# Select the optimal threshold
+optimal_threshold <- filtered_metrics[1, "threshold"]  # Choose the first threshold meeting the criteria
+
+# Display the optimal threshold and its corresponding sensitivity and specificity
+print(paste("Optimal Threshold:", optimal_threshold))
+print(paste("Sensitivity at Optimal Threshold:", filtered_metrics[1, "sensitivity"]))
+print(paste("Specificity at Optimal Threshold:", filtered_metrics[1, "specificity"]))
+
+# Plot the ROC curve with the chosen threshold
+plot(roc_curve, main = "ROC Curve for Multinomial Logistic Regression", col = "blue", lwd = 2)
+abline(v = optimal_threshold, col = "red", lty = 2)  # Mark the threshold on the plot
+
+```
+
+7.  Report confusion matrix on the **testing set**.
 
     Since we are modelling delinquency of rent payments, it's in our best interest to bias our prediction towards higher true positives then lower false positives, as business is negatively effected by failure to predict delinquencies more so than the incorrect prediction of delinquencies.
 
@@ -158,4 +184,4 @@ summary(model)
 
     ```
 
-9.  Identify multicollinearity in the model.
+8.  Identify multicollinearity in the model.
