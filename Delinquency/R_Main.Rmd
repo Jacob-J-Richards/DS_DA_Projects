@@ -4,7 +4,7 @@ output: html_document
 date: "2024-11-23"
 ---
 
-# Instruction
+# Multivariable Logistic Binary Classifier - Delinquency Prediction
 
 The panel data-set contains commercial customers' financial information and days past due indicator from 2000 to 2020. The goal is to build a binary classifier to predict customers 90+ days past due **(90+DPD)** probability.
 
@@ -12,18 +12,19 @@ The panel data-set contains commercial customers' financial information and days
 library(tidyverse)
 train <- read.csv(file="FITB_train.csv",header=TRUE)
 test <- read.csv(file="FITB_test.csv",header=TRUE)
-train_unmodified <- train
 ```
 
-2.  Winsorize **"feature_3"** by limiting the extreme values to 1 percentile (left tail) and 99 percentile (right tail) on the training set. Name it **"feature_3_winsor"**. Make appropriate treatments on the testing set.
+Checking the distribution of the data. If you look carefully you can see that the distribution of feature 3 has a lot of values in the extreme right tail. Red does not as evident by it's flat distribution. You can't even see green (feature 1) in the upper tail which means it's under the red curve so it's not problematic.
 
 ```{r}
 library(ggplot2)
-ggplot(data=train,aes(feature_3)) + geom_density()
-ggplot(data=test,aes(feature_3)) + geom_density()
+ggplot(data=train,aes(feature_3,color="blue")) + geom_density() + 
+  geom_density(data=train,aes(feature_2,color="red")) + 
+  geom_density(data=train,aes(feature_1,color="green")) + 
+  geom_density(data=train,aes(feature_4,color="purple"))
 ```
 
-Clearly this is a problem. Let's cut out the 1% tails on both ends on the training set. Leaving the test data alone since we want to see how the model does on sub-optimal inputs.
+Removing the top and bottom 1% from the tails of feature 3. "Winsorize**"** feature 3.
 
 ```{r}
 train$key <- row.names(train)
@@ -46,7 +47,7 @@ colnames(train)[3] <- "feature_3_winsor"
 ggplot(data=train,aes(feature_3_winsor)) + geom_density()
 ```
 
-3.  Identify missing values for **"feature_3_winsor"**. Then, impute the missings with median value on the training set. Name the new feature **"feature_3_impute"**. Make appropriate treatments on the testing set.
+Replace missing values from Winsorization with median of feature 3.
 
 ```{r}
 train[is.na(train[,3]),3] <- median(feature_3_winsor_clean$feature_3)
@@ -57,9 +58,7 @@ test[is.na(test[,3]),3] <- median(feature_3_winsor_clean$feature_3)
 colnames(test)[3] <- "feature_3_impute"
 ```
 
-4.  Identify missing values for **"feature_2"**. Then, for each **"id"**, impute the missings with the value from previous year, if not available, use the value from next year. Name the new feature **"feature_2_impute"**. Make appropriate treatments on the testing set.
-
-This time will do the same thing for training and testing data
+Impute missing values of feature 2 with value from next or previous year of that same ID.
 
 ```{r}
 train$date <- format(as.Date(train$date, format = "%Y-%m-%d"), "%Y")
@@ -75,14 +74,11 @@ train <- train %>%
                             lag(feature_2, order_by = date), # Try previous year
                             feature_2))
 
-
 colnames(train)[2] <- "feature_2_impute"
 
 
-
-
 test <- test %>%
-  arrange(id, date) %>% # Sort by id and date
+  arrange(id, date) %>% 
   group_by(id) %>%
   mutate(feature_2 = ifelse(is.na(feature_2),
                             lead(feature_2, order_by = date), # Try next year
@@ -91,102 +87,95 @@ test <- test %>%
                             lag(feature_2, order_by = date), # Try previous year
                             feature_2))
 
-
-
 colnames(test)[2] <- "feature_2_impute"
-
 
 train <- na.omit(train)
 test <- na.omit(test)
-
-
-cleaned_unnormalized_train <- train
-
 ```
 
-5.  Standardize **"feature_1"**, **"feature_2_impute"**, **"feature_3_impute"**, **"feature_4"** for the training set. Make appropriate treatments on the testing set. Name the features **"feature_1_standard"**, **"feature_2_standard"**, **"feature_3_standard"**, **"feature_4_standard"**
-
-standardize by z-score for both testing and training
-
-```{r}
-library(ggplot2)
-ggplot(data=train,aes(x=feature_1)) + geom_density() + geom_density(data=train,aes(x=feature_2_impute)) + geom_density(data=train,aes(x=feature_3_impute))
-train
-```
+Normalize the variables.
 
 ```{r}
 library(dplyr)
 train <- train %>%
   mutate(across(c(feature_1, feature_2_impute, feature_3_impute, feature_4), 
                 ~ (.x - mean(.x, na.rm = TRUE)) / sd(.x, na.rm = TRUE)))
-train
-ggplot(data=train,aes(x=feature_1)) + geom_density() + geom_density(data=train,aes(x=feature_2_impute)) + geom_density(data=train,aes(x=feature_3_impute))
 
 colnames(train) <- c("feature_1_standard","feature_2_standard","feature_3_standard","feature_4_standard","id","date","y","key")
-
 
 test <- test %>%
   mutate(across(c(feature_1, feature_2_impute, feature_3_impute, feature_4), 
                 ~ (.x - mean(.x, na.rm = TRUE)) / sd(.x, na.rm = TRUE)))
 
-ggplot(data=test,aes(x=feature_1,color="blue")) + geom_density() + geom_density(data=test,aes(x=feature_2_impute,color="red")) + geom_density(data=test,aes(x=feature_3_impute,color="green"))
-
-
 colnames(test) <- c("feature_1_standard","feature_2_standard","feature_3_standard","feature_4_standard","id","date","y")
 
-
-write.csv(file="final_train.csv",train)
+ggplot(data=train,aes(feature_1_standard,color="blue")) + geom_density() + 
+  geom_density(data=train,aes(feature_2_standard,color="red")) + 
+  geom_density(data=train,aes(feature_3_standard,color="green")) + 
+  geom_density(data=train,aes(feature_4_standard,color="purple"))
 ```
 
-6.  Build a logistic regression on the training set to predict **'y'** being **(90+DPD)** using **"feature_1_standard"**, **"feature_2_standard"**, **"feature_3_standard"**, **"feature_4_standard"** as independent variables.
+Building a logistic regression model where features 1 to 4 are independent variables and column y of the training data set is our categorical dependent variable. Converting y value "90+ DPD" to 1 and "active" to 0, as in, 1 for delinquent and 0 for non-delinquent. The model will be producing probabilities for value 1 ( "90+ DPD": delinquency).
 
 ```{r}
 library(nnet)
 train$y <- as.numeric(as.character(factor(train$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
-delinquency_model <- multinom(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, data=train,family=binomial())
+#This is necessary so that the delinquent value is recognized as the positive outcome.
+delinquency_model <- multinom(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, 
+                              data=train,family=binomial())
 summary(delinquency_model)
 ```
 
-7.  Report AUC on the **testing set**.
+Evaluating the accuracy of the model by the AUC and ROC curve resulting from the model being evaluated on the testing data.
 
-```{r}
+```{r,warning=FALSE}
     library(pROC)
-    library(ggplot2)
     test$predicted_y <- predict(delinquency_model, newdata = test, type = "class")
     test$y_numeric <- as.numeric(as.character(factor(test$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
-    test$predicted_probs <- predict(delinquency_model, newdata = test, type = "probs")
-    test$probs <- round(test$predicted_probs * 100, 1)
-    test
+    test$Probability <- predict(delinquency_model, newdata = test, type = "probs")
+    options(digits = 4)
     
-    roc_curve <- roc(response = test$y_numeric, predictor = test$predicted_probs)
-    plot(roc_curve, main = "ROC Curve for Multinomial Logistic Regression", col = "blue", lwd = 2)
+    roc_curve <- roc(response = test$y_numeric, predictor = test$Probability)
 
-    print(paste("AUC:", auc(roc_curve)))
-  
+
     roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
-    
+    (head(roc_metrics,5))
 
-    roc_metrics$threshold <- as.numeric(roc_metrics$threshold)  # Ensure threshold is numeric
-    ggplot(roc_metrics, aes(x = threshold)) +
+    roc_metrics$threshold <- as.numeric(roc_metrics$threshold)
+    plot(roc_curve, main = "ROC Curve for Multinomial Logistic Regression", col = "blue", lwd = 2)
+    text(0.2, 0.2, paste("AUC:", round(auc_value, 4)), col = "black", cex = 1.2)
+    text(0.2, 0.1, paste("Optimal Threshold:", round(optimal_threshold, 4)), col = "black", cex = 1.2)
+    options(digits = 7)
+```
+
+The AUC of the model on the testing data is 82% (50% would be random guess).
+
+As well, the optimal threshold found was 0.2243997. The model produces a probability of delinquency for each observation, a probability value must be selected where observations that have a probability equal or greater to this value are categorized as delinquent. The effectinveness of this probability threshold can be evaluated by comparing the resulting predicted outcomes of delinquency against the actual delinquency outcomes.
+
+| threshold | sensitivity | specificity |
+|----------:|------------:|------------:|
+| 0.2241302 |      0.7710 |    0.770414 |
+
+**Specificity:** is the proportion of negative outcomes (not delinquent) correctly identified by the model, as in, what proportion of people who did not go delinquent on payments were not mis-categorized as delinquent.
+
+**Sensitivity:** is the proportion of positive outcomes (delinquent) correctly identified by the model, as in, what proportion of delinquencies were caught by the model.
+
+The optimal threshold is that which maximizes the delinquencies successfully predicted and minimizes the number of delinquencies incorrectly predicted. This value is visually apparent by this plot.
+
+```{r}
+ggplot(roc_metrics, aes(x = threshold)) +
     geom_line(aes(y = sensitivity, color = "Sensitivity")) +
     geom_line(aes(y = specificity, color = "Specificity")) +
     labs(title = "Sensitivity and Specificity vs. Threshold",
     x = "Threshold", y = "Metric Value") +
-    scale_color_manual(name = "Metrics", values = c("Sensitivity" = "red", "Specificity" = "blue"))
-    
-    cat("optimal threshold",roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))])
+    scale_color_manual(name = "Metrics", values = c("Sensitivity" = "red", "Specificity" = "blue")) +
+    theme_minimal()
 ```
 
-Specificity is the proportion of negative outcomes correctly identified by the model (what proportion of people who did not go delinquent on payments were correctly identified by the model)
-
-Sensitivity is the proportion of positive outcomes correctly identified by the model ( what proportion of delinquencies were caught by the model)
-
-The Threshold which maximizes "catches" (correct prediction of delinquent payments) and minimizes "false alarms" (predicting delinquent payments which are paid on time).
-
-8.  Report confusion matrix on the **testing set**.
+Confusion matrix displaying the accuracy of the found optimal decision threshold.
 
 ```{r}
-test$predicted_class <- ifelse(test$predicted_probs >= roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))], 1, 0)
+test$predicted_class <- ifelse(test$Probability >= roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))], 1, 0)
 
 library(caret)
 conf_matrix <- confusionMatrix(
@@ -194,52 +183,118 @@ conf_matrix <- confusionMatrix(
   factor(test$y_numeric, levels = c(0, 1)))
 
 confusion_table <- as.data.frame.matrix(conf_matrix$table)
-
 rownames(confusion_table) <- c("Actual: Non-delinquent", "Actual: Delinquent")
 colnames(confusion_table) <- c("Predicted: Non-delinquent", "Predicted: Delinquent")
 
 print("Confusion Matrix:")
 print(confusion_table)
 
-true_positives <- confusion_table[2, 2]  # Delinquent correctly classified
-false_positives <- confusion_table[1, 2] # Non-delinquent misclassified as delinquent
-true_negatives <- confusion_table[1, 1]  # Non-delinquent correctly classified
-false_negatives <- confusion_table[2, 1] # Delinquent missed
-
-
+true_positives <- confusion_table[2, 2]  
+false_positives <- confusion_table[1, 2] 
+true_negatives <- confusion_table[1, 1]  
+false_negatives <- confusion_table[2, 1] 
 ```
 
-9.  Identify multicollinearity in the model.
+Checking for Multicollinearity
 
 ```{r}
-
 library(car)
-
-# Create the design matrix (without the response variable)
-X <- model.matrix(~ feature_1 + feature_2_impute + feature_3_impute + feature_4, data=cleaned_unnormalized_train)
-
-# Calculate the VIF for each predictor
-vif_values <- diag(solve(cor(X[, -1])))  # Exclude intercept column
-names(vif_values) <- colnames(X)[-1]    # Assign names
+X <- model.matrix(~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, data=train)
+vif_values <- diag(solve(cor(X[, -1]))) 
+names(vif_values) <- colnames(X)[-1]    
 print(vif_values)
 library(corrplot)
 
-
-
-
-cor_matrix <- cor(cleaned_unnormalized_train[, c("feature_1", "feature_2_impute", "feature_3_impute", "feature_4")])
-
+cor_matrix <- cor(train[, c("feature_1_standard", "feature_2_standard", "feature_3_standard", "feature_4_standard")])
 corrplot(cor_matrix, 
-         method = "color",        # Use colored squares
-         col = colorRampPalette(c("white", "red"))(200),  # White to red gradient
-         type = "upper",          # Show only the upper triangle
-         tl.col = "black",        # Text labels in black
-         tl.srt = 45,             # Rotate labels
-         addCoef.col = "black",   # Display correlation coefficients in black
-         number.cex = 0.8)        # Adjust size of numbers
-
-
-
+         method = "color",        
+         col = colorRampPalette(c("white", "red"))(200),  
+         type = "upper",          
+         tl.col = "black",        
+         tl.srt = 45,             
+         addCoef.col = "black",  
+         number.cex = 0.8)
 ```
 
-There is mulit-collinearlity in that features 1, 2, and 3 as they have a moderate coloration coefficient of .41.
+There is Multicollinearity between feature 1 and feature 3
+
+```{r}
+
+full_model <- glm(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, data = train, 
+                  family = binomial())
+
+model_without_feature_1 <- glm(y ~ feature_2_standard + feature_3_standard + feature_4_standard, data = train, family = binomial())
+
+
+anova(model_without_feature_1, full_model, test = "LRT")
+
+model_without_feature_3 <- glm(y ~ feature_1_standard + feature_2_standard + feature_4_standard, data = train, 
+                  family = binomial())
+
+anova(model_without_feature_3, full_model, test = "LRT")
+```
+
+Inconclusive, checking the outcome of the model.
+
+```{r}
+library(pROC)
+library(ggplot2)
+
+model_without_feature_1 <- glm(y ~ feature_2_standard + feature_3_standard + feature_4_standard, 
+                               data = train, family = binomial())
+
+test_no_feature_1 <- test %>%
+  select(-feature_1_standard) 
+
+test_no_feature_1$Probability <- predict(model_without_feature_1, newdata = test_no_feature_1, type = "response")
+
+test_no_feature_1$y_numeric <- as.numeric(as.character(factor(test_no_feature_1$y, 
+                                                              levels = c("90+DPD", "active"), 
+                                                              labels = c(1, 0))))
+
+roc_curve <- roc(response = test_no_feature_1$y_numeric, 
+                 predictor = test_no_feature_1$Probability)
+
+roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
+print(head(roc_metrics, 5)) 
+
+test_no_feature_1
+
+plot(roc_curve, main = "ROC Curve Without Feature 1", col = "blue", lwd = 2)
+auc_value <- auc(roc_curve) # Calculate AUC
+optimal_threshold <- coords(roc_curve, "best", ret = "threshold")
+text(0.2, 0.2, paste("AUC:", round(auc_value, 4)), col = "black", cex = 1.2)
+text(0.2, 0.1, paste("Optimal Threshold:", round(optimal_threshold, 4)), col = "black", cex = 1.2)
+
+roc_metrics_df <- as.data.frame(roc_metrics) 
+ggplot(roc_metrics_df, aes(x = threshold)) +
+    geom_line(aes(y = sensitivity, color = "Sensitivity")) +
+    geom_line(aes(y = specificity, color = "Specificity")) +
+    labs(title = "Sensitivity and Specificity vs. Threshold Without Feature 1",
+         x = "Threshold", y = "Metric Value") +
+    scale_color_manual(name = "Metrics", values = c("Sensitivity" = "red", "Specificity" = "blue")) +
+    theme_minimal()
+```
+
+The AUC and Optimal threshold are identical, feature 1 of the original data set is completely redundant.
+
+```{r}
+library(car)
+X <- model.matrix(~ feature_2_standard + feature_3_standard + feature_4_standard, data=train)
+vif_values <- diag(solve(cor(X[, -1]))) 
+names(vif_values) <- colnames(X)[-1]    
+print(vif_values)
+library(corrplot)
+
+cor_matrix <- cor(train[, c("feature_2_standard", "feature_3_standard", "feature_4_standard")])
+corrplot(cor_matrix, 
+         method = "color",        
+         col = colorRampPalette(c("white", "red"))(200),  
+         type = "upper",          
+         tl.col = "black",        
+         tl.srt = 45,             
+         addCoef.col = "black",  
+         number.cex = 0.8)
+```
+
+Insignificant, Multicollinearity in models can cause problems so the version without feature 1 is recommended for usage on future data.
