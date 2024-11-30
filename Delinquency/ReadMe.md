@@ -127,17 +127,7 @@ delinquency_model <- multinom(y ~ feature_1_standard + feature_2_standard + feat
                               data=train,family=binomial())
 ```
 
-```
-## # weights:  6 (5 variable)
-## initial  value 2730.999891 
-## iter  10 value 1604.602929
-## final  value 1604.602903 
-## converged
-```
 
-``` r
-summary(delinquency_model)
-```
 
 ```
 ## Call:
@@ -169,16 +159,6 @@ Evaluating the accuracy of the model by the AUC and ROC curve resulting from the
     roc_curve <- roc(response = test$y_numeric, predictor = test$Probability)
 
     roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
-    (head(roc_metrics,5))
-```
-
-```
-##   threshold sensitivity specificity
-## 1      -Inf           1    0.000000
-## 2 0.0003493           1    0.001183
-## 3 0.0003954           1    0.002367
-## 4 0.0004220           1    0.003550
-## 5 0.0004640           1    0.004734
 ```
 
 ``` r
