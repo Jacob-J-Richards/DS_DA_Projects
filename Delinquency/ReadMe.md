@@ -2,6 +2,7 @@
 
 The panel data-set contains commercial customers' financial information and days past due indicator from 2000 to 2020. The goal is to build a binary classifier to predict customers 90+ days past due **(90+DPD)** probability.
 
+## Preparing training data 
 
 ``` r
 train <- read.csv(file="FITB_train.csv",header=TRUE)
@@ -116,6 +117,8 @@ ggplot() + geom_density(data=train, aes(x=feature_3_standard), color="blue") +
 
 ![](R_Main_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
+## Produce Multinomial Logistic Regression Model
+
 Building a logistic regression model where features 1 to 4 are independent variables and column y of the training data set is our categorical dependent variable. Converting y value "90+ DPD" to 1 and "active" to 0, as in, 1 for delinquent and 0 for non-delinquent. The model will be producing probabilities for value 1 ( "90+ DPD": delinquency).
 
 
@@ -145,8 +148,9 @@ delinquency_model <- multinom(y ~ feature_1_standard + feature_2_standard + feat
 ## Residual Deviance: 3209.206 
 ## AIC: 3219.206
 ```
+## Evaluate Model on New Data and Check Accuracy 
 
-Evaluating the accuracy of the model by the AUC and ROC curve resulting from the model being evaluated on the testing data.
+Testing the accuracy of the model by the AUC and ROC curve resulting from the model being evaluated on the testing data.
 
 
 ``` r
@@ -188,6 +192,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
   theme_minimal() +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
+## Find optimal Probability Threshold value of Model 
 
 ![](R_Main_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
@@ -238,13 +243,6 @@ colnames(confusion_table) <- c("Predicted: Non-delinquent", "Predicted: Delinque
 print("Confusion Matrix:")
 ```
 
-```
-## [1] "Confusion Matrix:"
-```
-
-``` r
-print(confusion_table)
-```
 
 ```
 ##                        Predicted: Non-delinquent Predicted: Delinquent
@@ -259,7 +257,7 @@ true_negatives <- confusion_table[1, 1]
 false_negatives <- confusion_table[2, 1] 
 ```
 
-Checking for Multicollinearity
+## Checking for Multicollinearity In Model 
 
 
 ``` r
@@ -336,7 +334,7 @@ anova(model_without_feature_3, full_model, test = "LRT")
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-Reject the null hypothesis that the reduced model does not have significantly different goodness of fit to the original. Feature 1 is necessary.
+Reject the null hypothesis that the reduced model does not have significantly different goodness of fit to the original. Feature 1 and 3 are necessary. 
 
 
 ``` r
