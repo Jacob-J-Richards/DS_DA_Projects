@@ -3,7 +3,6 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 ```
 
 ---
-title: "Untitled"
 output: 
   html_document: 
     keep_md: true
@@ -23,11 +22,11 @@ Checking the distribution of the data. If you look carefully you can see that th
 
 ```{r}
 library(ggplot2)
-ggplot(data=train,aes(feature_3,color="blue")) + geom_density() + 
-  geom_density(data=train,aes(feature_2,color="red")) + 
-  geom_density(data=train,aes(feature_1,color="green")) + 
-  geom_density(data=train,aes(feature_4,color="purple")) + 
-  theme_minimal()
+ggplot() + geom_density(data=train, aes(x=feature_3), color="blue") +
+           geom_density(data=train, aes(x=feature_2), color="red") +
+           geom_density(data=train, aes(x=feature_1), color="green") +
+           geom_density(data=train, aes(x=feature_4), color="purple") +
+           theme_minimal()
 ```
 
 Removing the top and bottom 1% from the tails of feature 3. "Winsorize**"** feature 3.
@@ -115,11 +114,11 @@ test <- test %>%
 
 colnames(test) <- c("feature_1_standard","feature_2_standard","feature_3_standard","feature_4_standard","id","date","y")
 
-ggplot(data=train,aes(feature_1_standard,color="blue")) + geom_density() + 
-  geom_density(data=train,aes(feature_2_standard,color="red")) + 
-  geom_density(data=train,aes(feature_3_standard,color="green")) + 
-  geom_density(data=train,aes(feature_4_standard,color="purple")) + 
-  theme_minimal()
+ggplot() + geom_density(data=train, aes(x=feature_3_standard), color="blue") +
+           geom_density(data=train, aes(x=feature_2_standard), color="red") +
+           geom_density(data=train, aes(x=feature_1_standard), color="green") +
+           geom_density(data=train, aes(x=feature_4_standard), color="purple") +
+           theme_minimal()
 ```
 
 Building a logistic regression model where features 1 to 4 are independent variables and column y of the training data set is our categorical dependent variable. Converting y value "90+ DPD" to 1 and "active" to 0, as in, 1 for delinquent and 0 for non-delinquent. The model will be producing probabilities for value 1 ( "90+ DPD": delinquency).
@@ -160,7 +159,7 @@ roc_data <- data.frame(
 auc_value <- auc(roc_curve)
 
 ggplot(roc_data, aes(x = FPR, y = TPR)) +
-  geom_line(color = "blue", size = 1) +
+  geom_smooth(color = "blue", size = 1) +
   geom_abline(linetype = "dashed", color = "gray") +
   labs(
     title = "ROC Curve for Multinomial Logistic Regression",
@@ -193,8 +192,8 @@ The optimal threshold is that which maximizes the delinquencies successfully pre
 
 ```{r}
 ggplot(roc_metrics, aes(x = threshold)) +
-    geom_line(aes(y = sensitivity, color = "Sensitivity")) +
-    geom_line(aes(y = specificity, color = "Specificity")) +
+    geom_smooth(aes(y = sensitivity, color = "Sensitivity")) +
+    geom_smooth(aes(y = specificity, color = "Specificity")) +
     labs(title = "Sensitivity and Specificity vs. Threshold",
     x = "Threshold", y = "Metric Value") +
     scale_color_manual(name = "Metrics", values = c("Sensitivity" = "red", "Specificity" = "blue")) +
@@ -295,7 +294,7 @@ auc_value <- auc(roc_curve)
 
 # Create the ROC curve plot using ggplot2
 ggplot(roc_data, aes(x = FPR, y = TPR)) +
-  geom_line(color = "blue", size = 1) +
+  geom_smooth(color = "blue", size = 1) +
   geom_abline(linetype = "dashed", color = "gray") +  # Diagonal line for random chance
   labs(
     title = "ROC Curve Without Feature 3",
@@ -310,8 +309,8 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
 
 roc_metrics_df <- as.data.frame(roc_metrics) 
 ggplot(roc_metrics_df, aes(x = threshold)) +
-    geom_line(aes(y = sensitivity, color = "Sensitivity")) +
-    geom_line(aes(y = specificity, color = "Specificity")) +
+    geom_smooth(aes(y = sensitivity, color = "Sensitivity")) +
+    geom_smooth(aes(y = specificity, color = "Specificity")) +
     labs(title = "Sensitivity and Specificity vs. Threshold Without Feature 1",
          x = "Threshold", y = "Metric Value") +
     scale_color_manual(name = "Metrics", values = c("Sensitivity" = "red", "Specificity" = "blue")) +
@@ -353,7 +352,7 @@ auc_value <- auc(roc_curve)
 
 # Create the ROC curve plot using ggplot2
 ggplot(roc_data, aes(x = FPR, y = TPR)) +
-  geom_line(color = "blue", size = 1) +
+  geom_smooth(color = "blue", size = 1) +
   geom_abline(linetype = "dashed", color = "gray") +  # Diagonal line for random chance
   labs(
     title = "ROC Curve Without Feature 3",
@@ -369,8 +368,8 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
 
 roc_metrics_df <- as.data.frame(roc_metrics) 
 ggplot(roc_metrics_df, aes(x = threshold)) +
-    geom_line(aes(y = sensitivity, color = "Sensitivity")) +
-    geom_line(aes(y = specificity, color = "Specificity")) +
+    geom_smooth(aes(y = sensitivity, color = "Sensitivity")) +
+    geom_smooth(aes(y = specificity, color = "Specificity")) +
     labs(title = "Sensitivity and Specificity vs. Threshold Without Feature 3",
          x = "Threshold", y = "Metric Value") +
     scale_color_manual(name = "Metrics", values = c("Sensitivity" = "red", "Specificity" = "blue")) +
