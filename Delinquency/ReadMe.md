@@ -2,7 +2,7 @@
 
 The panel data-set contains commercial customers' financial information and days past due indicator from 2000 to 2020. The goal is to build a binary classifier to predict customers 90+ days past due **(90+DPD)** probability.
 
-## Preparing training data 
+## Preparing Training Data 
 
 ``` r
 train <- read.csv(file="FITB_train.csv",header=TRUE)
@@ -192,7 +192,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
   theme_minimal() +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
-## Find optimal Probability Threshold value of Model 
+## Find Optimal Probability Threshold Value of Model 
 
 ![](R_Main_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
