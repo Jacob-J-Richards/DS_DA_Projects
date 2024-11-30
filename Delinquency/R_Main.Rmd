@@ -48,8 +48,6 @@ ggplot(data=train,aes(feature_3_winsor)) + geom_density()
 
 3.  Identify missing values for **"feature_3_winsor"**. Then, impute the missings with median value on the training set. Name the new feature **"feature_3_impute"**. Make appropriate treatments on the testing set.
 
-This time i will impute the median into the testing data as well.
-
 ```{r}
 train[is.na(train[,3]),3] <- median(feature_3_winsor_clean$feature_3)
 
@@ -64,26 +62,38 @@ colnames(test)[3] <- "feature_3_impute"
 This time will do the same thing for training and testing data
 
 ```{r}
-train_unmodified[is.na(train_unmodified[,2]) , 2] <- train_unmodified[is.na(train_unmodified[,2]),1]
+train$date <- format(as.Date(train$date, format = "%Y-%m-%d"), "%Y")
+library(dplyr)
 
-train_unmodified[is.na(train_unmodified[,2]) , 2] <- train_unmodified[is.na(train_unmodified[,2]),3]
+train <- train %>%
+  arrange(id, date) %>% # Sort by id and date
+  group_by(id) %>%
+  mutate(feature_2 = ifelse(is.na(feature_2),
+                            lead(feature_2, order_by = date), # Try next year
+                            feature_2)) %>%
+  mutate(feature_2 = ifelse(is.na(feature_2),
+                            lag(feature_2, order_by = date), # Try previous year
+                            feature_2))
 
-train$feature_2 <- train_unmodified$feature_2
+
 
 colnames(train)[2] <- "feature_2_impute"
 
+test <- test %>%
+  arrange(id, date) %>% # Sort by id and date
+  group_by(id) %>%
+  mutate(feature_2 = ifelse(is.na(feature_2),
+                            lead(feature_2, order_by = date), # Try next year
+                            feature_2)) %>%
+  mutate(feature_2 = ifelse(is.na(feature_2),
+                            lag(feature_2, order_by = date), # Try previous year
+                            feature_2))
 
 
-
-test[is.na(test[,2]) , 2] <- test[is.na(test[,2]),1]
-
-test[is.na(test[,2]) , 2] <- test[is.na(test[,2]),3]
-
-test$feature_2 <- test$feature_2
 
 colnames(test)[2] <- "feature_2_impute"
-train
-(colnames(train))
+
+
 ```
 
 5.  Standardize **"feature_1"**, **"feature_2_impute"**, **"feature_3_impute"**, **"feature_4"** for the training set. Make appropriate treatments on the testing set. Name the features **"feature_1_standard"**, **"feature_2_standard"**, **"feature_3_standard"**, **"feature_4_standard"**
@@ -122,8 +132,6 @@ train
 
 6.  Build a logistic regression on the training set to predict **'y'** being **(90+DPD)** using **"feature_1_standard"**, **"feature_2_standard"**, **"feature_3_standard"**, **"feature_4_standard"** as independent variables.
 
-here i need to make the y being delinquent thee positive outcome in order to correctly interpreter the model results later because otherwise this is just too fucking complicated
-
 ```{r}
 library(nnet)
 train$y <- as.numeric(as.character(factor(train$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
@@ -133,15 +141,13 @@ summary(delinquency_model)
 
 7.  Report AUC on the **testing set**.
 
-    <https://www.geeksforgeeks.org/auc-roc-curve/>
-
 ```{r}
     library(pROC)
+    library(ggplot2)
     test$predicted_y <- predict(delinquency_model, newdata = test, type = "class")
     test$y_numeric <- as.numeric(as.character(factor(test$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
     test$predicted_probs <- predict(delinquency_model, newdata = test, type = "probs")
     test$probs <- round(test$predicted_probs * 100, 1)
-
     test
     
     roc_curve <- roc(response = test$y_numeric, predictor = test$predicted_probs)
@@ -150,16 +156,55 @@ summary(delinquency_model)
     print(paste("AUC:", auc(roc_curve)))
   
     roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
-    roc_metrics
+    
+
+    roc_metrics$threshold <- as.numeric(roc_metrics$threshold)  # Ensure threshold is numeric
+    ggplot(roc_metrics, aes(x = threshold)) +
+    geom_line(aes(y = sensitivity, color = "Sensitivity")) +
+    geom_line(aes(y = specificity, color = "Specificity")) +
+    labs(title = "Sensitivity and Specificity vs. Threshold",
+    x = "Threshold", y = "Metric Value") +
+    scale_color_manual(name = "Metrics", values = c("Sensitivity" = "red", "Specificity" = "blue"))
+    
+    cat("optimal threshold",roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))])
+```
+
+Specificity is the proportion of negative outcomes correctly identified by the model (what proportion of people who did not go delinquent on payments were correctly identified by the model)
+
+Sensitivity is the proportion of positive outcomes correctly identified by the model ( what proportion of delinquencies were caught by the model)
+
+The Threshold which maximizes "catches" (correct prediction of delinquent payments) and minimizes "false alarms" (predicting delinquent payments which are paid on time).
+
+8.  Report confusion matrix on the **testing set**.
+
+```{r}
+test$predicted_class <- ifelse(test$predicted_probs >= roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))], 1, 0)
+
+library(caret)
+conf_matrix <- confusionMatrix(
+  factor(test$predicted_class, levels = c(0, 1)),
+  factor(test$y_numeric, levels = c(0, 1)))
+
+confusion_table <- as.data.frame.matrix(conf_matrix$table)
+
+rownames(confusion_table) <- c("Actual: Non-delinquent", "Actual: Delinquent")
+colnames(confusion_table) <- c("Predicted: Non-delinquent", "Predicted: Delinquent")
+
+print("Confusion Matrix:")
+print(confusion_table)
+
+true_positives <- confusion_table[2, 2]  # Delinquent correctly classified
+false_positives <- confusion_table[1, 2] # Non-delinquent misclassified as delinquent
+true_negatives <- confusion_table[1, 1]  # Non-delinquent correctly classified
+false_negatives <- confusion_table[2, 1] # Delinquent missed
+
 
 ```
 
-7.  Report confusion matrix on the **testing set**.
+9.  Identify multicollinearity in the model.
 
-    Since we are modelling delinquency of rent payments, it's in our best interest to bias our prediction towards higher true positives then lower false positives, as business is negatively effected by failure to predict delinquencies more so than the incorrect prediction of delinquencies.
+```{r}
 
-    ```{r}
 
-    ```
 
-8.  Identify multicollinearity in the model.
+```
