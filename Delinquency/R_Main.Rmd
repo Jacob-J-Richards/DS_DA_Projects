@@ -4,8 +4,13 @@ output:
     keep_md: true
 ---
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(message = FALSE, warning = FALSE)
-
+knitr::opts_chunk$set(
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 8,   
+  fig.height = 6, 
+  dpi = 300,     
+  dev = "png")    
 ```
 
 # Multivariable Logistic Binary Classifier - Delinquency Prediction
