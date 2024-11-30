@@ -250,12 +250,10 @@ print("Confusion Matrix:")
 ## Actual: Delinquent                           193                   165
 ```
 
-``` r
-true_positives <- confusion_table[2, 2]  
-false_positives <- confusion_table[1, 2] 
-true_negatives <- confusion_table[1, 1]  
-false_negatives <- confusion_table[2, 1] 
-```
+|            Predicted: Non-delinquent  | Delinquent |
+|:---------:|:-----------:|:-----------:|
+| Actual: Non-delinquent |     652    |    49 |
+| Actual: Delinquent  |    193   |    165 |
 
 ## Checking for Multicollinearity In Model 
 
