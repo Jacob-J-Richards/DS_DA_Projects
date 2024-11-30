@@ -53,10 +53,6 @@ train <- train %>% mutate(feature_3 = ifelse(key %in% non_matching_keys, NA, fea
 colnames(train)[3] <- "feature_3_winsor"
 ```
 
-```{r}
-ggplot(data=train,aes(feature_3_winsor)) + geom_density() + theme_minimal()
-```
-
 Replace missing values from Winsorization with median of feature 3.
 
 ```{r}
