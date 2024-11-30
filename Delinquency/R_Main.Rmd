@@ -76,8 +76,10 @@ train <- train %>%
                             feature_2))
 
 
-
 colnames(train)[2] <- "feature_2_impute"
+
+
+
 
 test <- test %>%
   arrange(id, date) %>% # Sort by id and date
@@ -93,6 +95,12 @@ test <- test %>%
 
 colnames(test)[2] <- "feature_2_impute"
 
+
+train <- na.omit(train)
+test <- na.omit(test)
+
+
+cleaned_unnormalized_train <- train
 
 ```
 
@@ -121,13 +129,13 @@ test <- test %>%
   mutate(across(c(feature_1, feature_2_impute, feature_3_impute, feature_4), 
                 ~ (.x - mean(.x, na.rm = TRUE)) / sd(.x, na.rm = TRUE)))
 
-ggplot(data=test,aes(x=feature_1)) + geom_density() + geom_density(data=test,aes(x=feature_2_impute)) + geom_density(data=test,aes(x=feature_3_impute))
+ggplot(data=test,aes(x=feature_1,color="blue")) + geom_density() + geom_density(data=test,aes(x=feature_2_impute,color="red")) + geom_density(data=test,aes(x=feature_3_impute,color="green"))
 
 
 colnames(test) <- c("feature_1_standard","feature_2_standard","feature_3_standard","feature_4_standard","id","date","y")
 
 
-train
+write.csv(file="final_train.csv",train)
 ```
 
 6.  Build a logistic regression on the training set to predict **'y'** being **(90+DPD)** using **"feature_1_standard"**, **"feature_2_standard"**, **"feature_3_standard"**, **"feature_4_standard"** as independent variables.
@@ -205,6 +213,33 @@ false_negatives <- confusion_table[2, 1] # Delinquent missed
 
 ```{r}
 
+library(car)
+
+# Create the design matrix (without the response variable)
+X <- model.matrix(~ feature_1 + feature_2_impute + feature_3_impute + feature_4, data=cleaned_unnormalized_train)
+
+# Calculate the VIF for each predictor
+vif_values <- diag(solve(cor(X[, -1])))  # Exclude intercept column
+names(vif_values) <- colnames(X)[-1]    # Assign names
+print(vif_values)
+library(corrplot)
+
+
+
+
+cor_matrix <- cor(cleaned_unnormalized_train[, c("feature_1", "feature_2_impute", "feature_3_impute", "feature_4")])
+
+corrplot(cor_matrix, 
+         method = "color",        # Use colored squares
+         col = colorRampPalette(c("white", "red"))(200),  # White to red gradient
+         type = "upper",          # Show only the upper triangle
+         tl.col = "black",        # Text labels in black
+         tl.srt = 45,             # Rotate labels
+         addCoef.col = "black",   # Display correlation coefficients in black
+         number.cex = 0.8)        # Adjust size of numbers
+
 
 
 ```
+
+There is mulit-collinearlity in that features 1, 2, and 3 as they have a moderate coloration coefficient of .41.
