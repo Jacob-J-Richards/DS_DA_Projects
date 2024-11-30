@@ -142,6 +142,8 @@ summary(delinquency_model)
     test$predicted_probs <- predict(delinquency_model, newdata = test, type = "probs")
     test$probs <- round(test$predicted_probs * 100, 1)
 
+    test
+    
     roc_curve <- roc(response = test$y_numeric, predictor = test$predicted_probs)
     plot(roc_curve, main = "ROC Curve for Multinomial Logistic Regression", col = "blue", lwd = 2)
 
@@ -149,30 +151,6 @@ summary(delinquency_model)
   
     roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
     roc_metrics
-
-```
-
-```{r}
-library(pROC)
-
-# Compute ROC metrics
-roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"), transpose = FALSE)
-
-# Filter for thresholds with high sensitivity
-desired_sensitivity <- 0.8  # Example: sensitivity >= 90%
-filtered_metrics <- roc_metrics[roc_metrics$sensitivity >= desired_sensitivity, ]
-
-# Select the optimal threshold
-optimal_threshold <- filtered_metrics[1, "threshold"]  # Choose the first threshold meeting the criteria
-
-# Display the optimal threshold and its corresponding sensitivity and specificity
-print(paste("Optimal Threshold:", optimal_threshold))
-print(paste("Sensitivity at Optimal Threshold:", filtered_metrics[1, "sensitivity"]))
-print(paste("Specificity at Optimal Threshold:", filtered_metrics[1, "specificity"]))
-
-# Plot the ROC curve with the chosen threshold
-plot(roc_curve, main = "ROC Curve for Multinomial Logistic Regression", col = "blue", lwd = 2)
-abline(v = optimal_threshold, col = "red", lty = 2)  # Mark the threshold on the plot
 
 ```
 
