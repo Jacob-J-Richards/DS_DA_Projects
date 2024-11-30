@@ -137,7 +137,6 @@ Evaluating the accuracy of the model by the AUC and ROC curve resulting from the
     
     roc_curve <- roc(response = test$y_numeric, predictor = test$Probability)
 
-
     roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
     (head(roc_metrics,5))
 
