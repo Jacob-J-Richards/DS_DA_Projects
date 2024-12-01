@@ -3,7 +3,7 @@ title: "Your Document Title"
 output:
   md_document:
     variant: gfm
-knit: (function(input, ...) { rmarkdown::render(input, ..., output_file = "~/Desktop/DS_DA_Projects/Delinquency/ReadMe.md") })
+knit: (function(input, ...) { rmarkdown::render(input, ..., output_file = "ReadMe.md") })
 ---
 
 ```{r setup, include=FALSE}
@@ -33,8 +33,9 @@ The panel data-set contains commercial customers' financial information and days
 ## Prepare Training Data
 
 ```{r}
-train <- read.csv(file="~/Desktop/DS_DA_Projects/Delinquency/Data_Files/FITB_train.csv",header=TRUE)
-test <- read.csv(file="~/Desktop/DS_DA_Projects/Delinquency/Data_Files/FITB_test.csv",header=TRUE)
+setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency")
+train <- read.csv(file="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency/Data_Files/FITB_train.csv",header=TRUE)
+test <- read.csv(file="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency/Data_Files/FITB_test.csv",header=TRUE)
 ```
 
 Checking the distribution of the data. If you look carefully you can see that the distribution of feature 3 has a lot of values in the extreme right tail. Red does not as evident by it's flat distribution. You can't even see green (feature 1) in the upper tail which means it's under the red curve so it's not problematic.

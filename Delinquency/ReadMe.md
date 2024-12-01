@@ -8,8 +8,9 @@ probability.
 ## Prepare Training Data
 
 ``` r
-train <- read.csv(file="~/Desktop/DS_DA_Projects/Delinquency/Data_Files/FITB_train.csv",header=TRUE)
-test <- read.csv(file="~/Desktop/DS_DA_Projects/Delinquency/Data_Files/FITB_test.csv",header=TRUE)
+setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency")
+train <- read.csv(file="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency/Data_Files/FITB_train.csv",header=TRUE)
+test <- read.csv(file="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency/Data_Files/FITB_test.csv",header=TRUE)
 ```
 
 Checking the distribution of the data. If you look carefully you can see
@@ -29,7 +30,7 @@ ggplot() + geom_density(data=train, aes(x=feature_3), color="blue") +
 
 <div align="center">
 
-<img src="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency/ReadMe_files/figure-gfm/unnamed-chunk-2-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-2-1.png" width="70%">
 
 </div>
 
@@ -146,7 +147,7 @@ ggplot() + geom_density(data=train, aes(x=feature_3_standard), color="blue") +
 
 <div align="center">
 
-<img src="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency/ReadMe_files/figure-gfm/unnamed-chunk-6-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-6-1.png" width="70%">
 
 </div>
 
@@ -267,7 +268,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR, color = threshold)) +
 
 <div align="center">
 
-<img src="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency/ReadMe_files/figure-gfm/unnamed-chunk-9-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-9-1.png" width="70%">
 
 </div>
 
@@ -328,7 +329,7 @@ ggplot(roc_metrics, aes(x = threshold)) +
 
 <div align="center">
 
-<img src="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency/ReadMe_files/figure-gfm/unnamed-chunk-10-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-10-1.png" width="70%">
 
 </div>
 
@@ -408,7 +409,7 @@ corrplot(cor_matrix,
 
 <div align="center">
 
-<img src="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency/ReadMe_files/figure-gfm/unnamed-chunk-14-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-14-1.png" width="70%">
 
 </div>
 
@@ -512,7 +513,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
 
 <div align="center">
 
-<img src="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency/ReadMe_files/figure-gfm/unnamed-chunk-16-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-16-1.png" width="70%">
 
 </div>
 
@@ -529,7 +530,7 @@ ggplot(roc_metrics_df, aes(x = threshold)) +
 
 <div align="center">
 
-<img src="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency/ReadMe_files/figure-gfm/unnamed-chunk-16-2.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-16-2.png" width="70%">
 
 </div>
 
@@ -586,7 +587,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
 
 <div align="center">
 
-<img src="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency/ReadMe_files/figure-gfm/unnamed-chunk-17-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-17-1.png" width="70%">
 
 </div>
 
@@ -603,7 +604,7 @@ ggplot(roc_metrics_df, aes(x = threshold)) +
 
 <div align="center">
 
-<img src="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency/ReadMe_files/figure-gfm/unnamed-chunk-17-2.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-17-2.png" width="70%">
 
 </div>
 
