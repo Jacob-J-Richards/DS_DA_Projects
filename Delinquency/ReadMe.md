@@ -1,5 +1,3 @@
-yes it works
-
 # Multivariable Logistic Binary Classifier - Delinquency Prediction
 
 The panel data-set contains commercial customers’ financial information
