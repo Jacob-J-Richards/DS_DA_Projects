@@ -26,7 +26,7 @@ ggplot() + geom_density(data=train, aes(x=feature_3), color="blue") +
            theme_minimal()
 ```
 
-<div style="text-align:center;">
+<div style="text-align:center; display: flex; justify-content: center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-2-1.png" style="width:70%; height:auto;">
 
@@ -122,7 +122,7 @@ ggplot() + geom_density(data=train, aes(x=feature_3_standard), color="blue") +
            theme_minimal()
 ```
 
-<div style="text-align:center;">
+<div style="text-align:center; display: flex; justify-content: center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-6-1.png" style="width:70%; height:auto;">
 
@@ -219,7 +219,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
 
-<div style="text-align:center;">
+<div style="text-align:center; display: flex; justify-content: center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-8-1.png" style="width:70%; height:auto;">
 
@@ -265,7 +265,7 @@ ggplot(roc_metrics, aes(x = threshold)) +
     theme_minimal()
 ```
 
-<div style="text-align:center;">
+<div style="text-align:center; display: flex; justify-content: center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-9-1.png" style="width:70%; height:auto;">
 
@@ -333,7 +333,7 @@ corrplot(cor_matrix,
          number.cex = 0.8)
 ```
 
-<div style="text-align:center;">
+<div style="text-align:center; display: flex; justify-content: center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-11-1.png" style="width:70%; height:auto;">
 
@@ -431,7 +431,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
 
-<div style="text-align:center;">
+<div style="text-align:center; display: flex; justify-content: center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-13-1.png" style="width:70%; height:auto;">
 
@@ -448,7 +448,7 @@ ggplot(roc_metrics_df, aes(x = threshold)) +
     theme_minimal()
 ```
 
-<div style="text-align:center;">
+<div style="text-align:center; display: flex; justify-content: center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-13-2.png" style="width:70%; height:auto;">
 
@@ -503,7 +503,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
 
-<div style="text-align:center;">
+<div style="text-align:center; display: flex; justify-content: center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-14-1.png" style="width:70%; height:auto;">
 
@@ -520,7 +520,7 @@ ggplot(roc_metrics_df, aes(x = threshold)) +
     theme_minimal()
 ```
 
-<div style="text-align:center;">
+<div style="text-align:center; display: flex; justify-content: center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-14-2.png" style="width:70%; height:auto;">
 
