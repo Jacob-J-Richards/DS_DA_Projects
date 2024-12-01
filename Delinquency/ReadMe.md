@@ -244,16 +244,12 @@ print("Confusion Matrix:")
 ```
 
 
-```
-##                        Predicted: Non-delinquent Predicted: Delinquent
-## Actual: Non-delinquent                       652                    49
-## Actual: Delinquent                           193                   165
-```
+|                        | Predicted: Non-delinquent | Predicted: Delinquent |
+|:----------------------:|:-------------------------:|:---------------------:|
+| **Actual: Non-delinquent** |          652            |          49          |
+| **Actual: Delinquent**     |          193            |         165          |
 
-|            Predicted: Non-delinquent  | Delinquent |
-|:---------:|:-----------:|:-----------:|
-| Actual: Non-delinquent |     652    |    49 |
-| Actual: Delinquent  |    193   |    165 |
+
 
 ## Checking for Multicollinearity In Model 
 
