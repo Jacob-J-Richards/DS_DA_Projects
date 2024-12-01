@@ -28,7 +28,7 @@ ggplot() + geom_density(data=train, aes(x=feature_3), color="blue") +
 
 <div style="text-align:center;">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-2-1.png" style="width:50%; height:auto;">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-2-1.png" style="width:70%; height:auto;">
 
 </div>
 
@@ -124,7 +124,7 @@ ggplot() + geom_density(data=train, aes(x=feature_3_standard), color="blue") +
 
 <div style="text-align:center;">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-6-1.png" style="width:50%; height:auto;">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-6-1.png" style="width:70%; height:auto;">
 
 </div>
 
@@ -221,7 +221,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
 
 <div style="text-align:center;">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-8-1.png" style="width:50%; height:auto;">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-8-1.png" style="width:70%; height:auto;">
 
 </div>
 
@@ -267,7 +267,7 @@ ggplot(roc_metrics, aes(x = threshold)) +
 
 <div style="text-align:center;">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-9-1.png" style="width:50%; height:auto;">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-9-1.png" style="width:70%; height:auto;">
 
 </div>
 
@@ -335,7 +335,7 @@ corrplot(cor_matrix,
 
 <div style="text-align:center;">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-11-1.png" style="width:50%; height:auto;">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-11-1.png" style="width:70%; height:auto;">
 
 </div>
 
@@ -433,7 +433,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
 
 <div style="text-align:center;">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-13-1.png" style="width:50%; height:auto;">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-13-1.png" style="width:70%; height:auto;">
 
 </div>
 
@@ -450,7 +450,7 @@ ggplot(roc_metrics_df, aes(x = threshold)) +
 
 <div style="text-align:center;">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-13-2.png" style="width:50%; height:auto;">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-13-2.png" style="width:70%; height:auto;">
 
 </div>
 
@@ -505,7 +505,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
 
 <div style="text-align:center;">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-14-1.png" style="width:50%; height:auto;">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-14-1.png" style="width:70%; height:auto;">
 
 </div>
 
@@ -522,7 +522,7 @@ ggplot(roc_metrics_df, aes(x = threshold)) +
 
 <div style="text-align:center;">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-14-2.png" style="width:50%; height:auto;">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-14-2.png" style="width:70%; height:auto;">
 
 </div>
 
