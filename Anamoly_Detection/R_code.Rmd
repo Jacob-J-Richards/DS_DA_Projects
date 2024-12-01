@@ -1,18 +1,33 @@
 ---
-title: "Anamoly Detection"
+title: "Your Document Title"
 output:
-  html_document:
-    keep_md: true
-  pdf_document: default
-geometry: margin=0.10in
-date: "2024-11-13"
+  md_document:
+    variant: gfm
+knit: (function(input, ...) { rmarkdown::render(input, ..., output_file = "ReadMe.md") })
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center",
+  fig.width = 8,   
+  fig.height = 6, 
+  dpi = 300,     
+  dev = "png",
+  out.width = "70%",
+  out.height = "70%")
+
+knitr::knit_hooks$set(plot = function(x, options) {
+  paste0('<div align="center">\n',
+         '<img src="', x, '" width="70%">\n',
+         '</div>')})
+```
 
 ```{r}
 library('ggplot2')
-setwd("/Users/jacobrichards/Desktop/DS assesment/DS_exam_2")
-#setwd("C:/Users/jake pc/Desktop/exam_2_restart")
-transactions <- read.csv(file="trans.csv", na.strings = c("", "NA"))
+setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection")
+transactions <- read.csv(file="transactions.csv", na.strings = c("", "NA"))
 transactions[is.na(transactions)] <- "notprovided"
 data <- transactions
 colnames(data) <- c("t","s","mid","pmt","pg","subtype","hr","bank")
@@ -20,7 +35,6 @@ weighted_failure_rate <- numeric(nrow(data))
 weighted_failure_rate <- data[,1] - data[,2] / data[,1] * log(1+data[,1])
 data$weighted <- weighted_failure_rate; data_original <- data 
 ```
-
 
 ```{r}
 unique_hours <- unique(data$hr)
@@ -35,7 +49,6 @@ unique_hours <- unique(data$hr)
 unique_hours <- sort(unique_hours)
 ```
 
-
 ```{r}
 failed_transactions_rate <- data.frame(hours = unique_hours, failedTransactions = failure_rate, x_index = seq(1, 72, by = 1))
 ggplot(data = failed_transactions_rate, aes(x = x_index, y = failedTransactions)) + 
@@ -47,9 +60,8 @@ theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 8),
 axis.title.x = element_text(size = 10), axis.title.y = element_text(size = 10),
 plot.background = element_rect(fill = "white", color = NA),panel.background = element_rect(fill = "white", color = NA),
 panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(), panel.grid.major.y = element_blank(), 
-legend.position = "none"); ggsave("percent_failed_before.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
+legend.position = "none");
 ```
-
 
 ```{r}
 failed_transactions <- data.frame(hours = unique_hours, failedTransactions = failure_count, x_index = seq(1, 72, by = 1))
@@ -64,9 +76,7 @@ axis.title.x = element_text(size = 10), axis.title.y = element_text(size = 10),
 plot.background = element_rect(fill = "white", color = NA),panel.background = element_rect(fill = "white", color = NA),
 panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(), panel.grid.major.y = element_blank(), 
 legend.position = "none")
-ggsave("806.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
 ```
-
 
 ```{r}
 data$pmt <- as.numeric(as.factor(data$pmt)); data$pg <- as.numeric(as.factor(data$pg))
@@ -82,9 +92,8 @@ filtered_data <- data[data$weighted >= top_quartile, ]
 
 filtered_data <- filtered_data[order(filtered_data$mahalanobis_score, decreasing = TRUE), ]
 original_observations_found_anamolous <- data_original[rownames(filtered_data),]
-original_observations_found_anamolous; data <- data_original
+data <- data_original
 ```
-
 
 ```{r}
 paytm_subset <- data[(data[,5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI", "notprovided")) & (data[,6] %in% c("UPI_COLLECT")) & (data[,4] == "UPI"),]
@@ -107,9 +116,7 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + g
   axis.title.y = element_text(size = 10), plot.background = element_rect(fill = "white", color = NA),
   panel.background = element_rect(fill = "white", color = NA), panel.grid.major.x = element_blank(),  
   panel.grid.minor.x = element_blank(), panel.grid.major.y = element_blank(), legend.position = "none")
-  ggsave("failure_percent_by_category_combination.png", plot = last_plot(), width = 10, height = 6, dpi = 300)
 ```
-
 
 ```{r}
 paytm_subset <- data[(data[,5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI", "notprovided")) & (data[,6] %in% c("UPI_COLLECT")) & (data[,4] == "UPI"),]
@@ -142,18 +149,24 @@ ggplot(data = long_set_failures_by_merchant,
   labs(title = "Failure Rates Before and During Anomaly by Merchant",
   x = "Period", y = "Failure Rate") +theme_minimal()
 ```
+
 ```{r}
-library(gt); gt_table <- entire_set_failures_by_merchant %>% gt() %>%
+library(webshot2)
+library(gt) 
+gt_table <- entire_set_failures_by_merchant %>% gt() %>%
 tab_header(title = "Merchant Failure Rates", subtitle = "Comparison of Failure Rates Before and During Anomaly") %>%
 cols_label(Merchant = "Merchant",Failure_rate_Pre = "Failure Rate Before Anomaly",
 Failure_Rate_Anamoly = "Failure Rate During Anomaly",Failure_Rate_Difference = "Difference in Failure Rate") %>%
 fmt_number(columns = c(Failure_rate_Pre, Failure_Rate_Anamoly, Failure_Rate_Difference), decimals = 4) %>%
 tab_style(style = cell_text(weight = "bold"), locations = cells_column_labels(everything())) %>%
 tab_options(table.font.size = "small", table.width = pct(80), heading.align = "center") %>%
-data_color(columns = Failure_Rate_Difference, colors = scales::col_numeric(palette = c("lightblue", "red"), domain = NULL)); gt_table
+data_color(columns = Failure_Rate_Difference, colors = scales::col_numeric(palette = c("lightblue", "red"), domain = NULL))
+
+gtsave(gt_table, "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/gt_table_image.png")
+knitr::include_graphics("~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/gt_table_image.png")
 ```
 
-All of the merchants were effected except UrbanClap. 
+All of the merchants were effected except UrbanClap.
 
 ```{r}
 paytm_subset <- data[(data[,5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI", "notprovided")) & (data[,6] %in% c("UPI_COLLECT")) & (data[,4] == "UPI"),]
@@ -181,22 +194,22 @@ hours <- seq(1,72,1); wide <- as.data.frame(cbind(hours,proportion_c,proportion_
 
 long <- melt(data = wide, id.vars = c("hours"), measured.vars = c("proportion_c", "proportion_subset"), variable.name = "percentage_failure")
 
-ggplot(data=long,aes(x=hours,y=value,group=percentage_failure,color=percentage_failure)) + geom_smooth() + labs(title="smoothed failure percentage curve") 
-ggplot(data=long,aes(x=hours,y=value,group=percentage_failure,color=percentage_failure)) + geom_line() + labs(title="failure percentage line, Figure 1.0")
+ggplot(data=long,aes(x=hours,y=value,group=percentage_failure,color=percentage_failure)) + geom_smooth() + labs(title="Smoothed Failure Percentage Curve",ylab="Percentage")  + 
+  scale_color_discrete(labels = c("Non-Anamous Data", "Anamous Data")) 
+ggplot(data=long,aes(x=hours,y=value,group=percentage_failure,color=percentage_failure)) + geom_line() + labs(title="Failure Percentage Line",ylab="Percentage") + 
+  scale_color_discrete(labels = c("Non-Anamous Data", "Anamous Data")) 
 ```
-
 
 ```{r}
 ggplot(data=wide,aes(proportion_subset)) + geom_density(fill="blue",alpha=0.20) + theme_minimal() + 
   labs(title = "Anomalous Data Failure Rate Density",xlab="Failure Rate",ylab="Density")
 ```
 
+There are tons of plots that can be produced here but only one has a meaningful implication.
 
-There are tons of plots that can be produced here but only one has a meaningful implication. 
+Question: Could have this anomaly been predicted before it occurred?
 
-Question: Could have this anomaly been predicted before it occurred? 
-
-1.) The node on the left is the distribution of failure rates of the anomalous subset of data before and after the anomaly 
+1.) The node on the left is the distribution of failure rates of the anomalous subset of data before and after the anomaly
 
 2.) The node on the right is the distribution of failure rates of the anomalous subset of data during the anomaly
 
@@ -208,8 +221,4 @@ Therefore, real life process of which this data set is a collection of measureme
 Note for the future: no one helped you with this, you figured this out on your own. The only clue you had was you saw Figure 1.0 produced by someone else on discord with no indication of where it came from other than it was the result of the combination of categorical variables. 
 ```
 
-
-
-
-
-
+blah blah blah git hub test
