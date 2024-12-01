@@ -3,31 +3,22 @@ output:
   html_document: 
     keep_md: true
 ---
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(
-  message = FALSE,
-  warning = FALSE,
-  fig.width = 8,   
-  fig.height = 6, 
-  dpi = 300,     
-  dev = "png",
-  out.width = "70%",
-  out.height = "70%",
-  fig.align = "center")    
-```
+
 
 # Multivariable Logistic Binary Classifier - Delinquency Prediction
 
 The panel data-set contains commercial customers' financial information and days past due indicator from 2000 to 2020. The goal is to build a binary classifier to predict customers 90+ days past due **(90+DPD)** probability.
 
-```{r}
+
+``` r
 train <- read.csv(file="FITB_train.csv",header=TRUE)
 test <- read.csv(file="FITB_test.csv",header=TRUE)
 ```
 
 Checking the distribution of the data. If you look carefully you can see that the distribution of feature 3 has a lot of values in the extreme right tail. Red does not as evident by it's flat distribution. You can't even see green (feature 1) in the upper tail which means it's under the red curve so it's not problematic.
 
-```{r}
+
+``` r
 library(ggplot2)
 ggplot() + geom_density(data=train, aes(x=feature_3), color="blue") +
            geom_density(data=train, aes(x=feature_2), color="red") +
@@ -36,9 +27,12 @@ ggplot() + geom_density(data=train, aes(x=feature_3), color="blue") +
            theme_minimal()
 ```
 
+<img src="R_Main_files/figure-html/unnamed-chunk-2-1.png" width="70%" height="70%" style="display: block; margin: auto;" />
+
 Removing the top and bottom 1% from the tails of feature 3. "Winsorize**"** feature 3.
 
-```{r}
+
+``` r
 library(dplyr)
 train$key <- row.names(train)
 feature_3_winsor <- data.frame(feature_3 = train$feature_3, key = row.names(train))
@@ -58,7 +52,8 @@ colnames(train)[3] <- "feature_3_winsor"
 
 Replace missing values from Winsorization with median of feature 3.
 
-```{r}
+
+``` r
 train[is.na(train[,3]),3] <- median(feature_3_winsor_clean$feature_3)
 
 colnames(train)[3] <- "feature_3_impute"
@@ -69,7 +64,8 @@ colnames(test)[3] <- "feature_3_impute"
 
 Impute missing values of feature 2 with value from next or previous year of that same ID.
 
-```{r}
+
+``` r
 train$date <- format(as.Date(train$date, format = "%Y-%m-%d"), "%Y")
 
 train <- train %>%
@@ -103,7 +99,8 @@ test <- na.omit(test)
 
 Normalize the variables.
 
-```{r}
+
+``` r
 library(dplyr)
 train <- train %>%
   mutate(across(c(feature_1, feature_2_impute, feature_3_impute, feature_4), 
@@ -124,20 +121,52 @@ ggplot() + geom_density(data=train, aes(x=feature_3_standard), color="blue") +
            theme_minimal()
 ```
 
+<img src="R_Main_files/figure-html/unnamed-chunk-6-1.png" width="70%" height="70%" style="display: block; margin: auto;" />
+
 Building a logistic regression model where features 1 to 4 are independent variables and column y of the training data set is our categorical dependent variable. Converting y value "90+ DPD" to 1 and "active" to 0, as in, 1 for delinquent and 0 for non-delinquent. The model will be producing probabilities for value 1 ( "90+ DPD": delinquency).
 
-```{r}
+
+``` r
 library(nnet)
 train$y <- as.numeric(as.character(factor(train$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
 #This is necessary so that the delinquent value is recognized as the positive outcome.
 delinquency_model <- multinom(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, 
                               data=train,family=binomial())
+```
+
+```
+## # weights:  6 (5 variable)
+## initial  value 2730.999891 
+## iter  10 value 1604.602929
+## final  value 1604.602903 
+## converged
+```
+
+``` r
 summary(delinquency_model)
+```
+
+```
+## Call:
+## multinom(formula = y ~ feature_1_standard + feature_2_standard + 
+##     feature_3_standard + feature_4_standard, data = train, family = binomial())
+## 
+## Coefficients:
+##                        Values  Std. Err.
+## (Intercept)        -1.7978070 0.05452505
+## feature_1_standard -0.5889688 0.07635082
+## feature_2_standard -0.1989696 0.05108342
+## feature_3_standard -0.8885600 0.06997357
+## feature_4_standard  0.1973470 0.05150389
+## 
+## Residual Deviance: 3209.206 
+## AIC: 3219.206
 ```
 
 Evaluating the accuracy of the model by the AUC and ROC curve resulting from the model being evaluated on the testing data.
 
-```{r}
+
+``` r
     library(pROC)
     test$predicted_y <- predict(delinquency_model, newdata = test, type = "class")
     test$y_numeric <- as.numeric(as.character(factor(test$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
@@ -148,7 +177,18 @@ Evaluating the accuracy of the model by the AUC and ROC curve resulting from the
 
     roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
     (head(roc_metrics,5))
+```
 
+```
+##   threshold sensitivity specificity
+## 1      -Inf           1    0.000000
+## 2 0.0003493           1    0.001183
+## 3 0.0003954           1    0.002367
+## 4 0.0004220           1    0.003550
+## 5 0.0004640           1    0.004734
+```
+
+``` r
     auc_value <- auc(roc_curve) 
     optimal_threshold <- roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))]
     
@@ -174,8 +214,9 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
   xlim(-0.5, 1.5) +  # Expand x-axis
   theme_minimal() +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
-
 ```
+
+<img src="R_Main_files/figure-html/unnamed-chunk-8-1.png" width="70%" height="70%" style="display: block; margin: auto;" />
 
 The AUC of the model on the testing data is 82% (50% would be random guess).
 
@@ -193,7 +234,8 @@ Thus the compliment of Specificity is the false positive rate.
 
 The optimal threshold is that which maximizes the delinquencies successfully predicted and minimizes the number of delinquencies incorrectly predicted. This value is visually apparent by this plot.
 
-```{r}
+
+``` r
 ggplot(roc_metrics, aes(x = threshold)) +
     geom_smooth(aes(y = sensitivity, color = "Sensitivity")) +
     geom_smooth(aes(y = specificity, color = "Specificity")) +
@@ -203,9 +245,12 @@ ggplot(roc_metrics, aes(x = threshold)) +
     theme_minimal()
 ```
 
+<img src="R_Main_files/figure-html/unnamed-chunk-9-1.png" width="70%" height="70%" style="display: block; margin: auto;" />
+
 Confusion matrix displaying the accuracy of the found optimal decision threshold.
 
-```{r}
+
+``` r
 test$predicted_class <- ifelse(test$Probability >= roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))], 1, 0)
 
 library(caret)
@@ -218,8 +263,23 @@ rownames(confusion_table) <- c("Actual: Non-delinquent", "Actual: Delinquent")
 colnames(confusion_table) <- c("Predicted: Non-delinquent", "Predicted: Delinquent")
 
 print("Confusion Matrix:")
-print(confusion_table)
+```
 
+```
+## [1] "Confusion Matrix:"
+```
+
+``` r
+print(confusion_table)
+```
+
+```
+##                        Predicted: Non-delinquent Predicted: Delinquent
+## Actual: Non-delinquent                       652                    49
+## Actual: Delinquent                           193                   165
+```
+
+``` r
 true_positives <- confusion_table[2, 2]  
 false_positives <- confusion_table[1, 2] 
 true_negatives <- confusion_table[1, 1]  
@@ -228,12 +288,21 @@ false_negatives <- confusion_table[2, 1]
 
 Checking for Multicollinearity
 
-```{r}
+
+``` r
 library(car)
 X <- model.matrix(~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, data=train)
 vif_values <- diag(solve(cor(X[, -1]))) 
 names(vif_values) <- colnames(X)[-1]    
 print(vif_values)
+```
+
+```
+## feature_1_standard feature_2_standard feature_3_standard feature_4_standard 
+##              2.109              1.343              1.901              1.215
+```
+
+``` r
 library(corrplot)
 
 cor_matrix <- cor(train[, c("feature_1_standard", "feature_2_standard", "feature_3_standard", "feature_4_standard")])
@@ -247,11 +316,14 @@ corrplot(cor_matrix,
          number.cex = 0.8)
 ```
 
+<img src="R_Main_files/figure-html/unnamed-chunk-11-1.png" width="70%" height="70%" style="display: block; margin: auto;" />
+
 There is Multicollinearity between feature 1 and feature 3
 
 Analysis of deviance test, for difference of goodness of fit between full model and model without feature 1 or feature 2.
 
-```{r}
+
+``` r
 full_model <- glm(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, data = train, family = binomial())
 
 model_without_feature_1 <- glm(y ~ feature_2_standard + feature_3_standard + feature_4_standard, data = train, family = binomial())
@@ -259,12 +331,42 @@ model_without_feature_1 <- glm(y ~ feature_2_standard + feature_3_standard + fea
 model_without_feature_3 <- glm(y ~ feature_1_standard + feature_2_standard + feature_4_standard, data = train, family = binomial())
 
 anova(model_without_feature_1, full_model, test = "LRT")
+```
+
+```
+## Analysis of Deviance Table
+## 
+## Model 1: y ~ feature_2_standard + feature_3_standard + feature_4_standard
+## Model 2: y ~ feature_1_standard + feature_2_standard + feature_3_standard + 
+##     feature_4_standard
+##   Resid. Df Resid. Dev Df Deviance Pr(>Chi)    
+## 1      3936       3264                         
+## 2      3935       3209  1     54.6  1.5e-13 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+``` r
 anova(model_without_feature_3, full_model, test = "LRT")
+```
+
+```
+## Analysis of Deviance Table
+## 
+## Model 1: y ~ feature_1_standard + feature_2_standard + feature_4_standard
+## Model 2: y ~ feature_1_standard + feature_2_standard + feature_3_standard + 
+##     feature_4_standard
+##   Resid. Df Resid. Dev Df Deviance Pr(>Chi)    
+## 1      3936       3416                         
+## 2      3935       3209  1      207   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 Reject the null hypothesis that the reduced model does not have significantly different goodness of fit to the original. Feature 1 is necessary.
 
-```{r}
+
+``` r
 library(pROC)
 library(ggplot2)
 
@@ -309,7 +411,11 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
   xlim(-0.5, 1.5) +  # Expand x-axis for better visualization
   theme_minimal() +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
+```
 
+<img src="R_Main_files/figure-html/unnamed-chunk-13-1.png" width="70%" height="70%" style="display: block; margin: auto;" />
+
+``` r
 roc_metrics_df <- as.data.frame(roc_metrics) 
 ggplot(roc_metrics_df, aes(x = threshold)) +
     geom_smooth(aes(y = sensitivity, color = "Sensitivity")) +
@@ -320,9 +426,12 @@ ggplot(roc_metrics_df, aes(x = threshold)) +
     theme_minimal()
 ```
 
+<img src="R_Main_files/figure-html/unnamed-chunk-13-2.png" width="70%" height="70%" style="display: block; margin: auto;" />
+
 The AUC is slightly inferior.
 
-```{r}
+
+``` r
 library(pROC)
 library(ggplot2)
 
@@ -367,8 +476,11 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
   xlim(-0.5, 1.5) +  # Expand x-axis for better visualization
   theme_minimal() +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
+```
 
+<img src="R_Main_files/figure-html/unnamed-chunk-14-1.png" width="70%" height="70%" style="display: block; margin: auto;" />
 
+``` r
 roc_metrics_df <- as.data.frame(roc_metrics) 
 ggplot(roc_metrics_df, aes(x = threshold)) +
     geom_smooth(aes(y = sensitivity, color = "Sensitivity")) +
@@ -377,7 +489,8 @@ ggplot(roc_metrics_df, aes(x = threshold)) +
          x = "Threshold", y = "Metric Value") +
     scale_color_manual(name = "Metrics", values = c("Sensitivity" = "red", "Specificity" = "blue")) +
     theme_minimal()
-
 ```
+
+<img src="R_Main_files/figure-html/unnamed-chunk-14-2.png" width="70%" height="70%" style="display: block; margin: auto;" />
 
 The result is verified, the reduced models are inferior. The original model should be retained with the awareness of possible problems with multicollinearity.
