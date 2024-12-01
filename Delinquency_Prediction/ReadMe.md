@@ -8,9 +8,9 @@ probability.
 ## Prepare Training Data
 
 ``` r
-setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency")
-train <- read.csv(file="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency/Data_Files/FITB_train.csv",header=TRUE)
-test <- read.csv(file="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency/Data_Files/FITB_test.csv",header=TRUE)
+setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_Prediction")
+train <- read.csv(file="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_Prediction/Data_Files/FITB_train.csv",header=TRUE)
+test <- read.csv(file="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_Prediction/Data_Files/FITB_test.csv",header=TRUE)
 ```
 
 Checking the distribution of the data. If you look carefully you can see
