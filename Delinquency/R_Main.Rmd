@@ -20,9 +20,7 @@ knitr::opts_chunk$set(
 )
 
 knitr::knit_hooks$set(plot = function(x, options) {
-  paste0('<div style="text-align:center; display: flex; justify-content: center;">\n',
-         '<img src="', x, '" style="width:70%; height:auto;">\n',
-         '</div>\n')
+  paste0('<img src="', x, '" style="display:block; margin:auto; width:70%; height:auto;">\n')
 })
 ```
 
