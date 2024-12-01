@@ -27,7 +27,9 @@ ggplot() + geom_density(data=train, aes(x=feature_3), color="blue") +
            theme_minimal()
 ```
 
-<img src="R_Main_files/figure-html/unnamed-chunk-2-1.png" width="70%" height="70%" style="display: block; margin: auto;" />
+<p style="text-align: center;">
+<img src="R_Main_files/figure-html/unnamed-chunk-2-1.png" width="70%" height="70%" />
+</p>
 
 Removing the top and bottom 1% from the tails of feature 3. "Winsorize**"** feature 3.
 
