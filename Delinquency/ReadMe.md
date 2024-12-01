@@ -235,7 +235,7 @@ Column y is known delinquency status.
 
 To evaluate the effectiveness of the model and optimal decision
 threshold, we produce an ROC curve from the predicted outcome produced
-by the model and known outcome against the known outcome.
+by the model and known outcome.
 
 ``` r
     library(pROC)
@@ -337,19 +337,16 @@ ggplot(roc_metrics, aes(x = threshold)) +
 The optimal decision threshold is visually apparent by the intersection
 of **Sensitivity** and **Specificity** and by the following simple
 calculation. The significance of this threshold is that this value
-balances both priorities of catching a high proportion of delinquencies
-and maintaining a lower rate of identifying individuals as delinquent
-when they are not.
+balences catching a high proportion of delinquencies while maintaining a
+lower rate of identifying individuals as delinquent when they are not.
 
 ``` r
-(optimal_threshold <- roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))])
+optimal_threshold <- roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))]
+(roc_metrics[roc_metrics$threshold == optimal_threshold,])
 ```
 
-    ## [1] 0.2244
-
-| threshold | sensitivity | specificity |
-|:---------:|:-----------:|:-----------:|
-| 0.2241302 |   0.7710    |  0.770414   |
+    ##     threshold sensitivity specificity
+    ## 702    0.2244       0.771      0.7716
 
 You could select a decision threshold that would yield a higher **True
 Positive Rate** but beyond the decision threshold of 0.2244 it would be
@@ -371,25 +368,12 @@ confusion_table <- as.data.frame.matrix(conf_matrix$table)
 rownames(confusion_table) <- c("Actual: Non-delinquent", "Actual: Delinquent")
 colnames(confusion_table) <- c("Predicted: Non-delinquent", "Predicted: Delinquent")
 
-print("Confusion Matrix:")
-```
-
-    ## [1] "Confusion Matrix:"
-
-``` r
-print(confusion_table)
+confusion_table
 ```
 
     ##                        Predicted: Non-delinquent Predicted: Delinquent
     ## Actual: Non-delinquent                       652                    49
     ## Actual: Delinquent                           193                   165
-
-``` r
-true_positives <- confusion_table[2, 2]  
-false_positives <- confusion_table[1, 2] 
-true_negatives <- confusion_table[1, 1]  
-false_negatives <- confusion_table[2, 1] 
-```
 
 ## Fitting The Model - Checking for Multicollinearity
 
@@ -406,7 +390,13 @@ print(vif_values)
 
 ``` r
 library(corrplot)
+```
 
+Variance Inflation Factors test for correlation between one or more
+predictor variables, all of these values are below 5 so this is not
+noteworthy.
+
+``` r
 cor_matrix <- cor(train[, c("feature_1_standard", "feature_2_standard", "feature_3_standard", "feature_4_standard")])
 corrplot(cor_matrix, 
          method = "color",        
@@ -420,15 +410,18 @@ corrplot(cor_matrix,
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-13-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-14-1.png" width="70%">
 
 </div>
 
 Variables feature 1 and feature 3 have a correlation coefficient of 0.62
 which is noteworthy.
 
+Let’s see if either feature 1 or feature 3 is redundant to improve the
+reliability of the model by having distinct variables.
+
 Analysis of deviance test, for difference of goodness of fit between
-full model and model without feature 1 or feature 2.
+full model and model without feature 1 or feature 3.
 
 ``` r
 full_model <- glm(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, data = train, family = binomial())
@@ -467,10 +460,10 @@ anova(model_without_feature_3, full_model, test = "LRT")
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Reject the null hypothesis that the reduced model does not have
-significantly different goodness of fit to the original. Feature 1 is
-necessary.
+significantly different goodness of fit to the original in both tests.
+feature 1 and feature 3 are necessary.
 
-Verify result that feature 1 and feature 3 are necessary to the model
+Verify result that feature 1 and feature 3 are necessary to the model.
 
 ``` r
 library(pROC)
@@ -521,7 +514,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-15-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-16-1.png" width="70%">
 
 </div>
 
@@ -538,7 +531,7 @@ ggplot(roc_metrics_df, aes(x = threshold)) +
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-15-2.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-16-2.png" width="70%">
 
 </div>
 
@@ -595,7 +588,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-16-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-17-1.png" width="70%">
 
 </div>
 
@@ -612,11 +605,20 @@ ggplot(roc_metrics_df, aes(x = threshold)) +
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-16-2.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-17-2.png" width="70%">
 
 </div>
 
-The result is verified, the reduced models ommitting feature 1 or
-feature 3 are inferior, albeit just slightly. The original model should
-be retained with the awareness of possible problems with
-multicollinearity.
+The AUC is inferior to full model as well.
+
+The result is verified, the reduced models omitting feature 1 or feature
+3 are inferior, albeit just slightly. The original model should be
+retained with the awareness of possible problems with multicollinearity.
+
+## Conclusion
+
+The model produced would be beneficial for future purposes where
+predicting delinquencies is needed as evident by the models performance
+when evaluated on the testing data. However, a machine learning method
+such as RandomForest may be more effective and is a topic of exploration
+in future analysis.

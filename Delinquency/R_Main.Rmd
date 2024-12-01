@@ -173,7 +173,7 @@ Column y is known delinquency status.
 (head(test,5))
 ```
 
-To evaluate the effectiveness of the model and optimal decision threshold, we produce an ROC curve from the predicted outcome produced by the model and known outcome against the known outcome.
+To evaluate the effectiveness of the model and optimal decision threshold, we produce an ROC curve from the predicted outcome produced by the model and known outcome.
 
 ```{r}
     library(pROC)
@@ -237,15 +237,12 @@ ggplot(roc_metrics, aes(x = threshold)) +
     theme_minimal()
 ```
 
-The optimal decision threshold is visually apparent by the intersection of **Sensitivity** and **Specificity** and by the following simple calculation. The significance of this threshold is that this value balances both priorities of catching a high proportion of delinquencies and maintaining a lower rate of identifying individuals as delinquent when they are not.
+The optimal decision threshold is visually apparent by the intersection of **Sensitivity** and **Specificity** and by the following simple calculation. The significance of this threshold is that this value balences catching a high proportion of delinquencies while maintaining a lower rate of identifying individuals as delinquent when they are not.
 
 ```{r}
-(optimal_threshold <- roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))])
+optimal_threshold <- roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))]
+(roc_metrics[roc_metrics$threshold == optimal_threshold,])
 ```
-
-| threshold | sensitivity | specificity |
-|:---------:|:-----------:|:-----------:|
-| 0.2241302 |   0.7710    |  0.770414   |
 
 You could select a decision threshold that would yield a higher **True Positive Rate** but beyond the decision threshold of 0.2244 it would be at the expense of increasing the **False Positive Rate** which defeats the purpose of having the model in the first place.
 
@@ -263,13 +260,7 @@ confusion_table <- as.data.frame.matrix(conf_matrix$table)
 rownames(confusion_table) <- c("Actual: Non-delinquent", "Actual: Delinquent")
 colnames(confusion_table) <- c("Predicted: Non-delinquent", "Predicted: Delinquent")
 
-print("Confusion Matrix:")
-print(confusion_table)
-
-true_positives <- confusion_table[2, 2]  
-false_positives <- confusion_table[1, 2] 
-true_negatives <- confusion_table[1, 1]  
-false_negatives <- confusion_table[2, 1] 
+confusion_table
 ```
 
 ## Fitting The Model - Checking for Multicollinearity
@@ -281,7 +272,11 @@ vif_values <- diag(solve(cor(X[, -1])))
 names(vif_values) <- colnames(X)[-1]    
 print(vif_values)
 library(corrplot)
+```
 
+Variance Inflation Factors test for correlation between one or more predictor variables, all of these values are below 5 so this is not noteworthy.
+
+```{r}
 cor_matrix <- cor(train[, c("feature_1_standard", "feature_2_standard", "feature_3_standard", "feature_4_standard")])
 corrplot(cor_matrix, 
          method = "color",        
@@ -295,7 +290,9 @@ corrplot(cor_matrix,
 
 Variables feature 1 and feature 3 have a correlation coefficient of 0.62 which is noteworthy.
 
-Analysis of deviance test, for difference of goodness of fit between full model and model without feature 1 or feature 2.
+Let's see if either feature 1 or feature 3 is redundant to improve the reliability of the model by having distinct variables.
+
+Analysis of deviance test, for difference of goodness of fit between full model and model without feature 1 or feature 3.
 
 ```{r}
 full_model <- glm(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, data = train, family = binomial())
@@ -308,9 +305,9 @@ anova(model_without_feature_1, full_model, test = "LRT")
 anova(model_without_feature_3, full_model, test = "LRT")
 ```
 
-Reject the null hypothesis that the reduced model does not have significantly different goodness of fit to the original. Feature 1 is necessary.
+Reject the null hypothesis that the reduced model does not have significantly different goodness of fit to the original in both tests. feature 1 and feature 3 are necessary.
 
-Verify result that feature 1 and feature 3 are necessary to the model
+Verify result that feature 1 and feature 3 are necessary to the model.
 
 ```{r}
 library(pROC)
@@ -430,4 +427,10 @@ ggplot(roc_metrics_df, aes(x = threshold)) +
 
 ```
 
-The result is verified, the reduced models ommitting feature 1 or feature 3 are inferior, albeit just slightly. The original model should be retained with the awareness of possible problems with multicollinearity.
+The AUC is inferior to full model as well.
+
+The result is verified, the reduced models omitting feature 1 or feature 3 are inferior, albeit just slightly. The original model should be retained with the awareness of possible problems with multicollinearity.
+
+## Conclusion
+
+The model produced would be beneficial for future purposes where predicting delinquencies is needed as evident by the models performance when evaluated on the testing data. However, a machine learning method such as RandomForest may be more effective and is a topic of exploration in future analysis.
