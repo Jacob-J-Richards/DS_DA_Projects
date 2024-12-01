@@ -1,8 +1,14 @@
+---
+output: 
+  html_document: 
+    keep_md: true
+---
+
+
 # Multivariable Logistic Binary Classifier - Delinquency Prediction
 
 The panel data-set contains commercial customers' financial information and days past due indicator from 2000 to 2020. The goal is to build a binary classifier to predict customers 90+ days past due **(90+DPD)** probability.
 
-## Preparing Training Data 
 
 ``` r
 train <- read.csv(file="FITB_train.csv",header=TRUE)
@@ -117,8 +123,6 @@ ggplot() + geom_density(data=train, aes(x=feature_3_standard), color="blue") +
 
 ![](R_Main_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
-## Produce Multinomial Logistic Regression Model
-
 Building a logistic regression model where features 1 to 4 are independent variables and column y of the training data set is our categorical dependent variable. Converting y value "90+ DPD" to 1 and "active" to 0, as in, 1 for delinquent and 0 for non-delinquent. The model will be producing probabilities for value 1 ( "90+ DPD": delinquency).
 
 
@@ -130,7 +134,17 @@ delinquency_model <- multinom(y ~ feature_1_standard + feature_2_standard + feat
                               data=train,family=binomial())
 ```
 
+```
+## # weights:  6 (5 variable)
+## initial  value 2730.999891 
+## iter  10 value 1604.602929
+## final  value 1604.602903 
+## converged
+```
 
+``` r
+summary(delinquency_model)
+```
 
 ```
 ## Call:
@@ -148,9 +162,8 @@ delinquency_model <- multinom(y ~ feature_1_standard + feature_2_standard + feat
 ## Residual Deviance: 3209.206 
 ## AIC: 3219.206
 ```
-## Evaluate Model on New Data and Check Accuracy 
 
-Testing the accuracy of the model by the AUC and ROC curve resulting from the model being evaluated on the testing data.
+Evaluating the accuracy of the model by the AUC and ROC curve resulting from the model being evaluated on the testing data.
 
 
 ``` r
@@ -163,6 +176,16 @@ Testing the accuracy of the model by the AUC and ROC curve resulting from the mo
     roc_curve <- roc(response = test$y_numeric, predictor = test$Probability)
 
     roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
+    (head(roc_metrics,5))
+```
+
+```
+##   threshold sensitivity specificity
+## 1      -Inf           1    0.000000
+## 2 0.0003493           1    0.001183
+## 3 0.0003954           1    0.002367
+## 4 0.0004220           1    0.003550
+## 5 0.0004640           1    0.004734
 ```
 
 ``` r
@@ -192,7 +215,6 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
   theme_minimal() +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
-## Find Optimal Probability Threshold Value of Model 
 
 ![](R_Main_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
@@ -243,15 +265,28 @@ colnames(confusion_table) <- c("Predicted: Non-delinquent", "Predicted: Delinque
 print("Confusion Matrix:")
 ```
 
+```
+## [1] "Confusion Matrix:"
+```
 
-|                        | Predicted: Non-delinquent | Predicted: Delinquent |
-|:----------------------:|:-------------------------:|:---------------------:|
-| **Actual: Non-delinquent** |          652            |          49          |
-| **Actual: Delinquent**     |          193            |         165          |
+``` r
+print(confusion_table)
+```
 
+```
+##                        Predicted: Non-delinquent Predicted: Delinquent
+## Actual: Non-delinquent                       652                    49
+## Actual: Delinquent                           193                   165
+```
 
+``` r
+true_positives <- confusion_table[2, 2]  
+false_positives <- confusion_table[1, 2] 
+true_negatives <- confusion_table[1, 1]  
+false_negatives <- confusion_table[2, 1] 
+```
 
-## Checking for Multicollinearity In Model 
+Checking for Multicollinearity
 
 
 ``` r
@@ -328,7 +363,7 @@ anova(model_without_feature_3, full_model, test = "LRT")
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-Reject the null hypothesis that the reduced model does not have significantly different goodness of fit to the original. Feature 1 and 3 are necessary. 
+Reject the null hypothesis that the reduced model does not have significantly different goodness of fit to the original. Feature 1 is necessary.
 
 
 ``` r
