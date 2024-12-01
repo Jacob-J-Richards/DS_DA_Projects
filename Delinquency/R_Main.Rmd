@@ -20,8 +20,11 @@ knitr::opts_chunk$set(
 )
 
 knitr::knit_hooks$set(plot = function(x, options) {
-  paste0('![plot](', x, ')\n\n<div align="center">\n<img src="', x, '" width="70%"></div>')
+  paste0('<div align="center">\n',
+         '<img src="', x, '" width="70%">\n',
+         '</div>')
 })
+
 ```
 
 yes it works 
