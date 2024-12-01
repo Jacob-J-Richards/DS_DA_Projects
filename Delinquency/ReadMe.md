@@ -1,10 +1,3 @@
----
-output: 
-  html_document: 
-    keep_md: true
----
-
-
 # Multivariable Logistic Binary Classifier - Delinquency Prediction
 
 The panel data-set contains commercial customers' financial information and days past due indicator from 2000 to 2020. The goal is to build a binary classifier to predict customers 90+ days past due **(90+DPD)** probability.
@@ -27,7 +20,9 @@ ggplot() + geom_density(data=train, aes(x=feature_3), color="blue") +
            theme_minimal()
 ```
 
-![](R_Main_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+<div align="center">
+  <img src="R_Main_files/figure-html/unnamed-chunk-2-1.png" width="70%" height="70%" />
+</div>
 
 Removing the top and bottom 1% from the tails of feature 3. "Winsorize**"** feature 3.
 
@@ -121,7 +116,9 @@ ggplot() + geom_density(data=train, aes(x=feature_3_standard), color="blue") +
            theme_minimal()
 ```
 
-![](R_Main_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+<div align="center">
+  <img src="R_Main_files/figure-html/unnamed-chunk-6-1.png" width="70%" height="70%" />
+</div>
 
 Building a logistic regression model where features 1 to 4 are independent variables and column y of the training data set is our categorical dependent variable. Converting y value "90+ DPD" to 1 and "active" to 0, as in, 1 for delinquent and 0 for non-delinquent. The model will be producing probabilities for value 1 ( "90+ DPD": delinquency).
 
@@ -216,7 +213,9 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
 
-![](R_Main_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+<div align="center">
+  <img src="R_Main_files/figure-html/unnamed-chunk-8-1.png" width="70%" height="70%" />
+</div>
 
 The AUC of the model on the testing data is 82% (50% would be random guess).
 
@@ -245,7 +244,9 @@ ggplot(roc_metrics, aes(x = threshold)) +
     theme_minimal()
 ```
 
-![](R_Main_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+<div align="center">
+  <img src="R_Main_files/figure-html/unnamed-chunk-9-1.png" width="70%" height="70%" />
+</div>
 
 Confusion matrix displaying the accuracy of the found optimal decision threshold.
 
@@ -316,7 +317,9 @@ corrplot(cor_matrix,
          number.cex = 0.8)
 ```
 
-![](R_Main_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+<div align="center">
+  <img src="R_Main_files/figure-html/unnamed-chunk-11-1.png" width="70%" height="70%" />
+</div>
 
 There is Multicollinearity between feature 1 and feature 3
 
@@ -413,7 +416,9 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
 
-![](R_Main_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+<div align="center">
+  <img src="R_Main_files/figure-html/unnamed-chunk-13-1.png" width="70%" height="70%" />
+</div>
 
 ``` r
 roc_metrics_df <- as.data.frame(roc_metrics) 
@@ -426,7 +431,9 @@ ggplot(roc_metrics_df, aes(x = threshold)) +
     theme_minimal()
 ```
 
-![](R_Main_files/figure-html/unnamed-chunk-13-2.png)<!-- -->
+<div align="center">
+  <img src="R_Main_files/figure-html/unnamed-chunk-13-2.png" width="70%" height="70%" />
+</div>
 
 The AUC is slightly inferior.
 
@@ -478,7 +485,9 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
 
-![](R_Main_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+<div align="center">
+  <img src="R_Main_files/figure-html/unnamed-chunk-14-1.png" width="70%" height="70%" />
+</div>
 
 ``` r
 roc_metrics_df <- as.data.frame(roc_metrics) 
@@ -491,6 +500,8 @@ ggplot(roc_metrics_df, aes(x = threshold)) +
     theme_minimal()
 ```
 
-![](R_Main_files/figure-html/unnamed-chunk-14-2.png)<!-- -->
+<div align="center">
+  <img src="R_Main_files/figure-html/unnamed-chunk-14-2.png" width="70%" height="70%" />
+</div>
 
 The result is verified, the reduced models are inferior. The original model should be retained with the awareness of possible problems with multicollinearity.
