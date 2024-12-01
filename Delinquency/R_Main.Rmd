@@ -31,6 +31,8 @@ knitr::knit_hooks$set(plot = function(x, options) {
 
 The panel data-set contains commercial customers' financial information and days past due indicator from 2000 to 2020. The goal is to build a binary classifier to predict customers 90+ days past due **(90+DPD)** probability.
 
+## Prepare Training Data
+
 ```{r}
 setwd("~/Desktop/DS_DA_Projects/Delinquency")
 train <- read.csv(file="FITB_train.csv",header=TRUE)
@@ -68,7 +70,7 @@ train <- train %>% mutate(feature_3 = ifelse(key %in% non_matching_keys, NA, fea
 colnames(train)[3] <- "feature_3_winsor"
 ```
 
-Replace missing values from Winsorization with median of feature 3.
+Replace missing values of feature 3 resulting from **Winsorization** with median value of feature 3.
 
 ```{r}
 train[is.na(train[,3]),3] <- median(feature_3_winsor_clean$feature_3)
@@ -79,7 +81,7 @@ test[is.na(test[,3]),3] <- median(feature_3_winsor_clean$feature_3)
 colnames(test)[3] <- "feature_3_impute"
 ```
 
-Impute missing values of feature 2 with value from next or previous year of that same ID.
+Impute missing values of feature 2 with value from next or previous year of that same ID. I.e. if feature 2 for DEC 31 2001 is missing for ID number 5021, then replace with value from DEC 31 2002 or DEC 31 2000 of feature 2 of that same ID number (individual).
 
 ```{r}
 train$date <- format(as.Date(train$date, format = "%Y-%m-%d"), "%Y")
@@ -111,9 +113,12 @@ colnames(test)[2] <- "feature_2_impute"
 
 train <- na.omit(train)
 test <- na.omit(test)
+print(head(train,5))
 ```
 
-Normalize the variables.
+The actual numeric values of each observation for each variable are meaningless to determining the outcome of delinquency, what's important is the value of each variable for each observation in relation to the other values of that same variable. Thus we transform features 1 to 4 into individual normal distributions and assign each value of these variables with their respective z-score within their variable population. In other words.
+
+**Normalize** or **Standardize** the data
 
 ```{r}
 library(dplyr)
@@ -134,18 +139,40 @@ ggplot() + geom_density(data=train, aes(x=feature_3_standard), color="blue") +
            geom_density(data=train, aes(x=feature_1_standard), color="green") +
            geom_density(data=train, aes(x=feature_4_standard), color="purple") +
            theme_minimal()
+print(head(train,5))
 ```
 
+The preparation of the training data is complete.
+
+## Building The Model
+
 Building a logistic regression model where features 1 to 4 are independent variables and column y of the training data set is our categorical dependent variable. Converting y value "90+ DPD" to 1 and "active" to 0, as in, 1 for delinquent and 0 for non-delinquent. The model will be producing probabilities for value 1 ( "90+ DPD": delinquency).
+
+For explanation of binary classifiers see the following invaluable resource: <https://seantrott.github.io/binary_classification_R/>
+
+When the model produces a probability for an individual being delinquent on payments, we will have to decide at what probability we conclude that that individual will indeed be delinquent. Determination of this probability value (decision threshold) will be performed in the next section and is extremely important to the effectiveness of the model.
+
+The model is produced from the training data that we have just prepared, containing 4000 observations.
+
+Note: Delinquency is the "positive" outcome for which we build the model to assign probabilities of, for each observation (each year for each customer).
 
 ```{r}
 library(nnet)
 train$y <- as.numeric(as.character(factor(train$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
-#This is necessary so that the delinquent value is recognized as the positive outcome.
 delinquency_model <- multinom(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, 
                               data=train,family=binomial())
 summary(delinquency_model)
 ```
+
+|                                              |
+|----------------------------------------------|
+| **Coefficients divided by standard errors:** |
+| 0.5890/0.07635 = -7.714                      |
+| 0.1990/0.05108 = 3.896                       |
+| 0.8886/0.06997 = 12.7                        |
+| 0.1973/0.05150 = 3.831                       |
+
+## Evaluating The Model
 
 Evaluating the accuracy of the model by the AUC and ROC curve resulting from the model being evaluated on the testing data.
 
