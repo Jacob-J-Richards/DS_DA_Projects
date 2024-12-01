@@ -16,7 +16,9 @@ knitr::opts_chunk$set(
   dpi = 300,     
   dev = "png",
   out.width = "70%",
-  out.height = "70%")    
+  out.height = "70%",
+  fig.process = function(x) paste0('<div style="text-align:center;"><img src="', x, '" style="max-width:70%;"></div>')
+)
 ```
 
 # Multivariable Logistic Binary Classifier - Delinquency Prediction
