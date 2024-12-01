@@ -1,19 +1,22 @@
 ---
-output: 
-  html_document: 
-    keep_md: true
+title: "Your Document Title"
+output:
+  md_document:
+    variant: gfm
+knit: (function(input, ...) { rmarkdown::render(input, ..., output_file = "ReadMe.md") })
 ---
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
   message = FALSE,
   warning = FALSE,
+  fig.align = "center",
   fig.width = 8,   
   fig.height = 6, 
   dpi = 300,     
   dev = "png",
   out.width = "70%",
-  out.height = "70%",
-  fig.align = "center")    
+  out.height = "70%")    
 ```
 
 # Multivariable Logistic Binary Classifier - Delinquency Prediction
