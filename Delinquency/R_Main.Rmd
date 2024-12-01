@@ -24,6 +24,7 @@ knitr::opts_chunk$set(
 The panel data-set contains commercial customers' financial information and days past due indicator from 2000 to 2020. The goal is to build a binary classifier to predict customers 90+ days past due **(90+DPD)** probability.
 
 ```{r}
+setwd("~/Desktop/DS_DA_Projects/Delinquency")
 train <- read.csv(file="FITB_train.csv",header=TRUE)
 test <- read.csv(file="FITB_test.csv",header=TRUE)
 ```

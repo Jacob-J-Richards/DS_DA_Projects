@@ -6,6 +6,7 @@ binary classifier to predict customers 90+ days past due **(90+DPD)**
 probability.
 
 ``` r
+setwd("~/Desktop/DS_DA_Projects/Delinquency")
 train <- read.csv(file="FITB_train.csv",header=TRUE)
 test <- read.csv(file="FITB_test.csv",header=TRUE)
 ```
