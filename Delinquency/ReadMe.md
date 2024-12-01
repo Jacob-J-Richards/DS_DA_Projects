@@ -5,6 +5,8 @@ and days past due indicator from 2000 to 2020. The goal is to build a
 binary classifier to predict customers 90+ days past due **(90+DPD)**
 probability.
 
+## Prepare Training Data
+
 ``` r
 setwd("~/Desktop/DS_DA_Projects/Delinquency")
 train <- read.csv(file="FITB_train.csv",header=TRUE)
@@ -53,7 +55,8 @@ train <- train %>% mutate(feature_3 = ifelse(key %in% non_matching_keys, NA, fea
 colnames(train)[3] <- "feature_3_winsor"
 ```
 
-Replace missing values from Winsorization with median of feature 3.
+Replace missing values of feature 3 resulting from **Winsorization**
+with median value of feature 3.
 
 ``` r
 train[is.na(train[,3]),3] <- median(feature_3_winsor_clean$feature_3)
@@ -65,7 +68,9 @@ colnames(test)[3] <- "feature_3_impute"
 ```
 
 Impute missing values of feature 2 with value from next or previous year
-of that same ID.
+of that same ID. I.e. if feature 2 for DEC 31 2001 is missing for ID
+number 5021, then replace with value from DEC 31 2002 or DEC 31 2000 of
+feature 2 of that same ID number (individual).
 
 ``` r
 train$date <- format(as.Date(train$date, format = "%Y-%m-%d"), "%Y")
@@ -97,9 +102,28 @@ colnames(test)[2] <- "feature_2_impute"
 
 train <- na.omit(train)
 test <- na.omit(test)
+print(head(train,5))
 ```
 
-Normalize the variables.
+    ## # A tibble: 5 × 8
+    ## # Groups:   id [1]
+    ##   feature_1 feature_2_impute feature_3_impute feature_4    id date  y      key  
+    ##       <dbl>            <dbl>            <dbl>     <dbl> <int> <chr> <chr>  <chr>
+    ## 1   39.2                60.3             138.    -35.5  50501 2000  active 1    
+    ## 2  -12.6                58.0             126.     44.4  50501 2001  90+DPD 2    
+    ## 3    0.0438            -39.3             139.     64.9  50501 2002  active 3    
+    ## 4    2.30               50.0             124.     -3.59 50501 2003  active 4    
+    ## 5    7.19              -83.5             150.     95.4  50501 2004  active 5
+
+The actual numeric values of each observation for each variable are
+meaningless to determining the outcome of delinquency, what’s important
+is the value of each variable for each observation in relation to the
+other values of that same variable. Thus we transform features 1 to 4
+into individual normal distributions and assign each value of these
+variables with their respective z-score within their variable
+population. In other words.
+
+**Normalize** or **Standardize** the data
 
 ``` r
 library(dplyr)
@@ -128,6 +152,25 @@ ggplot() + geom_density(data=train, aes(x=feature_3_standard), color="blue") +
 
 </div>
 
+``` r
+print(head(train,5))
+```
+
+    ## # A tibble: 5 × 8
+    ## # Groups:   id [1]
+    ##   feature_1_standard feature_2_standard feature_3_standard feature_4_standard
+    ##                <dbl>              <dbl>              <dbl>              <dbl>
+    ## 1             -0.346             -0.131            -0.516              -0.708
+    ## 2             -0.515             -0.159            -1.09                0.616
+    ## 3             -0.473             -1.36             -0.481               0.956
+    ## 4             -0.466             -0.257            -1.21               -0.180
+    ## 5             -0.450             -1.91              0.0759              1.46 
+    ## # ℹ 4 more variables: id <int>, date <chr>, y <chr>, key <chr>
+
+The preparation of the training data is complete.
+
+## Building The Model
+
 Building a logistic regression model where features 1 to 4 are
 independent variables and column y of the training data set is our
 categorical dependent variable. Converting y value “90+ DPD” to 1 and
@@ -135,10 +178,25 @@ categorical dependent variable. Converting y value “90+ DPD” to 1 and
 model will be producing probabilities for value 1 ( “90+ DPD”:
 delinquency).
 
+For explanation of binary classifiers see the following invaluable
+resource: <https://seantrott.github.io/binary_classification_R/>
+
+When the model produces a probability for an individual being delinquent
+on payments, we will have to decide at what probability we conclude that
+that individual will indeed be delinquent. Determination of this
+probability value (decision threshold) will be performed in the next
+section and is extremely important to the effectiveness of the model.
+
+The model is produced from the training data that we have just prepared,
+containing 4000 observations.
+
+Note: Delinquency is the “positive” outcome for which we build the model
+to assign probabilities of, for each observation (each year for each
+customer).
+
 ``` r
 library(nnet)
 train$y <- as.numeric(as.character(factor(train$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
-#This is necessary so that the delinquent value is recognized as the positive outcome.
 delinquency_model <- multinom(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, 
                               data=train,family=binomial())
 ```
@@ -167,6 +225,16 @@ summary(delinquency_model)
     ## 
     ## Residual Deviance: 3209.206 
     ## AIC: 3219.206
+
+|                                              |
+|----------------------------------------------|
+| **Coefficients divided by standard errors:** |
+| 0.5890/0.07635 = -7.714                      |
+| 0.1990/0.05108 = 3.896                       |
+| 0.8886/0.06997 = 12.7                        |
+| 0.1973/0.05150 = 3.831                       |
+
+## Evaluating The Model
 
 Evaluating the accuracy of the model by the AUC and ROC curve resulting
 from the model being evaluated on the testing data.
