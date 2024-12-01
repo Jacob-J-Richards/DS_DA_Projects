@@ -7,7 +7,6 @@ knit: (function(input, ...) { rmarkdown::render(input, ..., output_file = "ReadM
 ---
 
 ```{r setup, include=FALSE}
-
 knitr::opts_chunk$set(
   message = FALSE,
   warning = FALSE,
@@ -17,15 +16,12 @@ knitr::opts_chunk$set(
   dpi = 300,     
   dev = "png",
   out.width = "70%",
-  out.height = "70%",
-
+  out.height = "70%"
+)
 
 knitr::knit_hooks$set(plot = function(x, options) {
-  paste0('<center>\n',
-         '<img src="', x, '" style="width:70%; height:auto;">\n',
-         '</center>\n')
-}))
-
+  paste0('![plot](', x, ')\n\n<div align="center">\n<img src="', x, '" width="70%"></div>')
+})
 ```
 
 # Multivariable Logistic Binary Classifier - Delinquency Prediction
