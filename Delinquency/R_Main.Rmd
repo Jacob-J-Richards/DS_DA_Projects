@@ -34,8 +34,8 @@ The panel data-set contains commercial customers' financial information and days
 ## Prepare Training Data
 
 ```{r}
-#setwd("~/Desktop/DS_DA_Projects/Delinquency")
-setwd("C:/Users/jake pc/Desktop/DS_DA_Projects/Delinquency")
+setwd("~/Desktop/DS_DA_Projects/Delinquency")
+#setwd("C:/Users/jake pc/Desktop/DS_DA_Projects/Delinquency")
 train <- read.csv(file="FITB_train.csv",header=TRUE)
 test <- read.csv(file="FITB_test.csv",header=TRUE)
 ```
