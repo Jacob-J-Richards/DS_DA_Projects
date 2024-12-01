@@ -1,10 +1,3 @@
----
-output: 
-  html_document: 
-    keep_md: true
----
-
-
 # Multivariable Logistic Binary Classifier - Delinquency Prediction
 
 The panel data-set contains commercial customers' financial information and days past due indicator from 2000 to 2020. The goal is to build a binary classifier to predict customers 90+ days past due **(90+DPD)** probability.
