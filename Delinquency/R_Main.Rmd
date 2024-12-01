@@ -15,13 +15,13 @@ knitr::opts_chunk$set(
   fig.height = 6, 
   dpi = 300,     
   dev = "png",
-  out.width = "70%",
-  out.height = "70%"
+  out.width = "50%",
+  out.height = "50%"
 )
 
 knitr::knit_hooks$set(plot = function(x, options) {
   paste0('<div style="text-align:center;">\n',
-         '<img src="', x, '" style="max-width:70%;">\n',
+         '<img src="', x, '" style="max-width:100%;">\n',
          '</div>\n')
 })
 ```
