@@ -26,15 +26,11 @@ ggplot() + geom_density(data=train, aes(x=feature_3), color="blue") +
            theme_minimal()
 ```
 
-\<img src=“
-
 <div style="text-align:center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-2-1.png" style="max-width:70%;">
 
 </div>
-
-” width=“70%” height=“70%” style=“display: block; margin: auto;” /\>
 
 Removing the top and bottom 1% from the tails of feature 3.
 “Winsorize**“** feature 3.
@@ -126,15 +122,11 @@ ggplot() + geom_density(data=train, aes(x=feature_3_standard), color="blue") +
            theme_minimal()
 ```
 
-\<img src=“
-
 <div style="text-align:center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-6-1.png" style="max-width:70%;">
 
 </div>
-
-” width=“70%” height=“70%” style=“display: block; margin: auto;” /\>
 
 Building a logistic regression model where features 1 to 4 are
 independent variables and column y of the training data set is our
@@ -227,15 +219,11 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
 
-\<img src=“
-
 <div style="text-align:center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-8-1.png" style="max-width:70%;">
 
 </div>
-
-” width=“70%” height=“70%” style=“display: block; margin: auto;” /\>
 
 The AUC of the model on the testing data is 82% (50% would be random
 guess).
@@ -277,15 +265,11 @@ ggplot(roc_metrics, aes(x = threshold)) +
     theme_minimal()
 ```
 
-\<img src=“
-
 <div style="text-align:center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-9-1.png" style="max-width:70%;">
 
 </div>
-
-” width=“70%” height=“70%” style=“display: block; margin: auto;” /\>
 
 Confusion matrix displaying the accuracy of the found optimal decision
 threshold.
@@ -349,15 +333,11 @@ corrplot(cor_matrix,
          number.cex = 0.8)
 ```
 
-\<img src=“
-
 <div style="text-align:center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-11-1.png" style="max-width:70%;">
 
 </div>
-
-” width=“70%” height=“70%” style=“display: block; margin: auto;” /\>
 
 There is Multicollinearity between feature 1 and feature 3
 
@@ -451,15 +431,11 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
 
-\<img src=“
-
 <div style="text-align:center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-13-1.png" style="max-width:70%;">
 
 </div>
-
-” width=“70%” height=“70%” style=“display: block; margin: auto;” /\>
 
 ``` r
 roc_metrics_df <- as.data.frame(roc_metrics) 
@@ -472,15 +448,11 @@ ggplot(roc_metrics_df, aes(x = threshold)) +
     theme_minimal()
 ```
 
-\<img src=“
-
 <div style="text-align:center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-13-2.png" style="max-width:70%;">
 
 </div>
-
-” width=“70%” height=“70%” style=“display: block; margin: auto;” /\>
 
 The AUC is slightly inferior.
 
@@ -531,15 +503,11 @@ ggplot(roc_data, aes(x = FPR, y = TPR)) +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
 
-\<img src=“
-
 <div style="text-align:center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-14-1.png" style="max-width:70%;">
 
 </div>
-
-” width=“70%” height=“70%” style=“display: block; margin: auto;” /\>
 
 ``` r
 roc_metrics_df <- as.data.frame(roc_metrics) 
@@ -552,15 +520,11 @@ ggplot(roc_metrics_df, aes(x = threshold)) +
     theme_minimal()
 ```
 
-\<img src=“
-
 <div style="text-align:center;">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-14-2.png" style="max-width:70%;">
 
 </div>
-
-” width=“70%” height=“70%” style=“display: block; margin: auto;” /\>
 
 The result is verified, the reduced models are inferior. The original
 model should be retained with the awareness of possible problems with
