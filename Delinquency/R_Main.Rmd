@@ -51,7 +51,7 @@ ggplot() + geom_density(data=train, aes(x=feature_3), color="blue") +
            theme_minimal()
 ```
 
-Removing the top and bottom 1% from the tails of feature 3. "Winsorize**"** feature 3.
+Removing the top and bottom 1% from the tails of feature 3. **"Winsorize"** feature 3.
 
 ```{r}
 library(dplyr)
