@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
   dev = "png",
   out.width = "70%",
   out.height = "70%",
-  fig.process = function(x) paste0('<div style="text-align:center;"><img src="', x, '" style="max-width:70%;"></div>')
+fig.process = function(x) paste0('<div style="text-align:center;"><img src="', x, '" style="max-width:70%;"></div>')
 )
 ```
 
