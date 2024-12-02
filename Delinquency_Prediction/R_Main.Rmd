@@ -203,6 +203,27 @@ ggplot(roc_data, aes(x = FPR, y = TPR, color = threshold)) +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 
 
+
+```
+
+```{r}
+library(plotly)
+
+plot_ly(
+  roc_data,
+  x = ~FPR, y = ~TPR, z = ~threshold,
+  type = 'scatter3d',
+  mode = 'lines',
+  line = list(color = ~threshold, colorscale = 'Rainbow')
+) %>%
+  layout(
+    scene = list(
+      xaxis = list(title = "False Positive Rate (1 - Specificity)"),
+      yaxis = list(title = "True Positive Rate (Sensitivity)"),
+      zaxis = list(title = "Decision Threshold")
+    ),
+    title = "3D ROC Curve for Multinomial Logistic Regression"
+  )
 ```
 
 **Sensitivity:** The proportion of positive outcomes (delinquent) correctly identified by the model, as in, what proportion of delinquencies were caught by the model.
@@ -432,3 +453,13 @@ The result is verified, the reduced models omitting feature 1 or feature 3 are i
 ## Conclusion
 
 The model produced would be beneficial for future purposes where predicting delinquencies is needed as evident by the models performance when evaluated on the testing data. However, a machine learning method such as RandomForest may be more effective and is a topic of exploration in future analysis.
+
+```{r}
+library(plot3D)
+data(iris)
+head(iris)
+
+x <- sep.l <- iris$Sepal.Length
+y <- pet.l <- iris$Petal.Length
+z <- sep.w <- iris$Sepal.Width
+```
