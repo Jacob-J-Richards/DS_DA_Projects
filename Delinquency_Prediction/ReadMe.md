@@ -392,7 +392,12 @@ confusion_table_gt <- confusion_table %>%
     `Predicted: Delinquent` = "Delinquent"
   )
 
-gtsave(confusion_table_gt, "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/confusion_table.png")
+gtsave(
+  data = confusion_table_gt,
+  filename = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/confusion_table.png",
+  vwidth = 800,  # width in pixels
+  vheight = 800  # height in pixels, equal to width for square aspect
+)
 knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/confusion_table.png")
 ```
 
