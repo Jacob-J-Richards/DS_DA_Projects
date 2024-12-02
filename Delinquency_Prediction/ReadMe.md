@@ -99,18 +99,92 @@ colnames(test)[2] <- "feature_2_impute"
 
 train <- na.omit(train)
 test <- na.omit(test)
-print(head(train,5))
 ```
 
-    ## # A tibble: 5 × 8
-    ## # Groups:   id [1]
-    ##   feature_1 feature_2_impute feature_3_impute feature_4    id date  y      key  
-    ##       <dbl>            <dbl>            <dbl>     <dbl> <int> <chr> <chr>  <chr>
-    ## 1   39.2                60.3             138.    -35.5  50501 2000  active 1    
-    ## 2  -12.6                58.0             126.     44.4  50501 2001  90+DPD 2    
-    ## 3    0.0438            -39.3             139.     64.9  50501 2002  active 3    
-    ## 4    2.30               50.0             124.     -3.59 50501 2003  active 4    
-    ## 5    7.19              -83.5             150.     95.4  50501 2004  active 5
+<table style="width:95%;">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 11%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><p>feature_1</p>
+<p>&lt;dbl&gt;</p></th>
+<th style="text-align: center;"><p>feature_2_impute</p>
+<p>&lt;dbl&gt;</p></th>
+<th style="text-align: center;"><p>feature_3_impute</p>
+<p>&lt;dbl&gt;</p></th>
+<th style="text-align: center;"><p>feature_4</p>
+<p>&lt;dbl&gt;</p></th>
+<th style="text-align: center;"><p>id</p>
+<p>&lt;int&gt;</p></th>
+<th style="text-align: center;"><p>date</p>
+<p>&lt;chr&gt;</p></th>
+<th style="text-align: center;"><p>y</p>
+<p>&lt;chr&gt;</p></th>
+<th style="text-align: center;"><p>key</p>
+<p>&lt;chr&gt;</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">39.16508528</td>
+<td style="text-align: center;">60.25377</td>
+<td style="text-align: center;">137.9861</td>
+<td style="text-align: center;">-35.462685</td>
+<td style="text-align: center;">50501</td>
+<td style="text-align: center;">2000</td>
+<td style="text-align: center;">active</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">-12.61428906</td>
+<td style="text-align: center;">57.95924</td>
+<td style="text-align: center;">126.2123</td>
+<td style="text-align: center;">44.420647</td>
+<td style="text-align: center;">50501</td>
+<td style="text-align: center;">2001</td>
+<td style="text-align: center;">90+DPD</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr>
+<td style="text-align: center;">0.04381321</td>
+<td style="text-align: center;">-39.29391</td>
+<td style="text-align: center;">138.6872</td>
+<td style="text-align: center;">64.944112</td>
+<td style="text-align: center;">50501</td>
+<td style="text-align: center;">2002</td>
+<td style="text-align: center;">active</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr>
+<td style="text-align: center;">2.29698365</td>
+<td style="text-align: center;">49.99669</td>
+<td style="text-align: center;">123.7825</td>
+<td style="text-align: center;">-3.587873</td>
+<td style="text-align: center;">50501</td>
+<td style="text-align: center;">2003</td>
+<td style="text-align: center;">active</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: center;">7.18889687</td>
+<td style="text-align: center;">-83.53323</td>
+<td style="text-align: center;">150.1020</td>
+<td style="text-align: center;">95.359641</td>
+<td style="text-align: center;">50501</td>
+<td style="text-align: center;">2004</td>
+<td style="text-align: center;">active</td>
+<td style="text-align: center;">5</td>
+</tr>
+</tbody>
+</table>
 
 Our features (variables) all represent different financial measurements
 quantified by vastly different units. In order for these variables to
@@ -145,21 +219,6 @@ ggplot() +
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-6-1.png" width="70%">
 
 </div>
-
-``` r
-print(head(train,5))
-```
-
-    ## # A tibble: 5 × 8
-    ## # Groups:   id [1]
-    ##   feature_1_standard feature_2_standard feature_3_standard feature_4_standard
-    ##                <dbl>              <dbl>              <dbl>              <dbl>
-    ## 1             -0.346             -0.131            -0.516              -0.708
-    ## 2             -0.515             -0.159            -1.09                0.616
-    ## 3             -0.473             -1.36             -0.481               0.956
-    ## 4             -0.466             -0.257            -1.21               -0.180
-    ## 5             -0.450             -1.91              0.0759              1.46 
-    ## # ℹ 4 more variables: id <int>, date <chr>, y <chr>, key <chr>
 
 The preparation of the training data is complete.
 
@@ -214,19 +273,86 @@ data. Likewise the decision threshold accuracy found from this
 evaluation will have similar implications.
 
 ``` r
-(head(test,5))
+invisible(head(test,5))
 ```
 
-    ## # A tibble: 5 × 7
-    ## # Groups:   id [1]
-    ##   feature_1_standard feature_2_standard feature_3_standard feature_4_standard
-    ##                <dbl>              <dbl>              <dbl>              <dbl>
-    ## 1             0.161              -0.991             0.0121              0.993
-    ## 2             0.121              -0.327            -0.938              -0.328
-    ## 3            -0.0959             -0.899            -2.18               -0.658
-    ## 4             0.584               0.940             1.33               -0.279
-    ## 5             0.0399             -1.45             -0.415               1.27 
-    ## # ℹ 3 more variables: id <int>, date <chr>, y <chr>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 7%" />
+<col style="width: 10%" />
+<col style="width: 7%" />
+</colgroup>
+<thead>
+<tr>
+<th
+style="text-align: center;"><p><strong>feature_1_standard</strong></p>
+<p>&lt;dbl&gt;</p></th>
+<th style="text-align: center;"><p>feature_2_standard</p>
+<p>&lt;dbl&gt;</p></th>
+<th style="text-align: center;"><p>feature_3_standard</p>
+<p>&lt;dbl&gt;</p></th>
+<th style="text-align: center;"><p>feature_4_standard</p>
+<p>&lt;dbl&gt;</p></th>
+<th style="text-align: center;"><p>id</p>
+<p>&lt;int&gt;</p></th>
+<th style="text-align: center;"><p>date</p>
+<p>&lt;chr&gt;</p></th>
+<th style="text-align: center;"><p>y</p>
+<p>&lt;chr&gt;</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">0.16072699</td>
+<td style="text-align: center;">-0.9909613</td>
+<td style="text-align: center;">0.01208607</td>
+<td style="text-align: center;">0.9929802</td>
+<td style="text-align: center;">50821</td>
+<td style="text-align: center;">2000-12-31</td>
+<td style="text-align: center;">active</td>
+</tr>
+<tr>
+<td style="text-align: center;">0.12107646</td>
+<td style="text-align: center;">-0.3266923</td>
+<td style="text-align: center;">-0.93792201</td>
+<td style="text-align: center;">-0.3276696</td>
+<td style="text-align: center;">50821</td>
+<td style="text-align: center;">2001-12-31</td>
+<td style="text-align: center;">active</td>
+</tr>
+<tr>
+<td style="text-align: center;">-0.09594818</td>
+<td style="text-align: center;">-0.8987632</td>
+<td style="text-align: center;">-2.17675805</td>
+<td style="text-align: center;">-0.6579547</td>
+<td style="text-align: center;">50821</td>
+<td style="text-align: center;">2002-12-31</td>
+<td style="text-align: center;">active</td>
+</tr>
+<tr>
+<td style="text-align: center;">0.58368733</td>
+<td style="text-align: center;">0.9402138</td>
+<td style="text-align: center;">1.32935457</td>
+<td style="text-align: center;">-0.2791657</td>
+<td style="text-align: center;">50821</td>
+<td style="text-align: center;">2003-12-31</td>
+<td style="text-align: center;">active</td>
+</tr>
+<tr>
+<td style="text-align: center;">0.03991450</td>
+<td style="text-align: center;">-1.4503831</td>
+<td style="text-align: center;">-0.41522270</td>
+<td style="text-align: center;">1.2680076</td>
+<td style="text-align: center;">50821</td>
+<td style="text-align: center;">2004-12-31</td>
+<td style="text-align: center;">active</td>
+</tr>
+</tbody>
+</table>
 
 To evaluate the effectiveness of the model find the optimal **decision
 threshold**, we produce an ROC curve.
