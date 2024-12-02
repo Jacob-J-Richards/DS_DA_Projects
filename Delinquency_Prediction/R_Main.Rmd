@@ -316,6 +316,6 @@ corrplot(cor_matrix,
 
 Features 1 and 3 have significant correlation of 0.62 and 0.71 in the training and testing data respectively.
 
-## Conclusion 
+## Conclusion
 
 Provided that future data sets evaluated by this model have similar multicollinearity as the training and testing data as is expected, this model will maintain relevance in providing predictions that are vastly advantaged to random chance.
