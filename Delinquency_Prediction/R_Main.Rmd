@@ -265,10 +265,27 @@ conf_matrix <- confusionMatrix(
 confusion_table <- as.data.frame.matrix(conf_matrix$table)
 rownames(confusion_table) <- c("Actual: Non-delinquent", "Actual: Delinquent")
 colnames(confusion_table) <- c("Predicted: Non-delinquent", "Predicted: Delinquent")
+library(gt)
 
+confusion_table_gt <- confusion_table %>%
+  tibble::rownames_to_column("Actual") %>%
+  gt() %>%
+  tab_header(
+    title = "Confusion Matrix",
+    subtitle = "Performance of Classification Model"
+  ) %>%
+  fmt_number(
+    columns = -1, # Format numeric columns, skipping the 'Actual' column
+    decimals = 0
+  ) %>%
+  cols_label(
+    Actual = "",
+    `Predicted: Non-delinquent` = "Non-delinquent",
+    `Predicted: Delinquent` = "Delinquent"
+  )
 
-gtsave(confusion_table, "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/confusion_table.jpg")
-knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/confusion_table.jpg")
+gtsave(confusion_table_gt, "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/confusion_table.png")
+knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/confusion_table.png")
 ```
 
 ## Fitting The Model - Checking for Multi-collinearity
@@ -284,6 +301,7 @@ If we were to produce a model with variables related to each other in being resp
 Thus we need to check for Multi-collinearity in our independent variables, are we measuring the same thing twice and thus giving it more impact in our prediction then it would have in real life.
 
 ```{r}
+library(corrplot)
 cor_matrix <- cor(train[, c("feature_1_standard", "feature_2_standard", "feature_3_standard", "feature_4_standard")])
 corrplot(cor_matrix, 
          method = "color",        
@@ -297,7 +315,7 @@ corrplot(cor_matrix,
 
 Features 1 and 3 have a correlation of 0.62, this doesn't mean that multi-collinearity is necessarily occurring as we don't even know what these variables represent.
 
-# LEFT OFF HERE 
+# LEFT OFF HERE
 
 ```{r}
 full_model <- glm(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, data = train, family = binomial())
@@ -440,12 +458,4 @@ The result is verified, the reduced models omitting feature 1 or feature 3 are i
 
 The model produced would be beneficial for future purposes where predicting delinquencies is needed as evident by the models performance when evaluated on the testing data. However, a machine learning method such as RandomForest may be more effective and is a topic of exploration in future analysis.
 
-```{r}
-library(plot3D)
-data(iris)
-head(iris)
 
-x <- sep.l <- iris$Sepal.Length
-y <- pet.l <- iris$Petal.Length
-z <- sep.w <- iris$Sepal.Width
-```
