@@ -46,10 +46,10 @@ ggplot() + geom_density(data=train, aes(x=feature_3), color="blue") +
            geom_density(data=train, aes(x=feature_2), color="red") +
            geom_density(data=train, aes(x=feature_1), color="green") +
            geom_density(data=train, aes(x=feature_4), color="purple") +
-           theme_minimal()
+           theme_minimal() + xlab("variables")
 ```
 
-This many outliers will weaken our model, so we remove the top and bottom percentiles from feature 3. This is known as **Winsorization**.
+This many outliers will add noise that disrupts our models ability to capture the trend of the data, so we remove the top and bottom percentiles from feature 3. This is known as **Winsorization**.
 
 ```{r}
 library(dplyr)
@@ -69,7 +69,7 @@ train <- train %>% mutate(feature_3 = ifelse(key %in% non_matching_keys, NA, fea
 colnames(train)[3] <- "feature_3_winsor"
 ```
 
-We need to fill in the values we just removed, so we replace them with the median of the non-outliers.
+We need to fill in the blanks from the values we just removed, so we will replace them with the median of the non-outliers of feature 3.
 
 ```{r}
 train[is.na(train[,3]),3] <- median(feature_3_winsor_clean$feature_3)
@@ -80,7 +80,7 @@ test[is.na(test[,3]),3] <- median(feature_3_winsor_clean$feature_3)
 colnames(test)[3] <- "feature_3_impute"
 ```
 
-Feature 2 has missing values, so we will Impute them with the feature 2 value from the next year or the previous (if next year is also missing) corresponding to the same ID.
+Feature 2 has missing values, so for each missing value for we will fill in the blank with the next years value or the previous years (if the next year is also missing) corresponding to the same ID.
 
 ```{r}
 train$date <- format(as.Date(train$date, format = "%Y-%m-%d"), "%Y")
@@ -130,7 +130,7 @@ test <- na.omit(test)
 | 7.18889687   | -83.53323        | 150.1020         | 95.359641  | 50501   | 2004    | active  | 5       |
 +--------------+------------------+------------------+------------+---------+---------+---------+---------+
 
-Our features (variables) all represent different financial measurements quantified by vastly different units. In order for these variables to have uniformity, we can reassign each value of each variable with it's corresponding z-score within it's respective distribution.
+Our features (variables) all represent different financial measurements quantified by different units. In order for these variables to be measured uniformly, we can reassign each value with it's corresponding z-score within it's respective variable distribution.
 
 ```{r}
 library(dplyr)
@@ -152,7 +152,7 @@ ggplot() +
   geom_density(data = train, aes(x = feature_1_standard), color = "green") +
   geom_density(data = train, aes(x = feature_4_standard), color = "purple") +
   theme_minimal() +
-  labs(x = "Normalized Features")
+  labs(x = "Standardized Features")
 ```
 
 The preparation of the training data is complete.
@@ -161,25 +161,25 @@ The preparation of the training data is complete.
 
 Building a logistic regression model from features 1 to 4 as continuous independent variables and column y as the binary dependent variable (true/false).
 
-Given historical data of these variable values and the payment status they correspond to, we can produce a model which will generates a probability that a customer will be **90+ days past due** on payments to be used on current or future customers.
+Given historical data of customers financial information and whether or not they were **90+ days past due** on payments, we can produce a model which will generates a probability that a customer will be **90+ days past due** on payments.
 
 For explanation of logistic regression binary classifiers see the following invaluable resource: <https://seantrott.github.io/binary_classification_R/>
 
-```{r}
+```{r, include=FALSE}
 library(nnet)
 train$y <- as.numeric(as.character(factor(train$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
 delinquency_model <- multinom(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, data=train,family=binomial())
 ```
 
-When the model produces a probability of an individual being **90+DPD**, we will have to decide at what probability we conclude that that individual will be **90+DPD**. The value chosen has great impact on the accuracy of the model.
+When the model produces a probability of an individual being **90+DPD**, we will have to decide at what probability we draw the conclusion that the individual will be **90+DPD**. The value chosen has great impact on the accuracy of the model.
 
 ## Fitting The Model
 
-**decision threshold:** The minimum probability value that a customer will be **90+ DPD** produced by the model at which it is concluded that the customer will be **90+ DPD**.
+**decision threshold:** The minimum predicted probability value from the model that a customer will be **90+ DPD** at which it is concluded that the customer will be **90+ DPD**.
 
-Since the outcome of whether or not there will be late payments is known in our testing data, we can directly compare the model's predicted outcome with the actual outcome to evaluate the accuracy of our model. As well, we can evaluate the impact of our decision threshold on the models accuracy.
+Since the outcome of whether or not there will be late payments is known in our testing data. We can asses the accuracy of the model by evaluating the model on the testing data and directly comparing the predicted outcomes and the actual outcomes, as well we can asses the impact our set **decision threshold** had on the models accuracy.
 
-As we evaluate the model on our testing data which was not included in the data used to produce the model, the accuracy of these results will have implications on the accuracy of the model being evaluated on future data. Likewise the decision threshold accuracy found from this evaluation will have similar implications.
+# *The testing data is separate from the data from which the model was produced from and thus it's performance on this data has implications for it's performance on other future data.* 
 
 ```{r}
 invisible(head(test,5))
