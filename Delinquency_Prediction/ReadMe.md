@@ -14,8 +14,8 @@ test <- read.csv(file="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_P
 ```
 
 From checking the distribution of the data, if you look carefully you
-can see that the distribution of feature 3 (blue) has a lot of values in
-the extreme right tail.
+can see that the distribution of feature 3 (displayed by the blue curve)
+has a lot of values in the extreme right tail.
 
 ``` r
 library(ggplot2)
@@ -32,8 +32,8 @@ ggplot() + geom_density(data=train, aes(x=feature_3), color="blue") +
 
 </div>
 
-This is just noise that will hurt weaken our model, so we remove the top
-and bottom 1% from the tails of feature 3. **“Winsorize”** feature 3.
+This many outliers will weaken our model, so we remove the top and
+bottom percentiles from feature 3. This is known as **Winsorization**.
 
 ``` r
 library(dplyr)
@@ -53,8 +53,8 @@ train <- train %>% mutate(feature_3 = ifelse(key %in% non_matching_keys, NA, fea
 colnames(train)[3] <- "feature_3_winsor"
 ```
 
-We need to fill the values we just removed, so we replace them with the
-median of the values remaining.
+We need to fill in the values we just removed, so we replace them with
+the median of the non-outliers.
 
 ``` r
 train[is.na(train[,3]),3] <- median(feature_3_winsor_clean$feature_3)
@@ -65,12 +65,9 @@ test[is.na(test[,3]),3] <- median(feature_3_winsor_clean$feature_3)
 colnames(test)[3] <- "feature_3_impute"
 ```
 
-feature 2 has missing values, so we will Impute these missing values
-with value from the next or the previous year of that same ID.
-
-I.e. if feature 2 for DEC 31 2001 is missing for ID number 5021, then
-replace with value from DEC 31 2002 or DEC 31 2000 of feature 2 of that
-same ID number (individual).
+Feature 2 has missing values, so we will Impute them with the feature 2
+value from the next year or the previous (if next year is also missing)
+corresponding to the same ID.
 
 ``` r
 train$date <- format(as.Date(train$date, format = "%Y-%m-%d"), "%Y")
@@ -115,16 +112,10 @@ print(head(train,5))
     ## 4    2.30               50.0             124.     -3.59 50501 2003  active 4    
     ## 5    7.19              -83.5             150.     95.4  50501 2004  active 5
 
-Our variables “features” all represent different financial measurements
-numerically. In producing a probabilistic model model for outcome of
-delinquency the actual value of these variables is meaningless as we
-don’t even know what they represent, what can be meaningful from them
-however is how each value relates to the other values of it’s own
-variable.
-
-Therefore, we should **Normalize** or **Standardize** the variables, by
-re-assigning each value with it’s corresponding z-score within it’s
-distribution.
+Our features (variables) all represent different financial measurements
+quantified by vastly different units. In order for these variables to
+have uniformity, we can reassign each value of each variable with it’s
+corresponding z-score within it’s respective distribution.
 
 ``` r
 library(dplyr)
@@ -170,27 +161,22 @@ print(head(train,5))
     ## 5             -0.450             -1.91              0.0759              1.46 
     ## # ℹ 4 more variables: id <int>, date <chr>, y <chr>, key <chr>
 
-The preparation of the training data is complete. The essential
-information of the data has been revealed and can now be utilized to
-produce a model for delinquency of payment prediction.
+The preparation of the training data is complete.
 
 ## Building The Model
 
-Building a logistic regression model where features 1 to 4 are
-independent variables and column y is our dependent variable being known
-outcome of payment delinquency.
+Building a logistic regression model from features 1 to 4 as continuous
+independent variables and column y as the binary dependent variable
+(true/false).
 
-Given historical data of these variables and their effect on the outcome
-of delinquency, we can produce a model which will generate a probability
-that a customer will be 90+ days past due on payment to be used on
-future customers to predict delinquency status.
+Given historical data of these variable values and the payment status
+they correspond to, we can produce a model which will generates a
+probability that a customer will be **90+ days past due** on payments to
+be used on current or future customers.
 
-Our model is built from 4000 observations which has been prepared to
-reveal the cause and effect nature of the variables and delinquency
-outcome.
-
-For explanation of binary classifiers see the following invaluable
-resource: <https://seantrott.github.io/binary_classification_R/>
+For explanation of logistic regression binary classifiers see the
+following invaluable resource:
+<https://seantrott.github.io/binary_classification_R/>
 
 ``` r
 library(nnet)
@@ -204,28 +190,28 @@ delinquency_model <- multinom(y ~ feature_1_standard + feature_2_standard + feat
     ## final  value 1604.602903 
     ## converged
 
-When the model produces a probability of an individual being delinquent
-on payments, we will have to decide at what probability we conclude that
-that individual will indeed be delinquent. Determination of this
-probability value (decision threshold) is extremely important to the
-effectiveness of the model.
+When the model produces a probability of an individual being **90+DPD**,
+we will have to decide at what probability we conclude that that
+individual will be **90+DPD**. The value chosen has great impact on the
+accuracy of the model.
 
 ## Fitting The Model
 
-**decision threshold:** The probability value for which a customer is
-concluded will be **90+ DPD** when the model produces a probability that
-the customer will be **90+ DPD** greater than or equal to it.
+**decision threshold:** The minimum probability value that a customer
+will be **90+ DPD** produced by the model at which it is concluded that
+the customer will be **90+ DPD**.
 
-Since the outcome of delinquency is known in our testing data, we can
-directly compare the model’s predicted delinquency outcome against the
-actual delinquency outcome to evaluate the accuracy of our model. As
-well, how our set decision threshold effects the accuracy of the model.
+Since the outcome of whether or not there will be late payments is known
+in our testing data, we can directly compare the model’s predicted
+outcome with the actual outcome to evaluate the accuracy of our model.
+As well, we can evaluate the impact of our decision threshold on the
+models accuracy.
 
-To determine this **decision threshold**, we evaluate the model on our
-testing data, our testing data originated from the same data set as our
-training data. However, since the testing data was not included in
-producing the model, the accuracy of this evaluation will have direct
-implications to the models accuracy applied to future data.
+As we evaluate the model on our testing data which was not included in
+the data used to produce the model, the accuracy of these results will
+have implications on the accuracy of the model being evaluated on future
+data. Likewise the decision threshold accuracy found from this
+evaluation will have similar implications.
 
 ``` r
 (head(test,5))
@@ -242,9 +228,8 @@ implications to the models accuracy applied to future data.
     ## 5             0.0399             -1.45             -0.415               1.27 
     ## # ℹ 3 more variables: id <int>, date <chr>, y <chr>
 
-To evaluate the effectiveness of the model and optimal **decision
-threshold**, we produce an ROC curve from the predicted outcome produced
-by the model and known outcome.
+To evaluate the effectiveness of the model find the optimal **decision
+threshold**, we produce an ROC curve.
 
 ``` r
     library(pROC)
@@ -253,26 +238,35 @@ by the model and known outcome.
     test$Probability <- predict(delinquency_model, newdata = test, type = "probs")
     options(digits = 4)
     
-    roc_curve <- roc(response = test$y_numeric, predictor = test$Probability)
+roc_curve <- roc(response = test$y_numeric, predictor = test$Probability)
 
-    
-    roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
-    
-    auc_value <- auc(roc_curve) 
-    
-    roc_data <- data.frame( TPR = roc_metrics$sensitivity, FPR = 1 - roc_metrics$specificity, threshold = roc_metrics$threshold)
+roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
+auc_value <- auc(roc_curve)
 
-ggplot(roc_data, aes(x = FPR, y = TPR, color = threshold)) +
+roc_data <- data.frame(
+  TPR = roc_metrics$sensitivity,
+  FPR = roc_metrics$specificity,
+  Threshold = roc_metrics$threshold
+)
+
+ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
   geom_line(size = 1) +
-  geom_abline(linetype = "dashed", color = "gray") +
-  # Add the perfect model line
-  geom_line(data = data.frame(FPR = c(0, 0, 1), TPR = c(0, 1, 1)), aes(x = FPR, y = TPR), 
+  geom_abline(slope = 1, intercept = 1, linetype = "dashed", color = "gray") +  
+  geom_line(data = data.frame(FPR = c(1, 1, 0), TPR = c(0, 1, 1)), 
+            aes(x = FPR, y = TPR), 
             color = "blue", size = 1, linetype = "dotted") +
-  labs(title = "ROC Curve for Multinomial Logistic Regression",
-       x = "False Positive Rate (1 - Specificity)", y = "True Positive Rate (Sensitivity)", 
-       caption = paste("AUC:", round(auc_value, 4)), color = "Decision Threshold") +
-  scale_color_gradientn(colors = rev(rainbow(100))) + 
-  coord_fixed() + xlim(0, 1) + ylim(0, 1) + theme_minimal() +
+  labs(
+    title = "ROC Curve for Multinomial Logistic Regression",
+    x = "Specificity",
+    y = "True Positive Rate (Sensitivity)",
+    caption = paste("AUC:", round(auc_value, 4)),
+    color = "Decision Threshold"
+  ) +
+  scale_color_gradientn(colors = rev(rainbow(100))) +
+  coord_fixed() +
+  scale_x_reverse() +  # Reverse the x-axis
+  ylim(0, 1) +
+  theme_minimal() +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
 
@@ -282,53 +276,39 @@ ggplot(roc_data, aes(x = FPR, y = TPR, color = threshold)) +
 
 </div>
 
-**Sensitivity:** The proportion of positive outcomes (delinquent)
-correctly identified by the model
+### The ROC curve is a plot of the models prediction accuracy ratios Sensitivity (y-axis) by Specificity (x-axis) as a result of the decision threshold chosen (displayed by color gradient).
 
-*what proportion of delinquencies were caught by the model.*
+**Sensitivity:** *what proportion of individuals who were **90+ DPD**
+did the model correctly predict as being **90+ DPD.***
 
-**Specificity:** The proportion of negative outcomes (not delinquent)
-correctly identified by the model
+**Specificity:** *what proportion of individuals who were **not 90+
+DDP** did the model correctly predict as being **not 90+ DPD.***
 
-*what proportion of people who did not go delinquent on payments were
-not mis-categorized as delinquent.*
-
-**False Positive Rate:** The proportion of negative outcomes (not
-delinquent) incorrectly identified by the model as delinquent. Notice
-how this is the compliment to **Specificity**.
-
-**Decision Threshold:** The probability value of which observations
-assained probability values of delinquency from the model equal to or
-greater than the value are classified as delinquent (1), if less than
-this value they are classified as non-delinquent (0).
-
-**AUC:** The area under the curve is used as a metric for effectiveness
-of the model, the blue dotted would be a perfect model which captures
-100% of the area under it’s curve (everything right), and the grey
-dotted is random chance (coin toss) which would only capture 50% of the
-area (half right,half wrong).
+**AUC:** The area under the ROC curve, AUC is used as a metric for
+overall model performance as the ROC curve is the result of accuracy
+metrics from the entire range of decision thresholds. The blue dotted
+line is a perfect model containing 100% of the area under it’s curve,
+the grey line is if you were to predict the outcome by tossing a coin
+and thus naturally the area under it’s curve is 50%.
 
 The **AUC** of our model is 0.8211.
 
-The ROC curve is the plot of the **True Positive Rate** TRP
-**(Sensitivity)** and **False Positive Rate** FPR (1- **Specificity**)
-as a function of decision threshold displayed by color gradient along
-the curve.
-
-For example: when the decision threshold is around 0.4 (blue above
-cyan), the **False Positive Rate** around 0.125 and the **True Positive
-Rate** is 0.4, meaning that when the decision threshold value is
-relatively high, the false positive rate is relatively low however only
-40% of delinquencies are being caught by the model.
-
-In contrast, if you look at decision threshold around 0.20 (hot pink),
-the **False Positive Rate** around 0.40 and the **True Positive Rate**
-is 0.90, such that we catch 90% of the delinquencies but 40% of non
-delinquencies were mis-identified as delinquent.
+To illustrate the meaning of this curve take for example the accuracy
+results if you were to select a decision threshold of 0.50 represented
+as cyan blue: Your specificity would be about 94% which is good since
+you did not falsely predict too many late payments. However, your
+sensitivity would only be 25%, such that you only successfully predicted
+25% of the late payments. Conversely if you had selected a decision
+threshold of .10 represented as pink-red you would successfully predict
+94% of late payments but only 25% of individuals who were not late on
+payments were correctly identified as such by the model.
 
 Therefore, the **decision threshold** we choose is a trade off between
-identifying delinquencies and not mis-identifying non-delinquencies,
-this **decision threshold** is visually evident in the following plot.
+successfully predicting late payments and successfully predicting non
+late payments.
+
+The **decision threshold** which balances these goals is visually
+evident in the following plot.
 
 ``` r
 ggplot(roc_metrics, aes(x = threshold)) +
@@ -352,17 +332,16 @@ simple calculation.
 
 ``` r
 optimal_threshold <- roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))]
-(roc_metrics[roc_metrics$threshold == optimal_threshold,])
 ```
 
-    ##     threshold sensitivity specificity
-    ## 702    0.2244       0.771      0.7716
+| **threshold** | **sensitivity** | **specificity** |
+|:-------------:|:---------------:|:---------------:|
+|    0.2244     |      0.771      |     0.7716      |
 
 Confusion matrix displaying the results of balanced decision threshold
 evaluated on the testing data.
 
 ``` r
-library(webshot2)
 test$predicted_class <- ifelse(test$Probability >= roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))], 1, 0)
 
 library(caret)
@@ -373,86 +352,9 @@ conf_matrix <- confusionMatrix(
 confusion_table <- as.data.frame.matrix(conf_matrix$table)
 rownames(confusion_table) <- c("Actual: Non-delinquent", "Actual: Delinquent")
 colnames(confusion_table) <- c("Predicted: Non-delinquent", "Predicted: Delinquent")
-library(gt)
-
-confusion_table_gt <- confusion_table %>%
-  tibble::rownames_to_column("Actual") %>%
-  gt() %>%
-  tab_header(
-    title = "Confusion Matrix",
-    subtitle = "Performance of Classification Model"
-  ) %>%
-  fmt_number(
-    columns = -1, # Format numeric columns, skipping the 'Actual' column
-    decimals = 0
-  ) %>%
-  cols_label(
-    Actual = "",
-    `Predicted: Non-delinquent` = "Non-delinquent",
-    `Predicted: Delinquent` = "Delinquent"
-  )
-
-gtsave(
-  data = confusion_table_gt,
-  filename = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/confusion_table.png",
-  vwidth = 800,  # width in pixels
-  vheight = 800  # height in pixels, equal to width for square aspect
-)
-knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/confusion_table.png")
 ```
 
-<div align="center">
-
-<img src="ReadMe_files/figure-gfm/confusion_table.png" width="70%">
-
-</div>
-
-## Fitting The Model - Checking for Multicollinearity
-
-``` r
-library(corrplot)
-cor_matrix <- cor(train[, c("feature_1_standard", "feature_2_standard", "feature_3_standard", "feature_4_standard")])
-corrplot(cor_matrix, 
-         method = "color",        
-         col = colorRampPalette(c("white", "red"))(200),  
-         type = "upper",          
-         tl.col = "black",        
-         tl.srt = 45,             
-         addCoef.col = "black",  
-         number.cex = 0.8)
-```
-
-<div align="center">
-
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-13-1.png" width="70%">
-
-</div>
-
-``` r
-library(corrplot)
-cor_matrix <- cor(test[, c("feature_1_standard", "feature_2_standard", "feature_3_standard", "feature_4_standard")])
-corrplot(cor_matrix, 
-         method = "color",        
-         col = colorRampPalette(c("white", "red"))(200),  
-         type = "upper",          
-         tl.col = "black",        
-         tl.srt = 45,             
-         addCoef.col = "black",  
-         number.cex = 0.8)
-```
-
-<div align="center">
-
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-13-2.png" width="70%">
-
-</div>
-
-Features 1 and 3 have significant correlation of 0.62 and 0.71 in the
-training and testing data respectively.
-
-## Conclusion
-
-Provided that future data sets evaluated by this model have similar
-multicollinearity as the training and testing data as is expected, this
-model will maintain relevance in providing predictions that are vastly
-advantaged to random chance.
+|  | **Predicted: Non-delinquent** | **Predicted: Delinquent** |
+|:--:|:--:|:--:|
+| Actual: Non-delinquent | 652 | 49 |
+| Actual: Delinquent | 193 | 165 |
