@@ -327,10 +327,8 @@ is 0.90, such that we catch 90% of the delinquencies but 40% of non
 delinquencies were mis-identified as delinquent.
 
 Therefore, the **decision threshold** we choose is a trade off between
-identifying delinquencies and not mis-identifying non-delinquencies. The
-**decision threshold** which balances our priorities of identifying
-delinquencies and not mis-identifying non-delinquencies is revealed
-visually in the following graphic.
+identifying delinquencies and not mis-identifying non-delinquencies,
+this **decision threshold** is visually evident in the following plot.
 
 ``` r
 ggplot(roc_metrics, aes(x = threshold)) +
@@ -404,27 +402,7 @@ knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_
 
 </div>
 
-## Fitting The Model - Checking for Multi-collinearity
-
-**Predictor:** The value which effects another
-
-**Response:** The value which is effected
-
-If we have two variables which are highly correlated with each other,
-those two variables may be a the **response** of a common **predictor**.
-For example, weight and clothing size are correlated as they are both
-**response** variables to the **predictor** height.
-
-If we were to produce a model with variables related to each other in
-being response variables to a common predictor variable, this
-essentially would give that common predictor variable greater weight or
-significance in it’s effect on the predicted outcome of the model we
-wish to produce than that predictor has in the actual phenomena we are
-modelling.
-
-Thus we need to check for Multi-collinearity in our independent
-variables, are we measuring the same thing twice and thus giving it more
-impact in our prediction then it would have in real life.
+## Fitting The Model - Checking for Multicollinearity
 
 ``` r
 library(corrplot)
@@ -445,208 +423,31 @@ corrplot(cor_matrix,
 
 </div>
 
-Features 1 and 3 have a correlation of 0.62, this doesn’t mean that
-multi-collinearity is necessarily occurring as we don’t even know what
-these variables represent.
-
-# LEFT OFF HERE
-
 ``` r
-full_model <- glm(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, data = train, family = binomial())
-
-model_without_feature_1 <- glm(y ~ feature_2_standard + feature_3_standard + feature_4_standard, data = train, family = binomial())
-
-model_without_feature_3 <- glm(y ~ feature_1_standard + feature_2_standard + feature_4_standard, data = train, family = binomial())
-
-anova(model_without_feature_1, full_model, test = "LRT")
-```
-
-    ## Analysis of Deviance Table
-    ## 
-    ## Model 1: y ~ feature_2_standard + feature_3_standard + feature_4_standard
-    ## Model 2: y ~ feature_1_standard + feature_2_standard + feature_3_standard + 
-    ##     feature_4_standard
-    ##   Resid. Df Resid. Dev Df Deviance Pr(>Chi)    
-    ## 1      3936       3264                         
-    ## 2      3935       3209  1     54.6  1.5e-13 ***
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-``` r
-anova(model_without_feature_3, full_model, test = "LRT")
-```
-
-    ## Analysis of Deviance Table
-    ## 
-    ## Model 1: y ~ feature_1_standard + feature_2_standard + feature_4_standard
-    ## Model 2: y ~ feature_1_standard + feature_2_standard + feature_3_standard + 
-    ##     feature_4_standard
-    ##   Resid. Df Resid. Dev Df Deviance Pr(>Chi)    
-    ## 1      3936       3416                         
-    ## 2      3935       3209  1      207   <2e-16 ***
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Reject the null hypothesis that the reduced model does not have
-significantly different goodness of fit to the original in both tests.
-feature 1 and feature 3 are necessary.
-
-Verify result that feature 1 and feature 3 are necessary to the model.
-
-``` r
-library(pROC)
-library(ggplot2)
-
-model_without_feature_1 <- glm(y ~ feature_2_standard + feature_3_standard + feature_4_standard, 
-                               data = train, family = binomial())
-
-test_no_feature_1 <- test %>%
-  select(-feature_1_standard) 
-
-test_no_feature_1$Probability <- predict(model_without_feature_1, newdata = test_no_feature_1, type = "response")
-
-test_no_feature_1$y_numeric <- as.numeric(as.character(factor(test_no_feature_1$y, 
-                                                              levels = c("90+DPD", "active"), 
-                                                              labels = c(1, 0))))
-
-roc_curve <- roc(response = test_no_feature_1$y_numeric, 
-                 predictor = test_no_feature_1$Probability)
-
-roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
-
-
-# Extract data for ROC curve
-roc_data <- data.frame(
-  TPR = rev(roc_curve$sensitivities),  # True Positive Rate (Sensitivity)
-  FPR = rev(1 - roc_curve$specificities)  # False Positive Rate (1 - Specificity)
-)
-
-# Calculate AUC value
-auc_value <- auc(roc_curve)
-
-# Create the ROC curve plot using ggplot2
-ggplot(roc_data, aes(x = FPR, y = TPR)) +
-  geom_smooth(color = "blue", size = 1) +
-  geom_abline(linetype = "dashed", color = "gray") +  # Diagonal line for random chance
-  labs(
-    title = "ROC Curve Without Feature 3",
-    x = "False Positive Rate (1 - Specificity)",
-    y = "True Positive Rate (Sensitivity)",
-    caption = paste("AUC:", round(auc_value, 4))
-  ) +
-  coord_fixed() +  # Maintain proportional scales
-  xlim(-0.5, 1.5) +  # Expand x-axis for better visualization
-  theme_minimal() +
-  theme(plot.caption = element_text(hjust = 0.5, size = 12))
+library(corrplot)
+cor_matrix <- cor(test[, c("feature_1_standard", "feature_2_standard", "feature_3_standard", "feature_4_standard")])
+corrplot(cor_matrix, 
+         method = "color",        
+         col = colorRampPalette(c("white", "red"))(200),  
+         type = "upper",          
+         tl.col = "black",        
+         tl.srt = 45,             
+         addCoef.col = "black",  
+         number.cex = 0.8)
 ```
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-15-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-13-2.png" width="70%">
 
 </div>
 
-``` r
-roc_metrics_df <- as.data.frame(roc_metrics) 
-ggplot(roc_metrics_df, aes(x = threshold)) +
-    geom_smooth(aes(y = sensitivity, color = "Sensitivity")) +
-    geom_smooth(aes(y = specificity, color = "Specificity")) +
-    labs(title = "Sensitivity and Specificity vs. Threshold Without Feature 1",
-         x = "Threshold", y = "Metric Value") +
-    scale_color_manual(name = "Metrics", values = c("Sensitivity" = "red", "Specificity" = "blue")) +
-    theme_minimal()
-```
-
-<div align="center">
-
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-15-2.png" width="70%">
-
-</div>
-
-The AUC is slightly inferior. Result verified for feature 3
-
-Checking result for feature 1.
-
-``` r
-library(pROC)
-library(ggplot2)
-
-model_without_feature_3 <- glm(y ~ feature_1_standard + feature_2_standard + feature_4_standard, 
-                               data = train, family = binomial())
-
-test_no_feature_3 <- test %>%
-  select(-feature_3_standard) 
-
-test_no_feature_3$Probability <- predict(model_without_feature_3, newdata = test_no_feature_3, type = "response")
-
-test_no_feature_3$y_numeric <- as.numeric(as.character(factor(test_no_feature_3$y, 
-                                                              levels = c("90+DPD", "active"), 
-                                                              labels = c(1, 0))))
-
-roc_curve <- roc(response = test_no_feature_3$y_numeric, 
-                 predictor = test_no_feature_3$Probability)
-
-roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
-
-
-# Extract data for ROC curve
-roc_data <- data.frame(
-  TPR = rev(roc_curve$sensitivities),  # True Positive Rate (Sensitivity)
-  FPR = rev(1 - roc_curve$specificities)  # False Positive Rate (1 - Specificity)
-)
-
-# Calculate AUC value
-auc_value <- auc(roc_curve)
-
-# Create the ROC curve plot using ggplot2
-ggplot(roc_data, aes(x = FPR, y = TPR)) +
-  geom_smooth(color = "blue", size = 1) +
-  geom_abline(linetype = "dashed", color = "gray") +  # Diagonal line for random chance
-  labs(
-    title = "ROC Curve Without Feature 3",
-    x = "False Positive Rate (1 - Specificity)",
-    y = "True Positive Rate (Sensitivity)",
-    caption = paste("AUC:", round(auc_value, 4))
-  ) +
-  coord_fixed() +  # Maintain proportional scales
-  xlim(-0.5, 1.5) +  # Expand x-axis for better visualization
-  theme_minimal() +
-  theme(plot.caption = element_text(hjust = 0.5, size = 12))
-```
-
-<div align="center">
-
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-16-1.png" width="70%">
-
-</div>
-
-``` r
-roc_metrics_df <- as.data.frame(roc_metrics) 
-ggplot(roc_metrics_df, aes(x = threshold)) +
-    geom_smooth(aes(y = sensitivity, color = "Sensitivity")) +
-    geom_smooth(aes(y = specificity, color = "Specificity")) +
-    labs(title = "Sensitivity and Specificity vs. Threshold Without Feature 3",
-         x = "Threshold", y = "Metric Value") +
-    scale_color_manual(name = "Metrics", values = c("Sensitivity" = "red", "Specificity" = "blue")) +
-    theme_minimal()
-```
-
-<div align="center">
-
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-16-2.png" width="70%">
-
-</div>
-
-The AUC is inferior to full model as well.
-
-The result is verified, the reduced models omitting feature 1 or feature
-3 are inferior, albeit just slightly. The original model should be
-retained with the awareness of possible problems with multicollinearity.
+Features 1 and 3 have significant correlation of 0.62 and 0.71 in the
+training and testing data respectively.
 
 ## Conclusion
 
-The model produced would be beneficial for future purposes where
-predicting delinquencies is needed as evident by the models performance
-when evaluated on the testing data. However, a machine learning method
-such as RandomForest may be more effective and is a topic of exploration
-in future analysis.
+Provided that future data sets evaluated by this model have similar
+multicollinearity as the training and testing data as is expected, this
+model will maintain relevance in providing predictions that are vastly
+advantaged to random chance.
