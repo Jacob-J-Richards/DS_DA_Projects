@@ -182,29 +182,16 @@ Since the outcome of whether or not there will be late payments is known in our 
 The testing data is completely distinct from the data used to produce the model, so the accuracy results of the model being evaluated on it are representative of the models accuracy being evaluated of future data. The following analysis are those accuracy results.
 
 ```{r}
-# Install the flextable package if not already installed
+library(reprex)
+reprex({
+  library(tibble)
+  print(as_tibble(head(test[c(1,2,3,4,6),], 5)))
+}, 
+outfile = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/tibble_output_image.png", advertise = FALSE)
 
-# Load the necessary libraries
-library(flextable)
-library(tibble)
-
-# Assuming `test` is your tibble or data frame
-head_test <- head(test, 5)
-
-# Create a flextable object
-flex_table <- flextable(head_test) %>%
-  autofit() %>%                     # Adjust column widths automatically
-  set_table_properties(width = 1)   # Scale the table to fit in a smaller space
-
-# Save the table as an image
-save_as_image(
-  flex_table,
-  path = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/flextable_image.png"
-)
 
 knitr::include_graphics("~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/gt_table_image.png")
 ```
-
 
 +------------------------+--------------------+--------------------+--------------------+---------+------------+---------+
 | **feature_1_standard** | feature_2_standard | feature_3_standard | feature_4_standard | id      | date       | y       |
@@ -257,7 +244,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
 
-### The ROC curve is a plot of the models prediction accuracy ratios Sensitivity (y-axis) by Specificity (x-axis) as a result of the decision threshold chosen which is displayed by color gradient. 
+### The ROC curve is a plot of the models prediction accuracy ratios Sensitivity (y-axis) by Specificity (x-axis) as a result of the decision threshold chosen which is displayed by color gradient.
 
 **Sensitivity:** *what proportion of individuals who were **90+ DPD** did the model correctly predict as being **90+ DPD.***
 
