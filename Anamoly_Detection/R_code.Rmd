@@ -11,17 +11,19 @@ knitr::opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   fig.align = "center",
-  fig.width = 8,   
-  fig.height = 6, 
-  dpi = 300,     
+  fig.width = 8,
+  fig.height = 6,
+  dpi = 300,
   dev = "png",
   out.width = "70%",
-  out.height = "70%")
+  out.height = "70%"
+)
 
 knitr::knit_hooks$set(plot = function(x, options) {
   paste0('<div align="center">\n',
          '<img src="', x, '" width="70%">\n',
-         '</div>')})
+         '</div>')
+})
 ```
 
 # Transaction Anomaly Detection
@@ -36,14 +38,23 @@ The data available to you is the transaction count and how many of which were su
 
 ```{r}
 setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection")
-transactions <- read.csv(file="transactions.csv", na.strings = c("", "NA"))
+transactions <- read.csv(file = "transactions.csv", na.strings = c("", "NA"))
+
 library(knitr)
 library(kableExtra)
-your_tibble <- head(transactions,5)
+
+your_tibble <- head(transactions, 5)
+
 kable(your_tibble, format = "html") %>%
   kable_styling(position = "center") %>% 
-  save_kable(file = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/AD_1.png", zoom = 2)
-knitr::include_graphics("~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/AD_1.png")
+  save_kable(
+    file = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/AD_1.png", 
+    zoom = 2
+  )
+
+knitr::include_graphics(
+  "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/AD_1.png"
+)
 
 ```
 
@@ -55,46 +66,66 @@ We're not sure what we're looking for yet, so let's plot the percentage of faile
 
 ```{r}
 library('ggplot2')
+
 setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection")
-transactions <- read.csv(file="transactions.csv", na.strings = c("", "NA"))
+transactions <- read.csv(file = "transactions.csv", na.strings = c("", "NA"))
 transactions[is.na(transactions)] <- "notprovided"
+
 data <- transactions
-colnames(data) <- c("t","s","mid","pmt","pg","subtype","hr","bank")
+colnames(data) <- c("t", "s", "mid", "pmt", "pg", "subtype", "hr", "bank")
+
 ```
 
 ###### compute failure rate for each hour
 
 ```{r}
 unique_hours <- unique(data$hr)
-t <- aggregate(data$t,by=list(data$hr),sum)
-s <- aggregate(data$s,by=list(data$hr),sum)
 
-f <- t[,2] - s[,2]
-failure_rate <- f/t[,2]
+t <- aggregate(data$t, by = list(data$hr), sum)
+s <- aggregate(data$s, by = list(data$hr), sum)
+
+f <- t[, 2] - s[, 2]
+failure_rate <- f / t[, 2]
 failure_count <- f
 
-unique_hours <- unique(data$hr)
 unique_hours <- sort(unique_hours)
+
 ```
 
 ###### plot failure rate for each hour
 
 ```{r}
-failed_transactions_rate <- data.frame(hours = unique_hours, failedTransactions = failure_rate, x_index = seq(1, 72, by = 1))
+failed_transactions_rate <- data.frame(
+  hours = unique_hours, 
+  failedTransactions = failure_rate, 
+  x_index = seq(1, 72, by = 1)
+)
 
 ggplot(data = failed_transactions_rate, aes(x = x_index, y = failedTransactions)) + 
-    geom_area(fill = "blue", alpha = 0.25) + geom_line(color = "black") +  
-    scale_x_continuous(breaks = seq(1, 72, by = 6), minor_breaks = 1:72, labels = unique_hours[seq(1, length(unique_hours), by = 6)]) + 
-    coord_cartesian(ylim = range(failed_transactions_rate$failedTransactions, na.rm = TRUE)) +  
-    labs(title = "Failed Transactions Percentage by Hour", x = "Hour (72)", y = "Failed Transactions Per Hour") +
-        theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 8), 
-        axis.title.x = element_text(size = 10), axis.title.y = element_text(size = 10),
-        plot.background = element_rect(fill = "white", color = NA),
-        panel.background = element_rect(fill = "white", color = NA),
-        panel.grid.major.x = element_blank(), 
-        panel.grid.minor.x = element_blank(), 
-        panel.grid.major.y = element_blank(), 
-        legend.position = "none")
+  geom_area(fill = "blue", alpha = 0.25) + 
+  geom_line(color = "black") +  
+  scale_x_continuous(
+    breaks = seq(1, 72, by = 6), 
+    minor_breaks = 1:72, 
+    labels = unique_hours[seq(1, length(unique_hours), by = 6)]
+  ) + 
+  coord_cartesian(ylim = range(failed_transactions_rate$failedTransactions, na.rm = TRUE)) +  
+  labs(
+    title = "Failed Transactions Percentage by Hour", 
+    x = "Hour (72)", 
+    y = "Failed Transactions Per Hour"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 60, hjust = 1, size = 8), 
+    axis.title.x = element_text(size = 10), 
+    axis.title.y = element_text(size = 10),
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "white", color = NA),
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    panel.grid.major.y = element_blank(), 
+    legend.position = "none"
+  )
 ```
 
 So we do see a spike in transaction failure rates up to 45% afternoon/overnight the day before we started receiving complaints.
@@ -104,23 +135,38 @@ Clearly there is a problem here, but we need to find precisely what caused this 
 ###### plotting total transaction failures for each hour
 
 ```{r}
-failed_transactions <- data.frame(hours = unique_hours, failedTransactions = failure_count, x_index = seq(1, 72, by = 1))
+failed_transactions <- data.frame(
+  hours = unique_hours, 
+  failedTransactions = failure_count, 
+  x_index = seq(1, 72, by = 1)
+)
 
 ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + 
-geom_area(fill = "blue", alpha = 0.25) + 
-geom_line(color = "black") +  
-scale_x_continuous(breaks = seq(1, 72, by = 6), 
-                   minor_breaks = 1:72, 
-                   labels = unique_hours[seq(1, length(unique_hours), by = 6)]) + 
-    coord_cartesian(ylim = range(failed_transactions$failedTransactions, na.rm = TRUE)) +  
-    labs(title = "Failed Transactions Counts by Hour", x = "Hour (72)", y = "Failed Transactions Per Hour") +
-    theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 8), 
+  geom_area(fill = "blue", alpha = 0.25) + 
+  geom_line(color = "black") +  
+  scale_x_continuous(
+    breaks = seq(1, 72, by = 6), 
+    minor_breaks = 1:72, 
+    labels = unique_hours[seq(1, length(unique_hours), by = 6)]
+  ) + 
+  coord_cartesian(ylim = range(failed_transactions$failedTransactions, na.rm = TRUE)) +  
+  labs(
+    title = "Failed Transactions Counts by Hour", 
+    x = "Hour (72)", 
+    y = "Failed Transactions Per Hour"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 60, hjust = 1, size = 8), 
     axis.title.x = element_text(size = 10), 
     axis.title.y = element_text(size = 10),
     plot.background = element_rect(fill = "white", color = NA),
     panel.background = element_rect(fill = "white", color = NA),
-    panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(), panel.grid.major.y = element_blank(), 
-    legend.position = "none")
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    panel.grid.major.y = element_blank(), 
+    legend.position = "none"
+  )
+
 ```
 
 This isn't noteworthy, the failure counts are higher during the day because that's when customers are active.
@@ -132,20 +178,26 @@ The variables we will produce a distribution of will be failure percentage and t
 ```{r}
 before_anamoly_detection_data <- data
 
-data$failures <- data[,1] - data[,2]
-data$failure_rate <- (data[,1] - data[,2])/data[,1] 
+data$failures <- data[, 1] - data[, 2]
+data$failure_rate <- (data[, 1] - data[, 2]) / data[, 1]
 
-kable(head(data,3), format = "html") %>%
+kable(head(data, 3), format = "html") %>%
   kable_styling(position = "center") %>% 
-  save_kable(file = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/appended_1.png", zoom = 2)
-knitr::include_graphics("~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/appended_1.png")
+  save_kable(
+    file = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/appended_1.png", 
+    zoom = 2
+  )
+
+knitr::include_graphics(
+  "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/appended_1.png"
+)
 ```
 
 Now that we have all of our variables prepared, we can form a higher dimensional distribution from them to find which observations are the greatest outliers.
 
 Here is a plot of that distribution, as you can see the vast majority is concentrated in the back corner of the volume.
 
-```{r}
+```{r,eval=FALSE}
 distribution <- data.frame(failures = data$failures,rate = data$failure_rate )
 
 library(plotly)
@@ -157,6 +209,10 @@ plot_ly(
   y = kde$y,
   z = kde$z,
   type = "surface"
+)
+
+knitr::include_graphics(
+  "/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/3Ddistribution.png"
 )
 ```
 
@@ -172,19 +228,28 @@ mahalanobis_distances <- mahalanobis(features, center, cov_matrix)
 
 data$mahalanobis_score <- mahalanobis_distances
 
-data <- data[order(data$mahalanobis_score,decreasing = TRUE),]
+data <- data[order(data$mahalanobis_score, decreasing = TRUE), ]
 top_quartile <- quantile(data$mahalanobis_score, 0.999)
 filtered_data <- data[data$mahalanobis_score >= top_quartile, ]
+
 ```
 
 Table of the 10 observations found to have the greatest outlier score.
 
 ```{r}
-your_tibble <- head(filtered_data,10)
+your_tibble <- head(filtered_data, 10)
+
 kable(your_tibble, format = "html") %>%
   kable_styling(position = "center") %>% 
-  save_kable(file = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/mscoreog.png", zoom = 2)
-knitr::include_graphics("~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/mscoreog.png")
+  save_kable(
+    file = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/mscoreog.png", 
+    zoom = 2
+  )
+
+knitr::include_graphics(
+  "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/mscoreog.png"
+)
+
 ```
 
 Notice how the top 10 outliers all have a PAYTM service as the payment gateway with only difference in the variable name being the addition of the suffix \_UPI to PAYTM. From that I deduced that the anomaly would be present in the PAYTM payment gateways being PAYTM, PAYTM_V2, and PAYTM_UPI. The most common combination of the remaining variables of these top 10 observations is UPI for pmt, UPI_PAY for subtype, and UPI for bank.
@@ -195,27 +260,55 @@ Plotting the failure rates over the entire 72 hours of observations for which th
 
 ```{r}
 data <- before_anamoly_detection_data
-first_subset <- data[(data[,4] %in% c("UPI")) & (data[,5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI")) & (data[,6] == "UPI_PAY") & (data[,8] == "UPI"),]
+
+first_subset <- data[
+  (data[, 4] %in% c("UPI")) & 
+  (data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI")) & 
+  (data[, 6] == "UPI_PAY") & 
+  (data[, 8] == "UPI"), 
+]
 
 unique_hours <- unique(data$hr)
 unique_hours <- sort(unique_hours)
 
-t <- aggregate(first_subset$t,by=list(first_subset$hr),sum)
-s <- aggregate(first_subset$s,by=list(first_subset$hr),sum)
-f <- t[,2] - s[,2]
+t <- aggregate(first_subset$t, by = list(first_subset$hr), sum)
+s <- aggregate(first_subset$s, by = list(first_subset$hr), sum)
+f <- t[, 2] - s[, 2]
 
-proportion <- f/t[,2] * 100
-failed_transactions <- data.frame(hours = unique_hours, failedTransactions = proportion, x_index = seq(1, 72, by = 1))
+proportion <- f / t[, 2] * 100
 
-ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + geom_area(fill = "blue", alpha = 0.25) + 
-  geom_line(color = "black") + scale_x_continuous(breaks = seq(1, 72, by = 6), minor_breaks = 1:72, 
-  labels = unique_hours[seq(1, length(unique_hours), by = 6)]) + 
+failed_transactions <- data.frame(
+  hours = unique_hours, 
+  failedTransactions = proportion, 
+  x_index = seq(1, 72, by = 1)
+)
+
+ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + 
+  geom_area(fill = "blue", alpha = 0.25) + 
+  geom_line(color = "black") + 
+  scale_x_continuous(
+    breaks = seq(1, 72, by = 6), 
+    minor_breaks = 1:72, 
+    labels = unique_hours[seq(1, length(unique_hours), by = 6)]
+  ) + 
   coord_cartesian(ylim = range(failed_transactions$failedTransactions, na.rm = TRUE)) +  
-  labs(title = "Failed Transactions Percentage by Hour", x = "Hour (72)", y = "Failed Transactions Per Hour") +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 8), axis.title.x = element_text(size = 10),
-  axis.title.y = element_text(size = 10), plot.background = element_rect(fill = "white", color = NA),
-  panel.background = element_rect(fill = "white", color = NA), panel.grid.major.x = element_blank(),  
-  panel.grid.minor.x = element_blank(), panel.grid.major.y = element_blank(), legend.position = "none")
+  labs(
+    title = "Failed Transactions Percentage by Hour", 
+    x = "Hour (72)", 
+    y = "Failed Transactions Per Hour"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 60, hjust = 1, size = 8), 
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10), 
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "white", color = NA), 
+    panel.grid.major.x = element_blank(),  
+    panel.grid.minor.x = element_blank(), 
+    panel.grid.major.y = element_blank(), 
+    legend.position = "none"
+  )
+
 
 ```
 
@@ -278,7 +371,7 @@ for (subset_name in names(subset_list)) {
   }
 }
 
-par(mfrow = c(1, 1)) # Reset layout
+par(mfrow = c(1, 1)) 
 print(combinations)
 
 ```
@@ -286,15 +379,19 @@ print(combinations)
 The plot of UPI for payment method and UPI_COLLECT for subtype reveals that this is the combination of variables within the PAYTM payment gateways that is casing customer complaints.
 
 ```{r}
-paytm_subset <- data[(data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI")) & 
-                     (data[, 6] %in% c("UPI_COLLECT")) & 
-                     (data[, 4] == "UPI"), ]
+paytm_subset <- data[
+  (data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI")) & 
+  (data[, 6] %in% c("UPI_COLLECT")) & 
+  (data[, 4] == "UPI"), 
+]
+
 unique_hours <- unique(data$hr)
 unique_hours <- sort(unique_hours)
 
 t <- aggregate(paytm_subset$t, by = list(paytm_subset$hr), sum)
 s <- aggregate(paytm_subset$s, by = list(paytm_subset$hr), sum)
 f <- t[, 2] - s[, 2]
+
 proportion <- f / t[, 2] * 100
 
 failed_transactions <- data.frame(
@@ -328,6 +425,7 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
     panel.grid.major.y = element_blank(), 
     legend.position = "none"
   )
+
 ```
 
 The failure rate spike occurred from 5pm on the 13th to 6am on the 14th which is the day that merchants reported customer complaints.
@@ -447,40 +545,73 @@ knitr::include_graphics(
 All of the merchants were effected except UrbanClap.
 
 ```{r}
-paytm_subset <- data[(data[,5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI", "notprovided")) & (data[,6] %in% c("UPI_COLLECT")) & (data[,4] == "UPI"),]
-unique_hours <- unique(data$hr); unique_hours <- sort(unique_hours)
+paytm_subset <- data[
+  (data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI", "notprovided")) & 
+  (data[, 6] %in% c("UPI_COLLECT")) & 
+  (data[, 4] == "UPI"), 
+]
 
-t <- aggregate(paytm_subset$t,by=list(paytm_subset$hr),sum)
-s <- aggregate(paytm_subset$s,by=list(paytm_subset$hr),sum)
-f <- t[,2] - s[,2]
+unique_hours <- unique(data$hr)
+unique_hours <- sort(unique_hours)
 
-proportion_subset <- f/t[,2] * 100
+t <- aggregate(paytm_subset$t, by = list(paytm_subset$hr), sum)
+s <- aggregate(paytm_subset$s, by = list(paytm_subset$hr), sum)
+f <- t[, 2] - s[, 2]
+
+proportion_subset <- f / t[, 2] * 100
+
 ```
 
 ```{r}
 paytm_compliment <- data[!(rownames(data) %in% rownames(paytm_subset)), ]
 
-t <- aggregate(paytm_compliment$t,by=list(paytm_compliment$hr),sum)
-s <- aggregate(paytm_compliment$s,by=list(paytm_compliment$hr),sum)
-f <- t[,2] - s[,2]
+t <- aggregate(paytm_compliment$t, by = list(paytm_compliment$hr), sum)
+s <- aggregate(paytm_compliment$s, by = list(paytm_compliment$hr), sum)
+f <- t[, 2] - s[, 2]
 
-proportion_c <- f/t[,2] * 100
+proportion_c <- f / t[, 2] * 100
+
 ```
 
 ```{r}
-hours <- seq(1,72,1); wide <- as.data.frame(cbind(hours,proportion_c,proportion_subset))
+hours <- seq(1, 72, 1)
+wide <- as.data.frame(cbind(hours, proportion_c, proportion_subset))
 
-long <- melt(data = wide, id.vars = c("hours"), measured.vars = c("proportion_c", "proportion_subset"), variable.name = "percentage_failure")
+long <- melt(
+  data = wide, 
+  id.vars = c("hours"), 
+  measured.vars = c("proportion_c", "proportion_subset"), 
+  variable.name = "percentage_failure"
+)
 
-ggplot(data=long,aes(x=hours,y=value,group=percentage_failure,color=percentage_failure)) + geom_smooth() + labs(title="Smoothed Failure Percentage Curve",ylab="Percentage")  + 
-  scale_color_discrete(labels = c("Non-Anamous Data", "Anamous Data")) 
-ggplot(data=long,aes(x=hours,y=value,group=percentage_failure,color=percentage_failure)) + geom_line() + labs(title="Failure Percentage Line",ylab="Percentage") + 
-  scale_color_discrete(labels = c("Non-Anamous Data", "Anamous Data")) 
+ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color = percentage_failure)) + 
+  geom_smooth() + 
+  labs(
+    title = "Smoothed Failure Percentage Curve", 
+    ylab = "Percentage"
+  ) + 
+  scale_color_discrete(labels = c("Non-Anomalous Data", "Anomalous Data"))
+
+ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color = percentage_failure)) + 
+  geom_line() + 
+  labs(
+    title = "Failure Percentage Line", 
+    ylab = "Percentage"
+  ) + 
+  scale_color_discrete(labels = c("Non-Anomalous Data", "Anomalous Data"))
+
 ```
 
 ```{r}
-ggplot(data=wide,aes(proportion_subset)) + geom_density(fill="blue",alpha=0.20) + theme_minimal() + 
-  labs(title = "Anomalous Data Failure Rate Density",xlab="Failure Rate",ylab="Density")
+ggplot(data = wide, aes(proportion_subset)) + 
+  geom_density(fill = "blue", alpha = 0.20) + 
+  theme_minimal() + 
+  labs(
+    title = "Anomalous Data Failure Rate Density", 
+    x = "Failure Rate", 
+    y = "Density"
+  )
+
 ```
 
 There are tons of plots that can be produced here but only one has a meaningful implication.
