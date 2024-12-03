@@ -261,19 +261,18 @@ are representative of the models accuracy being evaluated of future
 data. The following analysis are those accuracy results.
 
 ``` r
-print(head(test,5))
+your_tibble <- head(test,5)
+library(knitr)
+kable(your_tibble, format = "markdown")  # Use "html" or "latex" for other outputs
 ```
 
-    ## # A tibble: 5 × 7
-    ## # Groups:   id [1]
-    ##   feature_1_standard feature_2_standard feature_3_standard feature_4_standard
-    ##                <dbl>              <dbl>              <dbl>              <dbl>
-    ## 1             0.161              -0.991             0.0121              0.993
-    ## 2             0.121              -0.327            -0.938              -0.328
-    ## 3            -0.0959             -0.899            -2.18               -0.658
-    ## 4             0.584               0.940             1.33               -0.279
-    ## 5             0.0399             -1.45             -0.415               1.27 
-    ## # ℹ 3 more variables: id <int>, date <chr>, y <chr>
+| feature_1_standard | feature_2_standard | feature_3_standard | feature_4_standard | id | date | y |
+|---:|---:|---:|---:|---:|:---|:---|
+| 0.1607270 | -0.9909613 | 0.0120861 | 0.9929802 | 50821 | 2000-12-31 | active |
+| 0.1210765 | -0.3266923 | -0.9379220 | -0.3276696 | 50821 | 2001-12-31 | active |
+| -0.0959482 | -0.8987632 | -2.1767580 | -0.6579547 | 50821 | 2002-12-31 | active |
+| 0.5836873 | 0.9402138 | 1.3293546 | -0.2791657 | 50821 | 2003-12-31 | active |
+| 0.0399145 | -1.4503831 | -0.4152227 | 1.2680076 | 50821 | 2004-12-31 | active |
 
 To asses the accuracy of the model and find the optimal decision
 threshold we produce the ROC curve.
