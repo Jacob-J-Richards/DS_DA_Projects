@@ -182,11 +182,7 @@ Since the outcome of whether or not there will be late payments is known in our 
 The testing data is completely distinct from the data used to produce the model, so the accuracy results of the model being evaluated on it are representative of the models accuracy being evaluated of future data. The following analysis are those accuracy results.
 
 ```{r}
-library(gridExtra)
-library(grid)
-table_grob <- tableGrob(head(test, 5))
-grid.newpage()
-grid.draw(table_grob)
+print(head(test,5))
 ```
 
 To asses the accuracy of the model and find the optimal decision threshold we produce the ROC curve.

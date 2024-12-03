@@ -261,18 +261,19 @@ are representative of the models accuracy being evaluated of future
 data. The following analysis are those accuracy results.
 
 ``` r
-library(gridExtra)
-library(grid)
-table_grob <- tableGrob(head(test, 5))
-grid.newpage()
-grid.draw(table_grob)
+print(head(test,5))
 ```
 
-<div align="center">
-
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-8-1.png" width="70%">
-
-</div>
+    ## # A tibble: 5 × 7
+    ## # Groups:   id [1]
+    ##   feature_1_standard feature_2_standard feature_3_standard feature_4_standard
+    ##                <dbl>              <dbl>              <dbl>              <dbl>
+    ## 1             0.161              -0.991             0.0121              0.993
+    ## 2             0.121              -0.327            -0.938              -0.328
+    ## 3            -0.0959             -0.899            -2.18               -0.658
+    ## 4             0.584               0.940             1.33               -0.279
+    ## 5             0.0399             -1.45             -0.415               1.27 
+    ## # ℹ 3 more variables: id <int>, date <chr>, y <chr>
 
 To asses the accuracy of the model and find the optimal decision
 threshold we produce the ROC curve.
