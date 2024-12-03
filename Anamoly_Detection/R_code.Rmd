@@ -153,6 +153,7 @@ weighted_failure_rate <- numeric(nrow(data))
 
 data$failures <- data[,1] - data[,2]
 data$weighted_failure_rate <- data[,1] - data[,2] / data[,1] * log(data[,1] + 1)
+data$failure_rate <- data[,1] - data[,2] / data[,1] 
 
 your_tibble <- head(data,3)
 kable(your_tibble, format = "html") %>%
@@ -164,7 +165,7 @@ knitr::include_graphics("~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files
 Now that we have all of our variables prepared, we can form a higher dimensional distribution from them to find which observations are the greatest outliers.
 
 ```{r}
-features <- data[, c("t", "s","failures","weighted_failure_rate")]
+features <- data[, c("t", "failure_rate")]
 
 center <- colMeans(features)
 cov_matrix <- cov(features)
