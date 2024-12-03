@@ -112,23 +112,12 @@ colnames(test)[2] <- "feature_2_impute"
 
 train <- na.omit(train)
 test <- na.omit(test)
+
+your_tibble <- head(train,5)
+library(knitr)
+kable(your_tibble, format = "html")  
 ```
 
-+--------------+------------------+------------------+------------+---------+---------+---------+---------+
-| feature_1    | feature_2_impute | feature_3_impute | feature_4  | id      | date    | y       | key     |
-|              |                  |                  |            |         |         |         |         |
-| \<dbl\>      | \<dbl\>          | \<dbl\>          | \<dbl\>    | \<int\> | \<chr\> | \<chr\> | \<chr\> |
-+:============:+:================:+:================:+:==========:+:=======:+:=======:+:=======:+:=======:+
-| 39.16508528  | 60.25377         | 137.9861         | -35.462685 | 50501   | 2000    | active  | 1       |
-+--------------+------------------+------------------+------------+---------+---------+---------+---------+
-| -12.61428906 | 57.95924         | 126.2123         | 44.420647  | 50501   | 2001    | 90+DPD  | 2       |
-+--------------+------------------+------------------+------------+---------+---------+---------+---------+
-| 0.04381321   | -39.29391        | 138.6872         | 64.944112  | 50501   | 2002    | active  | 3       |
-+--------------+------------------+------------------+------------+---------+---------+---------+---------+
-| 2.29698365   | 49.99669         | 123.7825         | -3.587873  | 50501   | 2003    | active  | 4       |
-+--------------+------------------+------------------+------------+---------+---------+---------+---------+
-| 7.18889687   | -83.53323        | 150.1020         | 95.359641  | 50501   | 2004    | active  | 5       |
-+--------------+------------------+------------------+------------+---------+---------+---------+---------+
 
 Our features (variables) all represent different financial measurements quantified by different units. In order for these variables to be measured uniformly, we can reassign each value with it's corresponding z-score within it's respective variable distribution.
 
@@ -184,7 +173,7 @@ The testing data is completely distinct from the data used to produce the model,
 ```{r}
 your_tibble <- head(test,5)
 library(knitr)
-kable(your_tibble, format = "latex")  # Use "html" or "latex" for other outputs
+kable(your_tibble, format = "html")  
 ```
 
 To asses the accuracy of the model and find the optimal decision threshold we produce the ROC curve.
@@ -252,11 +241,11 @@ The balanced **decision threshold** is visually apparent by the intersection of 
 
 ```{r}
 optimal_threshold <- roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))]
+your_tibble <- roc_metrics[roc_metrics[,1] ==optimal_threshold,]
+library(knitr)
+kable(your_tibble, format = "html") 
 ```
 
-| **threshold** | **sensitivity** | **specificity** |
-|:-------------:|:---------------:|:---------------:|
-|    0.2244     |      0.771      |     0.7716      |
 
 Confusion matrix displaying the results of balanced decision threshold evaluated on the testing data.
 
@@ -271,12 +260,9 @@ conf_matrix <- confusionMatrix(
 confusion_table <- as.data.frame.matrix(conf_matrix$table)
 rownames(confusion_table) <- c("Actual: Non-delinquent", "Actual: Delinquent")
 colnames(confusion_table) <- c("Predicted: Non-delinquent", "Predicted: Delinquent")
+
+library(knitr)
+kable(confusion_table, format = "html") 
 ```
 
-+------------------------+-------------------------------+---------------------------+
-|                        | **Predicted: Non-delinquent** | **Predicted: Delinquent** |
-+:======================:+:=============================:+:=========================:+
-| Actual: Non-delinquent | 652                           | 49                        |
-+------------------------+-------------------------------+---------------------------+
-| Actual: Delinquent     | 193                           | 165                       |
-+------------------------+-------------------------------+---------------------------+
+

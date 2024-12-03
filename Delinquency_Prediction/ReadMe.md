@@ -100,91 +100,286 @@ colnames(test)[2] <- "feature_2_impute"
 
 train <- na.omit(train)
 test <- na.omit(test)
+
+your_tibble <- head(train,5)
+library(knitr)
+kable(your_tibble, format = "html")  
 ```
 
-<table style="width:95%;">
-<colgroup>
-<col style="width: 13%" />
-<col style="width: 16%" />
-<col style="width: 16%" />
-<col style="width: 11%" />
-<col style="width: 8%" />
-<col style="width: 8%" />
-<col style="width: 8%" />
-<col style="width: 8%" />
-</colgroup>
+<table>
+
 <thead>
+
 <tr>
-<th style="text-align: center;"><p>feature_1</p>
-<p>&lt;dbl&gt;</p></th>
-<th style="text-align: center;"><p>feature_2_impute</p>
-<p>&lt;dbl&gt;</p></th>
-<th style="text-align: center;"><p>feature_3_impute</p>
-<p>&lt;dbl&gt;</p></th>
-<th style="text-align: center;"><p>feature_4</p>
-<p>&lt;dbl&gt;</p></th>
-<th style="text-align: center;"><p>id</p>
-<p>&lt;int&gt;</p></th>
-<th style="text-align: center;"><p>date</p>
-<p>&lt;chr&gt;</p></th>
-<th style="text-align: center;"><p>y</p>
-<p>&lt;chr&gt;</p></th>
-<th style="text-align: center;"><p>key</p>
-<p>&lt;chr&gt;</p></th>
+
+<th style="text-align:right;">
+
+feature_1
+</th>
+
+<th style="text-align:right;">
+
+feature_2_impute
+</th>
+
+<th style="text-align:right;">
+
+feature_3_impute
+</th>
+
+<th style="text-align:right;">
+
+feature_4
+</th>
+
+<th style="text-align:right;">
+
+id
+</th>
+
+<th style="text-align:left;">
+
+date
+</th>
+
+<th style="text-align:left;">
+
+y
+</th>
+
+<th style="text-align:left;">
+
+key
+</th>
+
 </tr>
+
 </thead>
+
 <tbody>
+
 <tr>
-<td style="text-align: center;">39.16508528</td>
-<td style="text-align: center;">60.25377</td>
-<td style="text-align: center;">137.9861</td>
-<td style="text-align: center;">-35.462685</td>
-<td style="text-align: center;">50501</td>
-<td style="text-align: center;">2000</td>
-<td style="text-align: center;">active</td>
-<td style="text-align: center;">1</td>
+
+<td style="text-align:right;">
+
+39.1650853
+</td>
+
+<td style="text-align:right;">
+
+60.25377
+</td>
+
+<td style="text-align:right;">
+
+137.9861
+</td>
+
+<td style="text-align:right;">
+
+-35.462685
+</td>
+
+<td style="text-align:right;">
+
+50501
+</td>
+
+<td style="text-align:left;">
+
+2000
+</td>
+
+<td style="text-align:left;">
+
+active
+</td>
+
+<td style="text-align:left;">
+
+1
+</td>
+
 </tr>
+
 <tr>
-<td style="text-align: center;">-12.61428906</td>
-<td style="text-align: center;">57.95924</td>
-<td style="text-align: center;">126.2123</td>
-<td style="text-align: center;">44.420647</td>
-<td style="text-align: center;">50501</td>
-<td style="text-align: center;">2001</td>
-<td style="text-align: center;">90+DPD</td>
-<td style="text-align: center;">2</td>
+
+<td style="text-align:right;">
+
+-12.6142891
+</td>
+
+<td style="text-align:right;">
+
+57.95924
+</td>
+
+<td style="text-align:right;">
+
+126.2123
+</td>
+
+<td style="text-align:right;">
+
+44.420647
+</td>
+
+<td style="text-align:right;">
+
+50501
+</td>
+
+<td style="text-align:left;">
+
+2001
+</td>
+
+<td style="text-align:left;">
+
+90+DPD
+</td>
+
+<td style="text-align:left;">
+
+2
+</td>
+
 </tr>
+
 <tr>
-<td style="text-align: center;">0.04381321</td>
-<td style="text-align: center;">-39.29391</td>
-<td style="text-align: center;">138.6872</td>
-<td style="text-align: center;">64.944112</td>
-<td style="text-align: center;">50501</td>
-<td style="text-align: center;">2002</td>
-<td style="text-align: center;">active</td>
-<td style="text-align: center;">3</td>
+
+<td style="text-align:right;">
+
+0.0438132
+</td>
+
+<td style="text-align:right;">
+
+-39.29391
+</td>
+
+<td style="text-align:right;">
+
+138.6872
+</td>
+
+<td style="text-align:right;">
+
+64.944112
+</td>
+
+<td style="text-align:right;">
+
+50501
+</td>
+
+<td style="text-align:left;">
+
+2002
+</td>
+
+<td style="text-align:left;">
+
+active
+</td>
+
+<td style="text-align:left;">
+
+3
+</td>
+
 </tr>
+
 <tr>
-<td style="text-align: center;">2.29698365</td>
-<td style="text-align: center;">49.99669</td>
-<td style="text-align: center;">123.7825</td>
-<td style="text-align: center;">-3.587873</td>
-<td style="text-align: center;">50501</td>
-<td style="text-align: center;">2003</td>
-<td style="text-align: center;">active</td>
-<td style="text-align: center;">4</td>
+
+<td style="text-align:right;">
+
+2.2969836
+</td>
+
+<td style="text-align:right;">
+
+49.99669
+</td>
+
+<td style="text-align:right;">
+
+123.7825
+</td>
+
+<td style="text-align:right;">
+
+-3.587873
+</td>
+
+<td style="text-align:right;">
+
+50501
+</td>
+
+<td style="text-align:left;">
+
+2003
+</td>
+
+<td style="text-align:left;">
+
+active
+</td>
+
+<td style="text-align:left;">
+
+4
+</td>
+
 </tr>
+
 <tr>
-<td style="text-align: center;">7.18889687</td>
-<td style="text-align: center;">-83.53323</td>
-<td style="text-align: center;">150.1020</td>
-<td style="text-align: center;">95.359641</td>
-<td style="text-align: center;">50501</td>
-<td style="text-align: center;">2004</td>
-<td style="text-align: center;">active</td>
-<td style="text-align: center;">5</td>
+
+<td style="text-align:right;">
+
+7.1888969
+</td>
+
+<td style="text-align:right;">
+
+-83.53323
+</td>
+
+<td style="text-align:right;">
+
+150.1020
+</td>
+
+<td style="text-align:right;">
+
+95.359641
+</td>
+
+<td style="text-align:right;">
+
+50501
+</td>
+
+<td style="text-align:left;">
+
+2004
+</td>
+
+<td style="text-align:left;">
+
+active
+</td>
+
+<td style="text-align:left;">
+
+5
+</td>
+
 </tr>
+
 </tbody>
+
 </table>
 
 Our features (variables) all represent different financial measurements
@@ -263,8 +458,254 @@ data. The following analysis are those accuracy results.
 ``` r
 your_tibble <- head(test,5)
 library(knitr)
-kable(your_tibble, format = "latex")  # Use "html" or "latex" for other outputs
+kable(your_tibble, format = "html")  
 ```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:right;">
+
+feature_1_standard
+</th>
+
+<th style="text-align:right;">
+
+feature_2_standard
+</th>
+
+<th style="text-align:right;">
+
+feature_3_standard
+</th>
+
+<th style="text-align:right;">
+
+feature_4_standard
+</th>
+
+<th style="text-align:right;">
+
+id
+</th>
+
+<th style="text-align:left;">
+
+date
+</th>
+
+<th style="text-align:left;">
+
+y
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:right;">
+
+0.1607270
+</td>
+
+<td style="text-align:right;">
+
+-0.9909613
+</td>
+
+<td style="text-align:right;">
+
+0.0120861
+</td>
+
+<td style="text-align:right;">
+
+0.9929802
+</td>
+
+<td style="text-align:right;">
+
+50821
+</td>
+
+<td style="text-align:left;">
+
+2000-12-31
+</td>
+
+<td style="text-align:left;">
+
+active
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+0.1210765
+</td>
+
+<td style="text-align:right;">
+
+-0.3266923
+</td>
+
+<td style="text-align:right;">
+
+-0.9379220
+</td>
+
+<td style="text-align:right;">
+
+-0.3276696
+</td>
+
+<td style="text-align:right;">
+
+50821
+</td>
+
+<td style="text-align:left;">
+
+2001-12-31
+</td>
+
+<td style="text-align:left;">
+
+active
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+-0.0959482
+</td>
+
+<td style="text-align:right;">
+
+-0.8987632
+</td>
+
+<td style="text-align:right;">
+
+-2.1767580
+</td>
+
+<td style="text-align:right;">
+
+-0.6579547
+</td>
+
+<td style="text-align:right;">
+
+50821
+</td>
+
+<td style="text-align:left;">
+
+2002-12-31
+</td>
+
+<td style="text-align:left;">
+
+active
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+0.5836873
+</td>
+
+<td style="text-align:right;">
+
+0.9402138
+</td>
+
+<td style="text-align:right;">
+
+1.3293546
+</td>
+
+<td style="text-align:right;">
+
+-0.2791657
+</td>
+
+<td style="text-align:right;">
+
+50821
+</td>
+
+<td style="text-align:left;">
+
+2003-12-31
+</td>
+
+<td style="text-align:left;">
+
+active
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+0.0399145
+</td>
+
+<td style="text-align:right;">
+
+-1.4503831
+</td>
+
+<td style="text-align:right;">
+
+-0.4152227
+</td>
+
+<td style="text-align:right;">
+
+1.2680076
+</td>
+
+<td style="text-align:right;">
+
+50821
+</td>
+
+<td style="text-align:left;">
+
+2004-12-31
+</td>
+
+<td style="text-align:left;">
+
+active
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 To asses the accuracy of the model and find the optimal decision
 threshold we produce the ROC curve.
@@ -364,11 +805,69 @@ simple calculation.
 
 ``` r
 optimal_threshold <- roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))]
+your_tibble <- roc_metrics[roc_metrics[,1] ==optimal_threshold,]
+library(knitr)
+kable(your_tibble, format = "html") 
 ```
 
-| **threshold** | **sensitivity** | **specificity** |
-|:-------------:|:---------------:|:---------------:|
-|    0.2244     |      0.771      |     0.7716      |
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+</th>
+
+<th style="text-align:right;">
+
+threshold
+</th>
+
+<th style="text-align:right;">
+
+sensitivity
+</th>
+
+<th style="text-align:right;">
+
+specificity
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+702
+</td>
+
+<td style="text-align:right;">
+
+0.2244
+</td>
+
+<td style="text-align:right;">
+
+0.771
+</td>
+
+<td style="text-align:right;">
+
+0.7716
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 Confusion matrix displaying the results of balanced decision threshold
 evaluated on the testing data.
@@ -384,9 +883,75 @@ conf_matrix <- confusionMatrix(
 confusion_table <- as.data.frame.matrix(conf_matrix$table)
 rownames(confusion_table) <- c("Actual: Non-delinquent", "Actual: Delinquent")
 colnames(confusion_table) <- c("Predicted: Non-delinquent", "Predicted: Delinquent")
+
+library(knitr)
+kable(confusion_table, format = "html") 
 ```
 
-|  | **Predicted: Non-delinquent** | **Predicted: Delinquent** |
-|:--:|:--:|:--:|
-| Actual: Non-delinquent | 652 | 49 |
-| Actual: Delinquent | 193 | 165 |
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+</th>
+
+<th style="text-align:right;">
+
+Predicted: Non-delinquent
+</th>
+
+<th style="text-align:right;">
+
+Predicted: Delinquent
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Actual: Non-delinquent
+</td>
+
+<td style="text-align:right;">
+
+652
+</td>
+
+<td style="text-align:right;">
+
+49
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Actual: Delinquent
+</td>
+
+<td style="text-align:right;">
+
+193
+</td>
+
+<td style="text-align:right;">
+
+165
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
