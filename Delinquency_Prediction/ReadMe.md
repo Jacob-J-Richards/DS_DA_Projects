@@ -261,116 +261,18 @@ are representative of the models accuracy being evaluated of future
 data. The following analysis are those accuracy results.
 
 ``` r
-# Install the flextable package if not already installed
-
-# Load the necessary libraries
-library(flextable)
-library(tibble)
-
-# Assuming `test` is your tibble or data frame
-head_test <- head(test, 5)
-
-# Create a flextable object
-flex_table <- flextable(head_test) %>%
-  autofit() %>%                     # Adjust column widths automatically
-  set_table_properties(width = 1)   # Scale the table to fit in a smaller space
-
-# Save the table as an image
-save_as_image(
-  flex_table,
-  path = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/flextable_image.png"
-)
-```
-
-    ## [1] "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/flextable_image.png"
-
-``` r
-knitr::include_graphics("~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/gt_table_image.png")
+library(gridExtra)
+library(grid)
+table_grob <- tableGrob(head(test, 5))
+grid.newpage()
+grid.draw(table_grob)
 ```
 
 <div align="center">
 
-<img src="../Anamoly_Detection/ReadMe_files/figure-gfm/gt_table_image.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-8-1.png" width="70%">
 
 </div>
-
-<table style="width:96%;">
-<colgroup>
-<col style="width: 19%" />
-<col style="width: 16%" />
-<col style="width: 16%" />
-<col style="width: 16%" />
-<col style="width: 7%" />
-<col style="width: 10%" />
-<col style="width: 7%" />
-</colgroup>
-<thead>
-<tr>
-<th
-style="text-align: center;"><p><strong>feature_1_standard</strong></p>
-<p>&lt;dbl&gt;</p></th>
-<th style="text-align: center;"><p>feature_2_standard</p>
-<p>&lt;dbl&gt;</p></th>
-<th style="text-align: center;"><p>feature_3_standard</p>
-<p>&lt;dbl&gt;</p></th>
-<th style="text-align: center;"><p>feature_4_standard</p>
-<p>&lt;dbl&gt;</p></th>
-<th style="text-align: center;"><p>id</p>
-<p>&lt;int&gt;</p></th>
-<th style="text-align: center;"><p>date</p>
-<p>&lt;chr&gt;</p></th>
-<th style="text-align: center;"><p>y</p>
-<p>&lt;chr&gt;</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;">0.16072699</td>
-<td style="text-align: center;">-0.9909613</td>
-<td style="text-align: center;">0.01208607</td>
-<td style="text-align: center;">0.9929802</td>
-<td style="text-align: center;">50821</td>
-<td style="text-align: center;">2000-12-31</td>
-<td style="text-align: center;">active</td>
-</tr>
-<tr>
-<td style="text-align: center;">0.12107646</td>
-<td style="text-align: center;">-0.3266923</td>
-<td style="text-align: center;">-0.93792201</td>
-<td style="text-align: center;">-0.3276696</td>
-<td style="text-align: center;">50821</td>
-<td style="text-align: center;">2001-12-31</td>
-<td style="text-align: center;">active</td>
-</tr>
-<tr>
-<td style="text-align: center;">-0.09594818</td>
-<td style="text-align: center;">-0.8987632</td>
-<td style="text-align: center;">-2.17675805</td>
-<td style="text-align: center;">-0.6579547</td>
-<td style="text-align: center;">50821</td>
-<td style="text-align: center;">2002-12-31</td>
-<td style="text-align: center;">active</td>
-</tr>
-<tr>
-<td style="text-align: center;">0.58368733</td>
-<td style="text-align: center;">0.9402138</td>
-<td style="text-align: center;">1.32935457</td>
-<td style="text-align: center;">-0.2791657</td>
-<td style="text-align: center;">50821</td>
-<td style="text-align: center;">2003-12-31</td>
-<td style="text-align: center;">active</td>
-</tr>
-<tr>
-<td style="text-align: center;">0.03991450</td>
-<td style="text-align: center;">-1.4503831</td>
-<td style="text-align: center;">-0.41522270</td>
-<td style="text-align: center;">1.2680076</td>
-<td style="text-align: center;">50821</td>
-<td style="text-align: center;">2004-12-31</td>
-<td style="text-align: center;">active</td>
-</tr>
-</tbody>
-</table>
 
 To asses the accuracy of the model and find the optimal decision
 threshold we produce the ROC curve.

@@ -182,32 +182,12 @@ Since the outcome of whether or not there will be late payments is known in our 
 The testing data is completely distinct from the data used to produce the model, so the accuracy results of the model being evaluated on it are representative of the models accuracy being evaluated of future data. The following analysis are those accuracy results.
 
 ```{r}
-library(reprex)
-reprex({
-  library(tibble)
-  print(as_tibble(head(test[c(1,2,3,4,6),], 5)))
-}, 
-outfile = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/tibble_output_image.png", advertise = FALSE)
-
-
-knitr::include_graphics("~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/gt_table_image.png")
+library(gridExtra)
+library(grid)
+table_grob <- tableGrob(head(test, 5))
+grid.newpage()
+grid.draw(table_grob)
 ```
-
-+------------------------+--------------------+--------------------+--------------------+---------+------------+---------+
-| **feature_1_standard** | feature_2_standard | feature_3_standard | feature_4_standard | id      | date       | y       |
-|                        |                    |                    |                    |         |            |         |
-| \<dbl\>                | \<dbl\>            | \<dbl\>            | \<dbl\>            | \<int\> | \<chr\>    | \<chr\> |
-+:======================:+:==================:+:==================:+:==================:+:=======:+:==========:+:=======:+
-| 0.16072699             | -0.9909613         | 0.01208607         | 0.9929802          | 50821   | 2000-12-31 | active  |
-+------------------------+--------------------+--------------------+--------------------+---------+------------+---------+
-| 0.12107646             | -0.3266923         | -0.93792201        | -0.3276696         | 50821   | 2001-12-31 | active  |
-+------------------------+--------------------+--------------------+--------------------+---------+------------+---------+
-| -0.09594818            | -0.8987632         | -2.17675805        | -0.6579547         | 50821   | 2002-12-31 | active  |
-+------------------------+--------------------+--------------------+--------------------+---------+------------+---------+
-| 0.58368733             | 0.9402138          | 1.32935457         | -0.2791657         | 50821   | 2003-12-31 | active  |
-+------------------------+--------------------+--------------------+--------------------+---------+------------+---------+
-| 0.03991450             | -1.4503831         | -0.41522270        | 1.2680076          | 50821   | 2004-12-31 | active  |
-+------------------------+--------------------+--------------------+--------------------+---------+------------+---------+
 
 To asses the accuracy of the model and find the optimal decision threshold we produce the ROC curve.
 
