@@ -216,17 +216,26 @@ library(plotly)
 library(MASS)
 
 kde <- kde2d(data$failures, data$failure_rate, n = 50)
-plot_ly(
-  x = kde$x,
-  y = kde$y,
-  z = kde$z,
-  type = "surface"
-)
 
+  plot_ly(
+    x = kde$x,
+    y = kde$y,
+    z = kde$z,
+    type = "surface"
+  )
+```
+
+``` r
 knitr::include_graphics(
   "/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/3Ddistribution.png"
 )
 ```
+
+<div align="center">
+
+<img src="ReadMe_files/figure-gfm/3Ddistribution.png" width="70%">
+
+</div>
 
 Evaluating the Mahalanobis method to find those outliers
 
@@ -337,7 +346,7 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-10-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-11-1.png" width="70%">
 
 </div>
 
@@ -411,7 +420,7 @@ par(mfrow = c(1, 1))
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-11-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-12-1.png" width="70%">
 
 </div>
 
@@ -483,7 +492,7 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-12-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-13-1.png" width="70%">
 
 </div>
 
@@ -1668,7 +1677,7 @@ ggplot(data = long_set_failures_by_merchant,
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-13-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-14-1.png" width="70%">
 
 </div>
 
@@ -1776,7 +1785,7 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-17-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-18-1.png" width="70%">
 
 </div>
 
@@ -1792,7 +1801,7 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-17-2.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-18-2.png" width="70%">
 
 </div>
 
@@ -1809,7 +1818,7 @@ ggplot(data = wide, aes(proportion_subset)) +
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-18-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-19-1.png" width="70%">
 
 </div>
 

@@ -204,17 +204,21 @@ library(plotly)
 library(MASS)
 
 kde <- kde2d(data$failures, data$failure_rate, n = 50)
-plot_ly(
-  x = kde$x,
-  y = kde$y,
-  z = kde$z,
-  type = "surface"
-)
 
+  plot_ly(
+    x = kde$x,
+    y = kde$y,
+    z = kde$z,
+    type = "surface"
+  )
+
+```
+```{r}
 knitr::include_graphics(
   "/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/3Ddistribution.png"
 )
 ```
+
 
 Evaluating the Mahalanobis method to find those outliers
 
