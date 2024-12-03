@@ -23,7 +23,7 @@ ggplot() + geom_density(data=train, aes(x=feature_3), color="blue") +
            geom_density(data=train, aes(x=feature_2), color="red") +
            geom_density(data=train, aes(x=feature_1), color="green") +
            geom_density(data=train, aes(x=feature_4), color="purple") +
-           theme_minimal()
+           theme_minimal() + xlab("variables")
 ```
 
 <div align="center">
@@ -32,8 +32,9 @@ ggplot() + geom_density(data=train, aes(x=feature_3), color="blue") +
 
 </div>
 
-This many outliers will weaken our model, so we remove the top and
-bottom percentiles from feature 3. This is known as **Winsorization**.
+This many outliers will add noise that disrupts our models ability to
+capture the trend of the data, so we remove the top and bottom
+percentiles from feature 3. This is known as **Winsorization**.
 
 ``` r
 library(dplyr)
@@ -53,8 +54,8 @@ train <- train %>% mutate(feature_3 = ifelse(key %in% non_matching_keys, NA, fea
 colnames(train)[3] <- "feature_3_winsor"
 ```
 
-We need to fill in the values we just removed, so we replace them with
-the median of the non-outliers.
+We need to fill in the blanks from the values we just removed, so we
+will replace them with the median of the non-outliers of feature 3.
 
 ``` r
 train[is.na(train[,3]),3] <- median(feature_3_winsor_clean$feature_3)
@@ -65,9 +66,9 @@ test[is.na(test[,3]),3] <- median(feature_3_winsor_clean$feature_3)
 colnames(test)[3] <- "feature_3_impute"
 ```
 
-Feature 2 has missing values, so we will Impute them with the feature 2
-value from the next year or the previous (if next year is also missing)
-corresponding to the same ID.
+Feature 2 has missing values, so for each missing value for we will fill
+in the blank with the next years value or the previous years (if the
+next year is also missing) corresponding to the same ID.
 
 ``` r
 train$date <- format(as.Date(train$date, format = "%Y-%m-%d"), "%Y")
@@ -187,9 +188,9 @@ test <- na.omit(test)
 </table>
 
 Our features (variables) all represent different financial measurements
-quantified by vastly different units. In order for these variables to
-have uniformity, we can reassign each value of each variable with it’s
-corresponding z-score within it’s respective distribution.
+quantified by different units. In order for these variables to be
+measured uniformly, we can reassign each value with it’s corresponding
+z-score within it’s respective variable distribution.
 
 ``` r
 library(dplyr)
@@ -211,7 +212,7 @@ ggplot() +
   geom_density(data = train, aes(x = feature_1_standard), color = "green") +
   geom_density(data = train, aes(x = feature_4_standard), color = "purple") +
   theme_minimal() +
-  labs(x = "Normalized Features")
+  labs(x = "Standardized Features")
 ```
 
 <div align="center">
@@ -228,53 +229,73 @@ Building a logistic regression model from features 1 to 4 as continuous
 independent variables and column y as the binary dependent variable
 (true/false).
 
-Given historical data of these variable values and the payment status
-they correspond to, we can produce a model which will generates a
-probability that a customer will be **90+ days past due** on payments to
-be used on current or future customers.
+Given historical data of customers financial information and whether or
+not they were **90+ days past due** on payments, we can produce a model
+which will generates a probability that a customer will be **90+ days
+past due** on payments.
 
 For explanation of logistic regression binary classifiers see the
 following invaluable resource:
 <https://seantrott.github.io/binary_classification_R/>
 
-``` r
-library(nnet)
-train$y <- as.numeric(as.character(factor(train$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
-delinquency_model <- multinom(y ~ feature_1_standard + feature_2_standard + feature_3_standard + feature_4_standard, data=train,family=binomial())
-```
-
-    ## # weights:  6 (5 variable)
-    ## initial  value 2730.999891 
-    ## iter  10 value 1604.602929
-    ## final  value 1604.602903 
-    ## converged
-
 When the model produces a probability of an individual being **90+DPD**,
-we will have to decide at what probability we conclude that that
-individual will be **90+DPD**. The value chosen has great impact on the
-accuracy of the model.
+we will have to decide at what probability we draw the conclusion that
+the individual will be **90+DPD**. The value chosen has great impact on
+the accuracy of the model.
 
 ## Fitting The Model
 
-**decision threshold:** The minimum probability value that a customer
-will be **90+ DPD** produced by the model at which it is concluded that
+**decision threshold:** The minimum predicted probability value from the
+model that a customer will be **90+ DPD** at which it is concluded that
 the customer will be **90+ DPD**.
 
 Since the outcome of whether or not there will be late payments is known
-in our testing data, we can directly compare the model’s predicted
-outcome with the actual outcome to evaluate the accuracy of our model.
-As well, we can evaluate the impact of our decision threshold on the
-models accuracy.
+in our testing data. We can asses the accuracy of the model by
+evaluating the model on the testing data and directly comparing the
+predicted outcomes to the actual outcomes, as well we can asses the
+impact of the **decision threshold** we used on the models accuracy.
 
-As we evaluate the model on our testing data which was not included in
-the data used to produce the model, the accuracy of these results will
-have implications on the accuracy of the model being evaluated on future
-data. Likewise the decision threshold accuracy found from this
-evaluation will have similar implications.
+The testing data is completely distinct from the data used to produce
+the model, so the accuracy results of the model being evaluated on it
+are representative of the models accuracy being evaluated of future
+data. The following analysis are those accuracy results.
 
 ``` r
-invisible(head(test,5))
+library(pander)
+library(webshot2)
+library(knitr)
+library(htmltools)
+
+# Select a portion of the data frame
+selected_data <- test[1:5, ]
+
+# Create a temporary HTML file
+output_file <- tempfile(fileext = ".html")
+
+# Use htmltools to write the table to an actual HTML file
+html_content <- as.character(pander::pandoc.table.return(selected_data, style = "rmarkdown"))
+htmltools::save_html(HTML(html_content), output_file)
+
+# Convert the HTML to an image
+webshot2::webshot(output_file, "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/data_table_image.png")
 ```
+
+<div align="center">
+
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-8-1.png" width="70%">
+
+</div>
+
+``` r
+# Optionally include in R Markdown
+knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/data_table_image.png")
+```
+
+<div align="center">
+
+<img src="ReadMe_files/figure-gfm/data_table_image.png" width="70%">
+
+</div>
 
 <table style="width:96%;">
 <colgroup>
@@ -354,8 +375,8 @@ style="text-align: center;"><p><strong>feature_1_standard</strong></p>
 </tbody>
 </table>
 
-To evaluate the effectiveness of the model find the optimal **decision
-threshold**, we produce an ROC curve.
+To asses the accuracy of the model and find the optimal decision
+threshold we produce the ROC curve.
 
 ``` r
     library(pROC)
@@ -367,27 +388,21 @@ threshold**, we produce an ROC curve.
 roc_curve <- roc(response = test$y_numeric, predictor = test$Probability)
 
 roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
+
 auc_value <- auc(roc_curve)
 
-roc_data <- data.frame(
-  TPR = roc_metrics$sensitivity,
-  FPR = roc_metrics$specificity,
-  Threshold = roc_metrics$threshold
-)
+roc_data <- data.frame(TPR = roc_metrics$sensitivity,FPR = roc_metrics$specificity,Threshold = roc_metrics$threshold)
 
 ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
   geom_line(size = 1) +
   geom_abline(slope = 1, intercept = 1, linetype = "dashed", color = "gray") +  
-  geom_line(data = data.frame(FPR = c(1, 1, 0), TPR = c(0, 1, 1)), 
-            aes(x = FPR, y = TPR), 
-            color = "blue", size = 1, linetype = "dotted") +
-  labs(
-    title = "ROC Curve for Multinomial Logistic Regression",
-    x = "Specificity",
-    y = "True Positive Rate (Sensitivity)",
-    caption = paste("AUC:", round(auc_value, 4)),
-    color = "Decision Threshold"
-  ) +
+  geom_line(data = data.frame(FPR = c(1, 1, 0), TPR = c(0, 1, 1)), aes(x = FPR, y = TPR), 
+  color = "blue", size = 1, linetype = "dotted") +
+  labs(title = "ROC Curve for Multinomial Logistic Regression",
+  x = "Specificity",
+  y = "True Positive Rate (Sensitivity)",
+  caption = paste("AUC:", round(auc_value, 4)),
+  color = "Decision Threshold") +
   scale_color_gradientn(colors = rev(rainbow(100))) +
   coord_fixed() +
   scale_x_reverse() +  # Reverse the x-axis
@@ -402,7 +417,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
 
 </div>
 
-### The ROC curve is a plot of the models prediction accuracy ratios Sensitivity (y-axis) by Specificity (x-axis) as a result of the decision threshold chosen (displayed by color gradient).
+### The ROC curve is a plot of the models prediction accuracy ratios Sensitivity (y-axis) by Specificity (x-axis) as a result of the decision threshold chosen which is displayed by color gradient.
 
 **Sensitivity:** *what proportion of individuals who were **90+ DPD**
 did the model correctly predict as being **90+ DPD.***

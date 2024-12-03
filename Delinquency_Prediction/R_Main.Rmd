@@ -177,12 +177,33 @@ When the model produces a probability of an individual being **90+DPD**, we will
 
 **decision threshold:** The minimum predicted probability value from the model that a customer will be **90+ DPD** at which it is concluded that the customer will be **90+ DPD**.
 
-Since the outcome of whether or not there will be late payments is known in our testing data. We can asses the accuracy of the model by evaluating the model on the testing data and directly comparing the predicted outcomes and the actual outcomes, as well we can asses the impact our set **decision threshold** had on the models accuracy.
+Since the outcome of whether or not there will be late payments is known in our testing data. We can asses the accuracy of the model by evaluating the model on the testing data and directly comparing the predicted outcomes to the actual outcomes, as well we can asses the impact of the **decision threshold** we used on the models accuracy.
 
-# *The testing data is separate from the data from which the model was produced from and thus it's performance on this data has implications for it's performance on other future data.* 
+The testing data is completely distinct from the data used to produce the model, so the accuracy results of the model being evaluated on it are representative of the models accuracy being evaluated of future data. The following analysis are those accuracy results.
 
 ```{r}
-invisible(head(test,5))
+library(pander)
+library(webshot2)
+library(knitr)
+library(htmltools)
+
+# Select a portion of the data frame
+selected_data <- test[1:5, ]
+
+# Create a temporary HTML file
+output_file <- tempfile(fileext = ".html")
+
+# Use htmltools to write the table to an actual HTML file
+html_content <- as.character(pander::pandoc.table.return(selected_data, style = "rmarkdown"))
+htmltools::save_html(HTML(html_content), output_file)
+
+# Convert the HTML to an image
+webshot2::webshot(output_file, "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/data_table_image.png")
+
+# Optionally include in R Markdown
+knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/data_table_image.png")
+
+
 ```
 
 +------------------------+--------------------+--------------------+--------------------+---------+------------+---------+
@@ -201,7 +222,7 @@ invisible(head(test,5))
 | 0.03991450             | -1.4503831         | -0.41522270        | 1.2680076          | 50821   | 2004-12-31 | active  |
 +------------------------+--------------------+--------------------+--------------------+---------+------------+---------+
 
-To evaluate the effectiveness of the model find the optimal **decision threshold**, we produce an ROC curve.
+To asses the accuracy of the model and find the optimal decision threshold we produce the ROC curve.
 
 ```{r}
     library(pROC)
@@ -213,27 +234,21 @@ To evaluate the effectiveness of the model find the optimal **decision threshold
 roc_curve <- roc(response = test$y_numeric, predictor = test$Probability)
 
 roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
+
 auc_value <- auc(roc_curve)
 
-roc_data <- data.frame(
-  TPR = roc_metrics$sensitivity,
-  FPR = roc_metrics$specificity,
-  Threshold = roc_metrics$threshold
-)
+roc_data <- data.frame(TPR = roc_metrics$sensitivity,FPR = roc_metrics$specificity,Threshold = roc_metrics$threshold)
 
 ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
   geom_line(size = 1) +
   geom_abline(slope = 1, intercept = 1, linetype = "dashed", color = "gray") +  
-  geom_line(data = data.frame(FPR = c(1, 1, 0), TPR = c(0, 1, 1)), 
-            aes(x = FPR, y = TPR), 
-            color = "blue", size = 1, linetype = "dotted") +
-  labs(
-    title = "ROC Curve for Multinomial Logistic Regression",
-    x = "Specificity",
-    y = "True Positive Rate (Sensitivity)",
-    caption = paste("AUC:", round(auc_value, 4)),
-    color = "Decision Threshold"
-  ) +
+  geom_line(data = data.frame(FPR = c(1, 1, 0), TPR = c(0, 1, 1)), aes(x = FPR, y = TPR), 
+  color = "blue", size = 1, linetype = "dotted") +
+  labs(title = "ROC Curve for Multinomial Logistic Regression",
+  x = "Specificity",
+  y = "True Positive Rate (Sensitivity)",
+  caption = paste("AUC:", round(auc_value, 4)),
+  color = "Decision Threshold") +
   scale_color_gradientn(colors = rev(rainbow(100))) +
   coord_fixed() +
   scale_x_reverse() +  # Reverse the x-axis
@@ -242,7 +257,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
 
-### The ROC curve is a plot of the models prediction accuracy ratios Sensitivity (y-axis) by Specificity (x-axis) as a result of the decision threshold chosen (displayed by color gradient).
+### The ROC curve is a plot of the models prediction accuracy ratios Sensitivity (y-axis) by Specificity (x-axis) as a result of the decision threshold chosen which is displayed by color gradient. 
 
 **Sensitivity:** *what proportion of individuals who were **90+ DPD** did the model correctly predict as being **90+ DPD.***
 
