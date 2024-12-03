@@ -119,7 +119,10 @@ library(kableExtra)
 
 
 kable(your_tibble, format = "html") %>%
-  kable_styling(position = "center")
+  kable_styling(position = "center") %>%
+  save_kable(file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t4.png", zoom = 2)
+
+knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t4.png")
 ```
 
 
@@ -257,7 +260,10 @@ library(knitr)
 library(kableExtra)
 
 kable(your_tibble, format = "html") %>%
-  kable_styling(position = "center")
+  kable_styling(position = "center") %>%
+  save_kable(file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t2.png", zoom = 2)
+
+knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t2.png")
 ```
 
 
@@ -281,10 +287,9 @@ library(webshot2)
 
 kable(confusion_table, format = "html") %>%
   kable_styling(position = "center") %>%
-  save_kable(file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/gt_table_image.png", zoom = 2)
+  save_kable(file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t3.png", zoom = 2)
 
-knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/gt_table_image.png")
-
+knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t3.png")
 ```
 
 
