@@ -32,23 +32,6 @@ knitr::include_graphics("~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files
 
 </div>
 
-``` r
-head(transactions,5)
-```
-
-    ##   t success           mid    pmt          pg              sub_type
-    ## 1 2       1        zivame     NB        PAYU                  <NA>
-    ## 2 1       0     urbanclap     NB       PAYTM                  <NA>
-    ## 3 5       1 pharmeasytech WALLET AIRTELMONEY REDIRECT_WALLET_DEBIT
-    ## 4 1       1 pharmeasytech   CARD        PAYU                  <NA>
-    ## 5 1       1      fanfight   CARD    RAZORPAY                  <NA>
-    ##              hr                                bank
-    ## 1 2020-02-14 06                             NB_CITI
-    ## 2 2020-02-14 06                             NB_SYNB
-    ## 3 2020-02-14 11                         AIRTELMONEY
-    ## 4 2020-02-14 12 THE SATARA SAHAKARI BANK LTD MUMBAI
-    ## 5 2020-02-14 06                                 DCB
-
 ## Initial Approach
 
 We’re not sure what we’re looking for yet, so let’s plot the percentage
@@ -107,7 +90,7 @@ ggplot(data = failed_transactions_rate, aes(x = x_index, y = failedTransactions)
 
 </div>
 
-So we do see a spike in transaction failure rates up to 45% the
+So we do see a spike in transaction failure rates up to 45%
 afternoon/overnight the day before we started receiving complaints.
 
 Clearly there is a problem here, but we need to find precisely what
@@ -147,58 +130,37 @@ because that’s when customers are active.
 To narrow down what caused our failure rate spike, we employ the
 Mahalanobis distance method which is useful for the detection of
 anomalies. Just as you can detect outliers in a variable of one
-dimension by an unusually high z-score, you can detect outliers in
-higher dimensional variables by it’s z-score within it’s higher
+dimension by an unusually high or low z-score, you can detect outliers
+in higher dimensional variables by it’s z-score within it’s higher
 dimensional distribution.
 
-Before we can employ this method, we must prepare the data for it.
-
-We need to prepare the variables of which a higher dimensional
-distribution will be produced,
-
-The weighted failure rate is produced by this equation
-$`\text{weighted failure rate} = \text{transaction failure percentage} \cdot \ln(\text{total transactions} + 1)`$
-
-Here is a plot to demonstrate its purpose
+The variables we will produce a distribution of will be failure
+percentage and transaction count.
 
 ``` r
-library(ggplot2)
-plot <- data.frame(x = seq(1, 100, length.out = 500), y = log(seq(1, 100, length.out = 500) + 1))
-
-ggplot(plot, aes(x = x, y = y)) + geom_line(color = "blue") +
-  labs(title = "Weighted Failure Rate of a Observation with 100% failed transactions by totall transaction count", 
-       x = "transactions", y = "weighted failure rate") + theme_minimal()
+library(rasterVis)
+options(rgl.printRglwidget = TRUE)
+#kde.output <- kernelUD(House.Points, h="href", grid = 1000)
+#plot3D(kde, zfac=10000000)
 ```
-
-<div align="center">
-
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-6-1.png" width="70%">
-
-</div>
-
-Observations that have a failure percentage of high failure rate but few
-transactions will have a lower weighted value and thus will not be an
-outlier, whereas a an observation with a equally high failure rate but
-high transaction account would produce a much higher weighted value and
-thus would be an outlier value.
 
 ``` r
 before_anamoly_detection_data <- data
 weighted_failure_rate <- numeric(nrow(data))
 
 data$failures <- data[,1] - data[,2]
-data$weighted_failure_rate <- data[,1] - data[,2] / data[,1] * log(data[,1] + 1)
+data$failure_rate <- data[,1] - data[,2] / data[,1] 
 
 your_tibble <- head(data,3)
 kable(your_tibble, format = "html") %>%
   kable_styling(position = "center") %>% 
-  save_kable(file = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/appended.png", zoom = 2)
-knitr::include_graphics("~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/appended.png")
+  save_kable(file = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/appended_1.png", zoom = 2)
+knitr::include_graphics("~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/appended_1.png")
 ```
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/appended.png" width="70%">
+<img src="ReadMe_files/figure-gfm/appended_1.png" width="70%">
 
 </div>
 
@@ -207,7 +169,7 @@ dimensional distribution from them to find which observations are the
 greatest outliers.
 
 ``` r
-features <- data[, c("t", "s","failures","weighted_failure_rate")]
+features <- data[, c("t", "failure_rate")]
 
 center <- colMeans(features)
 cov_matrix <- cov(features)
