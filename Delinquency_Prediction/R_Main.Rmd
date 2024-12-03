@@ -174,7 +174,7 @@ Since the outcome of whether or not there will be late payments is known in our 
 
 The testing data is completely distinct from the data used to produce the model, so the accuracy results of the model being evaluated on it are representative of the models accuracy being evaluated of future data. The following analysis are those accuracy results.
 
-```{r}
+```{r, include=FALSE}
 your_tibble <- head(test,5)
 library(knitr)
 library(kableExtra)
