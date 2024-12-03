@@ -108,14 +108,14 @@ library(kableExtra)
 
 kable(your_tibble, format = "html") %>%
   kable_styling(position = "center") %>%
-  save_kable(file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t4.png", zoom = 2)
+  save_kable(file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t5.png", zoom = 2)
 
-knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t4.png")
+knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t5.png")
 ```
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/t4.png" width="70%">
+<img src="ReadMe_files/figure-gfm/t5.png" width="70%">
 
 </div>
 
