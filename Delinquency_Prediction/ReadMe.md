@@ -261,39 +261,16 @@ are representative of the models accuracy being evaluated of future
 data. The following analysis are those accuracy results.
 
 ``` r
-library(pander)
-library(webshot2)
-library(knitr)
-library(htmltools)
-
-# Select a portion of the data frame
-selected_data <- test[1:5, ]
-
-# Create a temporary HTML file
-output_file <- tempfile(fileext = ".html")
-
-# Use htmltools to write the table to an actual HTML file
-html_content <- as.character(pander::pandoc.table.return(selected_data, style = "rmarkdown"))
-htmltools::save_html(HTML(html_content), output_file)
-
-# Convert the HTML to an image
-webshot2::webshot(output_file, "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/data_table_image.png")
+library(ggpubr)
+library(tibble)
+head_test <- head(test, 5)
+table_plot <- ggtexttable(head_test, rows = NULL)
+table_plot
 ```
 
 <div align="center">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-8-1.png" width="70%">
-
-</div>
-
-``` r
-# Optionally include in R Markdown
-knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/data_table_image.png")
-```
-
-<div align="center">
-
-<img src="ReadMe_files/figure-gfm/data_table_image.png" width="70%">
 
 </div>
 
