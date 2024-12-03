@@ -115,7 +115,11 @@ test <- na.omit(test)
 
 your_tibble <- head(train,5)
 library(knitr)
-kable(your_tibble, format = "html")  
+library(kableExtra)
+
+
+kable(your_tibble, format = "html") %>%
+  kable_styling(position = "center")
 ```
 
 
@@ -173,7 +177,10 @@ The testing data is completely distinct from the data used to produce the model,
 ```{r}
 your_tibble <- head(test,5)
 library(knitr)
-kable(your_tibble, format = "html")  
+library(kableExtra)
+
+kable(your_tibble, format = "html") %>%
+  kable_styling(position = "center")
 ```
 
 To asses the accuracy of the model and find the optimal decision threshold we produce the ROC curve.
@@ -243,7 +250,10 @@ The balanced **decision threshold** is visually apparent by the intersection of 
 optimal_threshold <- roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))]
 your_tibble <- roc_metrics[roc_metrics[,1] ==optimal_threshold,]
 library(knitr)
-kable(your_tibble, format = "html") 
+library(kableExtra)
+
+kable(your_tibble, format = "html") %>%
+  kable_styling(position = "center")
 ```
 
 
@@ -262,7 +272,10 @@ rownames(confusion_table) <- c("Actual: Non-delinquent", "Actual: Delinquent")
 colnames(confusion_table) <- c("Predicted: Non-delinquent", "Predicted: Delinquent")
 
 library(knitr)
-kable(confusion_table, format = "html") 
+library(kableExtra)
+
+kable(confusion_table, format = "html") %>%
+  kable_styling(position = "center")
 ```
 
 
