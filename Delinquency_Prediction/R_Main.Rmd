@@ -184,7 +184,7 @@ The testing data is completely distinct from the data used to produce the model,
 ```{r}
 your_tibble <- head(test,5)
 library(knitr)
-kable(your_tibble, format = "markdown")  # Use "html" or "latex" for other outputs
+kable(your_tibble, format = "html")  # Use "html" or "latex" for other outputs
 ```
 
 To asses the accuracy of the model and find the optimal decision threshold we produce the ROC curve.
