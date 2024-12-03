@@ -261,16 +261,30 @@ are representative of the models accuracy being evaluated of future
 data. The following analysis are those accuracy results.
 
 ``` r
+# Install the flextable package if not already installed
+
 # Load the necessary libraries
-library(gt)
+library(flextable)
 library(tibble)
 
 # Assuming `test` is your tibble or data frame
 head_test <- head(test, 5)
 
+# Create a flextable object
+flex_table <- flextable(head_test) %>%
+  autofit() %>%                     # Adjust column widths automatically
+  set_table_properties(width = 1)   # Scale the table to fit in a smaller space
 
-gt_table <- gt(head_test)
-gtsave(gt_table, "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/gt_table_image.png")
+# Save the table as an image
+save_as_image(
+  flex_table,
+  path = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/flextable_image.png"
+)
+```
+
+    ## [1] "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/flextable_image.png"
+
+``` r
 knitr::include_graphics("~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/gt_table_image.png")
 ```
 
