@@ -261,16 +261,22 @@ are representative of the models accuracy being evaluated of future
 data. The following analysis are those accuracy results.
 
 ``` r
-library(ggpubr)
+# Load the necessary libraries
+library(gt)
 library(tibble)
+
+# Assuming `test` is your tibble or data frame
 head_test <- head(test, 5)
-table_plot <- ggtexttable(head_test, rows = NULL)
-table_plot
+
+
+gt_table <- gt(head_test)
+gtsave(gt_table, "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/gt_table_image.png")
+knitr::include_graphics("~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/gt_table_image.png")
 ```
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-8-1.png" width="70%">
+<img src="../Anamoly_Detection/ReadMe_files/figure-gfm/gt_table_image.png" width="70%">
 
 </div>
 
