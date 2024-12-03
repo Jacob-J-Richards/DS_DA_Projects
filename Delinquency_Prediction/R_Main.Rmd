@@ -180,7 +180,11 @@ library(knitr)
 library(kableExtra)
 
 kable(your_tibble, format = "html") %>%
-  kable_styling(position = "center")
+  kable_styling(position = "center") %>%
+  save_kable(file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t1.png", zoom = 2)
+
+knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t1.png")
+
 ```
 
 To asses the accuracy of the model and find the optimal decision threshold we produce the ROC curve.
@@ -271,11 +275,16 @@ confusion_table <- as.data.frame.matrix(conf_matrix$table)
 rownames(confusion_table) <- c("Actual: Non-delinquent", "Actual: Delinquent")
 colnames(confusion_table) <- c("Predicted: Non-delinquent", "Predicted: Delinquent")
 
-library(knitr)
+
 library(kableExtra)
+library(webshot2)
 
 kable(confusion_table, format = "html") %>%
-  kable_styling(position = "center")
+  kable_styling(position = "center") %>%
+  save_kable(file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/gt_table_image.png", zoom = 2)
+
+knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/gt_table_image.png")
+
 ```
 
 
