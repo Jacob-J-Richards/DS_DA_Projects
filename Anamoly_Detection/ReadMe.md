@@ -757,4 +757,4 @@ ggplot(data = wide, aes(proportion_subset)) +
 
 </div>
 
-[View the interactive plot](https://github.com/Jacob-J-Richards/DS_DA_Projects/blob/main/Anamoly_Detection/index.html)
+[View the interactive plot](https://jacob-j-richards.github.io/DS_DA_Projects/)
