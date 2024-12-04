@@ -648,9 +648,7 @@ ggplot(data = wide, aes(proportion_subset)) +
 
 ```{=html}
 [View the interactive plot](https://username.github.io/repository-name/interactive_density_plot.html)
-
 ```
-
 There are tons of plots that can be produced here but only one has a meaningful implication.
 
 Question: Could have this anomaly been predicted before it occurred?
