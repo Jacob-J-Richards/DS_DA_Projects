@@ -13,9 +13,9 @@ train <- read.csv(file="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_
 test <- read.csv(file="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_Prediction/Data_Files/FITB_test.csv",header=TRUE)
 ```
 
-From checking the distribution of the data, if you look carefully you
-can see that the distribution of feature 3 (displayed by the blue curve)
-has a lot of values in the extreme right tail.
+From checking the distribution of the data, you can see that the
+distribution of feature 3 (displayed by the blue curve) has many values
+in the extreme right tail.
 
 ``` r
 library(ggplot2)
@@ -32,9 +32,9 @@ ggplot() + geom_density(data=train, aes(x=feature_3), color="blue") +
 
 </div>
 
-This many outliers will add noise that disrupts our models ability to
-capture the trend of the data, so we remove the top and bottom
-percentiles from feature 3. This is known as **Winsorization**.
+The many outliers adds noise that disrupts our models ability to capture
+the trend of the data, so we removed the top and bottom percentiles from
+feature 3. This is known as **Winsorization**.
 
 ``` r
 library(dplyr)
@@ -67,7 +67,7 @@ colnames(test)[3] <- "feature_3_impute"
 ```
 
 Feature 2 has missing values, so for each missing value for we will fill
-in the blank with the next years value or the previous years (if the
+in the blank with the next year’s value or the previous year’s (if the
 next year is also missing) corresponding to the same ID.
 
 ``` r
@@ -121,8 +121,8 @@ knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_
 
 Our features (variables) all represent different financial measurements
 quantified by different units. In order for these variables to be
-measured uniformly, we can reassign each value with it’s corresponding
-z-score within it’s respective variable distribution.
+measured uniformly, we can reassign each value with its corresponding
+z-score within its respective variable distribution.
 
 ``` r
 library(dplyr)
@@ -163,8 +163,8 @@ independent variables and column y as the binary dependent variable
 
 Given historical data of customers financial information and whether or
 not they were **90+ days past due** on payments, we can produce a model
-which will generates a probability that a customer will be **90+ days
-past due** on payments.
+that will generate a probability that a customer will be **90+ days past
+due** on payments.
 
 For explanation of logistic regression binary classifiers see the
 following invaluable resource:
@@ -182,10 +182,10 @@ model that a customer will be **90+ DPD** at which it is concluded that
 the customer will be **90+ DPD**.
 
 Since the outcome of whether or not there will be late payments is known
-in our testing data. We can asses the accuracy of the model by
+in our testing data; we can asses the accuracy of the model by
 evaluating the model on the testing data and directly comparing the
-predicted outcomes to the actual outcomes, as well we can asses the
-impact of the **decision threshold** we used on the models accuracy.
+predicted outcomes to the actual outcomes, as well assessing the impact
+of the **decision threshold** we used on the model’s accuracy.
 
 The testing data is completely distinct from the data used to produce
 the model, so the accuracy results of the model being evaluated on it
@@ -242,18 +242,18 @@ did the model correctly predict as being **90+ DPD.***
 **Specificity:** *what proportion of individuals who were **not 90+
 DDP** did the model correctly predict as being **not 90+ DPD.***
 
-**AUC:** The area under the ROC curve, AUC is used as a metric for
+**AUC:** The area under the ROC curve, AUC, is used as a metric for
 overall model performance as the ROC curve is the result of accuracy
 metrics from the entire range of decision thresholds. The blue dotted
-line is a perfect model containing 100% of the area under it’s curve,
-the grey line is if you were to predict the outcome by tossing a coin
-and thus naturally the area under it’s curve is 50%.
+line is a perfect model containing 100% of the area under its curve. The
+grey line is if you were to predict the outcome by tossing a coin and
+thus naturally the area under it’s curve is 50%.
 
 The **AUC** of our model is 0.8211.
 
-To illustrate the meaning of this curve take for example the accuracy
+To illustrate the meaning of this curve, take for example the accuracy
 results if you were to select a decision threshold of 0.50 represented
-as cyan blue: Your specificity would be about 94% which is good since
+as cyan blue: Your specificity would be about 94%, which is good since
 you did not falsely predict too many late payments. However, your
 sensitivity would only be 25%, such that you only successfully predicted
 25% of the late payments. Conversely if you had selected a decision
@@ -261,9 +261,9 @@ threshold of .10 represented as pink-red you would successfully predict
 94% of late payments but only 25% of individuals who were not late on
 payments were correctly identified as such by the model.
 
-Therefore, the **decision threshold** we choose is a trade off between
-successfully predicting late payments and successfully predicting non
-late payments.
+Therefore, the **decision threshold** we choose is a trade-off between
+successfully predicting late payments and successfully predicting
+non-late payments.
 
 The **decision threshold** which balances these goals is visually
 evident in the following plot.
