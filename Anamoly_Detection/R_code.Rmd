@@ -444,7 +444,7 @@ paytm_subset <- data[(data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI", "notpro
                      (data[, 4] == "UPI"), ]
 
 paytm_subset$failure_sum <- paytm_subset[, 1] - paytm_subset[, 2]
-paytm_subset
+head(paytm_subset,5)
 
 failure_sum_by_merchant <- aggregate(paytm_subset[, 9], by = list(paytm_subset$mid), sum)
 transaction_sum_by_merchant <- aggregate(paytm_subset[, 1], by = list(paytm_subset$mid), sum)
