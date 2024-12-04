@@ -757,22 +757,4 @@ ggplot(data = wide, aes(proportion_subset)) +
 
 </div>
 
-[View the interactive plot](https://username.github.io/repository-name/interactive_density_plot.html)
-
-There are tons of plots that can be produced here but only one has a
-meaningful implication.
-
-Question: Could have this anomaly been predicted before it occurred?
-
-1.) The node on the left is the distribution of failure rates of the
-anomalous subset of data before and after the anomaly
-
-2.) The node on the right is the distribution of failure rates of the
-anomalous subset of data during the anomaly
-
-3.) these are two district distributions representing two distinct
-processes.
-
-Therefore, real life process of which this data set is a collection of
-measurements on changed around February 13th 6PM and reverted back to
-it’s original state around February 14th 9AM.
+[View the interactive plot](https://github.com/Jacob-J-Richards/DS_DA_Projects/blob/main/Anamoly_Detection/index.html)
