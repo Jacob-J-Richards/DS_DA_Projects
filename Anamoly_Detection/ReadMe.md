@@ -1849,9 +1849,6 @@ ggplot(data = wide, aes(proportion_subset)) +
   )
 ```
 
-[View the interactive plot](https://drive.google.com/file/d/1Rdw-wbCO28ZkAhmMNNn9bOCBD6Lt3mXy/view?usp=sharing)
-
-
 <div align="center">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-21-1.png" width="70%">
@@ -1936,9 +1933,10 @@ wide
     ## 71    71     37.25490          15.38462
     ## 72    72     32.36715          53.84615
 
-``` r
-#[here](https://drive.google.com/file/d/1Rdw-wbCO28ZkAhmMNNn9bOCBD6Lt3mXy/view?usp=sharing).
-```
+<iframe src="https://github.com/Jacob-J-Richards/DS_DA_Projects/blob/main/Anamoly_Detection/interactive_density_plot.html" 
+        width="100%" 
+        height="600px">
+</iframe>
 
 There are tons of plots that can be produced here but only one has a
 meaningful implication.

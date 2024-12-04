@@ -646,9 +646,11 @@ ggplot(data = wide, aes(proportion_subset)) +
 wide 
 ```
 
-```{r}
-#[here](https://drive.google.com/file/d/1Rdw-wbCO28ZkAhmMNNn9bOCBD6Lt3mXy/view?usp=sharing).
-
+```{=html}
+<iframe src="https://github.com/Jacob-J-Richards/DS_DA_Projects/blob/main/Anamoly_Detection/interactive_density_plot.html" 
+        width="100%" 
+        height="600px">
+</iframe>
 ```
 
 There are tons of plots that can be produced here but only one has a meaningful implication.
