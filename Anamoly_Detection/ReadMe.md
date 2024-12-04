@@ -648,6 +648,9 @@ To investigate this, we separate the data with the combination of
 variables we found to be problematic from the normal data and produce
 the following plots to compare the two.
 
+Then to produce a fair comparison, we make the number of observations
+within each set equal by selected 552 of the normal data rows at random.
+
 ###### anomaly data
 
 ``` r
@@ -679,14 +682,27 @@ f <- t[, 2] - s[, 2]
 proportion_c <- f / t[, 2] * 100
 ```
 
+###### normal data but equal number of observations selected at random as the anomalous subset
+
+``` r
+set.seed(42)  
+paytm_compliment_sample <- paytm_compliment[sample(nrow(paytm_compliment), 552), ]
+
+t <- aggregate(paytm_compliment_sample$t, by = list(paytm_compliment_sample$hr), sum)
+s <- aggregate(paytm_compliment_sample$s, by = list(paytm_compliment_sample$hr), sum)
+f <- t[, 2] - s[, 2]
+
+proportion_c_sample <- f / t[, 2] * 100
+```
+
 ``` r
 hours <- seq(1, 72, 1)
-wide <- as.data.frame(cbind(hours, proportion_c, proportion_subset))
+wide <- as.data.frame(cbind(hours, proportion_c, proportion_subset,proportion_c_sample))
 
 long <- melt(
   data = wide, 
   id.vars = c("hours"), 
-  measured.vars = c("proportion_c", "proportion_subset"), 
+  measured.vars = c("proportion_c", "proportion_subset","proportion_c_sample"), 
   variable.name = "percentage_failure"
 )
 ```
@@ -698,12 +714,12 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
     title = "Smoothed Failure Percentage Curve", 
     ylab = "Percentage"
   ) + 
-  scale_color_discrete(labels = c("Non-Anomalous Data", "Anomalous Data"))
+  scale_color_discrete(labels = c("Non-Anomalous Data Entire Set", "Anomalous Data","Non-Anomalous Data Sample"))
 ```
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-19-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-20-1.png" width="70%">
 
 </div>
 
@@ -723,7 +739,7 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-20-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-21-1.png" width="70%">
 
 </div>
 
@@ -735,20 +751,23 @@ You can see that the anomalous data has much higher variance than the
 normal data, but this is expected as the anomalous data only has ~500
 observations and the normal data has 1800.
 
-The following graphics displays the distribution of the anamolous data
+The following graphics displays the distribution of the anomalous data
 over a shifting 18 hour time window of first 18 hours of the dataset
 until the last 18 hours of the data set out of the 72.
 
 ![Density Plot Animation](ReadMe_files/figure-gfm/density_animation_high_quality.gif)
 
-The distribution of the anomalous data over the entire 72 hours is as
-follows.
+The distribution of the anomalous data and a sample of the normal data
+of equal size to anomalous.
+
+Notice that the anomalous data is synthetic by it’s perfect
+distribution.
 
 ``` r
 library(plotly)
 
 ggplot(data = wide, aes(proportion_subset)) + 
-  geom_density(data=wide,aes(proportion_c,fill="red",alpha=0.20)) + 
+  geom_density(data=wide,aes(proportion_c_sample,fill="red",alpha=0.20)) + 
   geom_density(fill = "blue", alpha = 0.20) + 
   theme_minimal() + 
   labs(
@@ -760,6 +779,15 @@ ggplot(data = wide, aes(proportion_subset)) +
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-21-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-22-1.png" width="70%">
 
 </div>
+
+From all of these plots it’s evident that there was no indication that
+failure rate of the observations with the combination of variables in
+which the anomaly occurred was any different from the rest of the data.
+
+An something happened that caused this event at the time it did.
+
+What if there was a control chart that was monitoring this data, at what
+hour would it have detected that something was wrong?
