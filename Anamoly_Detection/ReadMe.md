@@ -441,6 +441,8 @@ The plot of UPI for payment method and UPI_COLLECT for subtype reveals
 that this is the combination of variables within the PAYTM payment
 gateways that is casing customer complaints.
 
+Better plot of the problematic subset of the data.
+
 ``` r
 paytm_subset <- data[
   (data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI")) & 
@@ -497,12 +499,15 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 </div>
 
 The failure rate spike occurred from 5pm on the 13th to 6am on the 14th
-which is the day that merchants reported customer complaints.
+the same day that merchants reported customer complaints.
+
+Which merchants were impacted by this anomaly?
 
 ``` r
 paytm_subset <- data[(data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI", "notprovided")) & 
                      (data[, 6] %in% c("UPI_COLLECT")) & 
                      (data[, 4] == "UPI"), ]
+
 paytm_subset$failure_sum <- paytm_subset[, 1] - paytm_subset[, 2]
 paytm_subset
 ```
@@ -1736,9 +1741,16 @@ knitr::include_graphics(
 
 All of the merchants were effected except UrbanClap.
 
+Could such a massive spike in payment failure rates have been predicted?
+To investigate this, we separate the data with the combination of
+variables we found to be problematic from the normal data and produce
+the following plots to compare the normal and abnormal data.
+
+###### anomaly data
+
 ``` r
 paytm_subset <- data[
-  (data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI", "notprovided")) & 
+  (data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI")) & 
   (data[, 6] %in% c("UPI_COLLECT")) & 
   (data[, 4] == "UPI"), 
 ]
@@ -1752,6 +1764,8 @@ f <- t[, 2] - s[, 2]
 
 proportion_subset <- f / t[, 2] * 100
 ```
+
+###### normal data
 
 ``` r
 paytm_compliment <- data[!(rownames(data) %in% rownames(paytm_subset)), ]
@@ -1773,7 +1787,9 @@ long <- melt(
   measured.vars = c("proportion_c", "proportion_subset"), 
   variable.name = "percentage_failure"
 )
+```
 
+``` r
 ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color = percentage_failure)) + 
   geom_smooth() + 
   labs(
@@ -1785,9 +1801,13 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-18-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-19-1.png" width="70%">
 
 </div>
+
+in comparison of the anomalous observations to the normal data, there
+isn’t any clear indication that something was wrong until around hour
+40.
 
 ``` r
 ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color = percentage_failure)) + 
@@ -1801,11 +1821,24 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-18-2.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-20-1.png" width="70%">
 
 </div>
 
 ``` r
+write.csv(wide,file="density_data.csv")
+```
+
+You can see that the anomalous data has much higher variance than the
+normal data, but this is expected as the anomalous data only has ~500
+observations and the normal data has 1800.
+
+The plot that clarifies the situation is the plot of the distribution of
+the anomaly data.
+
+``` r
+library(plotly)
+
 ggplot(data = wide, aes(proportion_subset)) + 
   geom_density(fill = "blue", alpha = 0.20) + 
   theme_minimal() + 
@@ -1818,9 +1851,91 @@ ggplot(data = wide, aes(proportion_subset)) +
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-19-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-21-1.png" width="70%">
 
 </div>
+
+``` r
+wide 
+```
+
+    ##    hours proportion_c proportion_subset
+    ## 1      1     33.21492          23.07692
+    ## 2      2     31.46438          31.14754
+    ## 3      3     26.40682          27.40741
+    ## 4      4     30.44784          33.52941
+    ## 5      5     32.07547          37.11790
+    ## 6      6     33.93373          39.84674
+    ## 7      7     33.49403          32.81250
+    ## 8      8     34.76718          38.32599
+    ## 9      9     36.71452          37.21973
+    ## 10    10     34.91561          33.92070
+    ## 11    11     33.47140          32.86385
+    ## 12    12     36.20241          40.35088
+    ## 13    13     34.37216          31.70732
+    ## 14    14     35.61839          40.72165
+    ## 15    15     36.23932          45.51495
+    ## 16    16     29.54492          41.71429
+    ## 17    17     34.51266          26.97674
+    ## 18    18     34.32602          34.76190
+    ## 19    19     35.86291          24.64789
+    ## 20    20     40.31511          42.39130
+    ## 21    21     40.22556          45.83333
+    ## 22    22     36.10503          31.81818
+    ## 23    23     37.74510          50.00000
+    ## 24    24     32.93173          35.71429
+    ## 25    25     32.64516          30.00000
+    ## 26    26     34.02579          29.50820
+    ## 27    27     33.50860          31.25000
+    ## 28    28     33.84868          27.51678
+    ## 29    29     32.19984          24.74747
+    ## 30    30     34.10405          48.81890
+    ## 31    31     33.90453          41.06464
+    ## 32    32     36.05551          49.32735
+    ## 33    33     38.69700          47.56757
+    ## 34    34     33.94988          30.85714
+    ## 35    35     35.10050          42.47312
+    ## 36    36     35.19313          29.05028
+    ## 37    37     35.11989          36.95652
+    ## 38    38     33.63349          37.08920
+    ## 39    39     37.19283          40.89219
+    ## 40    40     38.14083          35.98326
+    ## 41    41     35.17370          44.82759
+    ## 42    42     37.63326          40.50633
+    ## 43    43     36.97479          72.47706
+    ## 44    44     37.92487          68.30986
+    ## 45    45     43.71859          66.03774
+    ## 46    46     36.98031          68.75000
+    ## 47    47     37.15596          80.00000
+    ## 48    48     37.54789          85.00000
+    ## 49    49     33.47458          79.16667
+    ## 50    50     30.86104          73.75000
+    ## 51    51     32.80000          71.25749
+    ## 52    52     32.26788          69.92188
+    ## 53    53     33.11512          68.62069
+    ## 54    54     32.30704          69.39394
+    ## 55    55     32.07625          70.45455
+    ## 56    56     31.14854          69.20530
+    ## 57    57     33.95513          50.24155
+    ## 58    58     34.74445          33.76623
+    ## 59    59     32.12658          34.28571
+    ## 60    60     29.54009          35.82090
+    ## 61    61     31.89992          36.63366
+    ## 62    62     31.18985          31.98381
+    ## 63    63     32.77342          38.54962
+    ## 64    64     27.84165          31.04575
+    ## 65    65     33.03510          31.10048
+    ## 66    66     35.61035          39.84064
+    ## 67    67     34.85523          33.33333
+    ## 68    68     37.61170          34.00000
+    ## 69    69     42.04545          29.31034
+    ## 70    70     43.47826          11.11111
+    ## 71    71     37.25490          15.38462
+    ## 72    72     32.36715          53.84615
+
+``` r
+#[here](https://drive.google.com/file/d/1Rdw-wbCO28ZkAhmMNNn9bOCBD6Lt3mXy/view?usp=sharing).
+```
 
 There are tons of plots that can be produced here but only one has a
 meaningful implication.
@@ -1839,9 +1954,3 @@ processes.
 Therefore, real life process of which this data set is a collection of
 measurements on changed around February 13th 6PM and reverted back to
 it’s original state around February 14th 9AM.
-
-``` r
-Note for the future: no one helped you with this, you figured this out on your own. The only clue you had was you saw Figure 1.0 produced by someone else on discord with no indication of where it came from other than it was the result of the combination of categorical variables. 
-```
-
-blah blah blah git hub test

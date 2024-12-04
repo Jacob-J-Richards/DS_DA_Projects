@@ -213,12 +213,12 @@ kde <- kde2d(data$failures, data$failure_rate, n = 50)
   )
 
 ```
+
 ```{r}
 knitr::include_graphics(
   "/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/3Ddistribution.png"
 )
 ```
-
 
 Evaluating the Mahalanobis method to find those outliers
 
@@ -382,6 +382,8 @@ print(combinations)
 
 The plot of UPI for payment method and UPI_COLLECT for subtype reveals that this is the combination of variables within the PAYTM payment gateways that is casing customer complaints.
 
+Better plot of the problematic subset of the data.
+
 ```{r}
 paytm_subset <- data[
   (data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI")) & 
@@ -432,12 +434,15 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 
 ```
 
-The failure rate spike occurred from 5pm on the 13th to 6am on the 14th which is the day that merchants reported customer complaints.
+The failure rate spike occurred from 5pm on the 13th to 6am on the 14th the same day that merchants reported customer complaints.
+
+Which merchants were impacted by this anomaly?
 
 ```{r}
 paytm_subset <- data[(data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI", "notprovided")) & 
                      (data[, 6] %in% c("UPI_COLLECT")) & 
                      (data[, 4] == "UPI"), ]
+
 paytm_subset$failure_sum <- paytm_subset[, 1] - paytm_subset[, 2]
 paytm_subset
 
@@ -548,9 +553,13 @@ knitr::include_graphics(
 
 All of the merchants were effected except UrbanClap.
 
+Could such a massive spike in payment failure rates have been predicted? To investigate this, we separate the data with the combination of variables we found to be problematic from the normal data and produce the following plots to compare the normal and abnormal data.
+
+###### anomaly data
+
 ```{r}
 paytm_subset <- data[
-  (data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI", "notprovided")) & 
+  (data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI")) & 
   (data[, 6] %in% c("UPI_COLLECT")) & 
   (data[, 4] == "UPI"), 
 ]
@@ -565,6 +574,8 @@ f <- t[, 2] - s[, 2]
 proportion_subset <- f / t[, 2] * 100
 
 ```
+
+###### normal data
 
 ```{r}
 paytm_compliment <- data[!(rownames(data) %in% rownames(paytm_subset)), ]
@@ -587,6 +598,9 @@ long <- melt(
   measured.vars = c("proportion_c", "proportion_subset"), 
   variable.name = "percentage_failure"
 )
+```
+
+```{r}
 
 ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color = percentage_failure)) + 
   geom_smooth() + 
@@ -596,6 +610,12 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
   ) + 
   scale_color_discrete(labels = c("Non-Anomalous Data", "Anomalous Data"))
 
+```
+
+in comparison of the anomalous observations to the normal data, there isn't any clear indication that something was wrong until around hour 40.
+
+```{r}
+
 ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color = percentage_failure)) + 
   geom_line() + 
   labs(
@@ -603,10 +623,17 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
     ylab = "Percentage"
   ) + 
   scale_color_discrete(labels = c("Non-Anomalous Data", "Anomalous Data"))
+write.csv(wide,file="density_data.csv")
 
 ```
 
+You can see that the anomalous data has much higher variance than the normal data, but this is expected as the anomalous data only has \~500 observations and the normal data has 1800.
+
+The plot that clarifies the situation is the plot of the distribution of the anomaly data.
+
 ```{r}
+library(plotly)
+
 ggplot(data = wide, aes(proportion_subset)) + 
   geom_density(fill = "blue", alpha = 0.20) + 
   theme_minimal() + 
@@ -615,6 +642,12 @@ ggplot(data = wide, aes(proportion_subset)) +
     x = "Failure Rate", 
     y = "Density"
   )
+
+wide 
+```
+
+```{r}
+#[here](https://drive.google.com/file/d/1Rdw-wbCO28ZkAhmMNNn9bOCBD6Lt3mXy/view?usp=sharing).
 
 ```
 
@@ -629,9 +662,3 @@ Question: Could have this anomaly been predicted before it occurred?
 3.) these are two district distributions representing two distinct processes.
 
 Therefore, real life process of which this data set is a collection of measurements on changed around February 13th 6PM and reverted back to it's original state around February 14th 9AM.
-
-```{r,eval=FALSE}
-Note for the future: no one helped you with this, you figured this out on your own. The only clue you had was you saw Figure 1.0 produced by someone else on discord with no indication of where it came from other than it was the result of the combination of categorical variables. 
-```
-
-blah blah blah git hub test
