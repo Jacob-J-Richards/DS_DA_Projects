@@ -9,8 +9,16 @@ on payments.
 
 ``` r
 setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_Prediction")
-train <- read.csv(file="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_Prediction/Data_Files/FITB_train.csv",header=TRUE)
-test <- read.csv(file="/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_Prediction/Data_Files/FITB_test.csv",header=TRUE)
+
+train <- read.csv(
+  file = "/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_Prediction/Data_Files/FITB_train.csv", 
+  header = TRUE
+)
+
+test <- read.csv(
+  file = "/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_Prediction/Data_Files/FITB_test.csv", 
+  header = TRUE
+)
 ```
 
 From checking the distribution of the data, you can see that the
@@ -19,11 +27,14 @@ in the extreme right tail.
 
 ``` r
 library(ggplot2)
-ggplot() + geom_density(data=train, aes(x=feature_3), color="blue") +
-           geom_density(data=train, aes(x=feature_2), color="red") +
-           geom_density(data=train, aes(x=feature_1), color="green") +
-           geom_density(data=train, aes(x=feature_4), color="purple") +
-           theme_minimal() + xlab("variables")
+
+ggplot() + 
+  geom_density(data = train, aes(x = feature_3), color = "blue") +
+  geom_density(data = train, aes(x = feature_2), color = "red") +
+  geom_density(data = train, aes(x = feature_1), color = "green") +
+  geom_density(data = train, aes(x = feature_4), color = "purple") +
+  theme_minimal() + 
+  xlab("Variables")
 ```
 
 <div align="center">
@@ -38,18 +49,30 @@ feature 3. This is known as **Winsorization**.
 
 ``` r
 library(dplyr)
+
 train$key <- row.names(train)
-feature_3_winsor <- data.frame(feature_3 = train$feature_3, key = row.names(train))
+
+feature_3_winsor <- data.frame(
+  feature_3 = train$feature_3, 
+  key = row.names(train)
+)
+
 feature_3_winsor_clean <- na.omit(feature_3_winsor)
 
 feature_3_winsor_clean <- feature_3_winsor_clean %>%
-  mutate(z_score = (feature_3 - mean(feature_3)) / sd(feature_3),percentile = ecdf(feature_3)(feature_3) * 100)
+  mutate(
+    z_score = (feature_3 - mean(feature_3)) / sd(feature_3),
+    percentile = ecdf(feature_3)(feature_3) * 100
+  )
 
-feature_3_winsor_df <- feature_3_winsor_clean[!(feature_3_winsor_clean[, 4] < 1 | feature_3_winsor_clean[, 4] > 99), ]
+feature_3_winsor_df <- feature_3_winsor_clean[
+  !(feature_3_winsor_clean$percentile < 1 | feature_3_winsor_clean$percentile > 99), 
+]
 
 non_matching_keys <- anti_join(train, feature_3_winsor_df, by = "key")$key
 
-train <- train %>% mutate(feature_3 = ifelse(key %in% non_matching_keys, NA, feature_3))
+train <- train %>% 
+  mutate(feature_3 = ifelse(key %in% non_matching_keys, NA, feature_3))
 
 colnames(train)[3] <- "feature_3_winsor"
 ```
@@ -58,11 +81,10 @@ We need to fill in the blanks from the values we just removed, so we
 will replace them with the median of the non-outliers of feature 3.
 
 ``` r
-train[is.na(train[,3]),3] <- median(feature_3_winsor_clean$feature_3)
-
+train[is.na(train[, 3]), 3] <- median(feature_3_winsor_clean$feature_3)
 colnames(train)[3] <- "feature_3_impute"
 
-test[is.na(test[,3]),3] <- median(feature_3_winsor_clean$feature_3)
+test[is.na(test[, 3]), 3] <- median(feature_3_winsor_clean$feature_3)
 colnames(test)[3] <- "feature_3_impute"
 ```
 
@@ -74,43 +96,55 @@ next year is also missing) corresponding to the same ID.
 train$date <- format(as.Date(train$date, format = "%Y-%m-%d"), "%Y")
 
 train <- train %>%
-  arrange(id, date) %>% # Sort by id and date
+  arrange(id, date) %>% 
   group_by(id) %>%
-  mutate(feature_2 = ifelse(is.na(feature_2),
-                            lead(feature_2, order_by = date), # Try next year
-                            feature_2)) %>%
-  mutate(feature_2 = ifelse(is.na(feature_2),
-                            lag(feature_2, order_by = date), # Try previous year
-                            feature_2))
+  mutate(
+    feature_2 = ifelse(is.na(feature_2),
+                       lead(feature_2, order_by = date), # Try next year
+                       feature_2)
+  ) %>%
+  mutate(
+    feature_2 = ifelse(is.na(feature_2),
+                       lag(feature_2, order_by = date), # Try previous year
+                       feature_2)
+  )
 
 colnames(train)[2] <- "feature_2_impute"
-
 
 test <- test %>%
   arrange(id, date) %>% 
   group_by(id) %>%
-  mutate(feature_2 = ifelse(is.na(feature_2),
-                            lead(feature_2, order_by = date), # Try next year
-                            feature_2)) %>%
-  mutate(feature_2 = ifelse(is.na(feature_2),
-                            lag(feature_2, order_by = date), # Try previous year
-                            feature_2))
+  mutate(
+    feature_2 = ifelse(is.na(feature_2),
+                       lead(feature_2, order_by = date), # Try next year
+                       feature_2)
+  ) %>%
+  mutate(
+    feature_2 = ifelse(is.na(feature_2),
+                       lag(feature_2, order_by = date), # Try previous year
+                       feature_2)
+  )
 
 colnames(test)[2] <- "feature_2_impute"
 
 train <- na.omit(train)
 test <- na.omit(test)
 
-your_tibble <- head(train,5)
+your_tibble <- head(train, 5)
+
 library(knitr)
 library(kableExtra)
 
-
 kable(your_tibble, format = "html") %>%
   kable_styling(position = "center") %>%
-  save_kable(file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t5.png", zoom = 2)
+  save_kable(
+    file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t5.png", 
+    zoom = 2
+  )
 
-knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t5.png")
+knitr::include_graphics(
+  "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t5.png"
+)
 ```
 
 <div align="center">
@@ -126,17 +160,43 @@ z-score within its respective variable distribution.
 
 ``` r
 library(dplyr)
-train <- train %>%
-  mutate(across(c(feature_1, feature_2_impute, feature_3_impute, feature_4), 
-                ~ (.x - mean(.x, na.rm = TRUE)) / sd(.x, na.rm = TRUE)))
 
-colnames(train) <- c("feature_1_standard","feature_2_standard","feature_3_standard","feature_4_standard","id","date","y","key")
+train <- train %>%
+  mutate(
+    across(
+      c(feature_1, feature_2_impute, feature_3_impute, feature_4), 
+      ~ (.x - mean(.x, na.rm = TRUE)) / sd(.x, na.rm = TRUE)
+    )
+  )
+
+colnames(train) <- c(
+  "feature_1_standard", 
+  "feature_2_standard", 
+  "feature_3_standard", 
+  "feature_4_standard", 
+  "id", 
+  "date", 
+  "y", 
+  "key"
+)
 
 test <- test %>%
-  mutate(across(c(feature_1, feature_2_impute, feature_3_impute, feature_4), 
-                ~ (.x - mean(.x, na.rm = TRUE)) / sd(.x, na.rm = TRUE)))
+  mutate(
+    across(
+      c(feature_1, feature_2_impute, feature_3_impute, feature_4), 
+      ~ (.x - mean(.x, na.rm = TRUE)) / sd(.x, na.rm = TRUE)
+    )
+  )
 
-colnames(test) <- c("feature_1_standard","feature_2_standard","feature_3_standard","feature_4_standard","id","date","y")
+colnames(test) <- c(
+  "feature_1_standard", 
+  "feature_2_standard", 
+  "feature_3_standard", 
+  "feature_4_standard", 
+  "id", 
+  "date", 
+  "y"
+)
 
 ggplot() + 
   geom_density(data = train, aes(x = feature_3_standard), color = "blue") +
@@ -196,33 +256,48 @@ To asses the accuracy of the model and find the optimal decision
 threshold we produce the ROC curve.
 
 ``` r
-    library(pROC)
-    test$predicted_y <- predict(delinquency_model, newdata = test, type = "class")
-    test$y_numeric <- as.numeric(as.character(factor(test$y, levels = c("90+DPD", "active"), labels = c(1, 0))))
-    test$Probability <- predict(delinquency_model, newdata = test, type = "probs")
-    options(digits = 4)
-    
+library(pROC)
+
+test$predicted_y <- predict(delinquency_model, newdata = test, type = "class")
+test$y_numeric <- as.numeric(as.character(factor(
+  test$y, 
+  levels = c("90+DPD", "active"), 
+  labels = c(1, 0)
+)))
+test$Probability <- predict(delinquency_model, newdata = test, type = "probs")
+
+options(digits = 4)
+
 roc_curve <- roc(response = test$y_numeric, predictor = test$Probability)
-
 roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
-
 auc_value <- auc(roc_curve)
 
-roc_data <- data.frame(TPR = roc_metrics$sensitivity,FPR = roc_metrics$specificity,Threshold = roc_metrics$threshold)
+roc_data <- data.frame(
+  TPR = roc_metrics$sensitivity,
+  FPR = roc_metrics$specificity,
+  Threshold = roc_metrics$threshold
+)
 
 ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
   geom_line(size = 1) +
   geom_abline(slope = 1, intercept = 1, linetype = "dashed", color = "gray") +  
-  geom_line(data = data.frame(FPR = c(1, 1, 0), TPR = c(0, 1, 1)), aes(x = FPR, y = TPR), 
-  color = "blue", size = 1, linetype = "dotted") +
-  labs(title = "ROC Curve for Multinomial Logistic Regression",
-  x = "Specificity",
-  y = "True Positive Rate (Sensitivity)",
-  caption = paste("AUC:", round(auc_value, 4)),
-  color = "Decision Threshold") +
+  geom_line(
+    data = data.frame(FPR = c(1, 1, 0), TPR = c(0, 1, 1)), 
+    aes(x = FPR, y = TPR), 
+    color = "blue", 
+    size = 1, 
+    linetype = "dotted"
+  ) +
+  labs(
+    title = "ROC Curve for Multinomial Logistic Regression",
+    x = "Specificity",
+    y = "True Positive Rate (Sensitivity)",
+    caption = paste("AUC:", round(auc_value, 4)),
+    color = "Decision Threshold"
+  ) +
   scale_color_gradientn(colors = rev(rainbow(100))) +
   coord_fixed() +
-  scale_x_reverse() +  # Reverse the x-axis
+  scale_x_reverse() +  
   ylim(0, 1) +
   theme_minimal() +
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
@@ -270,12 +345,18 @@ evident in the following plot.
 
 ``` r
 ggplot(roc_metrics, aes(x = threshold)) +
-    geom_smooth(aes(y = sensitivity, color = "Sensitivity")) +
-    geom_smooth(aes(y = specificity, color = "Specificity")) +
-    labs(title = "Sensitivity and Specificity vs. Threshold",
-    x = "Threshold", y = "Metric Value") +
-    scale_color_manual(name = "Metrics", values = c("Sensitivity" = "red", "Specificity" = "blue")) +
-    theme_minimal()
+  geom_smooth(aes(y = sensitivity, color = "Sensitivity")) +
+  geom_smooth(aes(y = specificity, color = "Specificity")) +
+  labs(
+    title = "Sensitivity and Specificity vs. Threshold",
+    x = "Threshold", 
+    y = "Metric Value"
+  ) +
+  scale_color_manual(
+    name = "Metrics", 
+    values = c("Sensitivity" = "red", "Specificity" = "blue")
+  ) +
+  theme_minimal()
 ```
 
 <div align="center">
@@ -290,15 +371,22 @@ simple calculation.
 
 ``` r
 optimal_threshold <- roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))]
-your_tibble <- roc_metrics[roc_metrics[,1] ==optimal_threshold,]
+
+your_tibble <- roc_metrics[roc_metrics[, 1] == optimal_threshold, ]
+
 library(knitr)
 library(kableExtra)
 
 kable(your_tibble, format = "html") %>%
   kable_styling(position = "center") %>%
-  save_kable(file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t2.png", zoom = 2)
+  save_kable(
+    file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t2.png", 
+    zoom = 2
+  )
 
-knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t2.png")
+knitr::include_graphics(
+  "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t2.png"
+)
 ```
 
 <div align="center">
@@ -311,26 +399,36 @@ Confusion matrix displaying the results of balanced decision threshold
 evaluated on the testing data.
 
 ``` r
-test$predicted_class <- ifelse(test$Probability >= roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))], 1, 0)
+test$predicted_class <- ifelse(
+  test$Probability >= roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))], 
+  1, 
+  0
+)
 
 library(caret)
+
 conf_matrix <- confusionMatrix(
   factor(test$predicted_class, levels = c(0, 1)),
-  factor(test$y_numeric, levels = c(0, 1)))
+  factor(test$y_numeric, levels = c(0, 1))
+)
 
 confusion_table <- as.data.frame.matrix(conf_matrix$table)
 rownames(confusion_table) <- c("Actual: Non-delinquent", "Actual: Delinquent")
 colnames(confusion_table) <- c("Predicted: Non-delinquent", "Predicted: Delinquent")
-
 
 library(kableExtra)
 library(webshot2)
 
 kable(confusion_table, format = "html") %>%
   kable_styling(position = "center") %>%
-  save_kable(file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t3.png", zoom = 2)
+  save_kable(
+    file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t3.png", 
+    zoom = 2
+  )
 
-knitr::include_graphics("~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t3.png")
+knitr::include_graphics(
+  "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t3.png"
+)
 ```
 
 <div align="center">
