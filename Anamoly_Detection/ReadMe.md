@@ -646,7 +646,7 @@ All of the merchants were effected except UrbanClap.
 Could such a massive spike in payment failure rates have been predicted?
 To investigate this, we separate the data with the combination of
 variables we found to be problematic from the normal data and produce
-the following plots to compare the normal and abnormal data.
+the following plots to compare the two.
 
 ###### anomaly data
 
@@ -707,7 +707,7 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 
 </div>
 
-in comparison of the anomalous observations to the normal data, there
+In comparison of the anomalous observations to the normal data, there
 isn’t any clear indication that something was wrong until around hour
 40.
 
@@ -735,8 +735,7 @@ You can see that the anomalous data has much higher variance than the
 normal data, but this is expected as the anomalous data only has ~500
 observations and the normal data has 1800.
 
-The plot that clarifies the situation is the plot of the distribution of
-the anomaly data.
+The following plots clarifies the situation.
 
 ``` r
 library(plotly)
@@ -757,4 +756,4 @@ ggplot(data = wide, aes(proportion_subset)) +
 
 </div>
 
-[View the interactive plot](https://colab.research.google.com/drive/1MzoEVqBkF7pN3OJyQnW96a8yDNd5p0J1#scrollTo=ZVEcsJhI-U2R)
+![Density Plot Animation](ReadMe_files/figure-gfm/density_animation_high_quality.gif)
