@@ -735,12 +735,20 @@ You can see that the anomalous data has much higher variance than the
 normal data, but this is expected as the anomalous data only has ~500
 observations and the normal data has 1800.
 
-The following plots clarifies the situation.
+The following graphics displays the distribution of the anamolous data
+over a shifting 18 hour time window of first 18 hours of the dataset
+until the last 18 hours of the data set out of the 72.
+
+![Density Plot Animation](ReadMe_files/figure-gfm/density_animation_high_quality.gif)
+
+The distribution of the anomalous data over the entire 72 hours is as
+follows.
 
 ``` r
 library(plotly)
 
 ggplot(data = wide, aes(proportion_subset)) + 
+  geom_density(data=wide,aes(proportion_c,fill="red",alpha=0.20)) + 
   geom_density(fill = "blue", alpha = 0.20) + 
   theme_minimal() + 
   labs(
@@ -755,5 +763,3 @@ ggplot(data = wide, aes(proportion_subset)) +
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-21-1.png" width="70%">
 
 </div>
-
-![Density Plot Animation](ReadMe_files/figure-gfm/density_animation_high_quality.gif)
