@@ -674,7 +674,12 @@ proportion_subset <- f / t[, 2] * 100
 
 ``` r
 paytm_compliment <- data[!(rownames(data) %in% rownames(paytm_subset)), ]
+(nrow(paytm_compliment))
+```
 
+    ## [1] 18755
+
+``` r
 t <- aggregate(paytm_compliment$t, by = list(paytm_compliment$hr), sum)
 s <- aggregate(paytm_compliment$s, by = list(paytm_compliment$hr), sum)
 f <- t[, 2] - s[, 2]
@@ -786,8 +791,139 @@ ggplot(data = wide, aes(proportion_subset)) +
 From all of these plots it’s evident that there was no indication that
 failure rate of the observations with the combination of variables in
 which the anomaly occurred was any different from the rest of the data.
+Something happened which caused the payment failure rate to spike as it
+did.
 
-An something happened that caused this event at the time it did.
+If the anomaly could not have been predicted, when is the soonest we
+could had known it was happening so we could start implementing damage
+control.
 
-What if there was a control chart that was monitoring this data, at what
-hour would it have detected that something was wrong?
+This is a EWMA control chart comparing the anomaly data to the normal
+data without accounting for the difference of sample sizes.
+
+The anomaly data breaches control limits indicating that something is
+wrong before the anomaly event occurs.
+
+``` r
+# Load necessary library
+library(qcc)
+
+# Load the dataset
+
+
+# Extract the relevant columns for normal and anomaly data
+proportion_c <- wide$proportion_c
+proportion_subset <- wide$proportion_subset
+
+# Create EWMA chart for monitoring the anomaly data against the normal data
+ewma_chart <- ewma(
+  data = proportion_subset, 
+  center = mean(proportion_c, na.rm = TRUE), 
+  std.dev = sd(proportion_c, na.rm = TRUE),
+  lambda = 0.2, 
+  nsigmas = 3, 
+  data.name = "Proportion Subset Monitoring"
+)
+```
+
+<div align="center">
+
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-23-1.png" width="70%">
+
+</div>
+
+``` r
+# Print summary and plot the chart
+summary(ewma_chart)
+```
+
+    ## 
+    ## Call:
+    ## ewma(data = proportion_subset, center = mean(proportion_c, na.rm = TRUE),     std.dev = sd(proportion_c, na.rm = TRUE), lambda = 0.2, nsigmas = 3,     data.name = "Proportion Subset Monitoring")
+    ## 
+    ## ewma chart for Proportion Subset Monitoring 
+    ## 
+    ## Summary of group statistics:
+    ##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+    ## 11.11111 31.79047 37.16882 42.78413 48.94601 85.00000 
+    ## 
+    ## Group sample size:  1
+    ## Number of groups:  72
+    ## Center of group statistics:  34.63494
+    ## Standard deviation:  3.172232 
+    ## 
+    ## Smoothing parameter: 0.2 
+    ## Control limits:
+    ##            LCL      UCL
+    ## [1,]  32.73161 36.53828
+    ## [2,]  32.19748 37.07241
+    ## ...                    
+    ## [72,] 31.46271 37.80718
+
+``` r
+plot(ewma_chart)
+```
+
+However, if you account for sample size and produce the same chart
+comparing a sample of the normal data of equal size to the anomaly data,
+the normal data also breaches normal limits.
+
+``` r
+# Load necessary library
+library(qcc)
+
+# Load the dataset
+
+
+# Extract the relevant columns for normal and anomaly data
+proportion_c <- wide$proportion_c
+proportion_subset <- wide$proportion_subset
+
+# Create EWMA chart for monitoring the anomaly data against the normal data
+ewma_chart <- ewma(
+  data = proportion_c_sample, 
+  center = mean(proportion_c, na.rm = TRUE), 
+  std.dev = sd(proportion_c, na.rm = TRUE),
+  lambda = 0.2, 
+  nsigmas = 3, 
+  data.name = "Proportion Subset Monitoring"
+)
+```
+
+<div align="center">
+
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-24-1.png" width="70%">
+
+</div>
+
+``` r
+# Print summary and plot the chart
+summary(ewma_chart)
+```
+
+    ## 
+    ## Call:
+    ## ewma(data = proportion_c_sample, center = mean(proportion_c,     na.rm = TRUE), std.dev = sd(proportion_c, na.rm = TRUE),     lambda = 0.2, nsigmas = 3, data.name = "Proportion Subset Monitoring")
+    ## 
+    ## ewma chart for Proportion Subset Monitoring 
+    ## 
+    ## Summary of group statistics:
+    ##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+    ##   0.00000  26.17216  33.33333  35.22170  43.12937 100.00000 
+    ## 
+    ## Group sample size:  1
+    ## Number of groups:  71
+    ## Center of group statistics:  34.63494
+    ## Standard deviation:  3.172232 
+    ## 
+    ## Smoothing parameter: 0.2 
+    ## Control limits:
+    ##            LCL      UCL
+    ## [1,]  32.73161 36.53828
+    ## [2,]  32.19748 37.07241
+    ## ...                    
+    ## [71,] 31.46271 37.80718
+
+``` r
+plot(ewma_chart)
+```
