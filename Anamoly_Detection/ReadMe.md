@@ -1816,6 +1816,9 @@ ggplot(data = wide, aes(proportion_subset)) +
   )
 ```
 
+[View the interactive plot](https://drive.google.com/file/d/1Rdw-wbCO28ZkAhmMNNn9bOCBD6Lt3mXy/view?usp=sharing)
+
+
 <div align="center">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-19-1.png" width="70%">
