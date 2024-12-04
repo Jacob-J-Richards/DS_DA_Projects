@@ -804,6 +804,9 @@ data without accounting for the difference of sample sizes.
 The anomaly data breaches control limits indicating that something is
 wrong before the anomaly event occurs.
 
+nah we need to make a vector which collects the number of samples of
+each hour of which each hour failure rate was produced
+
 ``` r
 # Load necessary library
 library(qcc)
