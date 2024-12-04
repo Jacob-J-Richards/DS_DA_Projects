@@ -1933,7 +1933,7 @@ wide
     ## 71    71     37.25490          15.38462
     ## 72    72     32.36715          53.84615
 
-[View the interactive plot](https://github.com/Jacob-J-Richards/DS_DA_Projects/blob/main/Anamoly_Detection/docs/interactive_density_plot.html)
+[View the interactive plot](https://username.github.io/repository-name/interactive_density_plot.html)
 
 There are tons of plots that can be produced here but only one has a
 meaningful implication.
