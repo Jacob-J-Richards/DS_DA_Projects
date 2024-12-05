@@ -686,6 +686,9 @@ ggplot(data = wide, aes(proportion_subset)) +
 
 2)  how could the issue have been detected earlier to prevent merchants and customers from discovering it. A dashboard visualizing metrics like success rate and volume across dimensions is then requested.
 
+ok so what we should do is monitor the failure rate by the combinations of pmt, pg, and subtype, there are actually fewer combinations than you would expect as some variables are mutually exclusive with others
+
 ```{r}
+
 
 ```
