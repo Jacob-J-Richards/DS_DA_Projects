@@ -599,8 +599,7 @@ transactions_compliment <- t
 ###### normal data but equal number of observations selected at random as the anomalous subset
 
 ```{r}
-set.seed(42)
-paytm_compliment_sample <- paytm_compliment[sample(nrow(paytm_compliment), 552), ]
+paytm_compliment_sample <- paytm_compliment[sample(nrow(paytm_compliment), 1200), ]
 
 t <- aggregate(paytm_compliment_sample$t, by = list(paytm_compliment_sample$hr), sum)
 
@@ -639,7 +638,7 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
   scale_color_discrete(labels = c("Non-Anomalous Data Entire Set", "Anomalous Data","Non-Anomalous Data Sample")) +
   geom_hline(yintercept = 34.63494, linetype = "dashed", color = "red")
 
-
+cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
 ```
 
 To make a fair comparison of the anomalous data and normal data before the anomaly event, the blue line is the failure rate of the normal data from 552 randomly selected observations within it, such that it of equal sample size to the anomalous data comprised of an equal number of observations.
@@ -685,4 +684,8 @@ ggplot(data = wide, aes(proportion_subset)) +
 
 ```
 
-From all of these plots it's evident that there was no indication that failure rate of the observations with the combination of variables in which the anomaly occurred was any different from the rest of the data. Something happened which caused the payment failure rate to spike as it did. Notably before the mean shift the anomolous data was actually better behaved than the remainder of the data.
+2) how could the issue have been detected earlier to prevent merchants and customers from discovering it. A dashboard visualizing metrics like success rate and volume across dimensions is then requested.
+
+```{r}
+
+```
