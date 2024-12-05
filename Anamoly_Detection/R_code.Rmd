@@ -575,6 +575,8 @@ f <- t[, 2] - s[, 2]
 
 proportion_subset <- f / t[, 2] * 100
 
+transactions_subset <- t
+
 ```
 
 ###### normal data
@@ -586,31 +588,37 @@ t <- aggregate(paytm_compliment$t, by = list(paytm_compliment$hr), sum)
 s <- aggregate(paytm_compliment$s, by = list(paytm_compliment$hr), sum)
 f <- t[, 2] - s[, 2]
 
-proportion_c <- f / t[, 2] * 100
+proportion_compliment <- f / t[, 2] * 100
+
+transactions_compliment <- t
+
 
 ```
 
 ###### normal data but equal number of observations selected at random as the anomalous subset
 
 ```{r}
-set.seed(42)  
+
 paytm_compliment_sample <- paytm_compliment[sample(nrow(paytm_compliment), 552), ]
 
 t <- aggregate(paytm_compliment_sample$t, by = list(paytm_compliment_sample$hr), sum)
 s <- aggregate(paytm_compliment_sample$s, by = list(paytm_compliment_sample$hr), sum)
 f <- t[, 2] - s[, 2]
 
-proportion_c_sample <- f / t[, 2] * 100
+proportion_compliment_sample <- f / t[, 2] * 100
+
+compliment_sample_sizes <- t
+
 ```
 
 ```{r}
 hours <- seq(1, 72, 1)
-wide <- as.data.frame(cbind(hours, proportion_c, proportion_subset,proportion_c_sample))
+wide <- as.data.frame(cbind(hours, proportion_compliment, proportion_subset,proportion_compliment_sample))
 
 long <- melt(
   data = wide, 
   id.vars = c("hours"), 
-  measured.vars = c("proportion_c", "proportion_subset","proportion_c_sample"), 
+  measured.vars = c("proportion_compliment", "proportion_subset","proportion_compliment_sample"), 
   variable.name = "percentage_failure"
 )
 ```
@@ -657,7 +665,7 @@ Notice that the anomalous data is synthetic by it's perfect distribution.
 library(plotly)
 
 ggplot(data = wide, aes(proportion_subset)) + 
-  geom_density(data=wide,aes(proportion_c_sample,fill="red",alpha=0.20)) + 
+  geom_density(data=wide,aes(proportion_compliment_sample,fill="red",alpha=0.20)) + 
   geom_density(fill = "blue", alpha = 0.20) + 
   theme_minimal() + 
   labs(
@@ -678,59 +686,95 @@ The anomaly data breaches control limits indicating that something is wrong befo
 
 nah we need to make a vector which collects the number of samples of each hour of which each hour failure rate was produced
 
+However, if you account for sample size and produce the same chart comparing a sample of the normal data of equal size to the anomaly data, the normal data also breaches normal limits.
+
 ```{r}
-# Load necessary library
-library(qcc)
 
-# Load the dataset
+sample_sizes <- data.frame(transactions_subset[,2])
+
+colnames(sample_sizes) <- c("transactions_subset")
+
+failure_rates <- data.frame(proportion_subset,proportion_compliment)
+
+failure_rates_sample_size <- cbind(sample_sizes,failure_rates)
+
+write.csv(failure_rates_sample_size,file="failure_rates_sample_size.csv")
+
+# Load required libraries
+library(ggplot2)
 
 
-# Extract the relevant columns for normal and anomaly data
-proportion_c <- wide$proportion_c
-proportion_subset <- wide$proportion_subset
+# anamoly data 
+data <- failure_rates_sample_size
 
-# Create EWMA chart for monitoring the anomaly data against the normal data
-ewma_chart <- ewma(
-  data = proportion_subset, 
-  center = mean(proportion_c, na.rm = TRUE), 
-  std.dev = sd(proportion_c, na.rm = TRUE),
-  lambda = 0.2, 
-  nsigmas = 3, 
-  data.name = "Proportion Subset Monitoring"
+# Parameters for EWMA
+lambda <- 0.2  # Smoothing parameter
+nsigmas <- 3    # Number of standard deviations for control limits
+
+# Compute mean and standard deviation for compliment
+center <- mean(data$proportion_compliment, na.rm = TRUE)
+std_dev <- sd(data$proportion_compliment, na.rm = TRUE)
+
+# Initialize EWMA values
+ewma_values <- c(center)  # Start EWMA at the center (mean of compliment)
+UCL <- numeric()  # Initialize an empty vector for UCL
+LCL <- numeric()  # Initialize an empty vector for LCL
+
+# Compute EWMA and dynamic control limits with sample size adjustment
+for (i in seq_along(data$proportion_subset)) {
+  value <- data$proportion_subset[i]
+  sample_size <- data$sample_sizes[i]
+  
+  # Compute EWMA value
+  ewma <- lambda * value + (1 - lambda) * tail(ewma_values, 1)
+  ewma_values <- c(ewma_values, ewma)
+  
+  # Adjust control limit based on sample size
+  control_limit <- (std_dev / sqrt(data$transactions_subset)) * sqrt((lambda / (2 - lambda)) * (1 - (1 - lambda)^(2 * i)))
+  UCL <- c(UCL, center + nsigmas * control_limit)
+  LCL <- c(LCL, center - nsigmas * control_limit)
+}
+
+# Drop the first placeholder EWMA value
+ewma_values <- ewma_values[-1]
+
+# Ensure UCL and LCL have the same length as EWMA values
+UCL <- UCL[1:length(ewma_values)]
+LCL <- LCL[1:length(ewma_values)]
+
+# Create a data frame for plotting
+plot_data <- data.frame(
+  Index = seq_along(ewma_values),
+  EWMA = ewma_values,
+  UCL = UCL,
+  LCL = LCL,
+  Center = rep(center, length(ewma_values))
 )
 
-# Print summary and plot the chart
-summary(ewma_chart)
-plot(ewma_chart)
+# Plot EWMA Chart
+library(ggplot2)
+
+ggplot(plot_data, aes(x = Index)) +
+  geom_line(aes(y = EWMA, color = "EWMA"), size = 1) +
+  geom_line(aes(y = UCL, color = "UCL (Upper Control Limit)"), linetype = "dashed") +
+  geom_line(aes(y = LCL, color = "LCL (Lower Control Limit)"), linetype = "dashed") +
+  geom_hline(aes(yintercept = Center, color = "Center Line (Mean)"), linetype = "solid") +
+  labs(title = "EWMA Chart", x = "Sample Index", y = "EWMA Value") +
+  theme_minimal() +
+  scale_color_manual(
+    name = "Legend",
+    values = c("EWMA" = "blue", "UCL (Upper Control Limit)" = "red",
+               "LCL (Lower Control Limit)" = "green", "Center Line (Mean)" = "black")
+  ) +
+  theme(legend.position = "bottom")
 
 
 ```
 
-However, if you account for sample size and produce the same chart comparing a sample of the normal data of equal size to the anomaly data, the normal data also breaches normal limits.
+what if you plotted transaction failure rates as a function of volume
+
+what if this anamoly occured because there was increidbly high transaction
 
 ```{r}
-# Load necessary library
-library(qcc)
-
-# Load the dataset
-
-
-# Extract the relevant columns for normal and anomaly data
-proportion_c <- wide$proportion_c
-proportion_subset <- wide$proportion_subset
-
-# Create EWMA chart for monitoring the anomaly data against the normal data
-ewma_chart <- ewma(
-  data = proportion_c_sample, 
-  center = mean(proportion_c, na.rm = TRUE), 
-  std.dev = sd(proportion_c, na.rm = TRUE),
-  lambda = 0.2, 
-  nsigmas = 3, 
-  data.name = "Proportion Subset Monitoring"
-)
-
-# Print summary and plot the chart
-summary(ewma_chart)
-plot(ewma_chart)
 
 ```
