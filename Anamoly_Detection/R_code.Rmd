@@ -577,6 +577,7 @@ proportion_subset <- f / t[, 2] * 100
 
 transactions_subset <- t
 
+cat("totall transactions within all anamolous observations",sum(transactions_subset[,2]))
 ```
 
 ###### normal data
@@ -592,23 +593,27 @@ proportion_compliment <- f / t[, 2] * 100
 
 transactions_compliment <- t
 
-
+(mean(proportion_compliment))
 ```
 
 ###### normal data but equal number of observations selected at random as the anomalous subset
 
 ```{r}
-
+set.seed(42)
 paytm_compliment_sample <- paytm_compliment[sample(nrow(paytm_compliment), 552), ]
 
 t <- aggregate(paytm_compliment_sample$t, by = list(paytm_compliment_sample$hr), sum)
+
 s <- aggregate(paytm_compliment_sample$s, by = list(paytm_compliment_sample$hr), sum)
+
 f <- t[, 2] - s[, 2]
 
 proportion_compliment_sample <- f / t[, 2] * 100
 
 compliment_sample_sizes <- t
+(sum(compliment_sample_sizes[,2]))
 
+cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
 ```
 
 ```{r}
@@ -631,11 +636,15 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
     title = "Smoothed Failure Percentage Curve", 
     ylab = "Percentage"
   ) + 
-  scale_color_discrete(labels = c("Non-Anomalous Data Entire Set", "Anomalous Data","Non-Anomalous Data Sample"))
+  scale_color_discrete(labels = c("Non-Anomalous Data Entire Set", "Anomalous Data","Non-Anomalous Data Sample")) +
+  geom_hline(yintercept = 34.63494, linetype = "dashed", color = "red")
+
 
 ```
 
-In comparison of the anomalous observations to the normal data, there isn't any clear indication that something was wrong until around hour 40.
+To make a fair comparison of the anomalous data and normal data before the anomaly event, the blue line is the failure rate of the normal data from 552 randomly selected observations within it, such that it of equal sample size to the anomalous data comprised of an equal number of observations.
+
+Despite the transaction count within the normal data sample size controlled being greater than the totall transactions of the anomalous data, it's variance and mean is consistently
 
 ```{r}
 
