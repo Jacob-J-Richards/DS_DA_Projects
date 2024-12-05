@@ -668,7 +668,13 @@ s <- aggregate(paytm_subset$s, by = list(paytm_subset$hr), sum)
 f <- t[, 2] - s[, 2]
 
 proportion_subset <- f / t[, 2] * 100
+
+transactions_subset <- t
+
+cat("totall transactions within all anamolous observations",sum(transactions_subset[,2]))
 ```
+
+    ## totall transactions within all anamolous observations 12348
 
 ###### normal data
 
@@ -684,30 +690,48 @@ t <- aggregate(paytm_compliment$t, by = list(paytm_compliment$hr), sum)
 s <- aggregate(paytm_compliment$s, by = list(paytm_compliment$hr), sum)
 f <- t[, 2] - s[, 2]
 
-proportion_c <- f / t[, 2] * 100
+proportion_compliment <- f / t[, 2] * 100
+
+transactions_compliment <- t
+
+(mean(proportion_compliment))
 ```
+
+    ## [1] 34.63494
 
 ###### normal data but equal number of observations selected at random as the anomalous subset
 
 ``` r
-set.seed(42)  
-paytm_compliment_sample <- paytm_compliment[sample(nrow(paytm_compliment), 552), ]
+paytm_compliment_sample <- paytm_compliment[sample(nrow(paytm_compliment), 1200), ]
 
 t <- aggregate(paytm_compliment_sample$t, by = list(paytm_compliment_sample$hr), sum)
+
 s <- aggregate(paytm_compliment_sample$s, by = list(paytm_compliment_sample$hr), sum)
+
 f <- t[, 2] - s[, 2]
 
-proportion_c_sample <- f / t[, 2] * 100
+proportion_compliment_sample <- f / t[, 2] * 100
+
+compliment_sample_sizes <- t
+(sum(compliment_sample_sizes[,2]))
 ```
+
+    ## [1] 12635
+
+``` r
+cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
+```
+
+    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 12635
 
 ``` r
 hours <- seq(1, 72, 1)
-wide <- as.data.frame(cbind(hours, proportion_c, proportion_subset,proportion_c_sample))
+wide <- as.data.frame(cbind(hours, proportion_compliment, proportion_subset,proportion_compliment_sample))
 
 long <- melt(
   data = wide, 
   id.vars = c("hours"), 
-  measured.vars = c("proportion_c", "proportion_subset","proportion_c_sample"), 
+  measured.vars = c("proportion_compliment", "proportion_subset","proportion_compliment_sample"), 
   variable.name = "percentage_failure"
 )
 ```
@@ -719,7 +743,8 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
     title = "Smoothed Failure Percentage Curve", 
     ylab = "Percentage"
   ) + 
-  scale_color_discrete(labels = c("Non-Anomalous Data Entire Set", "Anomalous Data","Non-Anomalous Data Sample"))
+  scale_color_discrete(labels = c("Non-Anomalous Data Entire Set", "Anomalous Data","Non-Anomalous Data Sample")) +
+  geom_hline(yintercept = 34.63494, linetype = "dashed", color = "red")
 ```
 
 <div align="center">
@@ -728,9 +753,21 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 
 </div>
 
-In comparison of the anomalous observations to the normal data, there
-isn’t any clear indication that something was wrong until around hour
-40.
+``` r
+cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
+```
+
+    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 12635
+
+To make a fair comparison of the anomalous data and normal data before
+the anomaly event, the blue line is the failure rate of the normal data
+from 552 randomly selected observations within it, such that it of equal
+sample size to the anomalous data comprised of an equal number of
+observations.
+
+Despite the transaction count within the normal data sample size
+controlled being greater than the totall transactions of the anomalous
+data, it’s variance and mean is consistently
 
 ``` r
 ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color = percentage_failure)) + 
@@ -772,7 +809,7 @@ distribution.
 library(plotly)
 
 ggplot(data = wide, aes(proportion_subset)) + 
-  geom_density(data=wide,aes(proportion_c_sample,fill="red",alpha=0.20)) + 
+  geom_density(data=wide,aes(proportion_compliment_sample,fill="red",alpha=0.20)) + 
   geom_density(fill = "blue", alpha = 0.20) + 
   theme_minimal() + 
   labs(
@@ -788,145 +825,6 @@ ggplot(data = wide, aes(proportion_subset)) +
 
 </div>
 
-From all of these plots it’s evident that there was no indication that
-failure rate of the observations with the combination of variables in
-which the anomaly occurred was any different from the rest of the data.
-Something happened which caused the payment failure rate to spike as it
-did.
-
-If the anomaly could not have been predicted, when is the soonest we
-could had known it was happening so we could start implementing damage
-control.
-
-This is a EWMA control chart comparing the anomaly data to the normal
-data without accounting for the difference of sample sizes.
-
-The anomaly data breaches control limits indicating that something is
-wrong before the anomaly event occurs.
-
-nah we need to make a vector which collects the number of samples of
-each hour of which each hour failure rate was produced
-
-``` r
-# Load necessary library
-library(qcc)
-
-# Load the dataset
-
-
-# Extract the relevant columns for normal and anomaly data
-proportion_c <- wide$proportion_c
-proportion_subset <- wide$proportion_subset
-
-# Create EWMA chart for monitoring the anomaly data against the normal data
-ewma_chart <- ewma(
-  data = proportion_subset, 
-  center = mean(proportion_c, na.rm = TRUE), 
-  std.dev = sd(proportion_c, na.rm = TRUE),
-  lambda = 0.2, 
-  nsigmas = 3, 
-  data.name = "Proportion Subset Monitoring"
-)
-```
-
-<div align="center">
-
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-23-1.png" width="70%">
-
-</div>
-
-``` r
-# Print summary and plot the chart
-summary(ewma_chart)
-```
-
-    ## 
-    ## Call:
-    ## ewma(data = proportion_subset, center = mean(proportion_c, na.rm = TRUE),     std.dev = sd(proportion_c, na.rm = TRUE), lambda = 0.2, nsigmas = 3,     data.name = "Proportion Subset Monitoring")
-    ## 
-    ## ewma chart for Proportion Subset Monitoring 
-    ## 
-    ## Summary of group statistics:
-    ##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-    ## 11.11111 31.79047 37.16882 42.78413 48.94601 85.00000 
-    ## 
-    ## Group sample size:  1
-    ## Number of groups:  72
-    ## Center of group statistics:  34.63494
-    ## Standard deviation:  3.172232 
-    ## 
-    ## Smoothing parameter: 0.2 
-    ## Control limits:
-    ##            LCL      UCL
-    ## [1,]  32.73161 36.53828
-    ## [2,]  32.19748 37.07241
-    ## ...                    
-    ## [72,] 31.46271 37.80718
-
-``` r
-plot(ewma_chart)
-```
-
-However, if you account for sample size and produce the same chart
-comparing a sample of the normal data of equal size to the anomaly data,
-the normal data also breaches normal limits.
-
-``` r
-# Load necessary library
-library(qcc)
-
-# Load the dataset
-
-
-# Extract the relevant columns for normal and anomaly data
-proportion_c <- wide$proportion_c
-proportion_subset <- wide$proportion_subset
-
-# Create EWMA chart for monitoring the anomaly data against the normal data
-ewma_chart <- ewma(
-  data = proportion_c_sample, 
-  center = mean(proportion_c, na.rm = TRUE), 
-  std.dev = sd(proportion_c, na.rm = TRUE),
-  lambda = 0.2, 
-  nsigmas = 3, 
-  data.name = "Proportion Subset Monitoring"
-)
-```
-
-<div align="center">
-
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-24-1.png" width="70%">
-
-</div>
-
-``` r
-# Print summary and plot the chart
-summary(ewma_chart)
-```
-
-    ## 
-    ## Call:
-    ## ewma(data = proportion_c_sample, center = mean(proportion_c,     na.rm = TRUE), std.dev = sd(proportion_c, na.rm = TRUE),     lambda = 0.2, nsigmas = 3, data.name = "Proportion Subset Monitoring")
-    ## 
-    ## ewma chart for Proportion Subset Monitoring 
-    ## 
-    ## Summary of group statistics:
-    ##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-    ##   0.00000  26.17216  33.33333  35.22170  43.12937 100.00000 
-    ## 
-    ## Group sample size:  1
-    ## Number of groups:  71
-    ## Center of group statistics:  34.63494
-    ## Standard deviation:  3.172232 
-    ## 
-    ## Smoothing parameter: 0.2 
-    ## Control limits:
-    ##            LCL      UCL
-    ## [1,]  32.73161 36.53828
-    ## [2,]  32.19748 37.07241
-    ## ...                    
-    ## [71,] 31.46271 37.80718
-
-``` r
-plot(ewma_chart)
-```
+2)  how could the issue have been detected earlier to prevent merchants
+    and customers from discovering it. A dashboard visualizing metrics
+    like success rate and volume across dimensions is then requested.

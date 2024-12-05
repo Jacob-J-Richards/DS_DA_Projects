@@ -684,7 +684,7 @@ ggplot(data = wide, aes(proportion_subset)) +
 
 ```
 
-2) how could the issue have been detected earlier to prevent merchants and customers from discovering it. A dashboard visualizing metrics like success rate and volume across dimensions is then requested.
+2)  how could the issue have been detected earlier to prevent merchants and customers from discovering it. A dashboard visualizing metrics like success rate and volume across dimensions is then requested.
 
 ```{r}
 
