@@ -323,10 +323,19 @@ Assuming that the PAYTM payment gateways (PAYTM, PAYTM_V2, and PAYTM_UPI) are pa
 We will omit any combinations including the variable bank as it has over 300 different values within the data set.
 
 ```{r}
+#payment_methods <- unique(data[, 4])
+#subtypes <- unique(data[, 6])
+#filter_values <- c("PAYTM", "PAYTM_V2", "PAYTM_UPI")
+#subset_list <- list()
+
+write.csv(data,file="shiny_app_data.csv")
+data
+
 payment_methods <- unique(data[, 4])
 subtypes <- unique(data[, 6])
 filter_values <- c("PAYTM", "PAYTM_V2", "PAYTM_UPI")
 subset_list <- list()
+
 
 for (pm in payment_methods) {
   for (st in subtypes) {
@@ -688,7 +697,11 @@ ggplot(data = wide, aes(proportion_subset)) +
 
 ok so what we should do is monitor the failure rate by the combinations of pmt, pg, and subtype, there are actually fewer combinations than you would expect as some variables are mutually exclusive with others
 
-```{r}
+you need to make a shiny dashboard for this
 
+```{r}
+library(shiny)
+
+shiny::runApp("/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/shiny")
 
 ```
