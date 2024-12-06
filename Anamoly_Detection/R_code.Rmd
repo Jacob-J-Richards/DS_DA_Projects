@@ -756,3 +756,5 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 
 
 ```
+
+i have the shiny working but i don't know where to go from here on seeing the anamoly sooner
