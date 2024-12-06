@@ -329,7 +329,7 @@ We will omit any combinations including the variable bank as it has over 300 dif
 #subset_list <- list()
 
 write.csv(data,file="shiny_app_data.csv")
-data
+
 
 payment_methods <- unique(data[, 4])
 subtypes <- unique(data[, 6])
