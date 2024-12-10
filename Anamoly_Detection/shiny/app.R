@@ -4,16 +4,12 @@ library(shinyjs)
 # Load the data
 data <- read.csv("/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/shiny/shiny_app_data.csv")
 
-# Ensure hr is numeric
-if(!is.numeric(data$hr)) {
-  data$hr <- as.numeric(data$hr)
-}
-
 # Precompute valid combinations
 valid_combinations <- unique(data[, c("pmt", "pg", "subtype")])
 
 ui <- fluidPage(
   useShinyjs(),
+  # Add custom CSS for disabled buttons
   tags$style(HTML("
     .btn:disabled {
       background-color: grey !important;
@@ -46,6 +42,7 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
+  # Reactive values to store current selections
   selections <- reactiveValues(pmt = NULL, pg = NULL, y_range = c(0, 100))
   
   # Observe PMT button clicks
@@ -53,8 +50,9 @@ server <- function(input, output, session) {
     lapply(unique(valid_combinations$pmt), function(pmt) {
       observeEvent(input[[paste0("pmt_", pmt)]], {
         selections$pmt <- pmt
-        selections$pg <- NULL
+        selections$pg <- NULL  # Reset PG selection
         
+        # Enable/disable PMT buttons
         lapply(unique(valid_combinations$pmt), function(other_pmt) {
           if (other_pmt == pmt) {
             disable(paste0("pmt_", other_pmt))
@@ -63,22 +61,24 @@ server <- function(input, output, session) {
           }
         })
         
+        # Update PG buttons based on selected PMT
         updatePgButtons(pmt)
       })
     })
   })
   
+  # Function to update PG buttons sorted by transaction volume
   updatePgButtons <- function(selected_pmt) {
     pg_data <- data[data$pmt == selected_pmt, ]
     if (nrow(pg_data) > 0) {
+      # Aggregate total transactions for each PG
       pg_totals <- aggregate(pg_data$t, by = list(pg = pg_data$pg), FUN = sum)
-      pg_totals <- pg_totals[pg_totals$x >= 20, ]  
-      pg_totals <- pg_totals[order(-pg_totals$x), ]
+      pg_totals <- pg_totals[pg_totals$x >= 20, ]  # Filter out PGs with less than 20 transactions
+      pg_totals <- pg_totals[order(-pg_totals$x), ]  # Sort by total transactions descending
       
+      # Create buttons for each PG
       pg_buttons <- lapply(pg_totals$pg, function(pg) {
-        actionButton(inputId = paste0("pg_", gsub(" ", "_", pg)), 
-                     label = paste(pg, "-", pg_totals$x[pg_totals$pg == pg]), 
-                     class = "btn btn-success")
+        actionButton(inputId = paste0("pg_", gsub(" ", "_", pg)), label = paste(pg, "-", pg_totals$x[pg_totals$pg == pg]), class = "btn btn-success")
       })
       
       if (nrow(pg_totals) > 0) {
@@ -91,33 +91,34 @@ server <- function(input, output, session) {
     }
   }
   
+  # Observe PG button clicks
   observe({
     unique_pg <- unique(data$pg)
     lapply(unique_pg, function(pg) {
       observeEvent(input[[paste0("pg_", gsub(" ", "_", pg))]], {
         selections$pg <- pg
+        
+        # Update global y-axis range
         calculateGlobalYRange()
       })
     })
   })
   
+  # Function to calculate global y-axis range
   calculateGlobalYRange <- function() {
     if (!is.null(selections$pmt) && !is.null(selections$pg)) {
       relevant_data <- data[data$pmt == selections$pmt & data$pg == selections$pg, ]
       if (nrow(relevant_data) > 0) {
         proportions <- (relevant_data$t - relevant_data$s) / relevant_data$t * 100
-        proportions <- proportions[is.finite(proportions)]
-        if (length(proportions) > 0) {
-          selections$y_range <- range(proportions)
-        } else {
-          selections$y_range <- c(0, 100)
-        }
+        proportions <- proportions[!is.na(proportions) & is.finite(proportions)]
+        selections$y_range <- range(proportions, na.rm = TRUE)
       } else {
         selections$y_range <- c(0, 100)
       }
     }
   }
   
+  # Text outputs for selected variables
   output$selected_pmt <- renderText({
     paste("Selected Payment Method (PMT):", selections$pmt %||% "None")
   })
@@ -126,8 +127,10 @@ server <- function(input, output, session) {
     paste("Selected Payment Gateway (PG):", selections$pg %||% "None")
   })
   
+  # Dynamically generate plots for all available subtypes
   output$subtypePlots <- renderUI({
     if (!is.null(selections$pmt) && !is.null(selections$pg)) {
+      # Filter subtypes with 10+ transactions
       subtype_data <- data[data$pmt == selections$pmt & data$pg == selections$pg, ]
       subtype_totals <- aggregate(subtype_data$t, by = list(subtype = subtype_data$subtype), FUN = sum)
       valid_subtypes <- subtype_totals[subtype_totals$x >= 10, ]
@@ -153,8 +156,10 @@ server <- function(input, output, session) {
     }
   })
   
+  # Render plots for each subtype
   observe({
     if (!is.null(selections$pmt) && !is.null(selections$pg)) {
+      # Filter subtypes with 10+ transactions
       subtype_data <- data[data$pmt == selections$pmt & data$pg == selections$pg, ]
       subtype_totals <- aggregate(subtype_data$t, by = list(subtype = subtype_data$subtype), FUN = sum)
       valid_subtypes <- subtype_totals[subtype_totals$x >= 10, ]
@@ -167,89 +172,25 @@ server <- function(input, output, session) {
               data$subtype == subtype, 
           ]
           
-          if (nrow(subset_data) == 0) {
-            plot(1, type = "n", main = "No Data Available", xlab = "", ylab = "")
-            return()
+          if (nrow(subset_data) > 0) {
+            t <- aggregate(subset_data$t, by = list(hr = subset_data$hr), sum)
+            s <- aggregate(subset_data$s, by = list(hr = subset_data$hr), sum)
+            f <- t[, 2] - s[, 2]
+            
+            proportion <- f / t[, 2] * 100
+            
+            plot(
+              x = seq(1, nrow(t), by = 1),
+              y = proportion,
+              main = paste("Failure Rate for Subtype:", subtype),
+              xlab = "Time (hr)",
+              ylab = "Proportion (%)",
+              type = "l",
+              ylim = selections$y_range  # Dynamically set y-axis range
+            )
+          } else {
+            plot(1, type = "n", xlab = "", ylab = "", main = "No Data Available")
           }
-          
-          # Aggregate both t and s together
-          hr_data <- aggregate(cbind(t, s) ~ hr, data = subset_data, FUN = sum)
-          hr_data <- hr_data[order(hr_data$hr), ]
-          
-          if (nrow(hr_data) == 0) {
-            plot(1, type = "n", main = "No Data Available", xlab = "", ylab = "")
-            return()
-          }
-          
-          f <- hr_data$t - hr_data$s
-          proportion <- (f / hr_data$t) * 100
-          
-          # Valid data checks
-          valid_idx <- is.finite(proportion) & !is.na(proportion) & is.finite(hr_data$t) & hr_data$t > 0
-          if (!any(valid_idx)) {
-            plot(1, type = "n", main = "No Data Available", xlab = "", ylab = "")
-            return()
-          }
-          
-          hours <- hr_data$hr[valid_idx]
-          vol <- hr_data$t[valid_idx]
-          prop <- proportion[valid_idx]
-          
-          if (length(hours) == 0) {
-            plot(1, type = "n", main = "No Data Available", xlab = "", ylab = "")
-            return()
-          }
-          
-          # Determine volume y-limits
-          max_vol <- max(vol, na.rm = TRUE)
-          if (!is.finite(max_vol)) {
-            plot(1, type = "n", main = "No Data Available", xlab = "", ylab = "")
-            return()
-          }
-          
-          vol_ylim <- c(0, max_vol * 1.2)
-          
-          # Ensure y_range is finite
-          if (any(!is.finite(selections$y_range))) {
-            selections$y_range <- c(0, 100)
-          }
-          
-          # Plot volume (left axis)
-          plot(
-            x = hours,
-            y = vol,
-            type = "h",
-            lwd = 5,
-            lend = "butt",
-            col = "lightblue",
-            main = paste("Failure Rate and Volume for Subtype:", subtype),
-            xlab = "Time (hr)",
-            ylab = "Volume (Transactions)",
-            ylim = vol_ylim
-          )
-          
-          # Overlay failure rate (right axis)
-          par(new = TRUE)
-          plot(
-            x = hours,
-            y = prop,
-            type = "l",
-            lwd = 2,
-            col = "red",
-            axes = FALSE,
-            xlab = "",
-            ylab = "",
-            ylim = selections$y_range
-          )
-          
-          axis(side = 4, col.axis = "red", col = "red")
-          mtext("Failure Rate (%)", side = 4, line = 3, col = "red")
-          
-          legend("top", legend = c("Volume", "Failure Rate"), 
-                 col = c("lightblue", "red"), 
-                 lty = c(1, 1),
-                 lwd = c(5, 2),
-                 bty = "n", cex = 0.8, text.col = c("black","red"))
         })
       })
     }
