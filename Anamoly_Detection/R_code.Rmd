@@ -267,11 +267,15 @@ Plotting the failure rates over the entire 72 hours of observations for which th
 data <- before_anamoly_detection_data
 
 first_subset <- data[
-  (data[, 4] %in% c("UPI")) & 
+  (data[, 4] == c("UPI")) & 
   (data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI")) & 
   (data[, 6] == "UPI_PAY") & 
   (data[, 8] == "UPI"), 
 ]
+
+```
+
+```{r echo=FALSE}
 
 unique_hours <- unique(data$hr)
 unique_hours <- sort(unique_hours)
@@ -286,9 +290,8 @@ failed_transactions <- data.frame(
   hours = unique_hours, 
   failedTransactions = proportion, 
   x_index = seq(1, 72, by = 1))
-```
 
-```{r echo=FALSE}
+
 ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + 
   geom_area(fill = "blue", alpha = 0.25) + 
   geom_line(color = "black") + 
@@ -322,14 +325,6 @@ Assuming that the PAYTM payment gateways (PAYTM, PAYTM_V2, and PAYTM_UPI) are pa
 We will omit any combinations including the variable bank as it has over 300 different values within the data set.
 
 ```{r}
-#payment_methods <- unique(data[, 4])
-#subtypes <- unique(data[, 6])
-#filter_values <- c("PAYTM", "PAYTM_V2", "PAYTM_UPI")
-#subset_list <- list()
-
-write.csv(data,file="shiny_app_data.csv")
-
-
 payment_methods <- unique(data[, 4])
 subtypes <- unique(data[, 6])
 filter_values <- c("PAYTM", "PAYTM_V2", "PAYTM_UPI")
