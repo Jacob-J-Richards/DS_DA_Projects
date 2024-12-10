@@ -36,7 +36,7 @@ You work as a Data Scientist at a Payments processor company. On February 14th 2
 
 The data available to you is the transaction count and how many of which were successful for each combination of categorical variables (Bank, Payment Gateway, Merchant, Payment Method, etc..) for each hour within the 72 hours from February 12th to 14th.
 
-```{r}
+```{r, include=FALSE}
 setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection")
 transactions <- read.csv(file = "transactions.csv", na.strings = c("", "NA"))
 
@@ -62,7 +62,7 @@ knitr::include_graphics(
 
 We're not sure what we're looking for yet, so let's plot the percentage of failed transactions for each of the 72 hours within the entire data set.
 
-###### clean the data
+clean the data
 
 ```{r}
 library('ggplot2')
@@ -76,7 +76,7 @@ colnames(data) <- c("t", "s", "mid", "pmt", "pg", "subtype", "hr", "bank")
 
 ```
 
-###### compute failure rate for each hour
+compute failure rate for each hour
 
 ```{r}
 unique_hours <- unique(data$hr)
@@ -92,7 +92,7 @@ unique_hours <- sort(unique_hours)
 
 ```
 
-###### plot failure rate for each hour
+plot failure rate for each hour
 
 ```{r}
 failed_transactions_rate <- data.frame(
@@ -132,7 +132,7 @@ So we do see a spike in transaction failure rates up to 45% afternoon/overnight 
 
 Clearly there is a problem here, but we need to find precisely what caused this so the problem can be addressed.
 
-###### plotting total transaction failures for each hour
+plotting total transaction failures for each hour
 
 ```{r}
 failed_transactions <- data.frame(
@@ -173,7 +173,7 @@ This isn't noteworthy, the failure counts are higher during the day because that
 
 To narrow down what caused our failure rate spike, we employ the Mahalanobis distance method which is useful for the detection of anomalies. Just as you can detect outliers in a variable of one dimension by an unusually high or low z-score, you can detect outliers in higher dimensional variables by it's z-score within it's higher dimensional distribution.
 
-The variables we will produce a distribution of will be failure percentage and transaction count.
+The variables we will produce a distribution of will be failure percentage and transaction count, so we calculate and add them as new columns for each observations.
 
 ```{r}
 before_anamoly_detection_data <- data
@@ -195,7 +195,7 @@ knitr::include_graphics(
 
 Now that we have all of our variables prepared, we can form a higher dimensional distribution from them to find which observations are the greatest outliers.
 
-Here is a plot of that distribution, as you can see the vast majority is concentrated in the back corner of the volume.
+Here is a plot of that distribution, as you can see the vast majority is concentrated in the back corner of the volume. The thin purple layer covering the rest of the x-y plane are where those outlier are that we're looking for.
 
 ```{r,eval=FALSE}
 distribution <- data.frame(failures = data$failures,rate = data$failure_rate )
@@ -240,7 +240,7 @@ filtered_data <- data[data$mahalanobis_score >= top_quartile, ]
 
 Table of the 10 observations found to have the greatest outlier score.
 
-```{r}
+```{r, include = FALSE}
 your_tibble <- head(filtered_data, 10)
 
 kable(your_tibble, format = "html") %>%

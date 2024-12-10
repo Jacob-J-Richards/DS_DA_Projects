@@ -14,40 +14,13 @@ were successful for each combination of categorical variables (Bank,
 Payment Gateway, Merchant, Payment Method, etc..) for each hour within
 the 72 hours from February 12th to 14th.
 
-``` r
-setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection")
-transactions <- read.csv(file = "transactions.csv", na.strings = c("", "NA"))
-
-library(knitr)
-library(kableExtra)
-
-your_tibble <- head(transactions, 5)
-
-kable(your_tibble, format = "html") %>%
-  kable_styling(position = "center") %>% 
-  save_kable(
-    file = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/AD_1.png", 
-    zoom = 2
-  )
-
-knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/AD_1.png"
-)
-```
-
-<div align="center">
-
-<img src="ReadMe_files/figure-gfm/AD_1.png" width="70%">
-
-</div>
-
 ## Initial Approach
 
 We’re not sure what we’re looking for yet, so let’s plot the percentage
 of failed transactions for each of the 72 hours within the entire data
 set.
 
-###### clean the data
+clean the data
 
 ``` r
 library('ggplot2')
@@ -60,7 +33,7 @@ data <- transactions
 colnames(data) <- c("t", "s", "mid", "pmt", "pg", "subtype", "hr", "bank")
 ```
 
-###### compute failure rate for each hour
+compute failure rate for each hour
 
 ``` r
 unique_hours <- unique(data$hr)
@@ -75,7 +48,7 @@ failure_count <- f
 unique_hours <- sort(unique_hours)
 ```
 
-###### plot failure rate for each hour
+plot failure rate for each hour
 
 ``` r
 failed_transactions_rate <- data.frame(
@@ -123,7 +96,7 @@ afternoon/overnight the day before we started receiving complaints.
 Clearly there is a problem here, but we need to find precisely what
 caused this so the problem can be addressed.
 
-###### plotting total transaction failures for each hour
+plotting total transaction failures for each hour
 
 ``` r
 failed_transactions <- data.frame(
@@ -176,7 +149,8 @@ in higher dimensional variables by it’s z-score within it’s higher
 dimensional distribution.
 
 The variables we will produce a distribution of will be failure
-percentage and transaction count.
+percentage and transaction count, so we calculate and add them as new
+columns for each observations.
 
 ``` r
 before_anamoly_detection_data <- data
@@ -207,7 +181,9 @@ dimensional distribution from them to find which observations are the
 greatest outliers.
 
 Here is a plot of that distribution, as you can see the vast majority is
-concentrated in the back corner of the volume.
+concentrated in the back corner of the volume. The thin purple layer
+covering the rest of the x-y plane are where those outlier are that
+we’re looking for.
 
 ``` r
 distribution <- data.frame(failures = data$failures,rate = data$failure_rate )
@@ -255,27 +231,6 @@ filtered_data <- data[data$mahalanobis_score >= top_quartile, ]
 ```
 
 Table of the 10 observations found to have the greatest outlier score.
-
-``` r
-your_tibble <- head(filtered_data, 10)
-
-kable(your_tibble, format = "html") %>%
-  kable_styling(position = "center") %>% 
-  save_kable(
-    file = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/mscoreog.png", 
-    zoom = 2
-  )
-
-knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/mscoreog.png"
-)
-```
-
-<div align="center">
-
-<img src="ReadMe_files/figure-gfm/mscoreog.png" width="70%">
-
-</div>
 
 Notice how the top 10 outliers all have a PAYTM service as the payment
 gateway with only difference in the variable name being the addition of
@@ -725,13 +680,13 @@ compliment_sample_sizes <- t
 (sum(compliment_sample_sizes[,2]))
 ```
 
-    ## [1] 12561
+    ## [1] 16571
 
 ``` r
 cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
 ```
 
-    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 12561
+    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 16571
 
 ``` r
 hours <- seq(1, 72, 1)
@@ -766,7 +721,7 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
 ```
 
-    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 12561
+    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 16571
 
 To make a fair comparison of the anomalous data and normal data before
 the anomaly event, the blue line is the failure rate of the normal data
