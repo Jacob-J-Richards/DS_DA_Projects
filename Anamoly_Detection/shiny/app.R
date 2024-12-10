@@ -54,7 +54,7 @@ server <- function(input, output, session) {
         
         # Enable/disable PMT buttons
         lapply(unique(valid_combinations$pmt), function(other_pmt) {
-          if (other_pmt == pmt) {
+          if (other_pmt == pmt ) {
             disable(paste0("pmt_", other_pmt))
           } else {
             enable(paste0("pmt_", other_pmt))
@@ -70,10 +70,10 @@ server <- function(input, output, session) {
   # Function to update PG buttons sorted by transaction volume
   updatePgButtons <- function(selected_pmt) {
     pg_data <- data[data$pmt == selected_pmt, ]
-    if (nrow(pg_data) > 0) {
+    if (nrow(pg_data) > 200) {
       # Aggregate total transactions for each PG
       pg_totals <- aggregate(pg_data$t, by = list(pg = pg_data$pg), FUN = sum)
-      pg_totals <- pg_totals[pg_totals$x >= 20, ]  # Filter out PGs with less than 20 transactions
+      pg_totals <- pg_totals[pg_totals$x >= 4000, ]  # Filter out PGs with less than 20 transactions
       pg_totals <- pg_totals[order(-pg_totals$x), ]  # Sort by total transactions descending
       
       # Create buttons for each PG
@@ -133,7 +133,7 @@ server <- function(input, output, session) {
       # Filter subtypes with 10+ transactions
       subtype_data <- data[data$pmt == selections$pmt & data$pg == selections$pg, ]
       subtype_totals <- aggregate(subtype_data$t, by = list(subtype = subtype_data$subtype), FUN = sum)
-      valid_subtypes <- subtype_totals[subtype_totals$x >= 10, ]
+      valid_subtypes <- subtype_totals[subtype_totals$x >= 200, ]
       
       plot_outputs <- lapply(seq_len(nrow(valid_subtypes)), function(i) {
         subtype <- valid_subtypes$subtype[i]
@@ -189,20 +189,23 @@ server <- function(input, output, session) {
               
               # Create a data frame for ggplot
               plot_data <- data.frame(
-                hour = t[, 1],
+                hour = seq(1,length(proportion),1),
                 total_transactions = t[, 2],
                 failure_proportion = proportion
               )
               
               plot_data_smooth <- data.frame(hour = plot_data$hour, failure_proportion = plot_data$failure_proportion  * 600 / 100 )
               
-          
+              
               library(ggplot2)
               
               plot_data_smooth <- data.frame(
                 hour = plot_data$hour,
                 failure_proportion = plot_data$failure_proportion * 600 / 100
               )
+              
+              max_transactions <- max(plot_data$total_transactions, na.rm = TRUE)
+              y_axis_limit <- ifelse(max_transactions > 600, max_transactions, 600)
               
               ggplot() +
                 geom_bar(
@@ -220,7 +223,7 @@ server <- function(input, output, session) {
                 ) +
                 scale_y_continuous(
                   name = "Total Transactions",
-                  limits = c(0, 600),
+                  limits = c(0,y_axis_limit),
                   sec.axis = sec_axis(~ . * 100 / 600, name = "Failure Proportion (%)")
                 ) +
                 labs(
