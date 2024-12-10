@@ -96,7 +96,7 @@ unique_hours <- sort(unique_hours)
 
 plot failure rate for each hour
 
-```{r}
+```{r echo=FALSE}
 failed_transactions_rate <- data.frame(
   hours = unique_hours, 
   failedTransactions = failure_rate, 
@@ -136,7 +136,7 @@ Clearly there is a problem here, but we need to find precisely what caused this 
 
 plotting total transaction failures for each hour
 
-```{r}
+```{r echo=FALSE}
 failed_transactions <- data.frame(
   hours = unique_hours, 
   failedTransactions = failure_count, 
@@ -177,7 +177,7 @@ To narrow down what caused our failure rate spike, we employ the Mahalanobis dis
 
 The variables we will produce a distribution of will be failure percentage and transaction count, so we calculate and add them as new columns for each observations.
 
-```{r}
+```{r echo=FALSE}
 before_anamoly_detection_data <- data
 
 data$failures <- data[, 1] - data[, 2]
@@ -242,7 +242,7 @@ filtered_data <- data[data$mahalanobis_score >= top_quartile, ]
 
 Table of the 10 observations found to have the greatest outlier score.
 
-```{r, include = FALSE}
+```{r echo=FALSE}
 your_tibble <- head(filtered_data, 10)
 
 kable(your_tibble, format = "html") %>%
@@ -251,9 +251,7 @@ kable(your_tibble, format = "html") %>%
     file = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/mscoreog.png", 
     zoom = 2
   )
-```
 
-```{r}
 knitr::include_graphics(
   "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/mscoreog.png"
 )
@@ -287,9 +285,10 @@ proportion <- f / t[, 2] * 100
 failed_transactions <- data.frame(
   hours = unique_hours, 
   failedTransactions = proportion, 
-  x_index = seq(1, 72, by = 1)
-)
+  x_index = seq(1, 72, by = 1))
+```
 
+```{r echo=FALSE}
 ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + 
   geom_area(fill = "blue", alpha = 0.25) + 
   geom_line(color = "black") + 
@@ -313,10 +312,7 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
     panel.grid.major.x = element_blank(),  
     panel.grid.minor.x = element_blank(), 
     panel.grid.major.y = element_blank(), 
-    legend.position = "none"
-  )
-
-
+    legend.position = "none")
 ```
 
 Unfortunately, the result is white noise. This is not the exact problematic combination.
@@ -569,7 +565,7 @@ Could such a massive spike in payment failure rates have been predicted? To inve
 
 Then to produce a fair comparison, we make the number of observations within each set equal by selected 552 of the normal data rows at random.
 
-###### anomaly data
+anomaly data
 
 ```{r}
 paytm_subset <- data[
@@ -608,7 +604,7 @@ transactions_compliment <- t
 (mean(proportion_compliment))
 ```
 
-###### normal data but equal number of observations selected at random as the anomalous subset
+normal data but equal number of observations selected at random as the anomalous subset
 
 ```{r}
 paytm_compliment_sample <- paytm_compliment[sample(nrow(paytm_compliment), 1200), ]
