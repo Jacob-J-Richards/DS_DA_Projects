@@ -54,7 +54,7 @@ kable(your_tibble, format = "html") %>%
 
 ```
 
-```{r}
+```{r echo=FALSE}
 knitr::include_graphics(
   "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/AD_1.png"
 )
