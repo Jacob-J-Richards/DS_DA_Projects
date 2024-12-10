@@ -14,6 +14,18 @@ were successful for each combination of categorical variables (Bank,
 Payment Gateway, Merchant, Payment Method, etc..) for each hour within
 the 72 hours from February 12th to 14th.
 
+``` r
+knitr::include_graphics(
+  "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/AD_1.png"
+)
+```
+
+<div align="center">
+
+<img src="ReadMe_files/figure-gfm/AD_1.png" width="70%">
+
+</div>
+
 ## Initial Approach
 
 We’re not sure what we’re looking for yet, so let’s plot the percentage
@@ -86,7 +98,7 @@ ggplot(data = failed_transactions_rate, aes(x = x_index, y = failedTransactions)
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-4-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-5-1.png" width="70%">
 
 </div>
 
@@ -134,7 +146,7 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-5-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-6-1.png" width="70%">
 
 </div>
 
@@ -232,6 +244,18 @@ filtered_data <- data[data$mahalanobis_score >= top_quartile, ]
 
 Table of the 10 observations found to have the greatest outlier score.
 
+``` r
+knitr::include_graphics(
+  "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/mscoreog.png"
+)
+```
+
+<div align="center">
+
+<img src="ReadMe_files/figure-gfm/mscoreog.png" width="70%">
+
+</div>
+
 Notice how the top 10 outliers all have a PAYTM service as the payment
 gateway with only difference in the variable name being the addition of
 the suffix \_UPI to PAYTM. From that I deduced that the anomaly would be
@@ -301,7 +325,7 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-11-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-13-1.png" width="70%">
 
 </div>
 
@@ -384,7 +408,7 @@ par(mfrow = c(1, 1))
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-12-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-14-1.png" width="70%">
 
 </div>
 
@@ -458,7 +482,7 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-13-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-15-1.png" width="70%">
 
 </div>
 
@@ -548,7 +572,7 @@ ggplot(data = long_set_failures_by_merchant,
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-14-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-16-1.png" width="70%">
 
 </div>
 
@@ -680,13 +704,13 @@ compliment_sample_sizes <- t
 (sum(compliment_sample_sizes[,2]))
 ```
 
-    ## [1] 16571
+    ## [1] 14067
 
 ``` r
 cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
 ```
 
-    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 16571
+    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 14067
 
 ``` r
 hours <- seq(1, 72, 1)
@@ -713,7 +737,7 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-20-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-22-1.png" width="70%">
 
 </div>
 
@@ -721,7 +745,7 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
 ```
 
-    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 16571
+    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 14067
 
 To make a fair comparison of the anomalous data and normal data before
 the anomaly event, the blue line is the failure rate of the normal data
@@ -745,7 +769,7 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-21-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-23-1.png" width="70%">
 
 </div>
 
@@ -783,7 +807,7 @@ ggplot(data = wide, aes(proportion_subset)) +
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-22-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-24-1.png" width="70%">
 
 </div>
 
@@ -849,6 +873,6 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-24-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-26-1.png" width="70%">
 
 </div>

@@ -52,10 +52,12 @@ kable(your_tibble, format = "html") %>%
     zoom = 2
   )
 
+```
+
+```{r}
 knitr::include_graphics(
   "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/AD_1.png"
 )
-
 ```
 
 ## Initial Approach
@@ -249,11 +251,12 @@ kable(your_tibble, format = "html") %>%
     file = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/mscoreog.png", 
     zoom = 2
   )
+```
 
+```{r}
 knitr::include_graphics(
   "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/mscoreog.png"
 )
-
 ```
 
 Notice how the top 10 outliers all have a PAYTM service as the payment gateway with only difference in the variable name being the addition of the suffix \_UPI to PAYTM. From that I deduced that the anomaly would be present in the PAYTM payment gateways being PAYTM, PAYTM_V2, and PAYTM_UPI. The most common combination of the remaining variables of these top 10 observations is UPI for pmt, UPI_PAY for subtype, and UPI for bank.
