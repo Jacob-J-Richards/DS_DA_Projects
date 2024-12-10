@@ -704,7 +704,7 @@ library(shiny)
 
 ```
 
-[shiny dashboard of failure rate and transaction ](https://jacob-j-richards.shinyapps.io/shiny/ "open in a new tab")[volume](https://jacob-j-richards.shinyapps.io/shiny/)
+[shiny dashboard of failure rate and transaction](https://jacob-j-richards.shinyapps.io/shiny/ "open in a new tab")[volume](https://jacob-j-richards.shinyapps.io/shiny/)
 
 ```{r}
 
