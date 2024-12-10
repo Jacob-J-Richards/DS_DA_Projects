@@ -704,11 +704,11 @@ library(shiny)
 
 ```
 
-``` HTML
-<div>
-  <a href="https://jacob-j-richards.shinyapps.io/shiny/" target="_blank">Click here to use the Shiny App</a>
-</div>
-```
+\<div\>
+
+\<a href="[https://jacob-j-richards.shinyapps.io/shiny/"](https://jacob-j-richards.shinyapps.io/shiny/") target="\_blank"\>Click here to use the Shiny App\</a\>
+
+\</div\>
 
 ```{r}
 
