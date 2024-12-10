@@ -725,13 +725,13 @@ compliment_sample_sizes <- t
 (sum(compliment_sample_sizes[,2]))
 ```
 
-    ## [1] 19296
+    ## [1] 13473
 
 ``` r
 cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
 ```
 
-    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 19296
+    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 13473
 
 ``` r
 hours <- seq(1, 72, 1)
@@ -766,7 +766,7 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
 ```
 
-    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 19296
+    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 13473
 
 To make a fair comparison of the anomalous data and normal data before
 the anomaly event, the blue line is the failure rate of the normal data
@@ -843,6 +843,9 @@ volume and failure rate
 \<a
 href=“[https://jacob-j-richards.shinyapps.io/shiny/”](https://jacob-j-richards.shinyapps.io/shiny/%22)
 target=”\_blank”\>Click here to use the Shiny App\</a\>
+
+<a href="https://jacob-j-richards.shinyapps.io/shiny/" target="_blank">Click
+here to use the Shiny App</a>
 
 ``` r
 paytm_subset <- data[
