@@ -171,32 +171,62 @@ server <- function(input, output, session) {
               data$pg == selections$pg &
               data$subtype == subtype, 
           ]
+          output[[paste0("plot_", subtype)]] <- renderPlot({
+            subset_data <- data[
+              data$pmt == selections$pmt &
+                data$pg == selections$pg &
+                data$subtype == subtype, 
+            ]
+            
+            if (nrow(subset_data) > 0) {
+              # Aggregate data by hour
+              t <- aggregate(subset_data$t, by = list(hr = subset_data$hr), sum)
+              s <- aggregate(subset_data$s, by = list(hr = subset_data$hr), sum)
+              
+              # Calculate failures and proportions
+              f <- t[, 2] - s[, 2]
+              proportion <- f / t[, 2] * 100
+              
+              # Create a data frame for ggplot
+              plot_data <- data.frame(
+                hour = t[, 1],
+                total_transactions = t[, 2],
+                failure_proportion = proportion
+              )
+              
           
-          if (nrow(subset_data) > 0) {
-            t <- aggregate(subset_data$t, by = list(hr = subset_data$hr), sum)
-            s <- aggregate(subset_data$s, by = list(hr = subset_data$hr), sum)
-            f <- t[, 2] - s[, 2]
-            
-            proportion <- f / t[, 2] * 100
-            
-            plot(
-              x = seq(1, nrow(t), by = 1),
-              y = proportion,
-              main = paste("Failure Rate for Subtype:", subtype),
-              xlab = "Time (hr)",
-              ylab = "Proportion (%)",
-              type = "l",
-              ylim = c(0,100)
-            )
-            
-            
-            
-            
-            
-            
-          } else {
-            plot(1, type = "n", xlab = "", ylab = "", main = "No Data Available")
-          }
+              ggplot() +
+                geom_bar(data = plot_data, aes(x = hour, y = total_transactions), stat = "identity", fill = "steelblue", alpha = 0.7) +
+                geom_line(
+                  data = plot_data,
+                  aes(x = hour, y = failure_proportion * 600 / 100),  # Match scaling to 600
+                  color = "red",
+                  size = 1.2,
+                  group = 1
+                ) +
+                scale_y_continuous(
+                  name = "Total Transactions",
+                  limits = c(0, 600),  # Fix axis to range 0–600
+                  oob = scales::oob_keep,  # Allow out-of-bounds data to stay visible
+                  sec.axis = sec_axis(~ . * 100 / 600, name = "Failure Proportion (%)")
+                ) +
+                labs(
+                  title = paste("Failure Proportion and Total Transactions by Hour for Subtype", subtype),
+                  x = "Hour"
+                ) +
+                theme_minimal() +
+                theme(
+                  axis.title.y.left = element_text(color = "steelblue"),
+                  axis.title.y.right = element_text(color = "red"),
+                  axis.text.y.right = element_text(color = "red"),
+                  axis.text.y.left = element_text(color = "steelblue")
+                )
+              
+              
+            } else {
+              plot(1, type = "n", xlab = "", ylab = "", main = "No Data Available")
+            }
+          })
         })
       })
     }
