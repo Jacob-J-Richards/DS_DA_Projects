@@ -725,13 +725,13 @@ compliment_sample_sizes <- t
 (sum(compliment_sample_sizes[,2]))
 ```
 
-    ## [1] 12679
+    ## [1] 12561
 
 ``` r
 cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
 ```
 
-    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 12679
+    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 12561
 
 ``` r
 hours <- seq(1, 72, 1)
@@ -766,7 +766,7 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
 ```
 
-    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 12679
+    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 12561
 
 To make a fair comparison of the anomalous data and normal data before
 the anomaly event, the blue line is the failure rate of the normal data
@@ -840,8 +840,8 @@ ok what if for each payment method we made a plot of a curve for each
 payment gate way that somehow visualized the combination of transaction
 volume and failure rate
 
-[shiny dashboard of failure rate and transaction
-volume](https://jacob-j-richards.shinyapps.io/shiny/ "open in a new tab")
+[shiny dashboard of failure rate and
+transaction](https://jacob-j-richards.shinyapps.io/shiny/ "open in a new tab")[volume](https://jacob-j-richards.shinyapps.io/shiny/)
 
 ``` r
 paytm_subset <- data[
