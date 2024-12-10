@@ -73,7 +73,7 @@ server <- function(input, output, session) {
     if (nrow(pg_data) > 200) {
       # Aggregate total transactions for each PG
       pg_totals <- aggregate(pg_data$t, by = list(pg = pg_data$pg), FUN = sum)
-      pg_totals <- pg_totals[pg_totals$x >= 4000, ]  # Filter out PGs with less than 20 transactions
+      pg_totals <- pg_totals[pg_totals$x >= 200, ]  # Filter out PGs with less than 200 transactions
       pg_totals <- pg_totals[order(-pg_totals$x), ]  # Sort by total transactions descending
       
       # Create buttons for each PG
@@ -84,12 +84,13 @@ server <- function(input, output, session) {
       if (nrow(pg_totals) > 0) {
         output$pg_buttons <- renderUI({ do.call(tagList, pg_buttons) })
       } else {
-        output$pg_buttons <- renderUI({ h4("No Payment Gateways with 20+ Transactions Available") })
+        output$pg_buttons <- renderUI({ h4("No Payment Gateways with 200+ Transactions Available") })
       }
     } else {
       output$pg_buttons <- renderUI({ h4("No Payment Gateways Available") })
     }
   }
+  
   
   # Observe PG button clicks
   observe({
@@ -178,6 +179,13 @@ server <- function(input, output, session) {
                 data$subtype == subtype, 
             ]
             
+            if (sum(subset_data$t) < 4000) {
+              showNotification(
+                "Warning: The subset contains less than 4000 transactions. The failure curve may not be representative of the subset.",
+                type = "warning", duration = 5
+              )
+            }
+            
             if (nrow(subset_data) > 0) {
               # Aggregate data by hour
               t <- aggregate(subset_data$t, by = list(hr = subset_data$hr), sum)
@@ -194,6 +202,8 @@ server <- function(input, output, session) {
                 failure_proportion = proportion
               )
               
+  
+                
               plot_data_smooth <- data.frame(hour = plot_data$hour, failure_proportion = plot_data$failure_proportion  * 600 / 100 )
               
               

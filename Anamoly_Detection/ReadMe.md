@@ -725,13 +725,13 @@ compliment_sample_sizes <- t
 (sum(compliment_sample_sizes[,2]))
 ```
 
-    ## [1] 12929
+    ## [1] 14718
 
 ``` r
 cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
 ```
 
-    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 12929
+    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 14718
 
 ``` r
 hours <- seq(1, 72, 1)
@@ -766,7 +766,7 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
 ```
 
-    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 12929
+    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 14718
 
 To make a fair comparison of the anomalous data and normal data before
 the anomaly event, the blue line is the failure rate of the normal data
@@ -806,8 +806,6 @@ The following graphics displays the distribution of the anomalous data
 over a shifting 18 hour time window of first 18 hours of the dataset
 until the last 18 hours of the data set out of the 72.
 
-![Density Plot Animation](ReadMe_files/figure-gfm/density_animation_high_quality.gif)
-
 The distribution of the anomalous data and a sample of the normal data
 of equal size to anomalous.
 
@@ -816,7 +814,7 @@ distribution.
 
 ``` r
 library(plotly)
-
+#[Density Plot Animation](ReadMe_files/figure-gfm/density_animation_high_quality.gif)
 ggplot(data = wide, aes(proportion_subset)) + 
   geom_density(data=wide,aes(proportion_compliment_sample,fill="red",alpha=0.20)) + 
   geom_density(fill = "blue", alpha = 0.20) + 
@@ -841,6 +839,18 @@ ggplot(data = wide, aes(proportion_subset)) +
 ok what if for each payment method we made a plot of a curve for each
 payment gate way that somehow visualized the combination of transaction
 volume and failure rate
+
+``` r
+library(shiny)
+
+#shiny::runApp("/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/shiny")
+
+
+#You can access the live Shiny app here: [Shiny App on shinyapps.io](https://jacob-j-richards.shinyapps.io/shiny/)
+```
+
+[Shiny App on
+shinyapps.io](https://jacob-j-richards.shinyapps.io/shiny/)
 
 ``` r
 paytm_subset <- data[
@@ -896,6 +906,3 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-24-1.png" width="70%">
 
 </div>
-
-i have the shiny working but i don’t know where to go from here on
-seeing the anamoly sooner
