@@ -2,7 +2,7 @@ library(shiny)
 library(shinyjs)
 
 # Load the data
-data <- read.csv("/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/shiny/shiny_app_data.csv")
+data <- read.csv("shiny_app_data.csv")
 
 # Precompute valid combinations
 valid_combinations <- unique(data[, c("pmt", "pg", "subtype")])

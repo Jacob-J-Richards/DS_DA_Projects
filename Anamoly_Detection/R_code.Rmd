@@ -701,7 +701,6 @@ ok what if for each payment method we made a plot of a curve for each payment ga
 library(shiny)
 
 shiny::runApp("/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/shiny")
-
 ```
 
 ```{r}
@@ -756,5 +755,3 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 
 
 ```
-
-i have the shiny working but i don't know where to go from here on seeing the anamoly sooner
