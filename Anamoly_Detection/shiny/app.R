@@ -186,8 +186,14 @@ server <- function(input, output, session) {
               xlab = "Time (hr)",
               ylab = "Proportion (%)",
               type = "l",
-              ylim = selections$y_range  # Dynamically set y-axis range
+              ylim = c(0,100)
             )
+            
+            
+            
+            
+            
+            
           } else {
             plot(1, type = "n", xlab = "", ylab = "", main = "No Data Available")
           }
