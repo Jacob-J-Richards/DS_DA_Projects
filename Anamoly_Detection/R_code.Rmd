@@ -694,7 +694,7 @@ ggplot(data = wide, aes(proportion_subset)) +
 
 ok what if for each payment method we made a plot of a curve for each payment gate way that somehow visualized the combination of transaction volume and failure rate
 
-```{r}
+```{r, include = FALSE}
 library(shiny)
 
 #shiny::runApp("/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/shiny")
@@ -704,7 +704,7 @@ library(shiny)
 
 ```
 
-[Shiny App on shinyapps.io](https://jacob-j-richards.shinyapps.io/shiny/)
+[Click here to use the Shiny App](https://jacob-j-richards.shinyapps.io/shiny/){target="_blank"}
 
 ```{r}
 
