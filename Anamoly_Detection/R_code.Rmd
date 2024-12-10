@@ -704,7 +704,7 @@ library(shiny)
 
 ```
 
-[Click here to use the Shiny App](https://jacob-j-richards.shinyapps.io/shiny/){target="_blank"}
+\<a href="[https://jacob-j-richards.shinyapps.io/shiny/"](https://jacob-j-richards.shinyapps.io/shiny/") target="\_blank"\>Click here to use the Shiny App\</a\>
 
 ```{r}
 
