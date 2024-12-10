@@ -194,20 +194,33 @@ server <- function(input, output, session) {
                 failure_proportion = proportion
               )
               
+              plot_data_smooth <- data.frame(hour = plot_data$hour, failure_proportion = plot_data$failure_proportion  * 600 / 100 )
+              
           
+              library(ggplot2)
+              
+              plot_data_smooth <- data.frame(
+                hour = plot_data$hour,
+                failure_proportion = plot_data$failure_proportion * 600 / 100
+              )
+              
               ggplot() +
-                geom_bar(data = plot_data, aes(x = hour, y = total_transactions), stat = "identity", fill = "steelblue", alpha = 0.7) +
-                geom_line(
+                geom_bar(
                   data = plot_data,
-                  aes(x = hour, y = failure_proportion * 600 / 100),  # Match scaling to 600
+                  aes(x = hour, y = total_transactions),
+                  stat = "identity",
+                  fill = "steelblue",
+                  alpha = 0.7
+                ) +
+                geom_smooth(
+                  data = plot_data_smooth,
+                  aes(x = hour, y = failure_proportion, group = 1),
                   color = "red",
-                  size = 1.2,
-                  group = 1
+                  size = 1.2
                 ) +
                 scale_y_continuous(
                   name = "Total Transactions",
-                  limits = c(0, 600),  # Fix axis to range 0–600
-                  oob = scales::oob_keep,  # Allow out-of-bounds data to stay visible
+                  limits = c(0, 600),
                   sec.axis = sec_axis(~ . * 100 / 600, name = "Failure Proportion (%)")
                 ) +
                 labs(
@@ -221,6 +234,7 @@ server <- function(input, output, session) {
                   axis.text.y.right = element_text(color = "red"),
                   axis.text.y.left = element_text(color = "steelblue")
                 )
+              
               
               
             } else {
