@@ -56,40 +56,6 @@ unique_hours <- sort(unique_hours)
 
 plot failure rate for each hour
 
-``` r
-failed_transactions_rate <- data.frame(
-  hours = unique_hours, 
-  failedTransactions = failure_rate, 
-  x_index = seq(1, 72, by = 1)
-)
-
-ggplot(data = failed_transactions_rate, aes(x = x_index, y = failedTransactions)) + 
-  geom_area(fill = "blue", alpha = 0.25) + 
-  geom_line(color = "black") +  
-  scale_x_continuous(
-    breaks = seq(1, 72, by = 6), 
-    minor_breaks = 1:72, 
-    labels = unique_hours[seq(1, length(unique_hours), by = 6)]
-  ) + 
-  coord_cartesian(ylim = range(failed_transactions_rate$failedTransactions, na.rm = TRUE)) +  
-  labs(
-    title = "Failed Transactions Percentage by Hour", 
-    x = "Hour (72)", 
-    y = "Failed Transactions Per Hour"
-  ) +
-  theme(
-    axis.text.x = element_text(angle = 60, hjust = 1, size = 8), 
-    axis.title.x = element_text(size = 10), 
-    axis.title.y = element_text(size = 10),
-    plot.background = element_rect(fill = "white", color = NA),
-    panel.background = element_rect(fill = "white", color = NA),
-    panel.grid.major.x = element_blank(), 
-    panel.grid.minor.x = element_blank(), 
-    panel.grid.major.y = element_blank(), 
-    legend.position = "none"
-  )
-```
-
 <div align="center">
 
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-5-1.png" width="70%">
@@ -103,40 +69,6 @@ Clearly there is a problem here, but we need to find precisely what
 caused this so the problem can be addressed.
 
 plotting total transaction failures for each hour
-
-``` r
-failed_transactions <- data.frame(
-  hours = unique_hours, 
-  failedTransactions = failure_count, 
-  x_index = seq(1, 72, by = 1)
-)
-
-ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + 
-  geom_area(fill = "blue", alpha = 0.25) + 
-  geom_line(color = "black") +  
-  scale_x_continuous(
-    breaks = seq(1, 72, by = 6), 
-    minor_breaks = 1:72, 
-    labels = unique_hours[seq(1, length(unique_hours), by = 6)]
-  ) + 
-  coord_cartesian(ylim = range(failed_transactions$failedTransactions, na.rm = TRUE)) +  
-  labs(
-    title = "Failed Transactions Counts by Hour", 
-    x = "Hour (72)", 
-    y = "Failed Transactions Per Hour"
-  ) +
-  theme(
-    axis.text.x = element_text(angle = 60, hjust = 1, size = 8), 
-    axis.title.x = element_text(size = 10), 
-    axis.title.y = element_text(size = 10),
-    plot.background = element_rect(fill = "white", color = NA),
-    panel.background = element_rect(fill = "white", color = NA),
-    panel.grid.major.x = element_blank(), 
-    panel.grid.minor.x = element_blank(), 
-    panel.grid.major.y = element_blank(), 
-    legend.position = "none"
-  )
-```
 
 <div align="center">
 
@@ -157,24 +89,6 @@ dimensional distribution.
 The variables we will produce a distribution of will be failure
 percentage and transaction count, so we calculate and add them as new
 columns for each observations.
-
-``` r
-before_anamoly_detection_data <- data
-
-data$failures <- data[, 1] - data[, 2]
-data$failure_rate <- (data[, 1] - data[, 2]) / data[, 1]
-
-kable(head(data, 3), format = "html") %>%
-  kable_styling(position = "center") %>% 
-  save_kable(
-    file = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/appended_1.png", 
-    zoom = 2
-  )
-
-knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/appended_1.png"
-)
-```
 
 <div align="center">
 
@@ -238,12 +152,6 @@ filtered_data <- data[data$mahalanobis_score >= top_quartile, ]
 
 Table of the 10 observations found to have the greatest outlier score.
 
-``` r
-knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/mscoreog.png"
-)
-```
-
 <div align="center">
 
 <img src="ReadMe_files/figure-gfm/mscoreog.png" width="70%">
@@ -287,34 +195,7 @@ proportion <- f / t[, 2] * 100
 failed_transactions <- data.frame(
   hours = unique_hours, 
   failedTransactions = proportion, 
-  x_index = seq(1, 72, by = 1)
-)
-
-ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + 
-  geom_area(fill = "blue", alpha = 0.25) + 
-  geom_line(color = "black") + 
-  scale_x_continuous(
-    breaks = seq(1, 72, by = 6), 
-    minor_breaks = 1:72, 
-    labels = unique_hours[seq(1, length(unique_hours), by = 6)]
-  ) + 
-  coord_cartesian(ylim = range(failed_transactions$failedTransactions, na.rm = TRUE)) +  
-  labs(
-    title = "Failed Transactions Percentage by Hour", 
-    x = "Hour (72)", 
-    y = "Failed Transactions Per Hour"
-  ) +
-  theme(
-    axis.text.x = element_text(angle = 60, hjust = 1, size = 8), 
-    axis.title.x = element_text(size = 10),
-    axis.title.y = element_text(size = 10), 
-    plot.background = element_rect(fill = "white", color = NA),
-    panel.background = element_rect(fill = "white", color = NA), 
-    panel.grid.major.x = element_blank(),  
-    panel.grid.minor.x = element_blank(), 
-    panel.grid.major.y = element_blank(), 
-    legend.position = "none"
-  )
+  x_index = seq(1, 72, by = 1))
 ```
 
 <div align="center">
@@ -633,7 +514,7 @@ the following plots to compare the two.
 Then to produce a fair comparison, we make the number of observations
 within each set equal by selected 552 of the normal data rows at random.
 
-###### anomaly data
+anomaly data
 
 ``` r
 paytm_subset <- data[
@@ -681,7 +562,8 @@ transactions_compliment <- t
 
     ## [1] 34.63494
 
-###### normal data but equal number of observations selected at random as the anomalous subset
+normal data but equal number of observations selected at random as the
+anomalous subset
 
 ``` r
 paytm_compliment_sample <- paytm_compliment[sample(nrow(paytm_compliment), 1200), ]
@@ -698,13 +580,13 @@ compliment_sample_sizes <- t
 (sum(compliment_sample_sizes[,2]))
 ```
 
-    ## [1] 15232
+    ## [1] 13984
 
 ``` r
 cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
 ```
 
-    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 15232
+    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 13984
 
 ``` r
 hours <- seq(1, 72, 1)
@@ -739,7 +621,7 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
 ```
 
-    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 15232
+    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 13984
 
 To make a fair comparison of the anomalous data and normal data before
 the anomaly event, the blue line is the failure rate of the normal data
