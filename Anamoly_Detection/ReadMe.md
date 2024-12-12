@@ -433,8 +433,7 @@ This gif is of the distribution of the anomalous data failure rate over
 a shifting 18 hour window clearly displaying the mean shift we observe
 in the anomaly.
 
-[Density Plot
-Animation](ReadMe_files/figure-gfm/density_animation_high_quality.gif)
+![](ReadMe_files/figure-gfm/density_animation_high_quality.gif)
 
 As well, here is the density curve of the anomalous data and normal data
 of equal sample size, notice how the anomalous data is synthetic by it’s
