@@ -201,8 +201,6 @@ Here is a plot of that distribution, as you can see the vast majority of the dat
 
 The thin purple layer covering the rest of the x-y plane are where those outlier are that we're looking for.
 
-To clarify, this is what a the 2-dimensional distribution of 10,000 samples for a standard Gaussian distribution looks like for comparison.
-
 ```{r eval=FALSE, include=FALSE}
 
 distribution <- data.frame(failures = data$failures,rate = data$failure_rate )
@@ -235,7 +233,11 @@ kde <- kde2d(rnorm(10000), rnorm(10000), n = 50)
 knitr::include_graphics(
   "/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/3Ddistribution.png"
 )
+```
 
+To clarify, this is what a the 2-dimensional distribution of 10,000 samples for a standard Gaussian distribution looks like for comparison.
+
+```{r}
 knitr::include_graphics(
   "/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/Gaussian_3d.png"
 )

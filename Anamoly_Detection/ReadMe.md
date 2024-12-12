@@ -108,14 +108,20 @@ thin sliver.
 The thin purple layer covering the rest of the x-y plane are where those
 outlier are that we’re looking for.
 
-To clarify, this is what a the 2-dimensional distribution of 10,000
-samples for a standard Gaussian distribution looks like for comparison.
-
 <div align="center">
 
 <img src="ReadMe_files/figure-gfm/3Ddistribution.png" width="70%">
 
 </div>
+
+To clarify, this is what a the 2-dimensional distribution of 10,000
+samples for a standard Gaussian distribution looks like for comparison.
+
+``` r
+knitr::include_graphics(
+  "/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/Gaussian_3d.png"
+)
+```
 
 <div align="center">
 
@@ -172,7 +178,7 @@ first_subset <- data[
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-13-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-14-1.png" width="70%">
 
 </div>
 
@@ -258,7 +264,7 @@ par(mfrow = c(1, 1))
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-15-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-16-1.png" width="70%">
 
 </div>
 
@@ -320,7 +326,7 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-16-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-17-1.png" width="70%">
 
 </div>
 
@@ -333,7 +339,7 @@ Which merchants were impacted by this anomaly?
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-17-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-18-1.png" width="70%">
 
 </div>
 
@@ -421,7 +427,7 @@ anomaly:
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-22-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-23-1.png" width="70%">
 
 </div>
 
@@ -431,7 +437,7 @@ equal sample size does.
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-23-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-24-1.png" width="70%">
 
 </div>
 
@@ -453,7 +459,7 @@ perfect distribution curve.
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-24-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-25-1.png" width="70%">
 
 </div>
 
