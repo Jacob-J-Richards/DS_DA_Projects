@@ -175,7 +175,7 @@ This isn't noteworthy, the failure counts are higher during the day because that
 
 To narrow down what caused our failure rate spike, we employ the Mahalanobis distance method which is useful for the detection of anomalies. Just as you can detect outliers in a variable of one dimension by an unusually high or low z-score, you can detect outliers in higher dimensional variables by it's z-score within it's higher dimensional distribution.
 
-The variables we will produce a distribution of will be failure percentage and transaction count, so we calculate and add them as new columns for each observations.
+The variables we will produce a distribution of will be failure percentage and transaction count, such that observations of the data set where both of these values are unusually high will be identified as anomalies.
 
 ```{r echo=FALSE}
 before_anamoly_detection_data <- data
@@ -195,15 +195,21 @@ knitr::include_graphics(
 )
 ```
 
-Now that we have all of our variables prepared, we can form a higher dimensional distribution from them to find which observations are the greatest outliers.
+Now that we have all of our variables prepared, we can form a two-dimensional distribution from them to find which observations are the greatest outliers.
 
-Here is a plot of that distribution, as you can see the vast majority is concentrated in the back corner of the volume. The thin purple layer covering the rest of the x-y plane are where those outlier are that we're looking for.
+Here is a plot of that distribution, as you can see the vast majority of the data is concentrated in the back corner of the volume in that very thin sliver.
 
-```{r,eval=FALSE}
+The thin purple layer covering the rest of the x-y plane are where those outlier are that we're looking for.
+
+To clarify, this is what a the 2-dimensional distribution of 10,000 samples for a standard Gaussian distribution looks like for comparison.
+
+```{r eval=FALSE, include=FALSE}
+
 distribution <- data.frame(failures = data$failures,rate = data$failure_rate )
 
 library(plotly)
 library(MASS)
+
 
 kde <- kde2d(data$failures, data$failure_rate, n = 50)
 
@@ -213,12 +219,25 @@ kde <- kde2d(data$failures, data$failure_rate, n = 50)
     z = kde$z,
     type = "surface"
   )
+  
+kde <- kde2d(rnorm(10000), rnorm(10000), n = 50)
 
+  plot_ly(
+    x = kde$x,
+    y = kde$y,
+    z = kde$z,
+    type = "surface"
+  )
+  
 ```
 
-```{r}
+```{r include=FALSE}
 knitr::include_graphics(
   "/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/3Ddistribution.png"
+)
+
+knitr::include_graphics(
+  "/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/Gaussian_3d.png"
 )
 ```
 
@@ -257,11 +276,11 @@ knitr::include_graphics(
 )
 ```
 
-Notice how the top 10 outliers all have a PAYTM service as the payment gateway with only difference in the variable name being the addition of the suffix \_UPI to PAYTM. From that I deduced that the anomaly would be present in the PAYTM payment gateways being PAYTM, PAYTM_V2, and PAYTM_UPI. The most common combination of the remaining variables of these top 10 observations is UPI for pmt, UPI_PAY for subtype, and UPI for bank.
+Notice how the top 10 outliers all have a PAYTM service as the payment gateway with only difference in the variable name being the addition of the suffix \_UPI to PAYTM.
 
-The combination of PAYTM services for the payment gateway, combined with UPI for pmt, UPI_PAY for subtype, and UPI for bank may be responsible for payment failures as deduced from the outliers.
+From that I deduced that the anomaly would be present in the PAYTM payment gateways being PAYTM, PAYTM_V2, and PAYTM_UPI.
 
-Plotting the failure rates over the entire 72 hours of observations for which this combination of variables is present.
+The failure rate of PAYTM services for the payment gateway, and the other most common variables present in the top 10 anomalous observations is as follows.
 
 ```{r}
 data <- before_anamoly_detection_data
@@ -318,11 +337,9 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
     legend.position = "none")
 ```
 
-Unfortunately, the result is white noise. This is not the exact problematic combination.
+Unfortunately, the result is white noise. This is not the exact problematic combination. Rather than checking each manually we check every combination programmatically with some quick and dirty code.
 
 Assuming that the PAYTM payment gateways (PAYTM, PAYTM_V2, and PAYTM_UPI) are part of the problem what we can do is plot the failure rates of the observations which contain all possible combinations of the remaining variables (payment method, subtype) with each of the PAYTM payment gateways (PAYTM or PAYTM_V2 or PAYTM_UPI).
-
-We will omit any combinations including the variable bank as it has over 300 different values within the data set.
 
 ```{r}
 payment_methods <- unique(data[, 4])
@@ -363,9 +380,7 @@ for (subset_name in names(subset_list)) {
     plot(
       x = seq(1, nrow(t), by = 1), 
       y = proportion, 
-      main = paste("Plot for", subset_name), 
-      xlab = "Time (hr)", 
-      ylab = "Proportion (%)",
+      main = paste("subset",subset_name),
       type = "l"
     )
     
@@ -379,15 +394,14 @@ for (subset_name in names(subset_list)) {
 }
 
 par(mfrow = c(1, 1)) 
-print(combinations)
 
 ```
 
-The plot of UPI for payment method and UPI_COLLECT for subtype reveals that this is the combination of variables within the PAYTM payment gateways that is casing customer complaints.
+The plot of UPI for payment method and UPI_COLLECT for sub-type reveals that this is the combination of variables within the PAYTM payment gateways that is casing customer complaints.
 
 Better plot of the problematic subset of the data.
 
-```{r}
+```{r include=FALSE}
 paytm_subset <- data[
   (data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI")) & 
   (data[, 6] %in% c("UPI_COLLECT")) & 
@@ -447,7 +461,6 @@ paytm_subset <- data[(data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI", "notpro
                      (data[, 4] == "UPI"), ]
 
 paytm_subset$failure_sum <- paytm_subset[, 1] - paytm_subset[, 2]
-head(paytm_subset,5)
 
 failure_sum_by_merchant <- aggregate(paytm_subset[, 9], by = list(paytm_subset$mid), sum)
 transaction_sum_by_merchant <- aggregate(paytm_subset[, 1], by = list(paytm_subset$mid), sum)
@@ -464,6 +477,10 @@ rest_of_data_transaction_count_by_merchant$failure_rate <- rest_of_data_set_fail
 entire_set_failures_by_merchant <- rest_of_data_transaction_count_by_merchant
 entire_set_failures_by_merchant$subset_rate <- subset_failures_by_merchant[, 4]
 entire_set_failures_by_merchant$diff <- entire_set_failures_by_merchant[, 4] - entire_set_failures_by_merchant[, 3]
+
+```
+
+```{r echo=FALSE}
 
 colnames(entire_set_failures_by_merchant) <- c(
   "Merchant", 
@@ -503,10 +520,11 @@ ggplot(data = long_set_failures_by_merchant,
     y = "Failure Rate"
   ) +
   theme_minimal()
-
 ```
 
-```{r}
+In tabular form
+
+```{r echo=FALSE}
 library(webshot2)
 library(gt)
 
@@ -556,6 +574,8 @@ knitr::include_graphics(
 
 All of the merchants were effected except UrbanClap.
 
+STOPPING PLACE
+
 Could such a massive spike in payment failure rates have been predicted? To investigate this, we separate the data with the combination of variables we found to be problematic from the normal data and produce the following plots to compare the two.
 
 Then to produce a fair comparison, we make the number of observations within each set equal by selected 552 of the normal data rows at random.
@@ -583,7 +603,7 @@ transactions_subset <- t
 cat("totall transactions within all anamolous observations",sum(transactions_subset[,2]))
 ```
 
-###### normal data
+normal data
 
 ```{r}
 paytm_compliment <- data[!(rownames(data) %in% rownames(paytm_subset)), ]
