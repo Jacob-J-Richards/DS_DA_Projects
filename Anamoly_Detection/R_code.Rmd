@@ -231,7 +231,7 @@ kde <- kde2d(rnorm(10000), rnorm(10000), n = 50)
   
 ```
 
-```{r include=FALSE}
+```{r echo=FALSE}
 knitr::include_graphics(
   "/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/3Ddistribution.png"
 )
