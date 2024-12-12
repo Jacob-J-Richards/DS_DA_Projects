@@ -117,12 +117,6 @@ outlier are that we’re looking for.
 To clarify, this is what a the 2-dimensional distribution of 10,000
 samples for a standard Gaussian distribution looks like for comparison.
 
-``` r
-knitr::include_graphics(
-  "/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/Gaussian_3d.png"
-)
-```
-
 <div align="center">
 
 <img src="ReadMe_files/figure-gfm/Gaussian_3d.png" width="70%">
