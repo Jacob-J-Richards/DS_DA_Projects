@@ -427,16 +427,18 @@ Plotting without a curve smoother, you can see that before the anomaly,
 the variance of the normal data sample isn’t any better than the anomaly
 data.
 
-Confirming the result are the following, the first being a gif of the
-distribution of the anomalous data over a shifting 18 hour window
-displaying the mean shift.
+Confirming the result are the following:
+
+This gif is of the distribution of the anomalous data failure rate over
+a shifting 18 hour window clearly displaying the mean shift we observe
+in the anomaly.
+
+[Density Plot
+Animation](ReadMe_files/figure-gfm/density_animation_high_quality.gif)
 
 As well, here is the density curve of the anomalous data and normal data
 of equal sample size, notice how the anomalous data is synthetic by it’s
 perfect distribution curve.
-
-[Density Plot
-Animation](ReadMe_files/figure-gfm/density_animation_high_quality.gif)
 
 <div align="center">
 
@@ -445,7 +447,7 @@ Animation](ReadMe_files/figure-gfm/density_animation_high_quality.gif)
 </div>
 
 What all of these plots indicate is that the anomalous data before the
-anomaly event was no different than the rest of the data, that something
+anomaly event was no different than the rest of the data, something
 happened outside of the data set to cause the spike in failure rate.
 This is evident in the density curve of the anomaly, containing a second
 node displaying the failure rate during the anomaly as it’s own district
