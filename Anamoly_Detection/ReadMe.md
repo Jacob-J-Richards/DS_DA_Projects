@@ -87,8 +87,9 @@ in higher dimensional variables by it’s z-score within it’s higher
 dimensional distribution.
 
 The variables we will produce a distribution of will be failure
-percentage and transaction count, so we calculate and add them as new
-columns for each observations.
+percentage and transaction count, such that observations of the data set
+where both of these values are unusually high will be identified as
+anomalies.
 
 <div align="center">
 
@@ -96,42 +97,19 @@ columns for each observations.
 
 </div>
 
-Now that we have all of our variables prepared, we can form a higher
-dimensional distribution from them to find which observations are the
-greatest outliers.
+Now that we have all of our variables prepared, we can form a
+two-dimensional distribution from them to find which observations are
+the greatest outliers.
 
-Here is a plot of that distribution, as you can see the vast majority is
-concentrated in the back corner of the volume. The thin purple layer
-covering the rest of the x-y plane are where those outlier are that
-we’re looking for.
+Here is a plot of that distribution, as you can see the vast majority of
+the data is concentrated in the back corner of the volume in that very
+thin sliver.
 
-``` r
-distribution <- data.frame(failures = data$failures,rate = data$failure_rate )
+The thin purple layer covering the rest of the x-y plane are where those
+outlier are that we’re looking for.
 
-library(plotly)
-library(MASS)
-
-kde <- kde2d(data$failures, data$failure_rate, n = 50)
-
-  plot_ly(
-    x = kde$x,
-    y = kde$y,
-    z = kde$z,
-    type = "surface"
-  )
-```
-
-``` r
-knitr::include_graphics(
-  "/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/3Ddistribution.png"
-)
-```
-
-<div align="center">
-
-<img src="ReadMe_files/figure-gfm/3Ddistribution.png" width="70%">
-
-</div>
+To clarify, this is what a the 2-dimensional distribution of 10,000
+samples for a standard Gaussian distribution looks like for comparison.
 
 Evaluating the Mahalanobis method to find those outliers
 
@@ -160,42 +138,24 @@ Table of the 10 observations found to have the greatest outlier score.
 
 Notice how the top 10 outliers all have a PAYTM service as the payment
 gateway with only difference in the variable name being the addition of
-the suffix \_UPI to PAYTM. From that I deduced that the anomaly would be
-present in the PAYTM payment gateways being PAYTM, PAYTM_V2, and
-PAYTM_UPI. The most common combination of the remaining variables of
-these top 10 observations is UPI for pmt, UPI_PAY for subtype, and UPI
-for bank.
+the suffix \_UPI to PAYTM.
 
-The combination of PAYTM services for the payment gateway, combined with
-UPI for pmt, UPI_PAY for subtype, and UPI for bank may be responsible
-for payment failures as deduced from the outliers.
+From that I deduced that the anomaly would be present in the PAYTM
+payment gateways being PAYTM, PAYTM_V2, and PAYTM_UPI.
 
-Plotting the failure rates over the entire 72 hours of observations for
-which this combination of variables is present.
+The failure rate of PAYTM services for the payment gateway, and the
+other most common variables present in the top 10 anomalous observations
+is as follows.
 
 ``` r
 data <- before_anamoly_detection_data
 
 first_subset <- data[
-  (data[, 4] %in% c("UPI")) & 
+  (data[, 4] == c("UPI")) & 
   (data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI")) & 
   (data[, 6] == "UPI_PAY") & 
   (data[, 8] == "UPI"), 
 ]
-
-unique_hours <- unique(data$hr)
-unique_hours <- sort(unique_hours)
-
-t <- aggregate(first_subset$t, by = list(first_subset$hr), sum)
-s <- aggregate(first_subset$s, by = list(first_subset$hr), sum)
-f <- t[, 2] - s[, 2]
-
-proportion <- f / t[, 2] * 100
-
-failed_transactions <- data.frame(
-  hours = unique_hours, 
-  failedTransactions = proportion, 
-  x_index = seq(1, 72, by = 1))
 ```
 
 <div align="center">
@@ -205,55 +165,56 @@ failed_transactions <- data.frame(
 </div>
 
 Unfortunately, the result is white noise. This is not the exact
-problematic combination.
-
-Assuming that the PAYTM payment gateways (PAYTM, PAYTM_V2, and
-PAYTM_UPI) are part of the problem what we can do is plot the failure
-rates of the observations which contain all possible combinations of the
-remaining variables (payment method, subtype) with each of the PAYTM
-payment gateways (PAYTM or PAYTM_V2 or PAYTM_UPI).
-
-We will omit any combinations including the variable bank as it has over
-300 different values within the data set.
+problematic combination. Rather than checking each possible combination
+of the variables we believe the anomaly to be contained within manually,
+the following quick and dirty code will produce a failure rate plot for
+all combinations of payment methods and sub-types with each of the PAYTM
+payment gateways.
 
 ``` r
-#payment_methods <- unique(data[, 4])
-#subtypes <- unique(data[, 6])
-#filter_values <- c("PAYTM", "PAYTM_V2", "PAYTM_UPI")
-#subset_list <- list()
+payment_methods <- unique(data[, 4]) # All payment methods
+subtypes <- unique(data[, 6])        # All subtypes
+filter_values <- c("PAYTM", "PAYTM_V2", "PAYTM_UPI") # all combinations of the previous variables with each of these
 
-write.csv(data,file="shiny_app_data.csv")
-
-
-payment_methods <- unique(data[, 4])
-subtypes <- unique(data[, 6])
-filter_values <- c("PAYTM", "PAYTM_V2", "PAYTM_UPI")
-subset_list <- list()
-
-
-for (pm in payment_methods) {
-  for (st in subtypes) {
-    subset_name <- paste(pm, st, sep = "_")
-    subset_list[[subset_name]] <- data[(data[, 4] == pm) & 
-                                       (data[, 6] == st) & 
-                                       (data[, 5] %in% filter_values), ]
-  }
-}
-
-combinations <- data.frame(
+# Generate combinations for each filtered value
+combinations <- expand.grid(
   Payment_Method = character(),
   Subtype = character(),
   PMT_Values = character(),
   stringsAsFactors = FALSE
 )
 
+subset_list <- list()
+
+# Create subsets for each combination
+for (pmt in payment_methods) {
+  for (st in subtypes) {
+    for (fv in filter_values) {
+      subset_name <- paste(pmt, fv, st, sep = " | ")
+      subset_data <- data[
+        data[, 4] == pmt & 
+        data[, 6] == st & 
+        data[, 5] == fv, 
+      ]
+      subset_list[[subset_name]] <- subset_data
+    }
+  }
+}
+cat("number of combinations produced:",(length(subset_list)))
+```
+
+    ## number of combinations produced: 75
+
+plotting the combinations for which there are corresponding transactions
+within the data set for.
+
+``` r
 par(mfrow = c(3,3))
 
 for (subset_name in names(subset_list)) {
   subset_data <- subset_list[[subset_name]]
   
   if (nrow(subset_data) > 0) { 
-    
     t <- aggregate(subset_data$t, by = list(subset_data$hr), sum)
     s <- aggregate(subset_data$s, by = list(subset_data$hr), sum)
     f <- t[, 2] - s[, 2] 
@@ -263,18 +224,20 @@ for (subset_name in names(subset_list)) {
     plot(
       x = seq(1, nrow(t), by = 1), 
       y = proportion, 
-      main = paste("Plot for", subset_name), 
-      xlab = "Time (hr)", 
-      ylab = "Proportion (%)",
+      main = paste("", subset_name),
       type = "l"
     )
     
     unique_pmt <- unique(subset_data[, 5])
-    combinations <- rbind(combinations, data.frame(
-      Payment_Method = unique(subset_data[, 4]),
-      Subtype = unique(subset_data[, 6]),
-      PMT_Values = paste(unique_pmt, collapse = ", ")
-    ))
+    combinations <- rbind(
+      combinations, 
+      data.frame(
+        Payment_Method = unique(subset_data[, 4]),
+        Subtype = unique(subset_data[, 6]),
+        PMT_Values = paste(unique_pmt, collapse = ", "),
+        stringsAsFactors = FALSE
+      )
+    )
   }
 }
 
@@ -283,32 +246,20 @@ par(mfrow = c(1, 1))
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-14-1.png" width="70%">
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-15-1.png" width="70%">
 
 </div>
 
-``` r
-print(combinations)
-```
-
-    ##   Payment_Method               Subtype          PMT_Values
-    ## 1             NB           notprovided               PAYTM
-    ## 2         WALLET           notprovided               PAYTM
-    ## 3         WALLET REDIRECT_WALLET_DEBIT               PAYTM
-    ## 4         WALLET   DIRECT_WALLET_DEBIT               PAYTM
-    ## 5           CARD           notprovided               PAYTM
-    ## 6            UPI           UPI_COLLECT            PAYTM_V2
-    ## 7            UPI               UPI_PAY PAYTM_V2, PAYTM_UPI
-
-The plot of UPI for payment method and UPI_COLLECT for subtype reveals
-that this is the combination of variables within the PAYTM payment
-gateways that is casing customer complaints.
+of which only 8 of these combinations have any transactions to plot,
+clearly what we’re looking for is the subset UPI \| PAYTM_V2 \|
+UPI_COLLECT for payment method, payment gateway, and sub-type
+respectively.
 
 Better plot of the problematic subset of the data.
 
 ``` r
 paytm_subset <- data[
-  (data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI")) & 
+  (data[, 5] %in% c("PAYTM_V2")) & 
   (data[, 6] %in% c("UPI_COLLECT")) & 
   (data[, 4] == "UPI"), 
 ]
@@ -357,146 +308,24 @@ ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) +
 
 <div align="center">
 
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-15-1.png" width="70%">
-
-</div>
-
-The failure rate spike occurred from 5pm on the 13th to 6am on the 14th
-the same day that merchants reported customer complaints.
-
-Which merchants were impacted by this anomaly?
-
-``` r
-paytm_subset <- data[(data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI", "notprovided")) & 
-                     (data[, 6] %in% c("UPI_COLLECT")) & 
-                     (data[, 4] == "UPI"), ]
-
-paytm_subset$failure_sum <- paytm_subset[, 1] - paytm_subset[, 2]
-head(paytm_subset,5)
-```
-
-    ##       t  s            mid pmt          pg     subtype            hr bank
-    ## 323   1  0  pharmeasytech UPI notprovided UPI_COLLECT 2020-02-12 09 Zeta
-    ## 3837 34 25   medlife_prod UPI    PAYTM_V2 UPI_COLLECT 2020-02-14 11  UPI
-    ## 3840 35  7 countrydelight UPI    PAYTM_V2 UPI_COLLECT 2020-02-14 07  UPI
-    ## 3843 49 26        drivezy UPI    PAYTM_V2 UPI_COLLECT 2020-02-14 12  UPI
-    ## 3844 28 14       fanfight UPI    PAYTM_V2 UPI_COLLECT 2020-02-14 11  UPI
-    ##      failure_sum
-    ## 323            1
-    ## 3837           9
-    ## 3840          28
-    ## 3843          23
-    ## 3844          14
-
-``` r
-failure_sum_by_merchant <- aggregate(paytm_subset[, 9], by = list(paytm_subset$mid), sum)
-transaction_sum_by_merchant <- aggregate(paytm_subset[, 1], by = list(paytm_subset$mid), sum)
-
-failure_sum_by_merchant$transction_sum <- transaction_sum_by_merchant[, 2]
-failure_sum_by_merchant$failue_rate_merchant <- failure_sum_by_merchant[, 2] / failure_sum_by_merchant[, 3]
-subset_failures_by_merchant <- failure_sum_by_merchant
-
-data$failures <- data[, 1] - data[, 2]
-rest_of_data_set_failure_count_by_merchant <- aggregate(data[, 9], by = list(data$mid), sum)
-rest_of_data_transaction_count_by_merchant <- aggregate(data[, 1], by = list(data$mid), sum)
-
-rest_of_data_transaction_count_by_merchant$failure_rate <- rest_of_data_set_failure_count_by_merchant[, 2] / rest_of_data_transaction_count_by_merchant[, 2]
-entire_set_failures_by_merchant <- rest_of_data_transaction_count_by_merchant
-entire_set_failures_by_merchant$subset_rate <- subset_failures_by_merchant[, 4]
-entire_set_failures_by_merchant$diff <- entire_set_failures_by_merchant[, 4] - entire_set_failures_by_merchant[, 3]
-
-colnames(entire_set_failures_by_merchant) <- c(
-  "Merchant", 
-  "Failures", 
-  "Failure_rate_Pre", 
-  "Failure_Rate_Anamoly", 
-  "Failure_Rate_Difference"
-)
-
-entire_set_failures_by_merchant <- entire_set_failures_by_merchant[c(
-  "Merchant", 
-  "Failure_rate_Pre", 
-  "Failure_Rate_Anamoly", 
-  "Failure_Rate_Difference"
-)]
-
-library('reshape2')
-long_set_failures_by_merchant <- melt(
-  data = entire_set_failures_by_merchant, 
-  id.vars = c("Merchant"),
-  measured.vars = c(
-    "Failure_rate_Before_Anamoly", 
-    "Failure_Rate_During_Anamoly", 
-    "Difference_between_Failure_Rate"
-  ),
-  variable.name = "Before_after_difference", 
-  value.name = "Rate"
-)
-
-ggplot(data = long_set_failures_by_merchant, 
-  aes(x = Before_after_difference, y = Rate, fill = Merchant)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  scale_fill_brewer(palette = "Set2") +  
-  labs(
-    title = "Failure Rates Before and During Anomaly by Merchant",
-    x = "Period", 
-    y = "Failure Rate"
-  ) +
-  theme_minimal()
-```
-
-<div align="center">
-
 <img src="ReadMe_files/figure-gfm/unnamed-chunk-16-1.png" width="70%">
 
 </div>
 
-``` r
-library(webshot2)
-library(gt)
+The failure rate spike occurred from 5pm on the 13th to 6am on the 14th
+the same day that merchants reported customer complaints, during which,
+failure rates were at a minimum of 66% and a maximum of 85% for an
+entire 13 hours.
 
-gt_table <- entire_set_failures_by_merchant %>%
-  gt() %>%
-  tab_header(
-    title = "Merchant Failure Rates",
-    subtitle = "Comparison of Failure Rates Before and During Anomaly"
-  ) %>%
-  cols_label(
-    Merchant = "Merchant",
-    Failure_rate_Pre = "Failure Rate Before Anomaly",
-    Failure_Rate_Anamoly = "Failure Rate During Anomaly",
-    Failure_Rate_Difference = "Difference in Failure Rate"
-  ) %>%
-  fmt_number(
-    columns = c(Failure_rate_Pre, Failure_Rate_Anamoly, Failure_Rate_Difference),
-    decimals = 4
-  ) %>%
-  tab_style(
-    style = cell_text(weight = "bold"),
-    locations = cells_column_labels(everything())
-  ) %>%
-  tab_options(
-    table.font.size = "small",
-    table.width = pct(80),
-    heading.align = "center"
-  ) %>%
-  data_color(
-    columns = Failure_Rate_Difference,
-    colors = scales::col_numeric(
-      palette = c("lightblue", "red"),
-      domain = NULL
-    )
-  )
+Which merchants were impacted by this anomaly?
 
-gtsave(
-  gt_table, 
-  "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/gt_table_image.png"
-)
+<div align="center">
 
-knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/gt_table_image.png"
-)
-```
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-17-1.png" width="70%">
+
+</div>
+
+In tabular form
 
 <div align="center">
 
@@ -506,19 +335,29 @@ knitr::include_graphics(
 
 All of the merchants were effected except UrbanClap.
 
-Could such a massive spike in payment failure rates have been predicted?
-To investigate this, we separate the data with the combination of
-variables we found to be problematic from the normal data and produce
-the following plots to compare the two.
+Now that we found the problem and who was impacted, we investigate
+further with the following questions.
 
-Then to produce a fair comparison, we make the number of observations
-within each set equal by selected 552 of the normal data rows at random.
+1.) Were there indicators that predicted this event so we can catch it
+before it happens next time?
 
-anomaly data
+2.) If this could not have been predicted, how can we make sure we
+detect it as soon as possible if it does happen again?
+
+First, we separate the data that contains the anamoly from the normal
+data and produce the following plots to compare the bias and variances
+of the curves to the mean failure rate of the normal data across the
+entire data set.
+
+Then, to produce a fair comparison, we limit the sample size of the
+normal data we plot to be equal to the sample size of the anomaly’s
+data.
+
+anomaly data:
 
 ``` r
 paytm_subset <- data[
-  (data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI")) & 
+  (data[, 5] %in% c("PAYTM_V2")) & 
   (data[, 6] %in% c("UPI_COLLECT")) & 
   (data[, 4] == "UPI"), 
 ]
@@ -533,22 +372,12 @@ f <- t[, 2] - s[, 2]
 proportion_subset <- f / t[, 2] * 100
 
 transactions_subset <- t
-
-cat("totall transactions within all anamolous observations",sum(transactions_subset[,2]))
 ```
 
-    ## totall transactions within all anamolous observations 12348
-
-###### normal data
+all normal data:
 
 ``` r
 paytm_compliment <- data[!(rownames(data) %in% rownames(paytm_subset)), ]
-(nrow(paytm_compliment))
-```
-
-    ## [1] 18755
-
-``` r
 t <- aggregate(paytm_compliment$t, by = list(paytm_compliment$hr), sum)
 s <- aggregate(paytm_compliment$s, by = list(paytm_compliment$hr), sum)
 f <- t[, 2] - s[, 2]
@@ -556,14 +385,10 @@ f <- t[, 2] - s[, 2]
 proportion_compliment <- f / t[, 2] * 100
 
 transactions_compliment <- t
-
-(mean(proportion_compliment))
 ```
 
-    ## [1] 34.63494
-
-normal data but equal number of observations selected at random as the
-anomalous subset
+normal data but roughly equal number of transactions as the anomalous
+subset selected at random:
 
 ``` r
 paytm_compliment_sample <- paytm_compliment[sample(nrow(paytm_compliment), 1200), ]
@@ -575,41 +400,12 @@ s <- aggregate(paytm_compliment_sample$s, by = list(paytm_compliment_sample$hr),
 f <- t[, 2] - s[, 2]
 
 proportion_compliment_sample <- f / t[, 2] * 100
-
+ 
 compliment_sample_sizes <- t
-(sum(compliment_sample_sizes[,2]))
 ```
 
-    ## [1] 13984
-
-``` r
-cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
-```
-
-    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 13984
-
-``` r
-hours <- seq(1, 72, 1)
-wide <- as.data.frame(cbind(hours, proportion_compliment, proportion_subset,proportion_compliment_sample))
-
-long <- melt(
-  data = wide, 
-  id.vars = c("hours"), 
-  measured.vars = c("proportion_compliment", "proportion_subset","proportion_compliment_sample"), 
-  variable.name = "percentage_failure"
-)
-```
-
-``` r
-ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color = percentage_failure)) + 
-  geom_smooth() + 
-  labs(
-    title = "Smoothed Failure Percentage Curve", 
-    ylab = "Percentage"
-  ) + 
-  scale_color_discrete(labels = c("Non-Anomalous Data Entire Set", "Anomalous Data","Non-Anomalous Data Sample")) +
-  geom_hline(yintercept = 34.63494, linetype = "dashed", color = "red")
-```
+plot of the anomalous data and normal data of equal sample size to the
+anomaly:
 
 <div align="center">
 
@@ -617,31 +413,9 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 
 </div>
 
-``` r
-cat("totall transactions in sample of observations from normal data of equal size to number of anamoly observations.",sum(compliment_sample_sizes[,2]))
-```
-
-    ## totall transactions in sample of observations from normal data of equal size to number of anamoly observations. 13984
-
-To make a fair comparison of the anomalous data and normal data before
-the anomaly event, the blue line is the failure rate of the normal data
-from 552 randomly selected observations within it, such that it of equal
-sample size to the anomalous data comprised of an equal number of
-observations.
-
-Despite the transaction count within the normal data sample size
-controlled being greater than the totall transactions of the anomalous
-data, it’s variance and mean is consistently
-
-``` r
-ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color = percentage_failure)) + 
-  geom_line() + 
-  labs(
-    title = "Failure Percentage Line", 
-    ylab = "Percentage"
-  ) + 
-  scale_color_discrete(labels = c("Non-Anomalous Data", "Anomalous Data"))
-```
+In the hours before the anomaly occurs, the anomalous data has a better
+fit to the mean failure rate of the normal data than the normal data of
+equal sample size does.
 
 <div align="center">
 
@@ -649,37 +423,20 @@ ggplot(data = long, aes(x = hours, y = value, group = percentage_failure, color 
 
 </div>
 
-``` r
-write.csv(wide,file="density_data.csv")
-```
+Plotting without a curve smoother, you can see that before the anomaly,
+the variance of the normal data sample isn’t any better than the anomaly
+data.
 
-You can see that the anomalous data has much higher variance than the
-normal data, but this is expected as the anomalous data only has ~500
-observations and the normal data has 1800.
+Confirming the result are the following, the first being a gif of the
+distribution of the anomalous data over a shifting 18 hour window
+displaying the mean shift.
 
-The following graphics displays the distribution of the anomalous data
-over a shifting 18 hour time window of first 18 hours of the dataset
-until the last 18 hours of the data set out of the 72.
+As well, here is the density curve of the anomalous data and normal data
+of equal sample size, notice how the anomalous data is synthetic by it’s
+perfect distribution curve.
 
-The distribution of the anomalous data and a sample of the normal data
-of equal size to anomalous.
-
-Notice that the anomalous data is synthetic by it’s perfect
-distribution.
-
-``` r
-library(plotly)
-#[Density Plot Animation](ReadMe_files/figure-gfm/density_animation_high_quality.gif)
-ggplot(data = wide, aes(proportion_subset)) + 
-  geom_density(data=wide,aes(proportion_compliment_sample,fill="red",alpha=0.20)) + 
-  geom_density(fill = "blue", alpha = 0.20) + 
-  theme_minimal() + 
-  labs(
-    title = "Anomalous Data Failure Rate Density", 
-    x = "Failure Rate", 
-    y = "Density"
-  )
-```
+[Density Plot
+Animation](ReadMe_files/figure-gfm/density_animation_high_quality.gif)
 
 <div align="center">
 
@@ -687,68 +444,23 @@ ggplot(data = wide, aes(proportion_subset)) +
 
 </div>
 
-2)  how could the issue have been detected earlier to prevent merchants
-    and customers from discovering it. A dashboard visualizing metrics
-    like success rate and volume across dimensions is then requested.
+What all of these plots indicate is that the anomalous data before the
+anomaly event was no different than the rest of the data, that something
+happened outside of the data set to cause the spike in failure rate.
+This is evident in the density curve of the anomaly, containing a second
+node displaying the failure rate during the anomaly as it’s own district
+distribution.
 
-ok what if for each payment method we made a plot of a curve for each
-payment gate way that somehow visualized the combination of transaction
-volume and failure rate
+So now that we know that this failure rate event could not had been
+predicted. How can we monitor the data to see an event occurring before
+any of out clients do.
+
+The following is a interactive dashboard displaying the failure rates
+and transaction volume of each combination of categories within the data
+set. These visualizations upon your inspection will clearly reveal the
+normal and abnormal patterns in the data which we have discovered.
+
+**Right click to open in a new tab.**
 
 [shiny dashboard of failure rate and
-transaction](https://jacob-j-richards.shinyapps.io/shiny/ "open in a new tab")[volume](https://jacob-j-richards.shinyapps.io/shiny/)
-
-``` r
-paytm_subset <- data[
-  (data[, 5] %in% c("PAYTM", "PAYTM_V2", "PAYTM_UPI")) & 
-  (data[, 6] %in% c("UPI_COLLECT")) & 
-  (data[, 4] == "UPI"), 
-]
-
-unique_hours <- unique(data$hr)
-unique_hours <- sort(unique_hours)
-
-t <- aggregate(paytm_subset$t, by = list(paytm_subset$hr), sum)
-s <- aggregate(paytm_subset$s, by = list(paytm_subset$hr), sum)
-f <- t[, 2] - s[, 2]
-
-proportion <- f / t[, 2] * 100
-
-failed_transactions <- data.frame(
-  hours = unique_hours, 
-  failedTransactions = proportion, 
-  x_index = seq(1, 72, by = 1)
-)
-
-ggplot(data = failed_transactions, aes(x = x_index, y = failedTransactions)) + 
-  geom_area(fill = "blue", alpha = 0.25) + 
-  geom_line(color = "black") + 
-  scale_x_continuous(
-    breaks = seq(1, 72, by = 6), 
-    minor_breaks = 1:72, 
-    labels = unique_hours[seq(1, length(unique_hours), by = 6)]
-  ) + 
-  coord_cartesian(ylim = range(failed_transactions$failedTransactions, na.rm = TRUE)) +  
-  labs(
-    title = "Failed Transactions Percentage by Hour", 
-    x = "Hour (72)", 
-    y = "Failed Transactions Per Hour"
-  ) +
-  theme(
-    axis.text.x = element_text(angle = 60, hjust = 1, size = 8), 
-    axis.title.x = element_text(size = 10),
-    axis.title.y = element_text(size = 10), 
-    plot.background = element_rect(fill = "white", color = NA),
-    panel.background = element_rect(fill = "white", color = NA), 
-    panel.grid.major.x = element_blank(),  
-    panel.grid.minor.x = element_blank(), 
-    panel.grid.major.y = element_blank(), 
-    legend.position = "none"
-  )
-```
-
-<div align="center">
-
-<img src="ReadMe_files/figure-gfm/unnamed-chunk-26-1.png" width="70%">
-
-</div>
+transaction](https://jacob-j-richards.shinyapps.io/shiny/ "open in a new tab")
