@@ -186,7 +186,7 @@ payment gateways.
 ``` r
 payment_methods <- unique(data[, 4]) # All payment methods
 subtypes <- unique(data[, 6])        # All subtypes
-filter_values <- c("PAYTM", "PAYTM_V2", "PAYTM_UPI") #all combinations of the previous variables with each of these
+filter_values = c("PAYTM", "PAYTM_V2", "PAYTM_UPI") #all combinations of the previous variables with each of these
 
 # Generate combinations for each filtered value
 combinations <- expand.grid(
