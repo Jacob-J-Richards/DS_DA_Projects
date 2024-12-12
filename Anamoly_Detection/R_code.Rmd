@@ -376,6 +376,7 @@ cat("number of combinations produced:",(length(subset_list)))
 plotting the combinations for which there are corresponding transactions within the data set for.
 
 ```{r echo=TRUE}
+
 par(mfrow = c(3,3))
 
 for (subset_name in names(subset_list)) {
