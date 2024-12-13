@@ -228,7 +228,7 @@ obs_with_prediction_prob <- cbind(clean_data,response_probabilities)
 
 #cumulative gains chart
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 lift_observation <- obs_with_prediction_prob[order(obs_with_prediction_prob[,7],decreasing = TRUE),]
 
 baseline_observations <- obs_with_prediction_prob
@@ -238,12 +238,15 @@ totall_responces <- (sum(lift_observation[,6]=="response"))
 lift_chart_cumulative_percentage <- function() {
   
         percent_contacted <- seq(0,1,by=.1)
+        
         cumulative_resp_per = numeric(length(percent_contacted))
+        
         cum_resp_per_baseline <- numeric(length(percent_contacted))
    
         for (i in 1:11) {
           
         cumulative_resp_per[i] =  sum(lift_observation[seq(0,percent_contacted[i]*nrow(lift_observation),by=1),6]=="response")/totall_responces*100
+        
         cum_resp_per_baseline[i] =  sum(responders_data_sheet[seq(0,percent_contacted[i]*nrow(responders_data_sheet),by=1),6]=="response")/totall_responces*100
        
         }
@@ -282,6 +285,116 @@ lift_chart_cumulative_percentage <- function() {
 lift_chart_cumulative_percentage()
 lift_chart_lift_advantage()
 ```
+
+
+```{r}
+# Generate cumulative gains chart
+generate_cumulative_gains_chart <- function(model, data, response_column, prob_column) {
+  # Predict probabilities and add to the dataset
+  predicted_probs <- predict(model, newdata = data, type = "prob")
+  data$response_prob <- predicted_probs[, prob_column]
+  
+  # Sort data by predicted probabilities in descending order
+  sorted_data <- data[order(data$response_prob, decreasing = TRUE), ]
+  
+  # Total number of positive responses in the dataset
+  total_responses <- sum(sorted_data[[response_column]] == "response")
+  
+  # Initialize vectors for the cumulative gains curve
+  percent_contacted <- seq(0, 1, by = 0.1)
+  cumulative_responses <- numeric(length(percent_contacted))
+  baseline_responses <- percent_contacted * total_responses
+  
+  # Calculate cumulative response percentages
+  for (i in seq_along(percent_contacted)) {
+    n <- ceiling(percent_contacted[i] * nrow(sorted_data))
+    cumulative_responses[i] <- sum(sorted_data[1:n, response_column] == "response") / total_responses * 100
+  }
+  
+  # Create a results data frame
+  results <- data.frame(
+    percent_contacted = percent_contacted,
+    cumulative_responses = cumulative_responses,
+    baseline_responses = baseline_responses
+  )
+  
+  # Plot cumulative gains chart
+  plot(
+    x = percent_contacted, y = cumulative_responses,
+    type = "o", col = "red", xlab = "Percent Contacted", ylab = "Cumulative Response (%)",
+    main = "Cumulative Gains Chart", ylim = c(0, 100)
+  )
+  lines(
+    x = percent_contacted, y = baseline_responses,
+    col = "blue", type = "o", lty = 2
+  )
+  
+  legend("bottomright", legend = c("Model", "Baseline"), col = c("red", "blue"), lty = c(1, 2))
+  return(results)
+}
+
+# Generate lift chart
+generate_lift_chart <- function(model, data, response_column, prob_column) {
+  # Predict probabilities and add to the dataset
+  predicted_probs <- predict(model, newdata = data, type = "prob")
+  data$response_prob <- predicted_probs[, prob_column]
+  
+  # Sort data by predicted probabilities in descending order
+  sorted_data <- data[order(data$response_prob, decreasing = TRUE), ]
+  
+  # Total number of positive responses
+  total_responses <- sum(sorted_data[[response_column]] == "response")
+  
+  # Initialize vectors for the lift chart
+  percent_contacted <- seq(0.1, 1, by = 0.1)
+  lift_values <- numeric(length(percent_contacted))
+  baseline_lift <- rep(1, length(percent_contacted))  # Baseline lift is always 1
+  
+  # Calculate lift values
+  for (i in seq_along(percent_contacted)) {
+    n <- ceiling(percent_contacted[i] * nrow(sorted_data))
+    cumulative_responses <- sum(sorted_data[1:n, response_column] == "response")
+    lift_values[i] <- cumulative_responses / (percent_contacted[i] * total_responses)
+  }
+  
+  # Create a results data frame
+  lift_results <- data.frame(
+    percent_contacted = percent_contacted,
+    lift_values = lift_values,
+    baseline_lift = baseline_lift
+  )
+  
+  # Plot lift chart
+  plot(
+    x = percent_contacted, y = lift_values,
+    type = "o", col = "red", xlab = "Percent Contacted", ylab = "Lift",
+    main = "Lift Chart", ylim = c(0, max(lift_values, 2))
+  )
+  lines(
+    x = percent_contacted, y = baseline_lift,
+    col = "blue", type = "o", lty = 2
+  )
+  
+  legend("topright", legend = c("Model", "Baseline"), col = c("red", "blue"), lty = c(1, 2))
+  return(lift_results)
+}
+
+# Run both functions
+cumulative_gains <- generate_cumulative_gains_chart(
+  model = rf_model,
+  data = clean_data,
+  response_column = "response_column_name",  # Replace with the actual response column name
+  prob_column = "response"                  # Replace with the predicted probability column name
+)
+
+lift_chart <- generate_lift_chart(
+  model = rf_model,
+  data = clean_data,
+  response_column = "response_column_name",  # Replace with the actual response column name
+  prob_column = "response"                  # Replace with the predicted probability column name
+)
+```
+
 
 In utilization of this model, only 30% of observations need to be contacted to yield 97.9% of the responses. Thus, evaluation of this model is recommended in selecting by utilizing this model by contacting only 30% of the observations, we yield 97.9% of the responses
 
