@@ -1,0 +1,69 @@
+---
+title: "Your Document Title"
+output:
+  md_document:
+    variant: gfm
+knit: (function(input, ...) { rmarkdown::render(input, ..., output_file = "ReadMe.md") })
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center",
+  fig.width = 8,   
+  fig.height = 6, 
+  dpi = 300,     
+  dev = "png",
+  out.width = "70%",
+  out.height = "70%"
+)
+
+knitr::knit_hooks$set(plot = function(x, options) {
+  paste0('<div align="center">\n',
+         '<img src="', x, '" width="70%">\n',
+         '</div>')
+})
+```
+
+Given the following data.
+
+```{r}
+library(tidyr)
+data <- read.csv(file="data.csv",header=TRUE)
+```
+
+```{r echo=FALSE}
+library(knitr)
+library(kableExtra)
+
+your_tibble <- head(data,5)
+kable(your_tibble, format = "html") %>%
+  kable_styling(position = "center") %>% 
+  save_kable(file = "~/Desktop/DS_DA_Projects/Marketing_Prediction/ReadMe_files/figure-gfm/A1.png", zoom = 2)
+knitr::include_graphics("~/Desktop/DS_DA_Projects/Marketing_Prediction/ReadMe_files/figure-gfm/A1.png")
+```
+
+Let's build a Random Forest binary classifier.
+
+Step 1: Clean the data
+
+```{r}
+data <- data %>%
+  mutate(across(c(4,5,6), ~ifelse(is.na(.) | . == "", "unknown", .)))
+
+data$income <- factor(responders_data_sheet[, "income"],
+                      levels = c("unknown","Under $10k", "10-19,999", "20-29,999", 
+                                 "30-39,999","40-49,999", "50-59,999", "60-69,999", "70-79,999",
+                                 "80-89,999", "90-99,999", "100-149,999", "150 - 174,999",
+                                 "175 - 199,999", "200 - 249,999", "250k+"), 
+                      labels = 1:16)
+
+data$gender <- factor(data$gender, levels = c("M","F","unknown"), labels = c("M","F","unknown"))
+
+data$marital_status <- factor(data$marital_status, levels = c("M","S","unknown"), labels = c("M","S","unknown"))
+```
+
+```{r}
+data
+```

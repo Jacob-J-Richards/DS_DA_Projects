@@ -153,11 +153,25 @@ delta_mat <- matrix(data = deltas, nrow = 3, ncol = 2, byrow = TRUE,
 
 # clean data
 
+actual dogshit code lmao
+
 ```{r}
 responders_data_sheet$gender <- ifelse(responders_data_sheet$gender == "M", "F", "unknown")
 responders_data_sheet$marital_status <- ifelse(responders_data_sheet$marital_status == "M", "S", "unknown")
+
+
+
+
+
 responders_data_sheet$gender <- as.factor(responders_data_sheet$gender)
+
+
 responders_data_sheet <- responders_data_sheet[responders_data_sheet[, 7] != "", ]
+
+
+responders_data_sheet
+
+
 income_levels <- factor(responders_data_sheet[, "income"],
                                     levels = c("Under $10k", "10-19,999", "20-29,999", "30-39,999",
                                    "40-49,999", "50-59,999", "60-69,999", "70-79,999",
@@ -165,9 +179,18 @@ income_levels <- factor(responders_data_sheet[, "income"],
                                    "175 - 199,999", "200 - 249,999", "250k+"),
                                     ordered = TRUE)
 
+
+
+
+
+
+
 responders_data_sheet$income <- as.numeric(income_levels)
+
 responders_data_sheet$income[is.na(responders_data_sheet$income)] <- "unknown"
+
 responders_data_sheet$marital_status <- as.factor(responders_data_sheet$marital_status)
+
 responders_data_sheet$target <- factor(responders_data_sheet$target,levels = c(1,0), labels = c("response", "no_response"))
 responders_data_sheet <- responders_data_sheet[,2:7]
 clean_data <- responders_data_sheet
