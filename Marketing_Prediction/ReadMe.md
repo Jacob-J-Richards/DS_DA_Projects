@@ -1,424 +1,522 @@
-  ## Marketing Data Predictive Analysis
-
-
 ``` r
-responders_data_sheet <- read.csv(file="data.csv",header=TRUE)
+library(tidyverse)
+library(caret)
+library(randomForest)
 ```
 
-Normality test for responders.
-
+Given the following data.
 
 ``` r
-target_1_ages <- responders_data_sheet[responders_data_sheet[,7] == 1,2]
-hist(target_1_ages)
+data <- read.csv(file="data.csv",header=TRUE)
 ```
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/4838ad45-d769-4632-9b29-83d3dbc12c18" alt="unnamed-chunk-2-1">
+
+<img src="ReadMe_files/figure-gfm/A1.png" width="70%">
+
 </div>
 
-``` r
-shapiro.test(target_1_ages)
-```
-
-```
-## 
-## 	Shapiro-Wilk normality test
-## 
-## data:  target_1_ages
-## W = 0.97781, p-value = 3.19e-11
-```
+# Clean data
 
 ``` r
-qqnorm(target_1_ages)
-qqline(target_1_ages, col = "red")
+data <- data %>%
+  mutate(across(c(4,5,6), ~ifelse(is.na(.) | . == "", "unknown", .)))
+
+data$income <- as.integer(as.character(factor(data[, "income"],
+                      levels = c("unknown", "Under $10k", "10-19,999", "20-29,999", 
+                                 "30-39,999", "40-49,999", "50-59,999", "60-69,999", "70-79,999",
+                                 "80-89,999", "90-99,999", "100-149,999", "150 - 174,999",
+                                 "175 - 199,999", "200 - 249,999", "250k+"), 
+                      labels = c("55000",             # replacing unkown with the median income level 
+                                 "5000",         # midpoint of "Under $10k"
+                                 "15000",        # midpoint of "10-19,999"
+                                 "25000",        # midpoint of "20-29,999"
+                                 "35000",        # midpoint of "30-39,999"
+                                 "45000",        # midpoint of "40-49,999"
+                                 "55000",        # midpoint of "50-59,999"
+                                 "65000",        # midpoint of "60-69,999"
+                                 "75000",        # midpoint of "70-79,999"
+                                 "85000",        # midpoint of "80-89,999"
+                                 "95000",        # midpoint of "90-99,999"
+                                 "125000",       # midpoint of "100-149,999"
+                                 "162500",       # midpoint of "150 - 174,999"
+                                 "187500",       # midpoint of "175 - 199,999"
+                                 "225000",       # midpoint of "200 - 249,999"
+                                 "250000"))))   # custom value for "250k+"
+
+
+data$gender <- factor(data$gender, levels = c("M","F","unknown"), labels = c("1","0","0")) #replacing unkown with female
+
+data$marital_status <- factor(data$marital_status, levels = c("M","S","unknown"), labels = c("1","0","1")) # replacing unkown with married
+
+data$target <- factor(data$target, levels = c(0,1), labels = c(0,1))
+
+data$dist <- as.integer(data$dist) # make this an integer
 ```
+
+``` r
+data <- data[sample(nrow(data)), ]
+```
+
+# Random Forest Model
+
+``` r
+library(isotree)
+
+trainIndex <- createDataPartition(data$target, p = 0.8, list = FALSE, times = 1)
+
+train_RF <- data[trainIndex,]
+test_RF <- data[-trainIndex,]
+
+rf_model <- randomForest(target ~ ., data = train_RF, importance = TRUE, ntree = 500)
+
+predictions <- predict(rf_model, newdata = test_RF)
+
+conf_matrix_RF <- confusionMatrix(predictions, test_RF$target)
+```
+
+``` r
+conf_matrix_RF
+```
+
+    ## Confusion Matrix and Statistics
+    ## 
+    ##           Reference
+    ## Prediction   0   1
+    ##          0 569 165
+    ##          1  31  35
+    ##                                           
+    ##                Accuracy : 0.755           
+    ##                  95% CI : (0.7237, 0.7844)
+    ##     No Information Rate : 0.75            
+    ##     P-Value [Acc > NIR] : 0.3899          
+    ##                                           
+    ##                   Kappa : 0.1588          
+    ##                                           
+    ##  Mcnemar's Test P-Value : <2e-16          
+    ##                                           
+    ##             Sensitivity : 0.9483          
+    ##             Specificity : 0.1750          
+    ##          Pos Pred Value : 0.7752          
+    ##          Neg Pred Value : 0.5303          
+    ##              Prevalence : 0.7500          
+    ##          Detection Rate : 0.7113          
+    ##    Detection Prevalence : 0.9175          
+    ##       Balanced Accuracy : 0.5617          
+    ##                                           
+    ##        'Positive' Class : 0               
+    ## 
+
+ROC curve
+
+``` r
+model_output <- predict(rf_model, newdata = test_RF, type = "prob")
+test_RF$prob_one <- model_output[,2]
+```
+
+``` r
+library(pROC)
+roc_curve <- roc(response = test_RF$target, predictor = test_RF$prob_one)
+
+roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
+auc_value <- auc(roc_curve)
+
+roc_data <- data.frame(
+  TPR = roc_metrics$sensitivity,
+  FPR = roc_metrics$specificity,
+  Threshold = roc_metrics$threshold
+)
+
+ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
+  geom_line(size = 1) +
+  geom_abline(slope = 1, intercept = 1, linetype = "dashed", color = "gray") +  
+  geom_line(
+    data = data.frame(FPR = c(1, 1, 0), TPR = c(0, 1, 1)), 
+    aes(x = FPR, y = TPR), 
+    color = "blue", 
+    size = 1, 
+    linetype = "dotted"
+  ) +
+  labs(
+    title = "ROC Curve for Multinomial Logistic Regression",
+    x = "Specificity",
+    y = "True Positive Rate (Sensitivity)",
+    caption = paste("AUC:", round(auc_value, 4)),
+    color = "Decision Threshold"
+  ) +
+  scale_color_gradientn(colors = rev(rainbow(100))) +
+  coord_fixed() +
+  scale_x_reverse() +  
+  ylim(0, 1) +
+  theme_minimal() +
+  theme(plot.caption = element_text(hjust = 0.5, size = 12))
+```
+
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/7dce4876-f090-462d-9cf3-e9ce5a336f49" alt="unnamed-chunk-2-2">
+
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-9-1.png" width="70%">
+
 </div>
 
+only 0.6675 AUC
 
-reject null hypothesis that the sample is normally distributed.
-
-Normality test for non responders.
-
+lift curve and lift advantage curve
 
 ``` r
-target_0_ages <- responders_data_sheet[responders_data_sheet[,7] == 0,2]
-hist(target_0_ages)
+model_output <- predict(rf_model, newdata = data, type = "prob")
+data$prob_one <- model_output[,2]
 ```
+
+``` r
+lift_data <- data[order(data$prob_one, decreasing = TRUE),]
+sum_responses <- sum(as.numeric(as.character(data$target)))
+
+lift_curve <- numeric(0)
+baseline_curve <- numeric(0)
+
+for (i in 0:10) {
+  
+  lift_curve[i + 1] <- sum(lift_data[seq(1, (0.1 * i) * nrow(lift_data)), 7] == "1") / sum_responses * 100
+  
+  baseline_curve[i + 1] <- sum(data[seq(1, (0.1 * i) * nrow(data)), 7] == "1") / sum_responses * 100
+  
+}
+
+lift_chart_data <- data.frame(lift = lift_curve,baseline = baseline_curve)
+
+ggplot(lift_chart_data, aes(x = seq(0, 1, 0.1))) + 
+  geom_line(aes(y = lift, color = "Lift Curve")) + 
+  geom_line(aes(y = baseline, color = "Baseline Curve")) + 
+  geom_segment(
+    aes(
+      x = seq(0, 1, 0.1), 
+      xend = 0, 
+      y = lift, 
+      yend = lift
+    ),
+    linetype = "dotted", color = "black", size = 0.5
+  ) + 
+  theme_minimal() + 
+  theme(
+    panel.grid.major = element_line(size = 0.2), 
+    panel.grid.minor = element_line(size = 0.1),
+    panel.grid.major.x = element_line(size = 0.4)  # Thicker x-axis major grid lines
+  ) + 
+  labs(
+    title = "Lift Chart Analysis",
+    x = "Percentage of Customers Contacted",
+    y = "Percentage of Responses Obtained",
+    color = "Legend"
+  ) + 
+  scale_x_continuous(breaks = seq(0, 1, 0.1)) + 
+  scale_y_continuous(breaks = seq(0, 100, 5))
+```
+
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/4a2aeba6-6756-4463-822b-bf943235647d" alt="unnamed-chunk-3-1">
+
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-11-1.png" width="70%">
+
 </div>
 
-
-
-``` r
-shapiro.test(target_0_ages)
-```
-
-```
-## 
-## 	Shapiro-Wilk normality test
-## 
-## data:  target_0_ages
-## W = 0.93409, p-value < 2.2e-16
-```
+lift chart
 
 ``` r
-qqnorm(target_0_ages)
-qqline(target_0_ages, col = "red")
-```
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/c2f0ed87-afa3-43ec-a769-752f7e6d614f" alt="unnamed-chunk-3-2">
-</div>
-
-
-
-reject the null hypothesis that the sample is normally distributed.
-
-Non-parametric hypothesis test, HA: target_1 \> target_0
-
-
-``` r
-wilcox.test(target_1_ages, target_0_ages, alternative = "greater")
-```
-
-```
-## 
-## 	Wilcoxon rank sum test with continuity correction
-## 
-## data:  target_1_ages and target_0_ages
-## W = 1915144, p-value < 2.2e-16
-## alternative hypothesis: true location shift is greater than 0
-```
-
-reject the null hypothesis that the mean age of responders is equal to the mean age of non-responders.
-
-In evaluation of a histogram, QQ-plot, and shapiro normality test; the ages of observations of responders and non responders were not normally distributed with confidence level \> (1 - 2.2exp(-16)). As the samples were not normally distributed a non-parametric hypotheis test was required, thus; a one-sided Wilcox rank sum test was performed for mean population age of responders to be greater than the mean population age of non responders samples. The resulting p-value of the Wilcox rank-sum test was such that with a confidence level \> (1 - 2.2exp(-16)), the mean population age of responders is greater than for non-responders.
-
-
-``` r
-data_income <- responders_data_sheet[responders_data_sheet[, 4] != "", ]
-
-income_levels <- factor(data_income[, "income"],
-                                    levels = c("Under $10k", "10-19,999", "20-29,999", "30-39,999",
-                                   "40-49,999", "50-59,999", "60-69,999", "70-79,999",
-                                   "80-89,999", "90-99,999", "100-149,999", "150 - 174,999",
-                                   "175 - 199,999", "200 - 249,999", "250k+"),
-                                    ordered = TRUE)
-
-#income levels 1:15, level 1 being under 10k, level 15 being 250k+
-data_income$income <- as.numeric(income_levels)
-
-probt_income_men <- data_income[data_income[,5]=="M",]
-
-probt_income_women <- data_income[data_income[,5]=="F",]
-
-responders_data_sheet_men <- data_income[data_income[,5]=="M",]
-
-responders_data_sheet_women <- data_income[data_income[,5]=="F",]
-```
-
-# Logistic Regression model
-
-
-``` r
-binary_classifier <- function(predictor, clean_data, color) {
-  
-  simple_logistic_model <- glm(data = clean_data,
-                               target ~ predictor,
-                               family = binomial())
-
-  intercept_slope <- coef(simple_logistic_model)
-  
-  x_evaluation <- seq(min(predictor), max(predictor), length.out = 100)
-  
-  Prob_by_income <- function(x, intercept_slope) {
-    log_odds <- intercept_slope[1] + intercept_slope[2] * x
-    odds <- exp(log_odds)
-    probability <- odds / (1 + odds)
-    return(probability)
-  }
-  
-  probabilities <- sapply(x_evaluation, function(x) Prob_by_income(x, intercept_slope))
-  plot(x=x_evaluation,y=probabilities,col=color,xlim=range(min(x_evaluation - 5),max(x_evaluation+5)),ylim=range(0,.5),xlab="")
-  legend("topleft", legend = c("Income", "Distance", "Age"),col = c("blue", "black", "red"), lty = 1, lwd = 2)
-  min_prob <- min(probabilities)
-  min_x <- x_evaluation[which.min(probabilities)]
-  
-  max_prob <- max(probabilities)
-  max_x <- x_evaluation[which.max(probabilities)]
+advantage_curve_data <- lift_chart_data %>% 
+  mutate(lift = coalesce(lift / baseline, 0)) %>%
+    mutate(baseline = coalesce(baseline / baseline, 0)) %>%
+      mutate(percent_contacted = seq(0,1,.1)) %>%
+        filter(row_number() > 1)
  
-  delta_value <- as.numeric(tail(probabilities, 1) - head(probabilities, 1))
+advantage_curve_data
+```
+
+    ##        lift baseline percent_contacted
+    ## 1  4.000000        1               0.1
+    ## 2  3.676190        1               0.2
+    ## 3  2.945513        1               0.3
+    ## 4  2.379052        1               0.4
+    ## 5  1.933868        1               0.5
+    ## 6  1.660441        1               0.6
+    ## 7  1.414286        1               0.7
+    ## 8  1.230198        1               0.8
+    ## 9  1.106312        1               0.9
+    ## 10 1.000000        1               1.0
+
+``` r
+ggplot(advantage_curve_data, aes(x = percent_contacted)) + 
+  geom_line(aes(y = lift, color = "Lift Curve")) + 
+  geom_line(aes(y = baseline, color = "Baseline Curve")) + 
+  theme_minimal() + 
+  labs(
+    title = "Advantage Curve Analysis",
+    x = "Percentage of Customers Contacted",
+    y = "Percentage of Customers Respond",
+    color = "Legend"
+  ) + 
+  coord_cartesian(ylim = c(0.5, 5)) + 
+  scale_x_continuous(breaks = seq(0, 1, by = 0.10))
+```
+
+<div align="center">
+
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-12-1.png" width="70%">
+
+</div>
+
+Now let’s see what we can do with a Logistic Regression model instead
+
+# Logistic Regression Model
+
+``` r
+library(caret)
+library(nnet) 
+
+
+data_LR <- data %>%
+  select(-id) %>%
+  mutate(
+    age = (age - mean(age, na.rm = TRUE)) / sd(age, na.rm = TRUE),
+    dist = (dist - mean(dist, na.rm = TRUE)) / sd(dist, na.rm = TRUE),
+    income = (income - mean(income, na.rm = TRUE)) / sd(income, na.rm = TRUE),
+    gender = as.integer(as.character(gender)),
+    marital_status = as.integer(as.character(marital_status)),
+    target = as.integer(as.character(target))
+  )
+
+
+set.seed(123)  # For reproducibility
+trainIndex <- createDataPartition(data_LR$target, p = 0.8, list = FALSE, times = 1)
+train_LR <- data_LR[trainIndex, ]
+test_LR <- data_LR[-trainIndex, ]
+
+
+LR_model <- multinom(
+  target ~ .,  
+  data = train_LR,
+  family = binomial()
+)
+```
+
+    ## # weights:  8 (7 variable)
+    ## initial  value 2218.070978 
+    ## iter  10 value 566.587912
+    ## iter  20 value 495.233967
+    ## final  value 495.045288 
+    ## converged
+
+confusion matrix for Logistic Regression Model
+
+``` r
+predictions_LR <- predict(LR_model, newdata = test_LR)
+
+conf_matrix_LR <- confusionMatrix(as.factor(predictions_LR), as.factor(test_LR$target))
+
+print(conf_matrix_LR)
+```
+
+    ## Confusion Matrix and Statistics
+    ## 
+    ##           Reference
+    ## Prediction   0   1
+    ##          0 582  31
+    ##          1  18 169
+    ##                                           
+    ##                Accuracy : 0.9388          
+    ##                  95% CI : (0.9198, 0.9543)
+    ##     No Information Rate : 0.75            
+    ##     P-Value [Acc > NIR] : < 2e-16         
+    ##                                           
+    ##                   Kappa : 0.833           
+    ##                                           
+    ##  Mcnemar's Test P-Value : 0.08648         
+    ##                                           
+    ##             Sensitivity : 0.9700          
+    ##             Specificity : 0.8450          
+    ##          Pos Pred Value : 0.9494          
+    ##          Neg Pred Value : 0.9037          
+    ##              Prevalence : 0.7500          
+    ##          Detection Rate : 0.7275          
+    ##    Detection Prevalence : 0.7662          
+    ##       Balanced Accuracy : 0.9075          
+    ##                                           
+    ##        'Positive' Class : 0               
+    ## 
+
+ROC curve for Logistic Regression Model
+
+``` r
+model_output <- predict(LR_model, newdata = test_LR, type = "prob")
+model_output <- data.frame(model_output)
+test_LR$prob_one <- model_output$model_output
+```
+
+``` r
+roc_curve <- roc(response = test_LR$target, predictor = test_LR$prob_one)
+
+roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
+auc_value <- auc(roc_curve)
+
+roc_data <- data.frame(
+  TPR = roc_metrics$sensitivity,
+  FPR = roc_metrics$specificity,
+  Threshold = roc_metrics$threshold
+)
+
+ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
+  geom_line(size = 1) +
+  geom_abline(slope = 1, intercept = 1, linetype = "dashed", color = "gray") +  
+  geom_line(
+    data = data.frame(FPR = c(1, 1, 0), TPR = c(0, 1, 1)), 
+    aes(x = FPR, y = TPR), 
+    color = "blue", 
+    size = 1, 
+    linetype = "dotted"
+  ) +
+  labs(
+    title = "ROC Curve for Multinomial Logistic Regression",
+    x = "Specificity",
+    y = "True Positive Rate (Sensitivity)",
+    caption = paste("AUC:", round(auc_value, 4)),
+    color = "Decision Threshold"
+  ) +
+  scale_color_gradientn(colors = rev(rainbow(100))) +
+  coord_fixed() +
+  scale_x_reverse() +  
+  ylim(0, 1) +
+  theme_minimal() +
+  theme(plot.caption = element_text(hjust = 0.5, size = 12))
+```
+
+<div align="center">
+
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-16-1.png" width="70%">
+
+</div>
+
+``` r
+model_output <- predict(LR_model, newdata = data_LR, type = "prob")
+model_output <- data.frame(model_output)
+data_LR$prob_one <- model_output$model_output
+```
+
+``` r
+lift_data_LR <- data_LR[order(data_LR$prob_one, decreasing = TRUE),]
+sum_responses <- sum(as.numeric(as.character(data_LR$target)))
+
+lift_curve <- numeric(0)
+baseline_curve <- numeric(0)
+
+for (i in 0:10) {
+  
+  lift_curve[i + 1] <- sum(lift_data_LR[seq(1, (0.1 * i) * nrow(lift_data_LR)), 6] == "1") / sum_responses * 100
+  
+  baseline_curve[i + 1] <- sum(data_LR[seq(1, (0.1 * i) * nrow(data_LR)), 6] == "1") / sum_responses * 100
+  
+}
+
+lift_chart_data_LR <- data.frame(lift = lift_curve,baseline = baseline_curve)
+
+ggplot(lift_chart_data_LR, aes(x = seq(0, 1, 0.1))) + 
+  geom_line(aes(y = lift, color = "Lift Curve")) + 
+  geom_line(aes(y = baseline, color = "Baseline Curve")) + 
+  geom_segment(
+    aes(
+      x = seq(0, 1, 0.1), 
+      xend = 0, 
+      y = lift, 
+      yend = lift
+    ),
+    linetype = "dotted", color = "black", size = 0.5
+  ) + 
+  theme_minimal() + 
+  theme(
+    panel.grid.major = element_line(size = 0.2), 
+    panel.grid.minor = element_line(size = 0.1),
+    panel.grid.major.x = element_line(size = 0.4)  # Thicker x-axis major grid lines
+  ) + 
+  labs(
+    title = "Lift Chart Analysis",
+    x = "Percentage of Customers Contacted",
+    y = "Percentage of Responses Obtained",
+    color = "Legend"
+  ) + 
+  scale_x_continuous(breaks = seq(0, 1, 0.1)) + 
+  scale_y_continuous(breaks = seq(0, 100, 5))
+```
+
+<div align="center">
+
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-18-1.png" width="70%">
+
+</div>
+
+``` r
+advantage_curve_data_LR <- lift_chart_data_LR %>% 
+  mutate(lift = coalesce(lift / baseline, 0)) %>%
+    mutate(baseline = coalesce(baseline / baseline, 0)) %>%
+      mutate(percent_contacted = seq(0,1,.1)) %>%
+        filter(row_number() > 1)
  
-  delta_text <- paste0("Delta Prob %: ", round(delta_value*100))
-  mtext(delta_text, side = 1, line = 3, col = "blue")
-  
-  points(min_x, min_prob, col = "black", pch = 19)
-  
-  text(min_x, min_prob - 0.02, labels = paste0("Min: ", round(min_prob, 3)), col = "blue")
-  
-  points(max_x, max_prob, col = "black", pch = 19)
-  
-  text(max_x, max_prob - 0.01, labels = paste0("Max: ", round(max_prob, 3)), col = "red")
-  
-  return(delta_value)
-}
+advantage_curve_data_LR
 ```
 
-# probability of response by income, distance, and age
-
+    ##        lift baseline percent_contacted
+    ## 1  4.000000        1               0.1
+    ## 2  3.704762        1               0.2
+    ## 3  2.955128        1               0.3
+    ## 4  2.389027        1               0.4
+    ## 5  1.937876        1               0.5
+    ## 6  1.667233        1               0.6
+    ## 7  1.412857        1               0.7
+    ## 8  1.228960        1               0.8
+    ## 9  1.106312        1               0.9
+    ## 10 1.000000        1               1.0
 
 ``` r
-par(mfrow = c(1, 3))
-#income
-binary_classifier(data_income$income,data_income,c("blue"))
-```
-
-```
-## [1] -0.2679233
-```
-
-``` r
-#distance
-binary_classifier(responders_data_sheet$dist,responders_data_sheet,c("black"))
-```
-
-```
-## [1] -0.05432182
-```
-
-``` r
-#age
-binary_classifier(responders_data_sheet$age,responders_data_sheet,c("red"))
-```
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/f5e4dff9-ab56-4ea3-ad99-6e64d83c1f06" alt="unnamed-chunk-7-1">
-</div>
-
-
-```
-## [1] 0.3144231
-```
-
-#probability of response stratefied by gender
-
-
-``` r
-predictors <- list(probt_income_men$income,probt_income_women$income,
-                   responders_data_sheet_men$dist,responders_data_sheet_women$dist,
-                   responders_data_sheet_men$age,responders_data_sheet_women$age) 
-
-clean_data_list <- list(probt_income_men,probt_income_women,
-                        responders_data_sheet_men,responders_data_sheet_women,
-                        responders_data_sheet_men,responders_data_sheet_women)
-
-
-par(mfrow = c(1,2))
-
-colors <- c("#1E90FF","#87CEFA","#32CD32","#98FB98","#8A2BE2","#DDA0DD")
-
-deltas <- numeric(6)
-deltas <- mapply(binary_classifier, predictor = predictors, clean_data = clean_data_list, color = colors)
+ggplot(advantage_curve_data_LR, aes(x = percent_contacted)) + 
+  geom_line(aes(y = lift, color = "Lift Curve")) + 
+  geom_line(aes(y = baseline, color = "Baseline Curve")) + 
+  theme_minimal() + 
+  labs(
+    title = "Advantage Curve Analysis",
+    x = "Percentage of Customers Contacted",
+    y = "Percentage of Customers Respond",
+    color = "Legend"
+  ) + 
+  coord_cartesian(ylim = c(0.5, 5)) + 
+  scale_x_continuous(breaks = seq(0, 1, by = 0.10))
 ```
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/94266666-19d6-4b36-be24-4b5b206fdf74" alt="unnamed-chunk-8-1">
+
+<img src="ReadMe_files/figure-gfm/unnamed-chunk-19-1.png" width="70%">
+
 </div>
 
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/6fe326d3-1419-409f-baf2-13affa6980d4" alt="unnamed-chunk-8-2">
-</div>
-
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/0dcfccb6-1b56-43d8-8ea3-8e1c73b11dd2" alt="unnamed-chunk-8-3">
-</div>
+# Logistic Regression Model is Better
 
 ``` r
-delta_mat <- matrix(data = deltas, nrow = 3, ncol = 2, byrow = TRUE,
-                    dimnames = list(c("income", "distance", "age"), 
-                                    c("Male", "Female")))
+optimal_threshold <- roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))]
 
-(delta_mat)
-```
+your_tibble <- roc_metrics[roc_metrics[, 1] == optimal_threshold, ]
 
-```
-##                 Male      Female
-## income   -0.26835258 -0.29127242
-## distance -0.02602015 -0.06160512
-## age       0.29746871  0.40568948
-```
+library(knitr)
+library(kableExtra)
 
-## build binary classifier
+kable(your_tibble, format = "html") %>%
+  kable_styling(position = "center") %>%
+  save_kable(
+    file = "~/Desktop/DS_DA_Projects/Marketing_Prediction/ReadMe_files/figure-gfm/t2.png", 
+    zoom = 2
+  )
 
-# clean data
-
-
-``` r
-responders_data_sheet$gender <- ifelse(responders_data_sheet$gender == "M", "F", "unknown")
-responders_data_sheet$marital_status <- ifelse(responders_data_sheet$marital_status == "M", "S", "unknown")
-responders_data_sheet$gender <- as.factor(responders_data_sheet$gender)
-responders_data_sheet <- responders_data_sheet[responders_data_sheet[, 7] != "", ]
-income_levels <- factor(responders_data_sheet[, "income"],
-                                    levels = c("Under $10k", "10-19,999", "20-29,999", "30-39,999",
-                                   "40-49,999", "50-59,999", "60-69,999", "70-79,999",
-                                   "80-89,999", "90-99,999", "100-149,999", "150 - 174,999",
-                                   "175 - 199,999", "200 - 249,999", "250k+"),
-                                    ordered = TRUE)
-
-responders_data_sheet$income <- as.numeric(income_levels)
-responders_data_sheet$income[is.na(responders_data_sheet$income)] <- "unknown"
-responders_data_sheet$marital_status <- as.factor(responders_data_sheet$marital_status)
-responders_data_sheet$target <- factor(responders_data_sheet$target,levels = c(1,0), labels = c("response", "no_response"))
-responders_data_sheet <- responders_data_sheet[,2:7]
-clean_data <- responders_data_sheet
-```
-
-# Build and Test Accuracy by randomForest
-
-
-```
-## Loading required package: ggplot2
-```
-
-```
-## Loading required package: lattice
-```
-
-```
-## randomForest 4.7-1.2
-```
-
-```
-## Type rfNews() to see new features/changes/bug fixes.
-```
-
-```
-## 
-## Attaching package: 'randomForest'
-```
-
-```
-## The following object is masked from 'package:ggplot2':
-## 
-##     margin
-```
-
-73% accuracy obtained
-
-#evaluate probabilities of response for our data set and append probability column
-
-
-
-#cumulative gains chart
-
-
-``` r
-lift_observation <- obs_with_prediction_prob[order(obs_with_prediction_prob[,7],decreasing = TRUE),]
-
-baseline_observations <- obs_with_prediction_prob
-
-totall_responces <- (sum(lift_observation[,6]=="response"))
-
-lift_chart_cumulative_percentage <- function() {
-  
-        percent_contacted <- seq(0,1,by=.1)
-        cumulative_resp_per = numeric(length(percent_contacted))
-        cum_resp_per_baseline <- numeric(length(percent_contacted))
-   
-        for (i in 1:11) {
-          
-        cumulative_resp_per[i] =  sum(lift_observation[seq(0,percent_contacted[i]*nrow(lift_observation),by=1),6]=="response")/totall_responces*100
-        cum_resp_per_baseline[i] =  sum(responders_data_sheet[seq(0,percent_contacted[i]*nrow(responders_data_sheet),by=1),6]=="response")/totall_responces*100
-       
-        }
-        
-  results_dataframe <- as.data.frame(cbind(percent_contacted,cumulative_resp_per,cum_resp_per_baseline))
-  print(tail(results_dataframe,10))
-  plot(x=percent_contacted,y=cumulative_resp_per,type="o",col="red",xlim=range(0,1),ylim=range(0,100))
-  lines(x=percent_contacted,y=cum_resp_per_baseline,col="blue",type="o")
-  
-}
-
-
-
-  lift_chart_lift_advantage <- function() {
-    
-    percent_contacted <- seq(.1,1,by=.1)
-  cum_resp_lift <- numeric(length(percent_contacted))
-  cum_resp_baseline <- numeric(length(percent_contacted))
-  
-  for (i in 1:10) {
-  
-  cum_resp_lift[i] =  sum(lift_observation[seq(1,percent_contacted[i]*nrow(lift_observation),by=1),6]=="response")/sum(responders_data_sheet[seq(1,percent_contacted[i]*nrow(responders_data_sheet),by=1),6]=="response")
-  
-  cum_resp_baseline[i] = sum(responders_data_sheet[seq(1,percent_contacted[i]*nrow(responders_data_sheet),by=1),6]=="response")/sum(responders_data_sheet[seq(1,percent_contacted[i]*nrow(responders_data_sheet),by=1),6]=="response")
-  
-  }
-
-  LIFTCHART <- as.data.frame(cbind(percent_contacted,cum_resp_lift,cum_resp_baseline))
-  print(LIFTCHART)
-  plot(x=percent_contacted,y=cum_resp_lift,type="o",col="red",xlim=range(0,1),ylim=range(0,2.6),main="ratio of responce yeild by % of data set contacted")
-  lines(x=percent_contacted,y=cum_resp_baseline,col="blue",type="o")
-  
-}
-
-
-lift_chart_cumulative_percentage()
-```
-
-```
-##    percent_contacted cumulative_resp_per cum_resp_per_baseline
-## 2                0.1                38.2                  17.0
-## 3                0.2                72.4                  28.2
-## 4                0.3                88.3                  39.8
-## 5                0.4                92.9                  48.5
-## 6                0.5                95.4                  58.8
-## 7                0.6                96.3                  67.3
-## 8                0.7                97.9                  75.0
-## 9                0.8                98.4                  83.6
-## 10               0.9                99.4                  91.7
-## 11               1.0               100.0                 100.0
+knitr::include_graphics(
+  "~/Desktop/DS_DA_Projects/Marketing_Prediction/ReadMe_files/figure-gfm/t2.png"
+)
 ```
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/1685f432-a035-4820-b334-a9e454ddc448" alt="unnamed-chunk-12-1">
+
+<img src="ReadMe_files/figure-gfm/t2.png" width="70%">
+
 </div>
-
-
-``` r
-lift_chart_lift_advantage()
-```
-
-```
-##    percent_contacted cum_resp_lift cum_resp_baseline
-## 1                0.1      2.247059                 1
-## 2                0.2      2.567376                 1
-## 3                0.3      2.218593                 1
-## 4                0.4      1.915464                 1
-## 5                0.5      1.622449                 1
-## 6                0.6      1.430906                 1
-## 7                0.7      1.305333                 1
-## 8                0.8      1.177033                 1
-## 9                0.9      1.083969                 1
-## 10               1.0      1.000000                 1
-```
-
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/3a5910f9-7bef-4413-8f59-a59ce73fe6f1" alt="unnamed-chunk-12-2">
-</div>
-
-
-
-In utilization of this model, only 30% of observations need to be contacted to yield 97.9% of the responses. Thus, evaluation of this model is recommended in selecting by utilizing this model by contacting only 30% of the observations, we yield 97.9% of the responses
-
-The lift chart advantage is less at .1 then .2 because by chance the baseline did better at rows 1-800 than 1-400 proportionally. The chart is correct, the baseline and lift were calculated by the actual distribution of unmodified data set rather than theoretically is which responces and non-responces will be evenly distributed into subdivisions of the data set.
-
-## Conclusion
-
-In analysis of historical data, highly associated predictors of response were found; from these variables a model was built and outcomes of the models usage in future advertising campaigns were visualized. In order to utilize the categorical variables (gender and marital status) along with the continuous variables (age, income, and distance), the random Forest binary classifier algorithm was utilized and produced a predicted probability of response for each observation. The model was trained on 80% of the historical data and then used to predict response status (yes or no) on the remaing 20% (of which it did not know). The model obtained an accuracy of 73% in it's predictions of the actual outcome. 
-
-To demonstraight the effectivness of this model, a cumulative gains chart was evaluated by sampling the observations with the highest predicted probability of response first (probability produced by the model), the result was that only 30% of individuals needed to be contacted to yield 97.9% of the total responses obtained in the entire the data set. With certainty, future advertising campaigns which select individuals for contact by predicted probability of response from this model will have significantly higher return investment.
-
-
