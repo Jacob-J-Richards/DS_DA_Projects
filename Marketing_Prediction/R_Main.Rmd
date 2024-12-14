@@ -132,7 +132,7 @@ roc_data <- data.frame(
   Threshold = roc_metrics$threshold
 )
 
-ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
+  ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
   geom_line(size = 1) +
   geom_abline(slope = 1, intercept = 1, linetype = "dashed", color = "gray") +  
   geom_line(
@@ -149,12 +149,25 @@ ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
     caption = paste("AUC:", round(auc_value, 4)),
     color = "Decision Threshold"
   ) +
-  scale_color_gradientn(colors = rev(rainbow(100))) +
+  scale_color_gradient(
+    low = "red",                      # Red corresponds to low values
+    high = "blue",                    # Blue corresponds to high values
+    trans = "reverse",                # Reverse the color mapping
+    guide = guide_colorbar(
+      direction = "horizontal",       # Make legend horizontal
+      title.position = "top",         # Title above the legend
+      label.position = "bottom"       # Labels below the legend
+    )
+  ) +
   coord_fixed() +
   scale_x_reverse() +  
   ylim(0, 1) +
   theme_minimal() +
-  theme(plot.caption = element_text(hjust = 0.5, size = 12))
+  theme(
+    legend.position = "top",          # Position legend on top of the plot
+    legend.justification = "center",  # Center the legend horizontally
+    plot.caption = element_text(hjust = 0.5, size = 12)
+  )
 ```
 
 only 0.6675 AUC
@@ -305,9 +318,11 @@ roc_data <- data.frame(
   Threshold = roc_metrics$threshold
 )
 
+
+
 ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
   geom_line(size = 1) +
-  geom_abline(slope = 1, intercept = 1, linetype = "dashed", color = "gray") +  
+  geom_abline(slope = 1, intercept = 1, linetype = "dashed", color = "gray") +
   geom_line(
     data = data.frame(FPR = c(1, 1, 0), TPR = c(0, 1, 1)), 
     aes(x = FPR, y = TPR), 
@@ -322,12 +337,28 @@ ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
     caption = paste("AUC:", round(auc_value, 4)),
     color = "Decision Threshold"
   ) +
-  scale_color_gradientn(colors = rev(rainbow(100))) +
+  scale_color_gradient(
+    low = "red",                     # Reverse gradient colors
+    high = "blue",                   # Red becomes low, blue becomes high
+    trans = "reverse",               # Reverse the gradient mapping
+    guide = guide_colorbar(
+      direction = "horizontal",      # Horizontal orientation
+      title.position = "top",        # Title above the legend
+      label.position = "bottom"      # Labels below the legend
+    )
+  ) +
   coord_fixed() +
-  scale_x_reverse() +  
+  scale_x_reverse() +
   ylim(0, 1) +
   theme_minimal() +
-  theme(plot.caption = element_text(hjust = 0.5, size = 12))
+  theme(
+    legend.position = "top",          # Place legend at the top of the plot
+    legend.justification = "center",  # Center align the legend
+    legend.box.spacing = unit(0.5, "cm"), # Adjust spacing between legend and plot
+    plot.caption = element_text(hjust = 0.5, size = 12)
+  )
+
+
 ```
 
 ```{r}

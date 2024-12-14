@@ -83,26 +83,26 @@ conf_matrix_RF
     ## 
     ##           Reference
     ## Prediction   0   1
-    ##          0 580 164
-    ##          1  20  36
+    ##          0 573 167
+    ##          1  27  33
     ##                                           
-    ##                Accuracy : 0.77            
-    ##                  95% CI : (0.7392, 0.7987)
+    ##                Accuracy : 0.7575          
+    ##                  95% CI : (0.7263, 0.7868)
     ##     No Information Rate : 0.75            
-    ##     P-Value [Acc > NIR] : 0.1021          
+    ##     P-Value [Acc > NIR] : 0.3287          
     ##                                           
-    ##                   Kappa : 0.193           
+    ##                   Kappa : 0.1565          
     ##                                           
     ##  Mcnemar's Test P-Value : <2e-16          
     ##                                           
-    ##             Sensitivity : 0.9667          
-    ##             Specificity : 0.1800          
-    ##          Pos Pred Value : 0.7796          
-    ##          Neg Pred Value : 0.6429          
+    ##             Sensitivity : 0.9550          
+    ##             Specificity : 0.1650          
+    ##          Pos Pred Value : 0.7743          
+    ##          Neg Pred Value : 0.5500          
     ##              Prevalence : 0.7500          
-    ##          Detection Rate : 0.7250          
-    ##    Detection Prevalence : 0.9300          
-    ##       Balanced Accuracy : 0.5733          
+    ##          Detection Rate : 0.7163          
+    ##    Detection Prevalence : 0.9250          
+    ##       Balanced Accuracy : 0.5600          
     ##                                           
     ##        'Positive' Class : 0               
     ## 
@@ -127,7 +127,7 @@ roc_data <- data.frame(
   Threshold = roc_metrics$threshold
 )
 
-ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
+  ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
   geom_line(size = 1) +
   geom_abline(slope = 1, intercept = 1, linetype = "dashed", color = "gray") +  
   geom_line(
@@ -144,12 +144,25 @@ ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
     caption = paste("AUC:", round(auc_value, 4)),
     color = "Decision Threshold"
   ) +
-  scale_color_gradientn(colors = rev(rainbow(100))) +
+  scale_color_gradient(
+    low = "red",                      # Red corresponds to low values
+    high = "blue",                    # Blue corresponds to high values
+    trans = "reverse",                # Reverse the color mapping
+    guide = guide_colorbar(
+      direction = "horizontal",       # Make legend horizontal
+      title.position = "top",         # Title above the legend
+      label.position = "bottom"       # Labels below the legend
+    )
+  ) +
   coord_fixed() +
   scale_x_reverse() +  
   ylim(0, 1) +
   theme_minimal() +
-  theme(plot.caption = element_text(hjust = 0.5, size = 12))
+  theme(
+    legend.position = "top",          # Position legend on top of the plot
+    legend.justification = "center",  # Center the legend horizontally
+    plot.caption = element_text(hjust = 0.5, size = 12)
+  )
 ```
 
 <div align="center">
@@ -231,15 +244,15 @@ advantage_curve_data
 ```
 
     ##        lift baseline percent_contacted
-    ## 1  4.234043        1               0.1
-    ## 2  3.924623        1               0.2
-    ## 3  3.160959        1               0.3
-    ## 4  2.498695        1               0.4
-    ## 5  1.989817        1               0.5
-    ## 6  1.682594        1               0.6
-    ## 7  1.434343        1               0.7
-    ## 8  1.280566        1               0.8
-    ## 9  1.113712        1               0.9
+    ## 1  3.761905        1               0.1
+    ## 2  4.026042        1               0.2
+    ## 3  3.069767        1               0.3
+    ## 4  2.447837        1               0.4
+    ## 5  1.955734        1               0.5
+    ## 6  1.612479        1               0.6
+    ## 7  1.384937        1               0.7
+    ## 8  1.244389        1               0.8
+    ## 9  1.116201        1               0.9
     ## 10 1.000000        1               1.0
 
 ``` r
@@ -299,9 +312,9 @@ LR_model <- multinom(
 
     ## # weights:  8 (7 variable)
     ## initial  value 2218.070978 
-    ## iter  10 value 535.841963
-    ## iter  20 value 505.367418
-    ## final  value 505.352812 
+    ## iter  10 value 530.148766
+    ## iter  20 value 485.507019
+    ## final  value 485.457406 
     ## converged
 
 confusion matrix for Logistic Regression Model
@@ -318,26 +331,26 @@ print(conf_matrix_LR)
     ## 
     ##           Reference
     ## Prediction   0   1
-    ##          0 584  24
-    ##          1  16 176
+    ##          0 577  28
+    ##          1  23 172
     ##                                          
-    ##                Accuracy : 0.95           
-    ##                  95% CI : (0.9325, 0.964)
+    ##                Accuracy : 0.9362         
+    ##                  95% CI : (0.917, 0.9522)
     ##     No Information Rate : 0.75           
     ##     P-Value [Acc > NIR] : <2e-16         
     ##                                          
-    ##                   Kappa : 0.8649         
+    ##                   Kappa : 0.8286         
     ##                                          
-    ##  Mcnemar's Test P-Value : 0.2684         
+    ##  Mcnemar's Test P-Value : 0.5754         
     ##                                          
-    ##             Sensitivity : 0.9733         
-    ##             Specificity : 0.8800         
-    ##          Pos Pred Value : 0.9605         
-    ##          Neg Pred Value : 0.9167         
+    ##             Sensitivity : 0.9617         
+    ##             Specificity : 0.8600         
+    ##          Pos Pred Value : 0.9537         
+    ##          Neg Pred Value : 0.8821         
     ##              Prevalence : 0.7500         
-    ##          Detection Rate : 0.7300         
-    ##    Detection Prevalence : 0.7600         
-    ##       Balanced Accuracy : 0.9267         
+    ##          Detection Rate : 0.7212         
+    ##    Detection Prevalence : 0.7562         
+    ##       Balanced Accuracy : 0.9108         
     ##                                          
     ##        'Positive' Class : 0              
     ## 
@@ -362,9 +375,11 @@ roc_data <- data.frame(
   Threshold = roc_metrics$threshold
 )
 
+
+
 ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
   geom_line(size = 1) +
-  geom_abline(slope = 1, intercept = 1, linetype = "dashed", color = "gray") +  
+  geom_abline(slope = 1, intercept = 1, linetype = "dashed", color = "gray") +
   geom_line(
     data = data.frame(FPR = c(1, 1, 0), TPR = c(0, 1, 1)), 
     aes(x = FPR, y = TPR), 
@@ -379,12 +394,26 @@ ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
     caption = paste("AUC:", round(auc_value, 4)),
     color = "Decision Threshold"
   ) +
-  scale_color_gradientn(colors = rev(rainbow(100))) +
+  scale_color_gradient(
+    low = "red",                     # Reverse gradient colors
+    high = "blue",                   # Red becomes low, blue becomes high
+    trans = "reverse",               # Reverse the gradient mapping
+    guide = guide_colorbar(
+      direction = "horizontal",      # Horizontal orientation
+      title.position = "top",        # Title above the legend
+      label.position = "bottom"      # Labels below the legend
+    )
+  ) +
   coord_fixed() +
-  scale_x_reverse() +  
+  scale_x_reverse() +
   ylim(0, 1) +
   theme_minimal() +
-  theme(plot.caption = element_text(hjust = 0.5, size = 12))
+  theme(
+    legend.position = "top",          # Place legend at the top of the plot
+    legend.justification = "center",  # Center align the legend
+    legend.box.spacing = unit(0.5, "cm"), # Adjust spacing between legend and plot
+    plot.caption = element_text(hjust = 0.5, size = 12)
+  )
 ```
 
 <div align="center">
@@ -461,15 +490,15 @@ advantage_curve_data_LR
 ```
 
     ##        lift baseline percent_contacted
-    ## 1  4.255319        1               0.1
-    ## 2  3.899497        1               0.2
-    ## 3  3.157534        1               0.3
-    ## 4  2.506527        1               0.4
-    ## 5  1.995927        1               0.5
-    ## 6  1.686007        1               0.6
-    ## 7  1.431457        1               0.7
-    ## 8  1.280566        1               0.8
-    ## 9  1.114827        1               0.9
+    ## 1  3.761905        1               0.1
+    ## 2  4.031250        1               0.2
+    ## 3  3.093023        1               0.3
+    ## 4  2.450382        1               0.4
+    ## 5  1.963783        1               0.5
+    ## 6  1.622332        1               0.6
+    ## 7  1.384937        1               0.7
+    ## 8  1.246883        1               0.8
+    ## 9  1.117318        1               0.9
     ## 10 1.000000        1               1.0
 
 ``` r
