@@ -8,15 +8,15 @@ on payments.
 ## Prepare Training Data
 
 ``` r
-setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_Prediction")
+setwd("~/Desktop/DS_DA_Projects/90+_DaysPastDue")
 
 train <- read.csv(
-  file = "/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_Prediction/Data_Files/FITB_train.csv", 
+  file = "/Users/jacobrichards/Desktop/DS_DA_Projects/90+_DaysPastDue/Data_Files/FITB_train.csv", 
   header = TRUE
 )
 
 test <- read.csv(
-  file = "/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_Prediction/Data_Files/FITB_test.csv", 
+  file = "/Users/jacobrichards/Desktop/DS_DA_Projects/90+_DaysPastDue/Data_Files/FITB_test.csv", 
   header = TRUE
 )
 ```
@@ -138,12 +138,12 @@ library(kableExtra)
 kable(your_tibble, format = "html") %>%
   kable_styling(position = "center") %>%
   save_kable(
-    file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t5.png", 
+    file = "~/Desktop/DS_DA_Projects/90+_DaysPastDue/ReadMe_files/figure-gfm/t5.png", 
     zoom = 2
   )
 
 knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t5.png"
+  "~/Desktop/DS_DA_Projects/90+_DaysPastDue/ReadMe_files/figure-gfm/t5.png"
 )
 ```
 
@@ -295,12 +295,24 @@ ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
     caption = paste("AUC:", round(auc_value, 4)),
     color = "Decision Threshold"
   ) +
-  scale_color_gradientn(colors = rev(rainbow(100))) +
+  scale_color_gradient(
+    low = "red",                      # Red corresponds to higher values
+    high = "blue",                    # Blue corresponds to lower values
+    trans = "reverse",                # Reverse the value mapping
+    guide = guide_colorbar(
+      direction = "horizontal",       # Make the legend horizontal
+      title.position = "top"          # Place the title above the gradient
+    )
+  ) +
   coord_fixed() +
   scale_x_reverse() +  
   ylim(0, 1) +
   theme_minimal() +
-  theme(plot.caption = element_text(hjust = 0.5, size = 12))
+  theme(
+    legend.position = "top",          # Place legend at the top
+    legend.justification = "center",  # Center-align the legend
+    plot.caption = element_text(hjust = 0.5, size = 12)
+  )
 ```
 
 <div align="center">
@@ -380,12 +392,12 @@ library(kableExtra)
 kable(your_tibble, format = "html") %>%
   kable_styling(position = "center") %>%
   save_kable(
-    file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t2.png", 
+    file = "~/Desktop/DS_DA_Projects/90+_DaysPastDue/ReadMe_files/figure-gfm/t2.png", 
     zoom = 2
   )
 
 knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t2.png"
+  "~/Desktop/DS_DA_Projects/90+_DaysPastDue/ReadMe_files/figure-gfm/t2.png"
 )
 ```
 
@@ -422,12 +434,12 @@ library(webshot2)
 kable(confusion_table, format = "html") %>%
   kable_styling(position = "center") %>%
   save_kable(
-    file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t3.png", 
+    file = "~/Desktop/DS_DA_Projects/90+_DaysPastDue/ReadMe_files/figure-gfm/t3.png", 
     zoom = 2
   )
 
 knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t3.png"
+  "~/Desktop/DS_DA_Projects/90+_DaysPastDue/ReadMe_files/figure-gfm/t3.png"
 )
 ```
 
