@@ -91,6 +91,8 @@ data$dist <- as.integer(data$dist) # make this an integer
 data <- data[sample(nrow(data)), ]
 ```
 
+# Compare Performance of Random Forest Against Logistic Regression
+
 # Random Forest Model
 
 ```{r}
@@ -440,6 +442,8 @@ ggplot(advantage_curve_data_LR, aes(x = percent_contacted)) +
 ```
 
 # Logistic Regression Model is Better
+
+This is the optimal decision threshold from the ROC
 
 ```{r}
 

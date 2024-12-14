@@ -58,6 +58,8 @@ data$dist <- as.integer(data$dist) # make this an integer
 data <- data[sample(nrow(data)), ]
 ```
 
+# Compare Performance of Random Forest Against Logistic Regression
+
 # Random Forest Model
 
 ``` r
@@ -83,28 +85,28 @@ conf_matrix_RF
     ## 
     ##           Reference
     ## Prediction   0   1
-    ##          0 571 173
-    ##          1  29  27
-    ##                                           
-    ##                Accuracy : 0.7475          
-    ##                  95% CI : (0.7159, 0.7773)
-    ##     No Information Rate : 0.75            
-    ##     P-Value [Acc > NIR] : 0.5834          
-    ##                                           
-    ##                   Kappa : 0.114           
-    ##                                           
-    ##  Mcnemar's Test P-Value : <2e-16          
-    ##                                           
-    ##             Sensitivity : 0.9517          
-    ##             Specificity : 0.1350          
-    ##          Pos Pred Value : 0.7675          
-    ##          Neg Pred Value : 0.4821          
-    ##              Prevalence : 0.7500          
-    ##          Detection Rate : 0.7137          
-    ##    Detection Prevalence : 0.9300          
-    ##       Balanced Accuracy : 0.5433          
-    ##                                           
-    ##        'Positive' Class : 0               
+    ##          0 572 167
+    ##          1  28  33
+    ##                                          
+    ##                Accuracy : 0.7562         
+    ##                  95% CI : (0.725, 0.7856)
+    ##     No Information Rate : 0.75           
+    ##     P-Value [Acc > NIR] : 0.3589         
+    ##                                          
+    ##                   Kappa : 0.154          
+    ##                                          
+    ##  Mcnemar's Test P-Value : <2e-16         
+    ##                                          
+    ##             Sensitivity : 0.9533         
+    ##             Specificity : 0.1650         
+    ##          Pos Pred Value : 0.7740         
+    ##          Neg Pred Value : 0.5410         
+    ##              Prevalence : 0.7500         
+    ##          Detection Rate : 0.7150         
+    ##    Detection Prevalence : 0.9237         
+    ##       Balanced Accuracy : 0.5592         
+    ##                                          
+    ##        'Positive' Class : 0              
     ## 
 
 ROC curve
@@ -244,15 +246,15 @@ advantage_curve_data
 ```
 
     ##        lift baseline percent_contacted
-    ## 1  3.682243        1               0.1
-    ## 2  3.654028        1               0.2
-    ## 3  2.923077        1               0.3
-    ## 4  2.390977        1               0.4
-    ## 5  1.911243        1               0.5
-    ## 6  1.639399        1               0.6
-    ## 7  1.404255        1               0.7
-    ## 8  1.234491        1               0.8
-    ## 9  1.096597        1               0.9
+    ## 1  4.415730        1               0.1
+    ## 2  3.831683        1               0.2
+    ## 3  3.128378        1               0.3
+    ## 4  2.408978        1               0.4
+    ## 5  1.923379        1               0.5
+    ## 6  1.591935        1               0.6
+    ## 7  1.396624        1               0.7
+    ## 8  1.217604        1               0.8
+    ## 9  1.100110        1               0.9
     ## 10 1.000000        1               1.0
 
 ``` r
@@ -312,9 +314,9 @@ LR_model <- multinom(
 
     ## # weights:  8 (7 variable)
     ## initial  value 2218.070978 
-    ## iter  10 value 586.093204
-    ## iter  20 value 546.987461
-    ## final  value 546.978484 
+    ## iter  10 value 550.207089
+    ## iter  20 value 502.379846
+    ## final  value 502.267285 
     ## converged
 
 confusion matrix for Logistic Regression Model
@@ -331,28 +333,28 @@ print(conf_matrix_LR)
     ## 
     ##           Reference
     ## Prediction   0   1
-    ##          0 588  26
-    ##          1  12 174
-    ##                                           
-    ##                Accuracy : 0.9525          
-    ##                  95% CI : (0.9354, 0.9662)
-    ##     No Information Rate : 0.75            
-    ##     P-Value [Acc > NIR] : < 2e-16         
-    ##                                           
-    ##                   Kappa : 0.8703          
-    ##                                           
-    ##  Mcnemar's Test P-Value : 0.03496         
-    ##                                           
-    ##             Sensitivity : 0.9800          
-    ##             Specificity : 0.8700          
-    ##          Pos Pred Value : 0.9577          
-    ##          Neg Pred Value : 0.9355          
-    ##              Prevalence : 0.7500          
-    ##          Detection Rate : 0.7350          
-    ##    Detection Prevalence : 0.7675          
-    ##       Balanced Accuracy : 0.9250          
-    ##                                           
-    ##        'Positive' Class : 0               
+    ##          0 589  29
+    ##          1  11 171
+    ##                                          
+    ##                Accuracy : 0.95           
+    ##                  95% CI : (0.9325, 0.964)
+    ##     No Information Rate : 0.75           
+    ##     P-Value [Acc > NIR] : < 2e-16        
+    ##                                          
+    ##                   Kappa : 0.8625         
+    ##                                          
+    ##  Mcnemar's Test P-Value : 0.00719        
+    ##                                          
+    ##             Sensitivity : 0.9817         
+    ##             Specificity : 0.8550         
+    ##          Pos Pred Value : 0.9531         
+    ##          Neg Pred Value : 0.9396         
+    ##              Prevalence : 0.7500         
+    ##          Detection Rate : 0.7362         
+    ##    Detection Prevalence : 0.7725         
+    ##       Balanced Accuracy : 0.9183         
+    ##                                          
+    ##        'Positive' Class : 0              
     ## 
 
 ROC curve for Logistic Regression Model
@@ -490,15 +492,15 @@ advantage_curve_data_LR
 ```
 
     ##        lift baseline percent_contacted
-    ## 1  3.682243        1               0.1
-    ## 2  3.663507        1               0.2
-    ## 3  2.942308        1               0.3
-    ## 4  2.403509        1               0.4
-    ## 5  1.921105        1               0.5
-    ## 6  1.646077        1               0.6
-    ## 7  1.405674        1               0.7
-    ## 8  1.233251        1               0.8
-    ## 9  1.096597        1               0.9
+    ## 1  4.460674        1               0.1
+    ## 2  3.866337        1               0.2
+    ## 3  3.114865        1               0.3
+    ## 4  2.408978        1               0.4
+    ## 5  1.933202        1               0.5
+    ## 6  1.598387        1               0.6
+    ## 7  1.398031        1               0.7
+    ## 8  1.217604        1               0.8
+    ## 9  1.100110        1               0.9
     ## 10 1.000000        1               1.0
 
 ``` r
@@ -523,6 +525,8 @@ ggplot(advantage_curve_data_LR, aes(x = percent_contacted)) +
 </div>
 
 # Logistic Regression Model is Better
+
+This is the optimal decision threshold from the ROC
 
 ``` r
 optimal_threshold <- roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))]
