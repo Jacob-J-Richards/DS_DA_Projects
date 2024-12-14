@@ -83,26 +83,26 @@ conf_matrix_RF
     ## 
     ##           Reference
     ## Prediction   0   1
-    ##          0 573 167
-    ##          1  27  33
+    ##          0 571 173
+    ##          1  29  27
     ##                                           
-    ##                Accuracy : 0.7575          
-    ##                  95% CI : (0.7263, 0.7868)
+    ##                Accuracy : 0.7475          
+    ##                  95% CI : (0.7159, 0.7773)
     ##     No Information Rate : 0.75            
-    ##     P-Value [Acc > NIR] : 0.3287          
+    ##     P-Value [Acc > NIR] : 0.5834          
     ##                                           
-    ##                   Kappa : 0.1565          
+    ##                   Kappa : 0.114           
     ##                                           
     ##  Mcnemar's Test P-Value : <2e-16          
     ##                                           
-    ##             Sensitivity : 0.9550          
-    ##             Specificity : 0.1650          
-    ##          Pos Pred Value : 0.7743          
-    ##          Neg Pred Value : 0.5500          
+    ##             Sensitivity : 0.9517          
+    ##             Specificity : 0.1350          
+    ##          Pos Pred Value : 0.7675          
+    ##          Neg Pred Value : 0.4821          
     ##              Prevalence : 0.7500          
-    ##          Detection Rate : 0.7163          
-    ##    Detection Prevalence : 0.9250          
-    ##       Balanced Accuracy : 0.5600          
+    ##          Detection Rate : 0.7137          
+    ##    Detection Prevalence : 0.9300          
+    ##       Balanced Accuracy : 0.5433          
     ##                                           
     ##        'Positive' Class : 0               
     ## 
@@ -244,15 +244,15 @@ advantage_curve_data
 ```
 
     ##        lift baseline percent_contacted
-    ## 1  3.761905        1               0.1
-    ## 2  4.026042        1               0.2
-    ## 3  3.069767        1               0.3
-    ## 4  2.447837        1               0.4
-    ## 5  1.955734        1               0.5
-    ## 6  1.612479        1               0.6
-    ## 7  1.384937        1               0.7
-    ## 8  1.244389        1               0.8
-    ## 9  1.116201        1               0.9
+    ## 1  3.682243        1               0.1
+    ## 2  3.654028        1               0.2
+    ## 3  2.923077        1               0.3
+    ## 4  2.390977        1               0.4
+    ## 5  1.911243        1               0.5
+    ## 6  1.639399        1               0.6
+    ## 7  1.404255        1               0.7
+    ## 8  1.234491        1               0.8
+    ## 9  1.096597        1               0.9
     ## 10 1.000000        1               1.0
 
 ``` r
@@ -312,9 +312,9 @@ LR_model <- multinom(
 
     ## # weights:  8 (7 variable)
     ## initial  value 2218.070978 
-    ## iter  10 value 530.148766
-    ## iter  20 value 485.507019
-    ## final  value 485.457406 
+    ## iter  10 value 586.093204
+    ## iter  20 value 546.987461
+    ## final  value 546.978484 
     ## converged
 
 confusion matrix for Logistic Regression Model
@@ -331,28 +331,28 @@ print(conf_matrix_LR)
     ## 
     ##           Reference
     ## Prediction   0   1
-    ##          0 577  28
-    ##          1  23 172
-    ##                                          
-    ##                Accuracy : 0.9362         
-    ##                  95% CI : (0.917, 0.9522)
-    ##     No Information Rate : 0.75           
-    ##     P-Value [Acc > NIR] : <2e-16         
-    ##                                          
-    ##                   Kappa : 0.8286         
-    ##                                          
-    ##  Mcnemar's Test P-Value : 0.5754         
-    ##                                          
-    ##             Sensitivity : 0.9617         
-    ##             Specificity : 0.8600         
-    ##          Pos Pred Value : 0.9537         
-    ##          Neg Pred Value : 0.8821         
-    ##              Prevalence : 0.7500         
-    ##          Detection Rate : 0.7212         
-    ##    Detection Prevalence : 0.7562         
-    ##       Balanced Accuracy : 0.9108         
-    ##                                          
-    ##        'Positive' Class : 0              
+    ##          0 588  26
+    ##          1  12 174
+    ##                                           
+    ##                Accuracy : 0.9525          
+    ##                  95% CI : (0.9354, 0.9662)
+    ##     No Information Rate : 0.75            
+    ##     P-Value [Acc > NIR] : < 2e-16         
+    ##                                           
+    ##                   Kappa : 0.8703          
+    ##                                           
+    ##  Mcnemar's Test P-Value : 0.03496         
+    ##                                           
+    ##             Sensitivity : 0.9800          
+    ##             Specificity : 0.8700          
+    ##          Pos Pred Value : 0.9577          
+    ##          Neg Pred Value : 0.9355          
+    ##              Prevalence : 0.7500          
+    ##          Detection Rate : 0.7350          
+    ##    Detection Prevalence : 0.7675          
+    ##       Balanced Accuracy : 0.9250          
+    ##                                           
+    ##        'Positive' Class : 0               
     ## 
 
 ROC curve for Logistic Regression Model
@@ -490,15 +490,15 @@ advantage_curve_data_LR
 ```
 
     ##        lift baseline percent_contacted
-    ## 1  3.761905        1               0.1
-    ## 2  4.031250        1               0.2
-    ## 3  3.093023        1               0.3
-    ## 4  2.450382        1               0.4
-    ## 5  1.963783        1               0.5
-    ## 6  1.622332        1               0.6
-    ## 7  1.384937        1               0.7
-    ## 8  1.246883        1               0.8
-    ## 9  1.117318        1               0.9
+    ## 1  3.682243        1               0.1
+    ## 2  3.663507        1               0.2
+    ## 3  2.942308        1               0.3
+    ## 4  2.403509        1               0.4
+    ## 5  1.921105        1               0.5
+    ## 6  1.646077        1               0.6
+    ## 7  1.405674        1               0.7
+    ## 8  1.233251        1               0.8
+    ## 9  1.096597        1               0.9
     ## 10 1.000000        1               1.0
 
 ``` r
