@@ -34,21 +34,22 @@ The panel data-set contains commercial customers' financial information and days
 
 ```{r}
 
-setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_Prediction")
+setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/90+_DaysPastDue")
 
 train <- read.csv(
-  file = "/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_Prediction/Data_Files/FITB_train.csv", 
+  file = "~/Desktop/DS_DA_Projects/90+_DaysPastDue/Data_Files/FITB_train.csv", 
   header = TRUE
 )
 
 test <- read.csv(
-  file = "/Users/jacobrichards/Desktop/DS_DA_Projects/Delinquency_Prediction/Data_Files/FITB_test.csv", 
+  file = "~/Desktop/DS_DA_Projects/90+_DaysPastDue/Data_Files/FITB_test.csv", 
   header = TRUE
 )
 
 ```
 
 From checking the distribution of the data, you can see that the distribution of feature 3 (displayed by the blue curve) has many values in the extreme right tail.
+
 ```{r}
 library(ggplot2)
 
@@ -153,12 +154,12 @@ library(kableExtra)
 kable(your_tibble, format = "html") %>%
   kable_styling(position = "center") %>%
   save_kable(
-    file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t5.png", 
+    file = "~/Desktop/DS_DA_Projects/90+_DaysPastDue/ReadMe_files/figure-gfm/t5.png", 
     zoom = 2
   )
 
 knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t5.png"
+  "~/Desktop/DS_DA_Projects/90+_DaysPastDue/ReadMe_files/figure-gfm/t5.png"
 )
 
 ```
@@ -261,12 +262,12 @@ library(kableExtra)
 kable(your_tibble, format = "html") %>%
   kable_styling(position = "center") %>%
   save_kable(
-    file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t1.png", 
+    file = "~/Desktop/DS_DA_Projects/90+_DaysPastDue/ReadMe_files/figure-gfm/t1.png", 
     zoom = 2
   )
 
 knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t1.png"
+  "~/Desktop/DS_DA_Projects/90+_DaysPastDue/ReadMe_files/figure-gfm/t1.png"
 )
 
 
@@ -369,12 +370,12 @@ library(kableExtra)
 kable(your_tibble, format = "html") %>%
   kable_styling(position = "center") %>%
   save_kable(
-    file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t2.png", 
+    file = "~/Desktop/DS_DA_Projects/90+_DaysPastDue/ReadMe_files/figure-gfm/t2.png", 
     zoom = 2
   )
 
 knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t2.png"
+  "~/Desktop/DS_DA_Projects/90+_DaysPastDue/ReadMe_files/figure-gfm/t2.png"
 )
 
 ```
@@ -405,12 +406,12 @@ library(webshot2)
 kable(confusion_table, format = "html") %>%
   kable_styling(position = "center") %>%
   save_kable(
-    file = "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t3.png", 
+    file = "~/Desktop/DS_DA_Projects/90+_DaysPastDue/ReadMe_files/figure-gfm/t3.png", 
     zoom = 2
   )
 
 knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Delinquency_Prediction/ReadMe_files/figure-gfm/t3.png"
+  "~/Desktop/DS_DA_Projects/90+_DaysPastDue/ReadMe_files/figure-gfm/t3.png"
 )
 
 ```
