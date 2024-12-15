@@ -37,7 +37,7 @@ You work as a Data Scientist at a Payments processor company. On February 14th 2
 The data available to you is the transaction count and how many of which were successful for each combination of categorical variables (Bank, Payment Gateway, Merchant, Payment Method, etc..) for each hour within the 72 hours from February 12th to 14th.
 
 ```{r, include=FALSE}
-setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection")
+setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Transaction_Failure")
 transactions <- read.csv(file = "transactions.csv", na.strings = c("", "NA"))
 
 library(knitr)
@@ -48,7 +48,7 @@ your_tibble <- head(transactions, 5)
 kable(your_tibble, format = "html") %>%
   kable_styling(position = "center") %>% 
   save_kable(
-    file = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/AD_1.png", 
+    file = "~/Desktop/DS_DA_Projects/Transaction_Failure/ReadMe_files/figure-gfm/AD_1.png", 
     zoom = 2
   )
 
@@ -56,7 +56,7 @@ kable(your_tibble, format = "html") %>%
 
 ```{r echo=FALSE}
 knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/AD_1.png"
+  "~/Desktop/DS_DA_Projects/Transaction_Failure/ReadMe_files/figure-gfm/AD_1.png"
 )
 ```
 
@@ -69,7 +69,7 @@ clean the data
 ```{r}
 library('ggplot2')
 
-setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection")
+setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Transaction_Failure")
 transactions <- read.csv(file = "transactions.csv", na.strings = c("", "NA"))
 transactions[is.na(transactions)] <- "notprovided"
 
@@ -186,12 +186,12 @@ data$failure_rate <- (data[, 1] - data[, 2]) / data[, 1]
 kable(head(data, 3), format = "html") %>%
   kable_styling(position = "center") %>% 
   save_kable(
-    file = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/appended_1.png", 
+    file = "~/Desktop/DS_DA_Projects/Transaction_Failure/ReadMe_files/figure-gfm/appended_1.png", 
     zoom = 2
   )
 
 knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/appended_1.png"
+  "~/Desktop/DS_DA_Projects/Transaction_Failure/ReadMe_files/figure-gfm/appended_1.png"
 )
 ```
 
@@ -231,7 +231,7 @@ kde <- kde2d(rnorm(10000), rnorm(10000), n = 50)
 
 ```{r echo=FALSE}
 knitr::include_graphics(
-  "/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/3Ddistribution.png"
+  "/Users/jacobrichards/Desktop/DS_DA_Projects/Transaction_Failure/ReadMe_files/figure-gfm/3Ddistribution.png"
 )
 ```
 
@@ -239,7 +239,7 @@ To clarify, this is what a the 2-dimensional distribution of 10,000 samples for 
 
 ```{r echo=FALSE}
 knitr::include_graphics(
-  "/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/Gaussian_3d.png"
+  "/Users/jacobrichards/Desktop/DS_DA_Projects/Transaction_Failure/ReadMe_files/figure-gfm/Gaussian_3d.png"
 )
 ```
 
@@ -269,12 +269,12 @@ your_tibble <- head(filtered_data, 10)
 kable(your_tibble, format = "html") %>%
   kable_styling(position = "center") %>% 
   save_kable(
-    file = "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/mscoreog.png", 
+    file = "~/Desktop/DS_DA_Projects/Transaction_Failure/ReadMe_files/figure-gfm/mscoreog.png", 
     zoom = 2
   )
 
 knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/mscoreog.png"
+  "~/Desktop/DS_DA_Projects/Transaction_Failure/ReadMe_files/figure-gfm/mscoreog.png"
 )
 ```
 
@@ -574,11 +574,11 @@ gt_table <- entire_set_failures_by_merchant %>%
 
 gtsave(
   gt_table, 
-  "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/gt_table_image.png"
+  "~/Desktop/DS_DA_Projects/Transaction_Failure/ReadMe_files/figure-gfm/gt_table_image.png"
 )
 
 knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Anamoly_Detection/ReadMe_files/figure-gfm/gt_table_image.png"
+  "~/Desktop/DS_DA_Projects/Transaction_Failure/ReadMe_files/figure-gfm/gt_table_image.png"
 )
 
 ```
@@ -714,7 +714,7 @@ The following is a interactive dashboard displaying the failure rates and transa
 ```{r, include = FALSE}
 library(shiny)
 
-#shiny::runApp("/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection/shiny")
+#shiny::runApp("/Users/jacobrichards/Desktop/DS_DA_Projects/Transaction_Failure/shiny")
 
 
 #You can access the live Shiny app here: [Shiny App on shinyapps.io](https://jacob-j-richards.shinyapps.io/shiny/)

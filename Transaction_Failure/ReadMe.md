@@ -31,7 +31,7 @@ clean the data
 ``` r
 library('ggplot2')
 
-setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Anamoly_Detection")
+setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/Transaction_Failure")
 transactions <- read.csv(file = "transactions.csv", na.strings = c("", "NA"))
 transactions[is.na(transactions)] <- "notprovided"
 
