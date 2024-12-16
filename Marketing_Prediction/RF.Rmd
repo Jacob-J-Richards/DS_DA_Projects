@@ -89,6 +89,7 @@ data$dist <- as.integer(data$dist) # make this an integer
 
 ```{r}
 data <- data[sample(nrow(data)), ]
+data
 ```
 
 # Random Forest Model

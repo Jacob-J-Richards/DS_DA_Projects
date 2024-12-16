@@ -54,6 +54,8 @@ the targets within the data are not shuffled.
 data <- data[sample(nrow(data)), ]
 data_LR <- data
 data_LR
+
+cor(data)
 ```
 
 # Logistic Regression Model
