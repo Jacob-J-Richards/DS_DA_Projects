@@ -1,57 +1,18 @@
 ---
-title: "Your Document Title"
-output:
-  md_document:
-    variant: gfm
-knit: (function(input, ...) { rmarkdown::render(input, ..., output_file = "ReadMe.md") })
+title: "Untitled"
+output: html_document
+date: "2024-12-16"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(
-  message = FALSE,
-  warning = FALSE,
-  fig.align = "center",
-  fig.width = 8,   
-  fig.height = 6, 
-  dpi = 300,     
-  dev = "png",
-  out.width = "70%",
-  out.height = "70%"
-)
-
-knitr::knit_hooks$set(plot = function(x, options) {
-  paste0('<div align="center">\n',
-         '<img src="', x, '" width="70%">\n',
-         '</div>')
-})
-```
-
 ```{r}
-library(tidyverse)
-library(caret)
-library(randomForest)
-```
-
-Given the following data.
-
-```{r}
+setwd("~/Desktop/DS_DA_Projects/Marketing_Prediction")
 data <- read.csv(file="data.csv",header=TRUE)
-```
-
-```{r echo=FALSE}
-library(knitr)
-library(kableExtra)
-
-your_tibble <- head(data,5)
-kable(your_tibble, format = "html") %>%
-  kable_styling(position = "center") %>% 
-  save_kable(file = "~/Desktop/DS_DA_Projects/Marketing_Prediction/ReadMe_files/figure-gfm/A1.png", zoom = 2)
-knitr::include_graphics("~/Desktop/DS_DA_Projects/Marketing_Prediction/ReadMe_files/figure-gfm/A1.png")
 ```
 
 # Clean data
 
 ```{r}
+library(tidyverse)
 data <- data %>%
   mutate(across(c(4,5,6), ~ifelse(is.na(.) | . == "", "unknown", .)))
 
@@ -87,41 +48,67 @@ data$target <- factor(data$target, levels = c(0,1), labels = c(0,1))
 data$dist <- as.integer(data$dist) # make this an integer
 ```
 
+the targets within the data are not shuffled.
+
 ```{r}
 data <- data[sample(nrow(data)), ]
 ```
 
-# Random Forest Model
+# Logistic Regression Model
 
 ```{r}
-library(isotree)
 
-trainIndex <- createDataPartition(data$target, p = 0.8, list = FALSE, times = 1)
+library(caret)
+library(nnet) 
 
-train_RF <- data[trainIndex,]
-test_RF <- data[-trainIndex,]
 
-rf_model <- randomForest(target ~ ., data = train_RF, importance = TRUE, ntree = 500)
+data_LR <- data %>%
+  select(-id) %>%
+  mutate(
+    age = (age - mean(age, na.rm = TRUE)) / sd(age, na.rm = TRUE),
+    dist = (dist - mean(dist, na.rm = TRUE)) / sd(dist, na.rm = TRUE),
+    income = (income - mean(income, na.rm = TRUE)) / sd(income, na.rm = TRUE),
+    gender = as.integer(as.character(gender)),
+    marital_status = as.integer(as.character(marital_status)),
+    target = as.integer(as.character(target))
+  )
 
-predictions <- predict(rf_model, newdata = test_RF)
 
-conf_matrix_RF <- confusionMatrix(predictions, test_RF$target)
+set.seed(123)  # For reproducibility
+trainIndex <- createDataPartition(data_LR$target, p = 0.8, list = FALSE, times = 1)
+train_LR <- data_LR[trainIndex, ]
+test_LR <- data_LR[-trainIndex, ]
+
+
+LR_model <- multinom(
+  target ~ .,  
+  data = train_LR,
+  family = binomial()
+)
 ```
 
+confusion matrix for Logistic Regression Model
+
 ```{r}
-conf_matrix_RF
+predictions_LR <- predict(LR_model, newdata = test_LR)
+
+conf_matrix_LR <- confusionMatrix(as.factor(predictions_LR), as.factor(test_LR$target))
+
+print(conf_matrix_LR)
 ```
 
-ROC curve
+ROC curve for Logistic Regression Model
 
 ```{r}
-model_output <- predict(rf_model, newdata = test_RF, type = "prob")
-test_RF$prob_one <- model_output[,2]
+model_output <- predict(LR_model, newdata = test_LR, type = "prob")
+model_output <- data.frame(model_output)
+test_LR$prob_one <- model_output$model_output
 ```
 
 ```{r}
 library(pROC)
-roc_curve <- roc(response = test_RF$target, predictor = test_RF$prob_one)
+
+roc_curve <- roc(response = test_LR$target, predictor = test_LR$prob_one)
 
 roc_metrics <- coords(roc_curve, x = "all", ret = c("threshold", "sensitivity", "specificity"))
 auc_value <- auc(roc_curve)
@@ -132,9 +119,11 @@ roc_data <- data.frame(
   Threshold = roc_metrics$threshold
 )
 
-  ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
+
+
+ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
   geom_line(size = 1) +
-  geom_abline(slope = 1, intercept = 1, linetype = "dashed", color = "gray") +  
+  geom_abline(slope = 1, intercept = 1, linetype = "dashed", color = "gray") +
   geom_line(
     data = data.frame(FPR = c(1, 1, 0), TPR = c(0, 1, 1)), 
     aes(x = FPR, y = TPR), 
@@ -150,53 +139,53 @@ roc_data <- data.frame(
     color = "Decision Threshold"
   ) +
   scale_color_gradient(
-    low = "red",                      # Red corresponds to low values
-    high = "blue",                    # Blue corresponds to high values
-    trans = "reverse",                # Reverse the color mapping
+    low = "red",                     # Reverse gradient colors
+    high = "blue",                   # Red becomes low, blue becomes high
+    trans = "reverse",               # Reverse the gradient mapping
     guide = guide_colorbar(
-      direction = "horizontal",       # Make legend horizontal
-      title.position = "top",         # Title above the legend
-      label.position = "bottom"       # Labels below the legend
+      direction = "horizontal",      # Horizontal orientation
+      title.position = "top",        # Title above the legend
+      label.position = "bottom"      # Labels below the legend
     )
   ) +
   coord_fixed() +
-  scale_x_reverse() +  
+  scale_x_reverse() +
   ylim(0, 1) +
   theme_minimal() +
   theme(
-    legend.position = "top",          # Position legend on top of the plot
-    legend.justification = "center",  # Center the legend horizontally
+    legend.position = "top",          # Place legend at the top of the plot
+    legend.justification = "center",  # Center align the legend
+    legend.box.spacing = unit(0.5, "cm"), # Adjust spacing between legend and plot
     plot.caption = element_text(hjust = 0.5, size = 12)
   )
-```
 
-only 0.6675 AUC
 
-lift curve and lift advantage curve
-
-```{r}
-model_output <- predict(rf_model, newdata = data, type = "prob")
-data$prob_one <- model_output[,2]
 ```
 
 ```{r}
-lift_data <- data[order(data$prob_one, decreasing = TRUE),]
-sum_responses <- sum(as.numeric(as.character(data$target)))
+model_output <- predict(LR_model, newdata = data_LR, type = "prob")
+model_output <- data.frame(model_output)
+data_LR$prob_one <- model_output$model_output
+```
+
+```{r}
+lift_data_LR <- data_LR[order(data_LR$prob_one, decreasing = TRUE),]
+sum_responses <- sum(as.numeric(as.character(data_LR$target)))
 
 lift_curve <- numeric(0)
 baseline_curve <- numeric(0)
 
 for (i in 0:10) {
   
-  lift_curve[i + 1] <- sum(lift_data[seq(1, (0.1 * i) * nrow(lift_data)), 7] == "1") / sum_responses * 100
+  lift_curve[i + 1] <- sum(lift_data_LR[seq(1, (0.1 * i) * nrow(lift_data_LR)), 6] == "1") / sum_responses * 100
   
-  baseline_curve[i + 1] <- sum(data[seq(1, (0.1 * i) * nrow(data)), 7] == "1") / sum_responses * 100
+  baseline_curve[i + 1] <- sum(data_LR[seq(1, (0.1 * i) * nrow(data_LR)), 6] == "1") / sum_responses * 100
   
 }
 
-lift_chart_data <- data.frame(lift = lift_curve,baseline = baseline_curve)
+lift_chart_data_LR <- data.frame(lift = lift_curve,baseline = baseline_curve)
 
-ggplot(lift_chart_data, aes(x = seq(0, 1, 0.1))) + 
+ggplot(lift_chart_data_LR, aes(x = seq(0, 1, 0.1))) + 
   geom_line(aes(y = lift, color = "Lift Curve")) + 
   geom_line(aes(y = baseline, color = "Baseline Curve")) + 
   geom_segment(
@@ -225,19 +214,17 @@ ggplot(lift_chart_data, aes(x = seq(0, 1, 0.1))) +
 
 ```
 
-lift chart
-
 ```{r}
 
-advantage_curve_data <- lift_chart_data %>% 
+advantage_curve_data_LR <- lift_chart_data_LR %>% 
   mutate(lift = coalesce(lift / baseline, 0)) %>%
     mutate(baseline = coalesce(baseline / baseline, 0)) %>%
       mutate(percent_contacted = seq(0,1,.1)) %>%
         filter(row_number() > 1)
  
-advantage_curve_data
+advantage_curve_data_LR
 
-ggplot(advantage_curve_data, aes(x = percent_contacted)) + 
+ggplot(advantage_curve_data_LR, aes(x = percent_contacted)) + 
   geom_line(aes(y = lift, color = "Lift Curve")) + 
   geom_line(aes(y = baseline, color = "Baseline Curve")) + 
   theme_minimal() + 
@@ -250,5 +237,31 @@ ggplot(advantage_curve_data, aes(x = percent_contacted)) +
   coord_cartesian(ylim = c(0.5, 5)) + 
   scale_x_continuous(breaks = seq(0, 1, by = 0.10))
 
+
+```
+
+# Logistic Regression Model is Better
+
+This is the optimal decision threshold from the ROC
+
+```{r}
+
+optimal_threshold <- roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))]
+
+your_tibble <- roc_metrics[roc_metrics[, 1] == optimal_threshold, ]
+
+library(knitr)
+library(kableExtra)
+
+kable(your_tibble, format = "html") %>%
+  kable_styling(position = "center") %>%
+  save_kable(
+    file = "~/Desktop/DS_DA_Projects/Marketing_Prediction/ReadMe_files/figure-gfm/t2.png", 
+    zoom = 2
+  )
+
+knitr::include_graphics(
+  "~/Desktop/DS_DA_Projects/Marketing_Prediction/ReadMe_files/figure-gfm/t2.png"
+)
 
 ```

@@ -256,9 +256,11 @@ When the model predicts the probability of an individual being 90+ days past due
 
 Since the actual outcomes (whether a customer was 90+DPD) are known in our testing data, we can evaluate the model’s accuracy by:
 
-	1.	Comparing the predicted outcomes to the actual outcomes in the testing data.
+```         
+1.  Comparing the predicted outcomes to the actual outcomes in the testing data.
 
-	2.	Assessing how the choice of the decision threshold affects the model’s accuracy.
+2.  Assessing how the choice of the decision threshold affects the model’s accuracy.
+```
 
 The testing data is entirely distinct from the training data used to produce the model, ensuring that the accuracy results on the testing data provide a realistic estimate of how the model will perform on future data.
 
@@ -350,41 +352,49 @@ ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
 
 **Key Definitions**
 
-	•	**Sensitivity (True Positive Rate):** The proportion of individuals who were 90+DPD that the model correctly predicted as being 90+DPD.
+```         
+•   **Sensitivity (True Positive Rate):** The proportion of individuals who were 90+DPD that the model correctly predicted as being 90+DPD.
 
-	•	**Specificity (True Negative Rate):** The proportion of individuals who were not 90+DPD that the model correctly predicted as not being 90+DPD.
+•   **Specificity (True Negative Rate):** The proportion of individuals who were not 90+DPD that the model correctly predicted as not being 90+DPD.
+```
 
 #### **AUC (Area Under the Curve)**
 
 The **AUC** quantifies overall model performance by aggregating accuracy metrics across all decision thresholds.
 
-	•	A perfect model would have an AUC of 1.0 (blue dotted line).
+```         
+•   A perfect model would have an AUC of 1.0 (blue dotted line).
 
-	•	A random model (e.g., predicting outcomes by flipping a coin) would have an AUC of 0.50 (grey diagonal line).
+•   A random model (e.g., predicting outcomes by flipping a coin) would have an AUC of 0.50 (grey diagonal line).
 
-	•	**Our model’s AUC is 0.8211**, indicating strong performance.
+•   **Our model’s AUC is 0.8211**, indicating strong performance.
+```
 
 **Example Decision Thresholds**
 
-	**Threshold = 0.50 (Cyan Blue):**
+```         
+**Threshold = 0.50 (Cyan Blue):**
 
-	•	**Specificity \~94%:** The model correctly identifies most individuals who were not late on payments.
+•   **Specificity \~94%:** The model correctly identifies most individuals who were not late on payments.
 
-	•	**Sensitivity \~25%:** The model only identifies 25% of individuals who were late on payments.
+•   **Sensitivity \~25%:** The model only identifies 25% of individuals who were late on payments.
 
-	**Threshold = 0.10 (Pink-Red):**
+**Threshold = 0.10 (Pink-Red):**
 
-	•	**Sensitivity \~94%:** The model correctly identifies nearly all individuals who were late on payments.
+•   **Sensitivity \~94%:** The model correctly identifies nearly all individuals who were late on payments.
 
-	•	**Specificity \~25%:** The model falsely predicts many non-late individuals as late.
+•   **Specificity \~25%:** The model falsely predicts many non-late individuals as late.
+```
 
 #### **Interpretation**
 
 The decision threshold represents a trade-off:
 
-	•	**High Sensitivity:** Captures most late-payment cases but sacrifices accuracy in identifying non-late cases.
+```         
+•   **High Sensitivity:** Captures most late-payment cases but sacrifices accuracy in identifying non-late cases.
 
-	•	**High Specificity:** Accurately predicts non-late cases but misses many late-payment cases.
+•   **High Specificity:** Accurately predicts non-late cases but misses many late-payment cases.
+```
 
 The optimal threshold balances these goals, as shown visually in the ROC plot. The selected threshold will depend on the priorities of the analysis—whether it’s more critical to reduce false positives or false negatives.
 
