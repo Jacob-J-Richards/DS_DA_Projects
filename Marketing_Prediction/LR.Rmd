@@ -89,6 +89,8 @@ LR_model <- multinom(
   target ~ age + income + dist + gender + marital_status,
   data = train_LR
 )
+
+
 ```
 
 confusion matrix for Logistic Regression Model
