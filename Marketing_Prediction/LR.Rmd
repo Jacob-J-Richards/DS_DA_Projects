@@ -55,7 +55,7 @@ data <- data[sample(nrow(data)), ]
 data_LR <- data
 data_LR
 
-cor(data)
+ggplot(data,aes(x=age,y=income)) + geom_smooth() + geom_point() 
 ```
 
 # Logistic Regression Model
@@ -86,9 +86,8 @@ test_LR <- data_LR[-trainIndex, ]
 
 
 LR_model <- multinom(
-  target ~ age + dist + income + gender + marital_status,  
-  data = train_LR,
-  family = binomial()
+  target ~ age + income + dist + gender + marital_status,
+  data = train_LR
 )
 ```
 
