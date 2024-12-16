@@ -22,19 +22,22 @@ test <- read.csv(
 ```
 
 From checking the distribution of the data, you can see that the
-distribution of feature 3 (displayed by the blue curve) has many values
-in the extreme right tail.
+distribution of feature 3 has many values in the extreme right tail.
 
 ``` r
 library(ggplot2)
 
-ggplot() + 
-  geom_density(data = train, aes(x = feature_3), color = "blue") +
-  geom_density(data = train, aes(x = feature_2), color = "red") +
-  geom_density(data = train, aes(x = feature_1), color = "green") +
-  geom_density(data = train, aes(x = feature_4), color = "purple") +
-  theme_minimal() + 
-  xlab("Variables")
+library(ggplot2)
+
+ggplot(data = train) +
+  geom_boxplot(aes(x = "feature_1", y = feature_1, fill = "feature_1"), color = "green", alpha = 0.5) +
+  geom_boxplot(aes(x = "feature_2", y = feature_2, fill = "feature_2"), color = "red", alpha = 0.5) +
+  geom_boxplot(aes(x = "feature_3", y = feature_3, fill = "feature_3"), color = "blue", alpha = 0.5) +
+  geom_boxplot(aes(x = "feature_4", y = feature_4, fill = "feature_4"), color = "purple", alpha = 0.5) +
+  theme_minimal() +
+  xlab("Variables") +
+  ylab("Values") +
+  labs(fill = "Feature")
 ```
 
 <div align="center">
@@ -43,9 +46,13 @@ ggplot() +
 
 </div>
 
-The many outliers adds noise that disrupts our models ability to capture
-the trend of the data, so we removed the top and bottom percentiles from
-feature 3. This is known as **Winsorization**.
+Notice the substantial gap between the middle quartiles of Feature 3’s
+distribution and its upper outliers. Such pronounced outliers could
+significantly skew our model parameters, particularly because these
+outliers are not balanced by a symmetric lower tail, as seen in
+Feature 1. So we will remove them to produce a model which is
+representative of the vast majority of our data. This is known as
+**Winsorization**.
 
 ``` r
 library(dplyr)
@@ -77,7 +84,7 @@ train <- train %>%
 colnames(train)[3] <- "feature_3_winsor"
 ```
 
-We need to fill in the blanks from the values we just removed, so we
+We need to fill in the blanks from the outliers we just removed, so we
 will replace them with the median of the non-outliers of feature 3.
 
 ``` r
@@ -88,9 +95,10 @@ test[is.na(test[, 3]), 3] <- median(feature_3_winsor_clean$feature_3)
 colnames(test)[3] <- "feature_3_impute"
 ```
 
-Feature 2 has missing values, so for each missing value for we will fill
-in the blank with the next year’s value or the previous year’s (if the
-next year is also missing) corresponding to the same ID.
+Feature 2 contains missing values. For each missing value, we will fill
+it with the corresponding value from the next year for the same ID. If
+the next year’s value is also missing, we will use the previous year’s
+value instead.
 
 ``` r
 train$date <- format(as.Date(train$date, format = "%Y-%m-%d"), "%Y")
@@ -153,10 +161,10 @@ knitr::include_graphics(
 
 </div>
 
-Our features (variables) all represent different financial measurements
-quantified by different units. In order for these variables to be
-measured uniformly, we can reassign each value with its corresponding
-z-score within its respective variable distribution.
+Our features represent various financial measurements, each quantified
+in different units. To ensure uniform measurement across variables, we
+can standardize them by replacing each value with its corresponding
+z-score within the distribution of its respective variable.
 
 ``` r
 library(dplyr)
@@ -215,42 +223,45 @@ ggplot() +
 
 The preparation of the training data is complete.
 
-## Building The Model
+**Building the Model**
 
-Building a logistic regression model from features 1 to 4 as continuous
-independent variables and column y as the binary dependent variable
-(true/false).
+We are constructing a logistic regression model using Features 1 through
+4 as continuous independent variables and Column Y as the binary
+dependent variable (True/False).
 
-Given historical data of customers financial information and whether or
-not they were **90+ days past due** on payments, we can produce a model
-that will generate a probability that a customer will be **90+ days past
-due** on payments.
+With historical data on customers’ financial information and their
+status regarding being 90+ days past due on payments, this model can
+estimate the probability of a customer being 90+ days past due.
 
-For explanation of logistic regression binary classifiers see the
-following invaluable resource:
-<https://seantrott.github.io/binary_classification_R/>
+For a detailed explanation of logistic regression binary classifiers,
+refer to this invaluable resource: [Binary Classification in
+R](https://seantrott.github.io/binary_classification_R/).
 
-When the model produces a probability of an individual being **90+DPD**,
-we will have to decide at what probability we draw the conclusion that
-the individual will be **90+DPD**. The value chosen has great impact on
-the accuracy of the model.
+When the model predicts the probability of an individual being 90+ days
+past due (90+DPD), we must decide on a decision threshold—the minimum
+predicted probability at which we conclude that the individual will be
+90+DPD. The choice of this threshold significantly impacts the model’s
+accuracy.
 
-## Fitting The Model
+# **Fitting the Model**
 
-**decision threshold:** The minimum predicted probability value from the
-model that a customer will be **90+ DPD** at which it is concluded that
-the customer will be **90+ DPD**.
+**Decision Threshold:** This is the minimum predicted probability value
+from the model at which we classify a customer as 90+DPD.
 
-Since the outcome of whether or not there will be late payments is known
-in our testing data; we can asses the accuracy of the model by
-evaluating the model on the testing data and directly comparing the
-predicted outcomes to the actual outcomes, as well assessing the impact
-of the **decision threshold** we used on the model’s accuracy.
+Since the actual outcomes (whether a customer was 90+DPD) are known in
+our testing data, we can evaluate the model’s accuracy by:
 
-The testing data is completely distinct from the data used to produce
-the model, so the accuracy results of the model being evaluated on it
-are representative of the models accuracy being evaluated of future
-data. The following analysis are those accuracy results.
+    1.  Comparing the predicted outcomes to the actual outcomes in the testing data.
+
+    2.  Assessing how the choice of the decision threshold affects the model’s accuracy.
+
+The testing data is entirely distinct from the training data used to
+produce the model, ensuring that the accuracy results on the testing
+data provide a realistic estimate of how the model will perform on
+future data.
+
+The following analysis presents the accuracy results of the model’s
+evaluation.
 
 To asses the accuracy of the model and find the optimal decision
 threshold we produce the ROC curve.
@@ -321,39 +332,51 @@ ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
 
 </div>
 
-### The ROC curve is a plot of the models prediction accuracy ratios Sensitivity (y-axis) by Specificity (x-axis) as a result of the decision threshold chosen which is displayed by color gradient.
+#### The **ROC curve** (Receiver Operating Characteristic curve) visualizes the trade-off between the model’s **Sensitivity** (y-axis) and **1 - Specificity** (x-axis) across various decision thresholds. The thresholds are represented by a color gradient.
 
-**Sensitivity:** *what proportion of individuals who were **90+ DPD**
-did the model correctly predict as being **90+ DPD.***
+**Key Definitions**
 
-**Specificity:** *what proportion of individuals who were **not 90+
-DDP** did the model correctly predict as being **not 90+ DPD.***
+    •   **Sensitivity (True Positive Rate):** The proportion of individuals who were 90+DPD that the model correctly predicted as being 90+DPD.
 
-**AUC:** The area under the ROC curve, AUC, is used as a metric for
-overall model performance as the ROC curve is the result of accuracy
-metrics from the entire range of decision thresholds. The blue dotted
-line is a perfect model containing 100% of the area under its curve. The
-grey line is if you were to predict the outcome by tossing a coin and
-thus naturally the area under it’s curve is 50%.
+    •   **Specificity (True Negative Rate):** The proportion of individuals who were not 90+DPD that the model correctly predicted as not being 90+DPD.
 
-The **AUC** of our model is 0.8211.
+#### **AUC (Area Under the Curve)**
 
-To illustrate the meaning of this curve, take for example the accuracy
-results if you were to select a decision threshold of 0.50 represented
-as cyan blue: Your specificity would be about 94%, which is good since
-you did not falsely predict too many late payments. However, your
-sensitivity would only be 25%, such that you only successfully predicted
-25% of the late payments. Conversely if you had selected a decision
-threshold of .10 represented as pink-red you would successfully predict
-94% of late payments but only 25% of individuals who were not late on
-payments were correctly identified as such by the model.
+The **AUC** quantifies overall model performance by aggregating accuracy
+metrics across all decision thresholds.
 
-Therefore, the **decision threshold** we choose is a trade-off between
-successfully predicting late payments and successfully predicting
-non-late payments.
+    •   A perfect model would have an AUC of 1.0 (blue dotted line).
 
-The **decision threshold** which balances these goals is visually
-evident in the following plot.
+    •   A random model (e.g., predicting outcomes by flipping a coin) would have an AUC of 0.50 (grey diagonal line).
+
+    •   **Our model’s AUC is 0.8211**, indicating strong performance.
+
+**Example Decision Thresholds**
+
+    **Threshold = 0.50 (Cyan Blue):**
+
+    •   **Specificity \~94%:** The model correctly identifies most individuals who were not late on payments.
+
+    •   **Sensitivity \~25%:** The model only identifies 25% of individuals who were late on payments.
+
+    **Threshold = 0.10 (Pink-Red):**
+
+    •   **Sensitivity \~94%:** The model correctly identifies nearly all individuals who were late on payments.
+
+    •   **Specificity \~25%:** The model falsely predicts many non-late individuals as late.
+
+#### **Interpretation**
+
+The decision threshold represents a trade-off:
+
+    •   **High Sensitivity:** Captures most late-payment cases but sacrifices accuracy in identifying non-late cases.
+
+    •   **High Specificity:** Accurately predicts non-late cases but misses many late-payment cases.
+
+The optimal threshold balances these goals, as shown visually in the ROC
+plot. The selected threshold will depend on the priorities of the
+analysis—whether it’s more critical to reduce false positives or false
+negatives.
 
 ``` r
 ggplot(roc_metrics, aes(x = threshold)) +
