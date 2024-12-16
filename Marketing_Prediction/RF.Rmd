@@ -182,7 +182,7 @@ data$prob_one <- model_output[,2]
 ```{r}
 lift_data <- data[order(data$prob_one, decreasing = TRUE),]
 sum_responses <- sum(as.numeric(as.character(data$target)))
-
+lift_data
 lift_curve <- numeric(0)
 baseline_curve <- numeric(0)
 

@@ -52,6 +52,8 @@ the targets within the data are not shuffled.
 
 ```{r}
 data <- data[sample(nrow(data)), ]
+data_LR <- data
+data_LR
 ```
 
 # Logistic Regression Model
@@ -62,16 +64,16 @@ library(caret)
 library(nnet) 
 
 
-data_LR <- data %>%
-  select(-id) %>%
-  mutate(
-    age = (age - mean(age, na.rm = TRUE)) / sd(age, na.rm = TRUE),
-    dist = (dist - mean(dist, na.rm = TRUE)) / sd(dist, na.rm = TRUE),
-    income = (income - mean(income, na.rm = TRUE)) / sd(income, na.rm = TRUE),
-    gender = as.integer(as.character(gender)),
-    marital_status = as.integer(as.character(marital_status)),
-    target = as.integer(as.character(target))
-  )
+#data_LR <- data %>%
+ # select(-id) %>%
+ # mutate(
+ #   age = (age - mean(age, na.rm = TRUE)) / sd(age, na.rm = TRUE),
+ #   dist = (dist - mean(dist, na.rm = TRUE)) / sd(dist, na.rm = TRUE),
+ #   income = (income - mean(income, na.rm = TRUE)) / sd(income, na.rm = TRUE),
+ #   gender = as.integer(as.character(gender)),
+ #   marital_status = as.integer(as.character(marital_status)),
+ #   target = as.integer(as.character(target))
+ # )
 
 
 set.seed(123)  # For reproducibility
@@ -80,8 +82,9 @@ train_LR <- data_LR[trainIndex, ]
 test_LR <- data_LR[-trainIndex, ]
 
 
+
 LR_model <- multinom(
-  target ~ .,  
+  target ~ age + dist + income + gender + marital_status,  
   data = train_LR,
   family = binomial()
 )
@@ -171,7 +174,7 @@ data_LR$prob_one <- model_output$model_output
 ```{r}
 lift_data_LR <- data_LR[order(data_LR$prob_one, decreasing = TRUE),]
 sum_responses <- sum(as.numeric(as.character(data_LR$target)))
-
+lift_data_LR
 lift_curve <- numeric(0)
 baseline_curve <- numeric(0)
 
@@ -237,31 +240,5 @@ ggplot(advantage_curve_data_LR, aes(x = percent_contacted)) +
   coord_cartesian(ylim = c(0.5, 5)) + 
   scale_x_continuous(breaks = seq(0, 1, by = 0.10))
 
-
-```
-
-# Logistic Regression Model is Better
-
-This is the optimal decision threshold from the ROC
-
-```{r}
-
-optimal_threshold <- roc_metrics$threshold[which.min(abs(roc_metrics$sensitivity - roc_metrics$specificity))]
-
-your_tibble <- roc_metrics[roc_metrics[, 1] == optimal_threshold, ]
-
-library(knitr)
-library(kableExtra)
-
-kable(your_tibble, format = "html") %>%
-  kable_styling(position = "center") %>%
-  save_kable(
-    file = "~/Desktop/DS_DA_Projects/Marketing_Prediction/ReadMe_files/figure-gfm/t2.png", 
-    zoom = 2
-  )
-
-knitr::include_graphics(
-  "~/Desktop/DS_DA_Projects/Marketing_Prediction/ReadMe_files/figure-gfm/t2.png"
-)
 
 ```
