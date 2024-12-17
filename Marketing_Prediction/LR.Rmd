@@ -172,6 +172,8 @@ ggplot(roc_data, aes(x = FPR, y = TPR, color = Threshold)) +
 model_output <- predict(LR_model, newdata = data_LR, type = "prob")
 model_output <- data.frame(model_output)
 data_LR$prob_one <- model_output$model_output
+lift_data_LR <- data_LR[order(data_LR$prob_one, decreasing = TRUE),]
+lift_data_LR
 ```
 
 ```{r}
@@ -182,10 +184,10 @@ lift_curve <- numeric(0)
 baseline_curve <- numeric(0)
 
 for (i in 0:10) {
+                                                                  # target is in the 7th column 
+  lift_curve[i + 1] <- sum(lift_data_LR[seq(1, (0.1 * i) * nrow(lift_data_LR)), 7] == "1") / sum_responses * 100
   
-  lift_curve[i + 1] <- sum(lift_data_LR[seq(1, (0.1 * i) * nrow(lift_data_LR)), 6] == "1") / sum_responses * 100
-  
-  baseline_curve[i + 1] <- sum(data_LR[seq(1, (0.1 * i) * nrow(data_LR)), 6] == "1") / sum_responses * 100
+  baseline_curve[i + 1] <- sum(data_LR[seq(1, (0.1 * i) * nrow(data_LR)), 7] == "1") / sum_responses * 100
   
 }
 
