@@ -29,7 +29,7 @@
                 <mxCell id="7" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;&lt;b&gt;Logisic Regression Model underperformance diagnostic&amp;nbsp;&lt;/b&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="45" y="20" width="1110" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="11" value="" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;startSize=14;endSize=14;sourcePerimeterSpacing=8;targetPerimeterSpacing=8;" parent="1" source="8" target="10" edge="1">
+                <mxCell id="42" value="" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;startSize=14;endSize=14;sourcePerimeterSpacing=8;targetPerimeterSpacing=8;" edge="1" parent="1" source="8" target="41">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="8" value="poor performance&amp;nbsp;" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
@@ -39,34 +39,30 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="10" value="Why did this happen:" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="200" y="500" width="800" height="40" as="geometry"/>
+                    <mxGeometry x="200" y="725" width="800" height="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="15" value="" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;startSize=14;endSize=14;sourcePerimeterSpacing=8;targetPerimeterSpacing=8;" parent="1" source="12" target="14" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="12" value="1.) weak predictors&amp;nbsp;&lt;br&gt;compaire log(ods) against posative proportion scatter by age and bar chart fill&lt;br&gt;sns seaborn chart.&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="201" y="580" width="800" height="60" as="geometry"/>
+                    <mxGeometry x="201" y="810" width="800" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="17" value="" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;startSize=14;endSize=14;sourcePerimeterSpacing=8;targetPerimeterSpacing=8;" parent="1" source="14" target="16" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
+                <mxCell id="17" value="" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;startSize=14;endSize=14;sourcePerimeterSpacing=8;targetPerimeterSpacing=8;" parent="1" source="14" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="601" y="1012" as="targetPoint"/>
+                    </mxGeometry>
                 </mxCell>
                 <mxCell id="14" value="2.) failure to recognize interaction terms&amp;nbsp;&lt;br&gt;interactions plot but then show that it does not improve the model very much&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="200" y="690" width="800" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="19" value="" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;startSize=14;endSize=14;sourcePerimeterSpacing=8;targetPerimeterSpacing=8;" parent="1" source="16" target="18" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="16" value="Run random forest model, why did this model perform so much better?&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="196" y="790" width="810" height="60" as="geometry"/>
+                    <mxGeometry x="201" y="920" width="800" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="21" value="" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;startSize=14;endSize=14;sourcePerimeterSpacing=8;targetPerimeterSpacing=8;" parent="1" source="18" target="20" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="18" value="It recognized that age was the most important predictor, the logit line to represent that is linear, were as the actual realationship between the variables is not, so log reg was doomed from the start.&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="195" y="890" width="810" height="60" as="geometry"/>
+                    <mxGeometry x="200" y="1050" width="810" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="20" value="" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
-                    <mxGeometry x="195" y="990" width="810" height="60" as="geometry"/>
+                    <mxGeometry x="195" y="1270" width="810" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="22" value="1" style="text;strokeColor=none;fillColor=none;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;" parent="1" vertex="1">
                     <mxGeometry x="90" y="160" width="60" height="30" as="geometry"/>
@@ -81,19 +77,19 @@
                     <mxGeometry x="90" y="420" width="60" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="26" value="5" style="text;strokeColor=none;fillColor=none;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;" parent="1" vertex="1">
-                    <mxGeometry x="90" y="505" width="60" height="30" as="geometry"/>
+                    <mxGeometry x="90" y="500" width="60" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="27" value="6" style="text;strokeColor=none;fillColor=none;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;" parent="1" vertex="1">
-                    <mxGeometry x="90" y="595" width="60" height="30" as="geometry"/>
+                    <mxGeometry x="100" y="610" width="60" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="28" value="7" style="text;strokeColor=none;fillColor=none;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;" parent="1" vertex="1">
-                    <mxGeometry x="90" y="700" width="60" height="30" as="geometry"/>
+                    <mxGeometry x="100" y="725" width="60" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="29" value="8" style="text;strokeColor=none;fillColor=none;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;" parent="1" vertex="1">
-                    <mxGeometry x="90" y="805" width="60" height="30" as="geometry"/>
+                    <mxGeometry x="90" y="810" width="60" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="30" value="9" style="text;strokeColor=none;fillColor=none;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;" parent="1" vertex="1">
-                    <mxGeometry x="90" y="900" width="60" height="30" as="geometry"/>
+                    <mxGeometry x="90" y="920" width="60" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="33" value="" style="shape=stencil(rVjZbhsxDPwavxKSSOp4TtP/CBCnNprGgZP0+Pty62ht0buTFuibvR6ueQzJkTZ887K7e95uUnh5PR6+bn/s7193G/60SWn/tNse96/2acO3G755OBy3X46Ht6f70/fnuwk5ffp2+D694efJTinFySiFX+8PCtXy58nnE/5x/3SBL8Q64LOQtnV8pVJHfKWg6/gYSdNgUIRSAgbc/Z0NKnEFBkqFB4MaSdA/VNIx5ipUQczJ3tdGA3tFBgZCccxSi1RAFaa0jlmqSi2sGzBTaj5oVAe2Mo0uFSXldQNhimGsdCMGLkmlNNYhJ6rAQJl0rLTm7uSyQaOQBwOxJyCtZwdmA4ZpzUp1zBI3UmRghRv/gZUE9ZtxyRlEyoCtxTweK21kCaBwJfcGng2kN+1yS4dO5tkg9EQvG7Cnd8xwyBiZ60hv6/L3ObVs0HqIM72pAXxjEhdCHwpr+Da+HxehCeUxpwG/Xylnh4+gBC37GWYVALRrhYr3JyF/jKbi8BXhm8+nzS8wXQzfgst/RfE2T2qbmCj/zfuvxBgfR/8zMSCo5YfdlqKI4rW1GR0ebU2rr5uNhTLmTwoOn5D/4v3JcEEZ/3N1+fwA72SC4Hxy/3mechRxP7r6Rmo4XokOD/tFfX0D5k/2/ls/ovlTSNThI8JXEt+PkD+Nkrp4Bb2/+fmQuoRZlkRhnjfnghWU0EbVreI+Uf8P3uSPWzERykZjkI4BRBspAgyMAY5yNlTR1rORMHLCisAgBlOVTkFZ0AKSWpoPOmGdWcqCmBCkDa72GJv0BUQyueI2twnJDwRRHdMqqSd6TXLlsZUld124bBC7x/PsinCZmap0zaa1r59lg3g1TbXTd1n6Xv1DSVBPSPSy0WqfgEtc/AAzTYW4NB0QRpfsCBLQIad1j2cDhRrHVowj37R1wdKfNITruIBljp3UUvE+VZDXqF7KNsy+mDyZ7GiHOigG30FWiASkglFtDNoOauhUlLswmJmBtbV4pVMCPC4nf7zOuZdlER+8EskBShGr6EgjO7UpyM/V4rHmRPkJfapf4NEZMPS7gIsLEQZ9EPz8svEBKUecPR5Jo1nY/OWhN/nxqLYawSxi3zLT+wGh2Z94DY/qK1fDNHctuYKvzecfLfJ/vcD6GG8fzrdlD/vHx9Nl2+Xv/nbNHp1u5vj2Nw==);lineShape=1;" vertex="1" parent="1">
                     <mxGeometry x="1018.8757021805804" y="113.52194545826774" width="78.5542530520861" height="68.52095926937773" as="geometry"/>
@@ -107,11 +103,17 @@
                 <mxCell id="36" value="" style="shape=stencil(lVjZctswDPwav2J4guRzmv5HZuI0nrp2xkmvvy9UD2Vxba0nb46yEEEci4U28eH99eltuwnu/eN0/L79vXv+eN3EL5sQdofX7Wn3Yb828XETH16Op+230/Hn4fn899vThJx+/Tj+mt7w52yXJafJKLi/5wfqROP/J1/P+P3uMOBrHvH2Br+OV0luxFeJZR1fxMcBX7zEvI6v4kb/S5IY1vFNXBjxRRK5r3fiR4PqJBGHvJfgR4MooRKDcGVgQW7EIIkrg0G741KWNJ7QojQlBipFRwOVRrJsd4hjWbQsjaT5xh2iJGZgMQGXvDiWuIonVHtC7hAcnlCtlEgeQpIy1raVhiOZnoqvjcWXaXHH2IM4G7heLLcNGraPJlpLKUkaXcqtF8ttgyZt7IccpZLE5YwnJGMAUnzqe7vMBkGURElVdDSIRQK5tFGKjomLQTxJXFEkAeOpkAgrOcx0CFIILRlH6NiiVr+Z3KHapccTrKUKCWttEsZampiKnGD9hcwniQSphd7Ac+31F9zGZwkjZ/ju4RoeQuSkkBwYZfkK+EgIw/AV8Y75U0QL4h3BW/gS4Gl8GsbfWJ7jNQK+koIwfEsQf9b5Ex5qmt+3SUF8ZvFsnRbmrhTH/K89/Rc8m+SWL/A/UqVjeJjLd/AmddB/NpWtnmsEvGfxtFlRIZ7K+8tnwDvujwdG6Rdawyesf6YRLopgUc/MH2O4q35h/V5Qat7tR7ivu1dvDfkn8vpPyCeF40F/GB+S/Ho33+9iUO8cgAXE9M2n8drrcVYroiygqQuH2X/X1fnahFGIUOgcszbzKkxVlUB62KZqHk8I3KUapEGMUm+721KiXrGo8RhpG9tn0tjGpgqZlNAmeUxDtDNJXZhE9GMeTBUyZZArupR5lEwiwtZlqjCT0khFCuhYUyPMYJ4ts4HSbjOJWMbSKKYBmbSOXfEtNkcm3k3tw7y3YvFsn9A+32cDK0e2T6S+biwWwchWnNAZbrF1ZZK4ieJGl6zJmSjyBcX7JAMYi3mcCgteW9ngQbZMQoziYSWyQcQWx6uxYEK4sPUDKaMW+v6Mwt3WTKbrEm431Usm74+43BS+b12Rasm0TD1yqjUOa36PMlyrVDLHXR9iiy9MHA9TUF2n2DV8QHyieJCByuvT4Rc126gZ13n03/CBvN9jvRkdN1IPob9tgS+khQNO5QlP8ht7NS7wTIYklKV2XxbPhP1ieKa7cqfxBV4Ji+arL5RcZ37+i+k9vP24fJ592e3356+7y//j51x7dP4UHB//AQ==);lineShape=1;" vertex="1" parent="1">
                     <mxGeometry x="1018.9615904279603" y="364.46256762022585" width="73.58660642665654" height="97.90542105029408" as="geometry"/>
                 </mxCell>
-                <mxCell id="37" value="" style="shape=stencil(lVjbUhsxDP2avGokW749U/ofzBBKppQwAXr5+8rNeBMrm0N5C8vRWtI5ung38eb18e5luwn8+nbYf9/+2t2/PW7il00Iu+fH7WH3Zr828XYTbx72h+23w/79+f7498tdR/ZfP/Y/+xt+H+0S1dyNAv85PihKofx78vWIf9o9n+Ez1TDjK5V8HV8p1QlfI9V4HS9MpcwG+AAJVOcTWqTIwCBTbP4ErdcNAlOcc1SVNAGDRJLmJDXKct0gMqU56GJZasAgk+pkkAvMkgZSng0E8qCVwhx0yiTApRSpzTEkpgqUlBrFWUqaxivWpack8wkqFIBL2ZQz82B5q4DpEqjMLkV7osAgDweGgQkeBW1CiLNaTSwK1FoD8RxDCBSAS12bM9PShljWDSrxHIMolEZjklkaIqSAhxYounogBjRYAeeZhjDqYx2vxDI7RAn5o5RnEqzpIH+SL0+mgBKUx/EnPAOOW6EcHV5Au2gXTdX6Byj+ZqJTl5+A4m2D/1P+Q0A9e4lvqZvRPf7zAKWIAm5eQIkCaMA9Qc3hGwrYCHDtlBQTnMXhEyixLqDm8BEktAvU+18+VQBKDeU/esFFnJ/oCyBQQ/7b9PKCa6gAdKT7hGf0/uSHE4+2eo2vkByeEV/Ft/UP8HXU05k/iK826vssXqz/4no6XA8M39yUoYbf3y70gP3/HL56fTbsfyae9SZ4p+uCdiPJKhJFzON9S4YYlmQtfr2xnBYQQ7W57oZYgiK1Sa+OtAq7kO0Sbh+KQgUZmEszDTHBzbfIWDUWgwYncc6eB41QeX0LnXmwxbMAA9tCk9tLjXu0ZorXni2ejFblNGp3adY6nFxfxpvfGottvmA8RR3jdDGwhgNOsHJxPNgtCg1Mk5oLut+iQAezhuK2RispAdIQG7HOwGYm4EGS76m9C6ITxA/Bsz3jyt20uBNs7IMS1SHNBS/jariepFFdS1Lt9gxYEJI5RZVHX1vFs+96JcE99mLrsrs7unyw98fwAnTKvhDsVoraBfv8230KtXnLdvR4RXumb8GGZ8hXdngZc2u9Lv3drONBfvSCr0ACikz9FO/xoiv1RZsIcE1L/tpkfCH9fPbbz8d4+3H60PSwe3o6fqc6/7//MGWPjh+14u1f);lineShape=1;" vertex="1" parent="1">
-                    <mxGeometry x="1018.7951138576991" y="452.1192905702985" width="74.38304154861726" height="73.24204181121445" as="geometry"/>
+                <mxCell id="46" value="" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;startSize=14;endSize=14;sourcePerimeterSpacing=8;targetPerimeterSpacing=8;" edge="1" parent="1" source="41" target="45">
+                    <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="38" value="" style="shape=stencil(lVjLchtBCPwaXSkG5nl2kv9wleVYFcdyyc7r74OijCzQbrt8W62aGQaahtmN3rw83D5vN8Ivr4f9t+2v3d3rw0Y/bUR2Tw/bw+7Vnjb6eaM39/vD9uth/+Pp7vT7+faIPD593/88rvD7ZFco16OR8J//LwYl/vfmywn/uHu6wDdSdvhaics6vlMeHj9o9HV8YqrNGbRGaQADoeI96jrPtGyQSbI3sCMLMCjUijMYQk2BQafkDXqHQRWeMTkbZMoJGGQqyUdpUEcGnYp6g0wduKRK7KNkiavIoFH3Z6gZHjoLde9SMbI0YNCJfaaLUAWZLkriyZ0rdWTQqXqXciIGLtkR2e+ghRSw1YKoPkoyqIEdLE3Z14PlHu1gREh+hzQmWZYrVKNLRngGUept5vVskCiBHQaTBrbOOC/jjRn+zHmKwjK+zKxOvNVTBvgaY2oOAg0bjYQDntH6LZaz4dF5OzWJ/iC8kSgHfAeUMHwLGcbxNIn2om0ai9cfoQqm2qzhq/fHSA4EeFxRukyBXYtnkYCvOL+tBTySCeNPiE+BNWx4iXgFPdD4HPiQYb8xvJYQ/wGU1/Di15eZwNX1NeAZ5cvC7c+bZgJX4+P955nA1fhHPNSfdl1fjOJjfSjWryD8iP2eJ8FX+V9DfJCkH+urhPgL4Ftijp1SZ8bXNugeb60bCZwJUBTo8Y5gfQhf4mjQZ0dYxtuw4huMdaSKet55ljkb5LnlsoGVpJdcG/JgV01T0s45k6nCy327RpJalyygKluKk7IKHK1tUldfltohT6sNP94g47G0WN48UQtP6Vs24NiZimkB2CHbDmEsFUhtG+BC764dcltrbAY2gqEZUCWewUawDMJqE19wyaZ9RA1rF6H+jb8NhNXKnT2XBj7D2wB0NmgwD1YuoQVeiM7axS75uJqMd5CIHpvmSFQAvsZbmtVsBfgyNfQybSjPsXqawK4js1QuiCfAH45NxMoP0ehK4yvDqY6jRtpNH0keXw1dA3Z9jvfw0mHtcxwaS4P+p3iDLZiiEvlm0jKA/xKVxfAoPno1ZFZ468gxv0f/wVRqmpAiHk2B5Wr9Toouux/88vM+3h7ePjPd7x4fT1+pLv+Pn6Xs1emTln7+Cw==);lineShape=1;" vertex="1" parent="1">
-                    <mxGeometry x="1015.8577010920612" y="556.4241426492692" width="76.26486351997346" height="62.32476076166381" as="geometry"/>
+                <mxCell id="41" value="what if we just ran random forest ?&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="200" y="500" width="800" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="47" value="" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;startSize=14;endSize=14;sourcePerimeterSpacing=8;targetPerimeterSpacing=8;" edge="1" parent="1" source="45" target="10">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" value="good performance&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="200" y="610" width="800" height="60" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
