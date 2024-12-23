@@ -4,7 +4,7 @@ import pandas as pd
 import os
 import matplotlib.pyplot as plt
 
-os.chdir("/Users/jacobrichards/Desktop/DS_DA_Projects/90+_DaysPastDue/90+DPD_files")
+os.chdir("/Users/jacobrichards/Desktop/DS_DA_Projects/90+_DaysPastDue/Data_Files")
 
 train = pd.read_csv("FITB_train.csv", na_values=["", "NA"])
 
@@ -384,7 +384,7 @@ optimal_threshold = thresholds[optimal_idx]
 print(f"Optimal threshold: {optimal_threshold:.3f}")
 ```
 
-    Optimal threshold: 0.210
+    Optimal threshold: 0.220
 
 
 recall at optimal threshold 
@@ -401,8 +401,8 @@ print(f"\nRecall at optimal threshold: {recall:.3f}")
 ```
 
     Confusion Matrix:
-    [[795  50]
-     [ 13 201]]
+    [[798  47]
+     [ 12 202]]
     
-    Recall at optimal threshold: 0.939
+    Recall at optimal threshold: 0.944
 
