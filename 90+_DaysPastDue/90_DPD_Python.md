@@ -74,11 +74,33 @@ test[['feature_1', 'feature_2', 'feature_3', 'feature_4']] = scaler.transform(te
 
 Logistic Regression Model 
 
+produce interaction terms (once significant interactions were found in the EDA)
+
+
+```python
+train['feature_1_x_feature_2'] = train['feature_1'] * train['feature_2']
+test['feature_1_x_feature_2'] = test['feature_1'] * test['feature_2']
+train['feature_1_x_feature_3'] = train['feature_1'] * train['feature_3']
+test['feature_1_x_feature_3'] = test['feature_1'] * test['feature_3']
+train['feature_2_x_feature_3'] = train['feature_2'] * train['feature_3']
+test['feature_2_x_feature_3'] = test['feature_2'] * test['feature_3']
+train['feature_2_x_feature_4'] = train['feature_2'] * train['feature_4']
+test['feature_2_x_feature_4'] = test['feature_2'] * test['feature_4']
+train['feature_3_x_feature_4'] = train['feature_3'] * train['feature_4']
+test['feature_3_x_feature_4'] = test['feature_3'] * test['feature_4']
+```
+
+model with interaction terms 
+
 
 ```python
 from sklearn.linear_model import LogisticRegression
-X_train = train[['feature_1', 'feature_2', 'feature_3', 'feature_4']]
+X_train = train[['feature_1', 'feature_2', 'feature_3', 'feature_4',
+                 'feature_1_x_feature_2', 'feature_1_x_feature_3',
+                 'feature_2_x_feature_3', 'feature_2_x_feature_4',
+                 'feature_3_x_feature_4']]
 y_train = train['y']
+
 model = LogisticRegression(fit_intercept=True)
 model.fit(X_train, y_train);
 ```
@@ -90,7 +112,10 @@ ROC Curve
 from sklearn.metrics import roc_curve, auc
 import matplotlib.pyplot as plt
 
-X_test = test[['feature_1', 'feature_2', 'feature_3', 'feature_4']]
+X_test = test[['feature_1', 'feature_2', 'feature_3', 'feature_4',
+               'feature_1_x_feature_2', 'feature_1_x_feature_3',
+               'feature_2_x_feature_3', 'feature_2_x_feature_4',
+               'feature_3_x_feature_4']]
 y_test = test['y']
 y_pred_proba = model.predict_proba(X_test)[:,1]
 fpr, tpr, _ = roc_curve(y_test, y_pred_proba)
@@ -110,7 +135,7 @@ plt.show()
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_14_0.png)
+![png](90_DPD_Python_files/90_DPD_Python_17_0.png)
     
 
 
@@ -126,7 +151,7 @@ optimal_threshold = thresholds[optimal_idx]
 print(f"Optimal threshold: {optimal_threshold:.3f}")
 ```
 
-    Optimal threshold: 0.264
+    Optimal threshold: 0.307
 
 
 
@@ -143,10 +168,10 @@ print(f"\nRecall at optimal threshold: {recall:.3f}")
 ```
 
     Confusion Matrix:
-    [[688 157]
-     [ 39 175]]
+    [[771  74]
+     [ 19 195]]
     
-    Recall at optimal threshold: 0.818
+    Recall at optimal threshold: 0.911
 
 
 # EDA for features
@@ -177,7 +202,7 @@ plt.show()
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_19_0.png)
+![png](90_DPD_Python_files/90_DPD_Python_22_0.png)
     
 
 
@@ -192,9 +217,121 @@ plt.show()
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_20_0.png)
+![png](90_DPD_Python_files/90_DPD_Python_23_0.png)
     
 
+
+
+```python
+import numpy as np
+import pandas as pd
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+
+variables = ['feature_1', 'feature_2', 'feature_3', 'feature_4']
+
+n_pairs = len(variables) * (len(variables) - 1) // 2
+n_rows = (n_pairs + 1) // 2
+fig, axes = plt.subplots(n_rows, 2, figsize=(15, 5*n_rows))
+axes = axes.flatten()
+
+significant_interactions = []
+plot_idx = 0
+
+for i, var1 in enumerate(variables):
+    for j, var2 in enumerate(variables[i+1:], i+1):
+        formula = f'y ~ {var1} * {var2}'
+        model = sm.Logit.from_formula(formula, data=train).fit()
+        
+        interaction_pvalue = model.pvalues[f'{var1}:{var2}']
+        
+        if interaction_pvalue < 0.05:
+            significant_interactions.append((var1, var2))
+        
+        var1_values = np.linspace(train[var1].min(), train[var1].max(), 100)
+        var2_levels = np.percentile(train[var2], [25, 50, 75])
+        
+        for var2_level in var2_levels:
+            df = pd.DataFrame({
+                var1: var1_values,
+                var2: var2_level
+            })
+            df['interaction'] = df[var1] * df[var2]
+            df['predicted_prob'] = model.predict(sm.add_constant(df))
+            
+            axes[plot_idx].plot(df[var1], df['predicted_prob'], 
+                              label=f'{var2}={var2_level:.1f}')
+        
+        axes[plot_idx].set_xlabel(var1)
+        axes[plot_idx].set_ylabel('Predicted Probability y = 1')
+        axes[plot_idx].legend()
+        axes[plot_idx].set_title(f'Interaction: {var1} and {var2}\nInteraction p-value: {interaction_pvalue:.4f}')
+        plot_idx += 1
+
+for idx in range(plot_idx, len(axes)):
+    fig.delaxes(axes[idx])
+
+plt.tight_layout()
+plt.show()
+
+print("\nSignificant interactions (p < 0.05):")
+for var1, var2 in significant_interactions:
+    print(f"{var1} x {var2}")
+```
+
+    Optimization terminated successfully.
+             Current function value: 0.277870
+             Iterations 11
+    Optimization terminated successfully.
+             Current function value: 0.402580
+             Iterations 18
+    Optimization terminated successfully.
+             Current function value: 0.458746
+             Iterations 8
+    Optimization terminated successfully.
+             Current function value: 0.377064
+             Iterations 10
+    Optimization terminated successfully.
+             Current function value: 0.365151
+             Iterations 8
+    Optimization terminated successfully.
+             Current function value: 0.395740
+             Iterations 9
+
+
+
+    
+![png](90_DPD_Python_files/90_DPD_Python_24_1.png)
+    
+
+
+    
+    Significant interactions (p < 0.05):
+    feature_1 x feature_2
+    feature_1 x feature_3
+    feature_1 x feature_4
+    feature_2 x feature_3
+    feature_2 x feature_4
+    feature_3 x feature_4
+
+
+
+```python
+# Feature Correlation Matrix
+correlation_matrix = train[['feature_1', 'feature_2', 'feature_3', 'feature_4']].corr()
+plt.figure(figsize=(8, 6))
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', center=0)
+plt.title('Feature Correlation Matrix')
+plt.show()
+```
+
+
+    
+![png](90_DPD_Python_files/90_DPD_Python_25_0.png)
+    
+
+
+53% correlation between features 1 and 3. If you remove either feature 1 or 3 the model performance drops no matter how you try to configure interaction terms.
 
 # Random Forest Model 
 
@@ -231,7 +368,7 @@ plt.legend();
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_24_0.png)
+![png](90_DPD_Python_files/90_DPD_Python_30_0.png)
     
 
 
@@ -247,7 +384,7 @@ optimal_threshold = thresholds[optimal_idx]
 print(f"Optimal threshold: {optimal_threshold:.3f}")
 ```
 
-    Optimal threshold: 0.230
+    Optimal threshold: 0.210
 
 
 recall at optimal threshold 
@@ -264,7 +401,7 @@ print(f"\nRecall at optimal threshold: {recall:.3f}")
 ```
 
     Confusion Matrix:
-    [[794  51]
+    [[795  50]
      [ 13 201]]
     
     Recall at optimal threshold: 0.939
