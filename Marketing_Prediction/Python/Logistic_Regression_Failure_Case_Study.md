@@ -161,8 +161,8 @@ plt.legend()
 plt.show()
 
 print("\nTop predictions:")
-display(data_sorted.head())
-display(data_shuffled.head())
+print(data_sorted.head())
+print(data_shuffled.head())
 ```
 
     Optimization terminated successfully.
@@ -174,7 +174,7 @@ display(data_shuffled.head())
     Model:                          Logit   Df Residuals:                     3194
     Method:                           MLE   Df Model:                            5
     Date:                Thu, 26 Dec 2024   Pseudo R-squ.:                 0.06309
-    Time:                        19:45:01   Log-Likelihood:                -1668.2
+    Time:                        20:18:36   Log-Likelihood:                -1668.2
     converged:                       True   LL-Null:                       -1780.6
     Covariance Type:            nonrobust   LLR p-value:                 1.494e-46
     ==================================================================================
@@ -217,186 +217,18 @@ display(data_shuffled.head())
 
     
     Top predictions:
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>age</th>
-      <th>dist</th>
-      <th>income</th>
-      <th>gender</th>
-      <th>marital_status</th>
-      <th>target</th>
-      <th>predicted_probs</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>3917</th>
-      <td>3918</td>
-      <td>94</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0.648670</td>
-    </tr>
-    <tr>
-      <th>2393</th>
-      <td>2394</td>
-      <td>94</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0.645755</td>
-    </tr>
-    <tr>
-      <th>442</th>
-      <td>443</td>
-      <td>94</td>
-      <td>3</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0.642830</td>
-    </tr>
-    <tr>
-      <th>862</th>
-      <td>863</td>
-      <td>90</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0.628367</td>
-    </tr>
-    <tr>
-      <th>460</th>
-      <td>461</td>
-      <td>92</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0.627109</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>age</th>
-      <th>dist</th>
-      <th>income</th>
-      <th>gender</th>
-      <th>marital_status</th>
-      <th>target</th>
-      <th>predicted_probs</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>555</th>
-      <td>556</td>
-      <td>77</td>
-      <td>5</td>
-      <td>11</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0.111251</td>
-    </tr>
-    <tr>
-      <th>3491</th>
-      <td>3492</td>
-      <td>82</td>
-      <td>3</td>
-      <td>11</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0.273661</td>
-    </tr>
-    <tr>
-      <th>527</th>
-      <td>528</td>
-      <td>80</td>
-      <td>3</td>
-      <td>11</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0.186317</td>
-    </tr>
-    <tr>
-      <th>3925</th>
-      <td>3926</td>
-      <td>73</td>
-      <td>1</td>
-      <td>3</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0.285578</td>
-    </tr>
-    <tr>
-      <th>2989</th>
-      <td>2990</td>
-      <td>69</td>
-      <td>5</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0.353224</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+            id  age  dist  income  gender  marital_status  target  predicted_probs
+    3917  3918   94     1       2       1               1       0         0.648670
+    2393  2394   94     2       2       1               1       1         0.645755
+    442    443   94     3       2       1               1       1         0.642830
+    862    863   90     2       1       1               1       0         0.628367
+    460    461   92     1       2       1               1       1         0.627109
+            id  age  dist  income  gender  marital_status  target  predicted_probs
+    555    556   77     5      11       0               0       0         0.111251
+    3491  3492   82     3      11       1               1       1         0.273661
+    527    528   80     3      11       0               1       0         0.186317
+    3925  3926   73     1       3       1               0       0         0.285578
+    2989  2990   69     5       2       1               1       0         0.353224
 
 
 # Poor performance 
@@ -464,7 +296,7 @@ n_rows = len(data_sorted)
 lift_curve = [(data_sorted.iloc[:int((i/10)*n_rows)]['target'].sum() / total_positives * 100) for i in range(11)]
 baseline_curve = [i*10 for i in range(11)]
 lift_data = pd.DataFrame({'Lift Curve': lift_curve, 'Baseline': baseline_curve})
-display(lift_data)
+print(lift_data)
 
 plt.figure(figsize=(8, 6))
 plt.plot(range(0, 101, 10), lift_curve, label='Lift Curve', color='blue', marker='o', lw=2, markersize=8)
@@ -490,8 +322,8 @@ plt.tick_params(labelsize=10)
 plt.tight_layout()
 plt.show()
 
-display(data_sorted.head())
-display(data.sample(frac=1, random_state=42).head())
+print(data_sorted.head())
+print(data.sample(frac=1, random_state=42).head())
 ```
 
     Training Accuracy: 0.973
@@ -515,88 +347,18 @@ display(data.sample(frac=1, random_state=42).head())
     
 
 
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Lift Curve</th>
-      <th>Baseline</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>0.0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>37.3</td>
-      <td>10</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>72.9</td>
-      <td>20</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>88.7</td>
-      <td>30</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>92.2</td>
-      <td>40</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>95.0</td>
-      <td>50</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>96.7</td>
-      <td>60</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>98.1</td>
-      <td>70</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>98.8</td>
-      <td>80</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>99.3</td>
-      <td>90</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>100.0</td>
-      <td>100</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+        Lift Curve  Baseline
+    0          0.0         0
+    1         37.3        10
+    2         72.9        20
+    3         88.7        30
+    4         92.2        40
+    5         95.0        50
+    6         96.7        60
+    7         98.1        70
+    8         98.8        80
+    9         99.3        90
+    10       100.0       100
 
 
 
@@ -611,184 +373,18 @@ display(data.sample(frac=1, random_state=42).head())
     
 
 
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>age</th>
-      <th>dist</th>
-      <th>income</th>
-      <th>gender</th>
-      <th>marital_status</th>
-      <th>target</th>
-      <th>predicted_probs</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>585</th>
-      <td>586</td>
-      <td>80</td>
-      <td>16</td>
-      <td>4</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0.99</td>
-    </tr>
-    <tr>
-      <th>1804</th>
-      <td>1805</td>
-      <td>80</td>
-      <td>16</td>
-      <td>4</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0.99</td>
-    </tr>
-    <tr>
-      <th>2726</th>
-      <td>2727</td>
-      <td>79</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0.98</td>
-    </tr>
-    <tr>
-      <th>171</th>
-      <td>172</td>
-      <td>77</td>
-      <td>5</td>
-      <td>11</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0.98</td>
-    </tr>
-    <tr>
-      <th>702</th>
-      <td>703</td>
-      <td>85</td>
-      <td>2</td>
-      <td>10</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0.98</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>age</th>
-      <th>dist</th>
-      <th>income</th>
-      <th>gender</th>
-      <th>marital_status</th>
-      <th>target</th>
-      <th>predicted_probs</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>555</th>
-      <td>556</td>
-      <td>77</td>
-      <td>5</td>
-      <td>11</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0.080</td>
-    </tr>
-    <tr>
-      <th>3491</th>
-      <td>3492</td>
-      <td>82</td>
-      <td>3</td>
-      <td>11</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0.060</td>
-    </tr>
-    <tr>
-      <th>527</th>
-      <td>528</td>
-      <td>80</td>
-      <td>3</td>
-      <td>11</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0.160</td>
-    </tr>
-    <tr>
-      <th>3925</th>
-      <td>3926</td>
-      <td>73</td>
-      <td>1</td>
-      <td>3</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0.255</td>
-    </tr>
-    <tr>
-      <th>2989</th>
-      <td>2990</td>
-      <td>69</td>
-      <td>5</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0.285</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+            id  age  dist  income  gender  marital_status  target  predicted_probs
+    585    586   80    16       4       1               1       1             0.99
+    1804  1805   80    16       4       1               1       1             0.99
+    2726  2727   79     0       2       0               1       1             0.98
+    171    172   77     5      11       1               1       1             0.98
+    702    703   85     2      10       1               1       1             0.98
+            id  age  dist  income  gender  marital_status  target  predicted_probs
+    555    556   77     5      11       0               0       0            0.080
+    3491  3492   82     3      11       1               1       1            0.060
+    527    528   80     3      11       0               1       0            0.160
+    3925  3926   73     1       3       1               0       0            0.255
+    2989  2990   69     5       2       1               1       0            0.285
 
 
 ## good performance 
@@ -1331,7 +927,7 @@ The observations with the highest predicted probability are those observations o
 high_confidence_positives = data_sorted[data_sorted['predicted_probs'] > 0.9].copy()
 
 summary_stats = high_confidence_positives[['age', 'dist', 'income', 'gender', 'marital_status']].describe()
-display(summary_stats)
+print(summary_stats)
 
 
 high_conf_combos = high_confidence_positives[['age', 'dist', 'income', 'gender', 'marital_status', 'predicted_probs']]
@@ -1376,102 +972,15 @@ plt.tight_layout()
 plt.show()
 ```
 
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>age</th>
-      <th>dist</th>
-      <th>income</th>
-      <th>gender</th>
-      <th>marital_status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>69.000000</td>
-      <td>69.000000</td>
-      <td>69.000000</td>
-      <td>69.000000</td>
-      <td>69.000000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>82.565217</td>
-      <td>4.231884</td>
-      <td>5.463768</td>
-      <td>0.710145</td>
-      <td>0.811594</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>4.347001</td>
-      <td>5.401919</td>
-      <td>2.997939</td>
-      <td>0.457019</td>
-      <td>0.393901</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>74.000000</td>
-      <td>0.000000</td>
-      <td>1.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>79.000000</td>
-      <td>0.000000</td>
-      <td>3.000000</td>
-      <td>0.000000</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>82.000000</td>
-      <td>2.000000</td>
-      <td>5.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>86.000000</td>
-      <td>5.000000</td>
-      <td>8.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>93.000000</td>
-      <td>18.000000</td>
-      <td>11.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
+                 age       dist     income     gender  marital_status
+    count  69.000000  69.000000  69.000000  69.000000       69.000000
+    mean   82.565217   4.231884   5.463768   0.710145        0.811594
+    std     4.347001   5.401919   2.997939   0.457019        0.393901
+    min    74.000000   0.000000   1.000000   0.000000        0.000000
+    25%    79.000000   0.000000   3.000000   0.000000        1.000000
+    50%    82.000000   2.000000   5.000000   1.000000        1.000000
+    75%    86.000000   5.000000   8.000000   1.000000        1.000000
+    max    93.000000  18.000000  11.000000   1.000000        1.000000
     Male Results:
      age  dist  income  marital_status  predicted_probs
       80    16       4               1             0.99
@@ -1491,7 +1000,7 @@ plt.show()
 
 
     
-![png](Logistic_Regression_Failure_Case_Study_files/Logistic_Regression_Failure_Case_Study_57_2.png)
+![png](Logistic_Regression_Failure_Case_Study_files/Logistic_Regression_Failure_Case_Study_57_1.png)
     
 
 
