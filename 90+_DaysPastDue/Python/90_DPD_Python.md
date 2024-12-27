@@ -95,6 +95,7 @@ model with interaction terms
 
 ```python
 from sklearn.linear_model import LogisticRegression
+import numpy as np
 X_train = train[['feature_1', 'feature_2', 'feature_3', 'feature_4',
                  'feature_1_x_feature_2', 'feature_1_x_feature_3',
                  'feature_2_x_feature_3', 'feature_2_x_feature_4',
@@ -174,146 +175,116 @@ print(f"\nRecall at optimal threshold: {recall:.3f}")
     Recall at optimal threshold: 0.911
 
 
-# EDA for features
+# Probability - Log(ods) - Observed Probability curves of predictors 
 
 
 ```python
-import seaborn as sns
 import matplotlib.pyplot as plt
-
-plt.rcParams['figure.dpi'] = 300
-plt.rcParams['savefig.dpi'] = 300
-
-features = ['feature_1', 'feature_2', 'feature_3', 'feature_4']
-train['outcome'] = train['y'].map({1: 'Positive', 0: 'Negative'})
-
-sns.set(style="ticks", font_scale=1.2)
-plot = sns.pairplot(train[features + ['outcome']], 
-                   hue='outcome',
-                   palette={'Positive': 'green', 'Negative': 'red'},
-                   plot_kws={'alpha': 0.6, 'linewidth': 0.5},
-                   diag_kind='kde',
-                   height=3)
-
-plot.fig.suptitle('Feature Relationships by Outcome', y=1.02, size=16)
-plt.tight_layout()
-plt.show()
-```
-
-
-    
-![png](90_DPD_Python_files/90_DPD_Python_22_0.png)
-    
-
-
-
-```python
-plt.figure(figsize=(16,12))
-sns.scatterplot(data=train, x='feature_2', y='feature_4', hue='outcome', 
-                palette={'Positive': 'green', 'Negative': 'red'}, alpha=0.6)
-plt.title('Feature 2 vs Feature 4 by Outcome')
-plt.show()
-```
-
-
-    
-![png](90_DPD_Python_files/90_DPD_Python_23_0.png)
-    
-
-
-
-```python
 import numpy as np
-import pandas as pd
+import seaborn as sns
 import statsmodels.api as sm
-import matplotlib.pyplot as plt
 
-variables = ['feature_1', 'feature_2', 'feature_3', 'feature_4']
+X = train[['feature_1', 'feature_2', 'feature_3', 'feature_4']]
+y = train['y']
 
-n_pairs = len(variables) * (len(variables) - 1) // 2
-n_rows = (n_pairs + 1) // 2
-fig, axes = plt.subplots(n_rows, 2, figsize=(15, 5*n_rows))
-axes = axes.flatten()
+lr_model = LogisticRegression(random_state=42)
+lr_model.fit(X, y)
 
-significant_interactions = []
-plot_idx = 0
+fig1, ((ax1, ax2, ax3, ax4), (ax5, ax6, ax7, ax8), (ax9, ax10, ax11, ax12)) = plt.subplots(3, 4, figsize=(20, 18))
 
-for i, var1 in enumerate(variables):
-    for j, var2 in enumerate(variables[i+1:], i+1):
-        formula = f'y ~ {var1} * {var2}'
-        model = sm.Logit.from_formula(formula, data=train).fit()
-        
-        interaction_pvalue = model.pvalues[f'{var1}:{var2}']
-        
-        if interaction_pvalue < 0.05:
-            significant_interactions.append((var1, var2))
-        
-        var1_values = np.linspace(train[var1].min(), train[var1].max(), 100)
-        var2_levels = np.percentile(train[var2], [25, 50, 75])
-        
-        for var2_level in var2_levels:
-            df = pd.DataFrame({
-                var1: var1_values,
-                var2: var2_level
-            })
-            df['interaction'] = df[var1] * df[var2]
-            df['predicted_prob'] = model.predict(sm.add_constant(df))
-            
-            axes[plot_idx].plot(df[var1], df['predicted_prob'], 
-                              label=f'{var2}={var2_level:.1f}')
-        
-        axes[plot_idx].set_xlabel(var1)
-        axes[plot_idx].set_ylabel('Predicted Probability y = 1')
-        axes[plot_idx].legend()
-        axes[plot_idx].set_title(f'Interaction: {var1} and {var2}\nInteraction p-value: {interaction_pvalue:.4f}')
-        plot_idx += 1
+mean_values = X.mean()
 
-for idx in range(plot_idx, len(axes)):
-    fig.delaxes(axes[idx])
+for i, feature in enumerate(['feature_1', 'feature_2', 'feature_3', 'feature_4']):
+    x_range = np.linspace(X[feature].min(), X[feature].max(), 100)
+    
+    pred_data = np.tile(mean_values, (100, 1))
+    pred_data = pd.DataFrame(pred_data, columns=X.columns)
+    pred_data[feature] = x_range
+    
+    y_pred = lr_model.predict_proba(pred_data)[:, 1]
+    
+    axes_top = [ax1, ax2, ax3, ax4]
+    axes_top[i].plot(x_range, y_pred)
+    axes_top[i].set_title(f'Predicted Probability vs {feature}\n(Other Variables at Mean)')
+    axes_top[i].set_ylabel('Predicted Probability')
+    axes_top[i].set_xlabel(feature)
+    axes_top[i].grid(True, alpha=0.3)
+    axes_top[i].set_ylim(0, 1)
+    
+    X_with_const = sm.add_constant(X)
+    logit_model = sm.Logit(y, X_with_const)
+    result = logit_model.fit()
+    
+    feature_values = np.linspace(X[feature].min(), X[feature].max(), 50)
+    fixed_predictors = mean_values.copy()
+    log_odds = []
+    
+    for value in feature_values:
+        temp_predictors = fixed_predictors.copy()
+        temp_predictors[feature] = value
+        predictors_with_const = sm.add_constant(temp_predictors.values.reshape(1, -1), has_constant='add')
+        logit = np.dot(predictors_with_const, result.params)
+        log_odds.append(logit[0])
+    
+    plot_df = pd.DataFrame({
+        feature: feature_values,
+        'log_odds': log_odds
+    })
+    
+    axes_middle = [ax5, ax6, ax7, ax8]
+    sns.scatterplot(x=feature, y='log_odds', data=plot_df, color='blue', s=50, 
+                    ax=axes_middle[i], label='Logit Points')
+    sns.regplot(x=feature, y='log_odds', data=plot_df, scatter=False, lowess=True,
+                color='red', line_kws={'lw': 2}, ax=axes_middle[i], label='Smoothed Logit Curve')
+    
+    axes_middle[i].set_title(f'Logit Curve (Log Odds) for {feature}')
+    axes_middle[i].set_xlabel(feature)
+    axes_middle[i].set_ylabel('Log(P / 1-P)')
+    axes_middle[i].axhline(0, color='grey', linestyle='--', label='Log Odds = 0')
+    axes_middle[i].legend()
+    axes_middle[i].grid(True)
+    
+    bins = pd.qcut(X[feature], q=50, duplicates='drop')
+    bin_means = X.groupby(bins)[feature].mean()
+    bin_probs = train.groupby(bins)['y'].mean()
+    
+    axes_bottom = [ax9, ax10, ax11, ax12]
+    sns.scatterplot(x=bin_means, y=bin_probs, ax=axes_bottom[i], color='blue', s=20, label='Observed Probability')
+    sns.regplot(x=bin_means, y=bin_probs, scatter=False, lowess=True,
+                color='red', line_kws={'lw': 2}, ax=axes_bottom[i], label='Smoothed Curve')
+    
+    axes_bottom[i].set_title(f'Observed Probability vs {feature}')
+    axes_bottom[i].set_xlabel(feature)
+    axes_bottom[i].set_ylabel('Probability of Positive Outcome')
+    axes_bottom[i].set_ylim(0, 1)
+    axes_bottom[i].legend()
+    axes_bottom[i].grid(True)
 
 plt.tight_layout()
 plt.show()
-
-print("\nSignificant interactions (p < 0.05):")
-for var1, var2 in significant_interactions:
-    print(f"{var1} x {var2}")
 ```
 
     Optimization terminated successfully.
-             Current function value: 0.277870
-             Iterations 11
-    Optimization terminated successfully.
-             Current function value: 0.402580
-             Iterations 18
-    Optimization terminated successfully.
-             Current function value: 0.458746
+             Current function value: 0.393480
              Iterations 8
     Optimization terminated successfully.
-             Current function value: 0.377064
-             Iterations 10
-    Optimization terminated successfully.
-             Current function value: 0.365151
+             Current function value: 0.393480
              Iterations 8
     Optimization terminated successfully.
-             Current function value: 0.395740
-             Iterations 9
+             Current function value: 0.393480
+             Iterations 8
+    Optimization terminated successfully.
+             Current function value: 0.393480
+             Iterations 8
 
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_24_1.png)
+![png](90_DPD_Python_files/90_DPD_Python_22_1.png)
     
 
 
-    
-    Significant interactions (p < 0.05):
-    feature_1 x feature_2
-    feature_1 x feature_3
-    feature_1 x feature_4
-    feature_2 x feature_3
-    feature_2 x feature_4
-    feature_3 x feature_4
-
+# Check for Multi-collinearity
 
 
 ```python
@@ -323,47 +294,111 @@ plt.figure(figsize=(8, 6))
 sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', center=0)
 plt.title('Feature Correlation Matrix')
 plt.show()
+
+
+plt.figure(figsize=(8, 6))
+plt.scatter(train['feature_1'], train['feature_3'], alpha=0.5)
+z = np.polyfit(train['feature_1'], train['feature_3'], 1)
+p = np.poly1d(z)
+plt.plot(train['feature_1'], p(train['feature_1']), "r--")
+corr = train['feature_1'].corr(train['feature_3'])
+pct_between = (train['feature_3'][(train['feature_3'] >= 8) & (train['feature_3'] <= 14)].count() / train['feature_3'].count()) * 100
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 3')
+plt.title(f'Feature 1 vs Feature 3 Scatter Plot\nCorrelation: {corr:.3f}\n{pct_between:.1f}% of Feature 3 between 8-14')
+plt.show()
+
+filtered_data = train[~((train['feature_3'] >= 8) & (train['feature_3'] <= 14))]
+plt.figure(figsize=(8, 6))
+plt.scatter(filtered_data['feature_1'], filtered_data['feature_3'], alpha=0.5)
+z = np.polyfit(filtered_data['feature_1'], filtered_data['feature_3'], 1)
+p = np.poly1d(z)
+plt.plot(filtered_data['feature_1'], p(filtered_data['feature_1']), "r--")
+corr = filtered_data['feature_1'].corr(filtered_data['feature_3'])
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 3')
+plt.title(f'Feature 1 vs Feature 3 Scatter Plot (Filtered)\nCorrelation: {corr:.3f}')
+plt.show()
+
 ```
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_25_0.png)
+![png](90_DPD_Python_files/90_DPD_Python_24_0.png)
     
 
 
-53% correlation between features 1 and 3. If you remove either feature 1 or 3 the model performance drops no matter how you try to configure interaction terms.
 
-# Random Forest Model 
+    
+![png](90_DPD_Python_files/90_DPD_Python_24_1.png)
+    
+
+
+
+    
+![png](90_DPD_Python_files/90_DPD_Python_24_2.png)
+    
+
+
+features 1 and 3 are not significantly correlated, those are just outliers. 
+
+# Main drivers Visualizations 
+
+## Features 1 and 3 
 
 
 ```python
-from sklearn.ensemble import RandomForestClassifier
-X_train = train[['feature_1', 'feature_2', 'feature_3', 'feature_4']]
-y_train = train['y']
-rf_model = RandomForestClassifier()
-rf_model.fit(X_train, y_train);
+fig, ax = plt.subplots(figsize=(15, 5))
+
+positive_data = train[train['y'] == 1]
+negative_data = train[train['y'] == 0]
+
+sns.kdeplot(data=positive_data['feature_1'], ax=ax, fill=True, alpha=0.6, label='Feature 1 (Positive)', color='darkgreen')
+sns.kdeplot(data=negative_data['feature_1'], ax=ax, fill=True, alpha=0.6, label='Feature 1 (Negative)', color='black')
+sns.kdeplot(data=positive_data['feature_3'], ax=ax, fill=True, alpha=0.6, label='Feature 3 (Positive)', color='lightgreen')
+sns.kdeplot(data=negative_data['feature_3'], ax=ax, fill=True, alpha=0.6, label='Feature 3 (Negative)', color='black')
+ax.set_title('Distribution by Outcome: Features 1 & 3')
+ax.set_xlabel('Value')
+ax.set_ylabel('Density')
+ax.set_xlim(-1.5, 1.5)
+ax.legend()
+
+plt.tight_layout()
+plt.show()
+
 ```
 
-RF ROC Curve 
+
+    
+![png](90_DPD_Python_files/90_DPD_Python_28_0.png)
+    
+
+
+## Features 2 and 4 
 
 
 ```python
-from sklearn.metrics import roc_auc_score
-X_test = test[['feature_1', 'feature_2', 'feature_3', 'feature_4']]
-y_test = test['y']
+plt.figure(figsize=(16,12))
 
-rf_pred_proba = rf_model.predict_proba(X_test)[:,1]
+positive_data = train[train['y'] == 1]
+negative_data = train[train['y'] == 0]
 
-fpr, tpr, _ = roc_curve(y_test, rf_pred_proba)
-auc_score = roc_auc_score(y_test, rf_pred_proba)
+pos_corr = positive_data['feature_2'].corr(positive_data['feature_4'])
+neg_corr = negative_data['feature_2'].corr(negative_data['feature_4'])
 
-plt.figure()
-plt.plot(fpr, tpr, label=f'AUC = {auc_score:.3f}')
-plt.plot([0, 1], [0, 1], 'k--')
-plt.xlabel('False Positive Rate')
-plt.ylabel('True Positive Rate')
-plt.title('ROC Curve - Random Forest')
-plt.legend();
+sns.scatterplot(data=train, x='feature_2', y='feature_4', hue='y',
+                palette={1: 'green', 0: 'red'}, alpha=0.6)
+
+x_pos = positive_data['feature_2']
+y_pos = pos_corr * x_pos + (positive_data['feature_4'].mean() - pos_corr * positive_data['feature_2'].mean())
+plt.plot(x_pos, y_pos, color='darkgreen', linestyle='--')
+
+x_neg = negative_data['feature_2']
+y_neg = neg_corr * x_neg + (negative_data['feature_4'].mean() - neg_corr * negative_data['feature_2'].mean())
+plt.plot(x_neg, y_neg, color='darkred', linestyle='--')
+
+plt.title(f'Feature 2 vs Feature 4 by Outcome\nPositive Correlation: {pos_corr:.3f}, Negative Correlation: {neg_corr:.3f}')
+plt.show()
 ```
 
 
@@ -372,25 +407,103 @@ plt.legend();
     
 
 
-optimal threshold 
+thus the interaction term produced for features 2 and 4 had a highly predictive coefficient. 
 
 
 ```python
+import numpy as np
+import pandas as pd
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(15, 10))
+
+formula = 'y ~ feature_2 * feature_4'
+model = sm.Logit.from_formula(formula, data=train).fit()
+interaction_pvalue = model.pvalues['feature_2:feature_4']
+
+feature_2_values = np.linspace(train['feature_2'].min(), train['feature_2'].max(), 100)
+feature_4_levels = np.percentile(train['feature_4'], [25, 50, 75])
+
+for feature_4_level in feature_4_levels:
+    df = pd.DataFrame({
+        'feature_2': feature_2_values,
+        'feature_4': feature_4_level
+    })
+    df['interaction'] = df['feature_2'] * df['feature_4']
+    df['predicted_prob'] = model.predict(sm.add_constant(df))
+    
+    ax.plot(df['feature_2'], df['predicted_prob'], 
+           label=f'feature_4={feature_4_level:.1f}')
+
+ax.set_xlabel('feature_2')
+ax.set_ylabel('Predicted Probability y = 1')
+ax.legend()
+ax.set_title(f'Interaction: feature_2 and feature_4\nInteraction p-value: {interaction_pvalue:.4f}')
+
+plt.tight_layout()
+plt.show()
+
+if interaction_pvalue < 0.05:
+    print("\nSignificant interaction (p < 0.05):")
+    print("feature_2 x feature_4")
+```
+
+    Optimization terminated successfully.
+             Current function value: 0.365151
+             Iterations 8
+
+
+
+    
+![png](90_DPD_Python_files/90_DPD_Python_32_1.png)
+    
+
+
+    
+    Significant interaction (p < 0.05):
+    feature_2 x feature_4
+
+
+# Random Forest Model - slightly superior performance but still significant
+
+
+```python
+from sklearn.ensemble import RandomForestClassifier
+X_train = train[['feature_1', 'feature_2', 'feature_3', 'feature_4']]
+y_train = train['y']
+rf_model = RandomForestClassifier()
+rf_model.fit(X_train, y_train);
+
+
+from sklearn.metrics import roc_auc_score
+X_test = test[['feature_1', 'feature_2', 'feature_3', 'feature_4']]
+y_test = test['y']
+
+
+rf_pred_proba = rf_model.predict_proba(X_test)[:,1]
+
+fpr, tpr, _ = roc_curve(y_test, rf_pred_proba)
+auc_score = roc_auc_score(y_test, rf_pred_proba)
+
+
+plt.figure()
+plt.plot(fpr, tpr, label=f'AUC = {auc_score:.3f}')
+plt.plot([0, 1], [0, 1], 'k--')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('ROC Curve - Random Forest')
+plt.legend();
+
+
 fpr, tpr, thresholds = roc_curve(y_test, rf_pred_proba)
 fnr = 1 - tpr
 optimal_idx = np.argmin(np.abs(fpr - fnr))
 optimal_threshold = thresholds[optimal_idx]
 
 print(f"Optimal threshold: {optimal_threshold:.3f}")
-```
-
-    Optimal threshold: 0.220
 
 
-recall at optimal threshold 
-
-
-```python
 y_pred = (rf_pred_proba >= optimal_threshold).astype(int)
 conf_matrix = confusion_matrix(y_test, y_pred)
 recall = recall_score(y_test, y_pred)
@@ -400,9 +513,16 @@ print(conf_matrix)
 print(f"\nRecall at optimal threshold: {recall:.3f}")
 ```
 
+    Optimal threshold: 0.210
     Confusion Matrix:
-    [[798  47]
-     [ 12 202]]
+    [[792  53]
+     [ 13 201]]
     
-    Recall at optimal threshold: 0.944
+    Recall at optimal threshold: 0.939
+
+
+
+    
+![png](90_DPD_Python_files/90_DPD_Python_34_1.png)
+    
 
