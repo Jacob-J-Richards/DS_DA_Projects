@@ -4,7 +4,7 @@ import pandas as pd
 import os
 import matplotlib.pyplot as plt
 
-os.chdir("/Users/jacobrichards/Desktop/DS_DA_Projects/90+_DaysPastDue/Data_Files")
+os.chdir("/Users/jacobrichards/Desktop/DS_DA_Projects/3-90+_DaysPastDue/Data_Files")
 
 train = pd.read_csv("FITB_train.csv", na_values=["", "NA"])
 
@@ -16,7 +16,9 @@ warnings.filterwarnings('ignore')
 pd.options.mode.chained_assignment = None
 ```
 
-remove upper and lower 1% of feature 3 for train but not test 
+# Process data
+
+Remove upper and lower 1% of feature 3 for train but not test.
 
 
 ```python
@@ -26,7 +28,7 @@ upper_bound = train['feature_3'].quantile(0.99)
 train = train[(train['feature_3'] >= lower_bound) & (train['feature_3'] <= upper_bound)]
 ```
 
-replace na with median value for both
+Replace na with median value for both.
 
 
 ```python
@@ -37,7 +39,7 @@ test_median = test['feature_3'].median()
 test['feature_3'].fillna(test_median, inplace=True)
 ```
 
-replace na of feature 2 with forward fill and backward fill 
+Replace na of feature 2 with forward fill and backward fill.
 
 
 ```python
@@ -54,7 +56,7 @@ train = train.groupby('id', group_keys=False).apply(impute_feature_2)
 test = test.groupby('id', group_keys=False).apply(impute_feature_2)
 ```
 
-replace y with 1 if 90+DPD and 0 if active 
+Replace y with 1 if 90+DPD and 0 if active.
 
 
 ```python
@@ -62,7 +64,7 @@ train['y'] = train['y'].apply(lambda x: 1 if x == "90+DPD" else 0 if x == "activ
 test['y'] = test['y'].apply(lambda x: 1 if x == "90+DPD" else 0 if x == "active" else x)
 ```
 
-Standardize features
+Standardize features.
 
 
 ```python
@@ -72,9 +74,9 @@ train[['feature_1', 'feature_2', 'feature_3', 'feature_4']] = scaler.fit_transfo
 test[['feature_1', 'feature_2', 'feature_3', 'feature_4']] = scaler.transform(test[['feature_1', 'feature_2', 'feature_3', 'feature_4']])
 ```
 
-Logistic Regression Model 
+# Logistic Regression Model 
 
-produce interaction terms (once significant interactions were found in the EDA)
+Produce interaction terms (once significant interactions were found in the EDA).
 
 
 ```python
@@ -90,7 +92,9 @@ train['feature_3_x_feature_4'] = train['feature_3'] * train['feature_4']
 test['feature_3_x_feature_4'] = test['feature_3'] * test['feature_4']
 ```
 
-model with interaction terms 
+Standardizing the interaction terms made it worse, probably because they're not normally distributed so the z-scores would be meaningless.
+
+Model with interaction terms.
 
 
 ```python
@@ -106,7 +110,7 @@ model = LogisticRegression(fit_intercept=True)
 model.fit(X_train, y_train);
 ```
 
-ROC Curve 
+ROC curve.
 
 
 ```python
@@ -136,11 +140,11 @@ plt.show()
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_17_0.png)
+![png](90_DPD_Python_files/90_DPD_Python_19_0.png)
     
 
 
-optimal threshold 
+Optimal threshold.
 
 
 ```python
@@ -154,6 +158,8 @@ print(f"Optimal threshold: {optimal_threshold:.3f}")
 
     Optimal threshold: 0.307
 
+
+Recall at optimal decision threshold. 
 
 
 ```python
@@ -175,7 +181,7 @@ print(f"\nRecall at optimal threshold: {recall:.3f}")
     Recall at optimal threshold: 0.911
 
 
-# Probability - Log(ods) - Observed Probability curves of predictors 
+# Modeled Probabilities and Log(ods) against observed probabilities by predictors.
 
 
 ```python
@@ -193,6 +199,7 @@ lr_model.fit(X, y)
 fig1, ((ax1, ax2, ax3, ax4), (ax5, ax6, ax7, ax8), (ax9, ax10, ax11, ax12)) = plt.subplots(3, 4, figsize=(20, 18))
 
 mean_values = X.mean()
+coefficients = lr_model.coef_[0]
 
 for i, feature in enumerate(['feature_1', 'feature_2', 'feature_3', 'feature_4']):
     x_range = np.linspace(X[feature].min(), X[feature].max(), 100)
@@ -204,12 +211,14 @@ for i, feature in enumerate(['feature_1', 'feature_2', 'feature_3', 'feature_4']
     y_pred = lr_model.predict_proba(pred_data)[:, 1]
     
     axes_top = [ax1, ax2, ax3, ax4]
-    axes_top[i].plot(x_range, y_pred)
+    axes_top[i].plot(x_range, y_pred, label='Predicted Probability')
+    axes_top[i].text(0.05, 0.95, f'β{i+1} = {coefficients[i]:.3f}', transform=axes_top[i].transAxes)
     axes_top[i].set_title(f'Predicted Probability vs {feature}\n(Other Variables at Mean)')
     axes_top[i].set_ylabel('Predicted Probability')
     axes_top[i].set_xlabel(feature)
     axes_top[i].grid(True, alpha=0.3)
     axes_top[i].set_ylim(0, 1)
+    axes_top[i].legend()
     
     X_with_const = sm.add_constant(X)
     logit_model = sm.Logit(y, X_with_const)
@@ -280,71 +289,62 @@ plt.show()
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_22_1.png)
+![png](90_DPD_Python_files/90_DPD_Python_25_1.png)
     
 
 
-# Check for Multi-collinearity
+It appears the reason that feature 1 has such a weaker negative term coefficient is because it has some left tail outliers which weaken it's over all trend.
+I evaluated the model without feature 1's bottom tail and it made no difference on model performance. 
+
+Verifying the strength of our Interaction terms as they've produced significant term coefficients. 
 
 
 ```python
-# Feature Correlation Matrix
-correlation_matrix = train[['feature_1', 'feature_2', 'feature_3', 'feature_4']].corr()
-plt.figure(figsize=(8, 6))
-sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', center=0)
-plt.title('Feature Correlation Matrix')
-plt.show()
+X = train[['feature_1', 'feature_2', 'feature_3', 'feature_4',
+           'feature_1_x_feature_2', 'feature_1_x_feature_3', 
+           'feature_2_x_feature_3', 'feature_2_x_feature_4',
+           'feature_3_x_feature_4']]
+y = train['y']
 
+fig1, ((ax1, ax2, ax3), (ax4, ax5, _)) = plt.subplots(2, 3, figsize=(20, 12))
+axes = [ax1, ax2, ax3, ax4, ax5]
 
-plt.figure(figsize=(8, 6))
-plt.scatter(train['feature_1'], train['feature_3'], alpha=0.5)
-z = np.polyfit(train['feature_1'], train['feature_3'], 1)
-p = np.poly1d(z)
-plt.plot(train['feature_1'], p(train['feature_1']), "r--")
-corr = train['feature_1'].corr(train['feature_3'])
-pct_between = (train['feature_3'][(train['feature_3'] >= 8) & (train['feature_3'] <= 14)].count() / train['feature_3'].count()) * 100
-plt.xlabel('Feature 1')
-plt.ylabel('Feature 3')
-plt.title(f'Feature 1 vs Feature 3 Scatter Plot\nCorrelation: {corr:.3f}\n{pct_between:.1f}% of Feature 3 between 8-14')
-plt.show()
+interaction_terms = ['feature_1_x_feature_2', 'feature_1_x_feature_3', 
+                    'feature_2_x_feature_3', 'feature_2_x_feature_4', 
+                    'feature_3_x_feature_4']
 
-filtered_data = train[~((train['feature_3'] >= 8) & (train['feature_3'] <= 14))]
-plt.figure(figsize=(8, 6))
-plt.scatter(filtered_data['feature_1'], filtered_data['feature_3'], alpha=0.5)
-z = np.polyfit(filtered_data['feature_1'], filtered_data['feature_3'], 1)
-p = np.poly1d(z)
-plt.plot(filtered_data['feature_1'], p(filtered_data['feature_1']), "r--")
-corr = filtered_data['feature_1'].corr(filtered_data['feature_3'])
-plt.xlabel('Feature 1')
-plt.ylabel('Feature 3')
-plt.title(f'Feature 1 vs Feature 3 Scatter Plot (Filtered)\nCorrelation: {corr:.3f}')
+for i, feature in enumerate(interaction_terms):
+    bins = pd.qcut(X[feature], q=50, duplicates='drop')
+    bin_means = X.groupby(bins)[feature].mean()
+    bin_probs = train.groupby(bins)['y'].mean()
+    
+    sns.scatterplot(x=bin_means, y=bin_probs, ax=axes[i], color='blue', s=20, label='Observed Probability')
+    sns.regplot(x=bin_means, y=bin_probs, scatter=False, lowess=True,
+                color='red', line_kws={'lw': 2}, ax=axes[i], label='Smoothed Curve')
+    
+    axes[i].set_title(f'Observed Probability vs {feature}')
+    axes[i].set_xlabel(feature)
+    axes[i].set_ylabel('Probability of Positive Outcome')
+    axes[i].set_ylim(0, 1)
+    axes[i].legend()
+    axes[i].grid(True)
+
+plt.tight_layout()
 plt.show()
 
 ```
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_24_0.png)
+![png](90_DPD_Python_files/90_DPD_Python_28_0.png)
     
 
 
-
-    
-![png](90_DPD_Python_files/90_DPD_Python_24_1.png)
-    
-
-
-
-    
-![png](90_DPD_Python_files/90_DPD_Python_24_2.png)
-    
-
-
-features 1 and 3 are not significantly correlated, those are just outliers. 
-
-# Main drivers Visualizations 
+# Strongest Predictors Visualized 
 
 ## Features 1 and 3 
+
+Distributions of features 1 and 3 stratified by posative and negative outcomes. 
 
 
 ```python
@@ -370,11 +370,15 @@ plt.show()
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_28_0.png)
+![png](90_DPD_Python_files/90_DPD_Python_32_0.png)
     
 
 
+Significantly different means of the positive negative outcomes for features 1 and 3. 
+
 ## Features 2 and 4 
+
+Scatter plot of these 2 variables stratified by outcome. 
 
 
 ```python
@@ -403,11 +407,69 @@ plt.show()
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_30_0.png)
+![png](90_DPD_Python_files/90_DPD_Python_36_0.png)
     
 
 
-thus the interaction term produced for features 2 and 4 had a highly predictive coefficient. 
+Probabilities produced by model of feature 2x4 interaction term in comparison to observed probabilities within data set. 
+
+
+```python
+X = train[['feature_1', 'feature_2', 'feature_3', 'feature_4', 
+           'feature_1_x_feature_2', 'feature_1_x_feature_3',
+           'feature_2_x_feature_3', 'feature_2_x_feature_4', 'feature_3_x_feature_4']]
+y = train['y']
+
+lr_model = LogisticRegression(random_state=42)
+lr_model.fit(X, y)
+
+fig1, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 12))
+
+mean_values = X.mean()
+interaction_range = np.linspace(train['feature_2_x_feature_4'].min(), train['feature_2_x_feature_4'].max(), 100)
+
+pred_data = np.tile(mean_values, (100, 1))
+pred_data = pd.DataFrame(pred_data, columns=X.columns)
+pred_data['feature_2_x_feature_4'] = interaction_range
+
+y_pred = lr_model.predict_proba(pred_data)[:, 1]
+
+ax1.plot(interaction_range, y_pred)
+ax1.set_title('Predicted Probability vs feature_2 × feature_4\n(Other Features and Interactions at Mean)')
+ax1.set_ylabel('Predicted Probability')
+ax1.set_xlabel('feature_2 × feature_4')
+ax1.grid(True, alpha=0.3)
+ax1.set_ylim(0, 1)
+
+bins = pd.qcut(X['feature_2_x_feature_4'], q=50, duplicates='drop')
+bin_means = X.groupby(bins)['feature_2_x_feature_4'].mean()
+bin_probs = train.groupby(bins)['y'].mean()
+
+sns.scatterplot(x=bin_means, y=bin_probs, ax=ax2, color='blue', s=20, label='Observed Probability')
+sns.regplot(x=bin_means, y=bin_probs, scatter=False, lowess=True,
+            color='red', line_kws={'lw': 2}, ax=ax2, label='Smoothed Curve')
+
+ax2.set_title('Observed Probability vs feature_2 × feature_4')
+ax2.set_xlabel('feature_2 × feature_4')
+ax2.set_ylabel('Probability of Positive Outcome')
+ax2.set_ylim(0, 1)
+ax2.legend()
+ax2.grid(True)
+
+plt.tight_layout()
+plt.show()
+
+```
+
+
+    
+![png](90_DPD_Python_files/90_DPD_Python_38_0.png)
+    
+
+
+Thus the interaction term produced for features 2 and 4 had a highly predictive coefficient.
+
+Interactions plot. 
 
 
 ```python
@@ -423,7 +485,7 @@ model = sm.Logit.from_formula(formula, data=train).fit()
 interaction_pvalue = model.pvalues['feature_2:feature_4']
 
 feature_2_values = np.linspace(train['feature_2'].min(), train['feature_2'].max(), 100)
-feature_4_levels = np.percentile(train['feature_4'], [25, 50, 75])
+feature_4_levels = list(np.percentile(train['feature_4'], [25, 50, 75])) + [-4]
 
 for feature_4_level in feature_4_levels:
     df = pd.DataFrame({
@@ -456,7 +518,7 @@ if interaction_pvalue < 0.05:
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_32_1.png)
+![png](90_DPD_Python_files/90_DPD_Python_41_1.png)
     
 
 
@@ -465,7 +527,7 @@ if interaction_pvalue < 0.05:
     feature_2 x feature_4
 
 
-# Random Forest Model - slightly superior performance but still significant
+# Random Forest Model
 
 
 ```python
@@ -513,9 +575,9 @@ print(conf_matrix)
 print(f"\nRecall at optimal threshold: {recall:.3f}")
 ```
 
-    Optimal threshold: 0.210
+    Optimal threshold: 0.220
     Confusion Matrix:
-    [[792  53]
+    [[794  51]
      [ 13 201]]
     
     Recall at optimal threshold: 0.939
@@ -523,6 +585,113 @@ print(f"\nRecall at optimal threshold: {recall:.3f}")
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_34_1.png)
+![png](90_DPD_Python_files/90_DPD_Python_43_1.png)
+    
+
+
+The RF model is moderately yet significantly better performing than our extensively fitted Logistic Regression model. 
+
+# Check for Multi-collinearity
+
+
+```python
+# Feature Correlation Matrix
+correlation_matrix = train[['feature_1', 'feature_2', 'feature_3', 'feature_4']].corr()
+plt.figure(figsize=(8, 6))
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', center=0)
+plt.title('Feature Correlation Matrix')
+plt.show()
+
+
+plt.figure(figsize=(8, 6))
+plt.scatter(train['feature_1'], train['feature_3'], alpha=0.5)
+corr = train['feature_1'].corr(train['feature_3'])
+pct_between = (train['feature_3'][(train['feature_3'] >= 8) & (train['feature_3'] <= 14)].count() / train['feature_3'].count()) * 100
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 3')
+plt.title(f'Feature 1 vs Feature 3 Scatter Plot\nCorrelation: {corr:.3f}\n{pct_between:.1f}% of Feature 3 between 8-14')
+plt.show()
+
+filtered_data = train[~((train['feature_3'] >= 8) & (train['feature_3'] <= 14))]
+pct_remaining = (len(filtered_data) / len(train)) * 100
+plt.figure(figsize=(8, 6))
+plt.scatter(filtered_data['feature_1'], filtered_data['feature_3'], alpha=0.5)
+sns.regplot(x=filtered_data['feature_1'], y=filtered_data['feature_3'], scatter=False, lowess=True, color='red')
+corr = filtered_data['feature_1'].corr(filtered_data['feature_3'])
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 3')
+plt.title(f'Feature 1 vs Feature 3 Scatter Plot (Filtered)\nCorrelation: {corr:.3f}\n{pct_remaining:.1f}% of total observations')
+plt.xlim(-2, 2)
+plt.ylim(-2, 2)
+plt.show()
+
+zoomed_data = train[(train['feature_1'] >= -1.25) & (train['feature_1'] <= 1) & 
+                    (train['feature_3'] >= -1) & (train['feature_3'] <= 0.5)]
+pct_zoomed = (len(zoomed_data) / len(train)) * 100
+plt.figure(figsize=(8, 6))
+plt.scatter(zoomed_data['feature_1'], zoomed_data['feature_3'], alpha=0.5)
+corr = zoomed_data['feature_1'].corr(zoomed_data['feature_3'])
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 3')
+plt.title(f'Feature 1 vs Feature 3 Scatter Plot (Zoomed)\nCorrelation: {corr:.3f}\n{pct_zoomed:.1f}% of total observations')
+plt.xlim(-1.25, 1)
+plt.ylim(-1.25, 1)
+plt.show()
+
+```
+
+
+    
+![png](90_DPD_Python_files/90_DPD_Python_46_0.png)
+    
+
+
+
+    
+![png](90_DPD_Python_files/90_DPD_Python_46_1.png)
+    
+
+
+
+    
+![png](90_DPD_Python_files/90_DPD_Python_46_2.png)
+    
+
+
+
+    
+![png](90_DPD_Python_files/90_DPD_Python_46_3.png)
+    
+
+
+Any attempt made to deal with this results in the model becoming weaker, since our goal is predictive performance is doesn't actually matter but it would be nice if we could produce a cleaner model. Computationally our coefficients are unstable yet the results are good so. 
+
+# MORE EDA 
+
+
+```python
+fig, ax = plt.subplots(figsize=(15, 5))
+
+positive_data = train[train['y'] == 1]
+negative_data = train[train['y'] == 0]
+
+sns.kdeplot(data=positive_data['feature_2'], ax=ax, fill=True, alpha=0.6, label='Feature 2 (Positive)', color='darkgreen')
+sns.kdeplot(data=negative_data['feature_2'], ax=ax, fill=True, alpha=0.6, label='Feature 2 (Negative)', color='grey')
+sns.kdeplot(data=positive_data['feature_4'], ax=ax, fill=True, alpha=0.6, label='Feature 4 (Positive)', color='blue')
+sns.kdeplot(data=negative_data['feature_4'], ax=ax, fill=True, alpha=0.6, label='Feature 4 (Negative)', color='black')
+ax.set_title('Distribution by Outcome: Features 2 & 4')
+ax.set_xlabel('Value')
+ax.set_ylabel('Density')
+ax.set_xlim(-10, 10)
+ax.legend()
+
+plt.tight_layout()
+plt.show()
+
+```
+
+
+    
+![png](90_DPD_Python_files/90_DPD_Python_49_0.png)
     
 
