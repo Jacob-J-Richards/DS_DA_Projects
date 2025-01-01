@@ -1,0 +1,119 @@
+---
+title: "Untitled"
+output: html_document
+date: "2025-01-01"
+---
+```{r}
+setwd("/Users/jacobrichards/Desktop/DS_DA_Projects/2-Marketing_Prediction")
+data <- read.csv(file = "data.csv", header = TRUE, na.strings = "")
+```
+
+```{r}
+# Replace missing or empty values in columns 4, 5, 6 with "unknown"
+data[, 4:6] <- lapply(data[, 4:6], function(col) ifelse(is.na(col) | col == "", "unknown", col))
+
+# Map income values
+income_mapping <- c(
+  "unknown" = 55000,
+  "Under $10k" = 5000,
+  "10-19,999" = 15000,
+  "20-29,999" = 25000,
+  "30-39,999" = 35000,
+  "40-49,999" = 45000,
+  "50-59,999" = 55000,
+  "60-69,999" = 65000,
+  "70-79,999" = 75000,
+  "80-89,999" = 85000,
+  "90-99,999" = 95000,
+  "100-149,999" = 125000,
+  "150 - 174,999" = 162500,
+  "175 - 199,999" = 187500,
+  "200 - 249,999" = 225000,
+  "250k+" = 250000
+)
+data$income <- as.integer(income_mapping[as.character(data$income)])
+
+# Map gender values
+gender_mapping <- c("M" = 1, "F" = 0, "unknown" = 0)
+data$gender <- as.integer(gender_mapping[as.character(data$gender)])
+
+# Map marital_status values
+marital_status_mapping <- c("M" = 1, "S" = 0, "unknown" = 1)
+data$marital_status <- as.integer(marital_status_mapping[as.character(data$marital_status)])
+
+# Convert target column to integer
+data$target <- as.integer(data$target)
+
+# Convert dist column to integer
+data$dist <- as.integer(data$dist)
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(stats)
+library(ggpmisc) 
+
+plot_ratio_positive_negative_with_corr <- function(data, continuous_var, categorical_var = "target", positive_value = 1, negative_value = 0) {
+  # Group and summarize data
+  grouped <- data %>%
+    group_by(across(all_of(c(continuous_var, categorical_var)))) %>%
+    summarise(count = n(), .groups = 'drop') %>%
+    tidyr::pivot_wider(names_from = all_of(categorical_var), values_from = count, values_fill = list(count = 0))
+  
+  # Calculate positive and total counts
+  positive_counts <- ifelse(!is.null(grouped[[as.character(positive_value)]]), grouped[[as.character(positive_value)]], 0)
+  total_counts <- positive_counts + ifelse(!is.null(grouped[[as.character(negative_value)]]), grouped[[as.character(negative_value)]], 0)
+  
+  # Compute ratio
+  ratio <- positive_counts / (total_counts + 1e-9)
+  plot_df <- grouped %>%
+    mutate(
+      !!continuous_var := !!sym(continuous_var),
+      ratio_positive_negative = ratio
+    ) %>%
+    select(all_of(continuous_var), ratio_positive_negative)
+  
+  # Compute point-biserial correlation
+  correlation <- cor.test(data[[continuous_var]], as.numeric(data[[categorical_var]]), method = "pearson")
+  
+  list(plot_df = plot_df, corr = correlation$estimate, p_value = correlation$p.value)
+}
+
+
+continuous_vars <- c("dist", "income", "age")
+
+for (var in continuous_vars) {
+  result <- plot_ratio_positive_negative_with_corr(data, var, "target")
+  plot_df <- result$plot_df
+  corr <- result$corr
+  p_value <- result$p_value
+  
+  # Create a ggplot
+  p <- ggplot(plot_df, aes_string(x = var, y = "ratio_positive_negative")) +
+    geom_point(color = "blue", size = 2, alpha = 0.6) +
+    labs(title = paste("Ratio of Positive Outcomes and Correlation by", toupper(var)),
+         x = toupper(var), y = "Ratio (Positive / Total)") +
+    annotate("text", x = Inf, y = Inf, label = sprintf("Point-Biserial Corr: %.4f\nP-Value: %.4e", corr, p_value),
+             hjust = 1.1, vjust = 1.1, size = 5, color = "black", parse = FALSE)
+  
+  # Add Lowess regression lines based on conditions
+  if (var == "dist") {
+    p <- p +
+      geom_smooth(data = filter(plot_df, get(var) <= 10), method = "loess", se = FALSE, color = "red", size = 1) +
+      geom_smooth(data = filter(plot_df, get(var) > 10), method = "loess", se = FALSE, color = "green", size = 1)
+  } else if (var == "income") {
+    p <- p +
+      geom_smooth(data = filter(plot_df, get(var) <= 65000), method = "loess", se = FALSE, color = "red", size = 1) +
+      geom_smooth(data = filter(plot_df, get(var) > 65000), method = "loess", se = FALSE, color = "green", size = 1)
+  } else if (var == "age") {
+    p <- p +
+      geom_smooth(data = filter(plot_df, get(var) >= 65 & get(var) <= 82), method = "loess", se = FALSE, color = "red", size = 1) +
+      geom_smooth(data = filter(plot_df, get(var) > 82), method = "loess", se = FALSE, color = "green", size = 1)
+  }
+  
+  print(p)
+}
+
+```
+
