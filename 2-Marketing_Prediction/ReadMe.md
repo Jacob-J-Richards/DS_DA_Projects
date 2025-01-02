@@ -169,14 +169,14 @@ In model testing, "knotting" only the variable age yielded the best results.
 
 ```python
 data['age_lt80'] = np.where(data['age'] < 80, data['age'], 80)
-data['age_ge80'] = np.where(data['age'] >= 80, data['age'] - 79, 0)
+data['age_ge80'] = np.where(data['age'] >= 80, data['age'] - 80, 0)
 print(data.head())
 ```
 
        id  age  dist  income  gender  marital_status  target  age_lt80  age_ge80
     0   1   73     4   95000       1               0       1        73         0
-    1   2   89     1  125000       1               1       1        80        10
-    2   3   85     1   15000       0               0       1        80         6
+    1   2   89     1  125000       1               1       1        80         9
+    2   3   85     1   15000       0               0       1        80         5
     3   4   76     2   95000       1               1       1        76         0
     4   5   76     2   15000       1               0       1        76         0
 
@@ -266,101 +266,46 @@ pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', None)
 
 print("\nTop 10 interaction combinations by lift at 40%:")
-display(results_df.head(10))
+print(results_df.head(10))
 ```
 
     
     Top 10 interaction combinations by lift at 40%:
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>num_interactions</th>
-      <th>interactions</th>
-      <th>lift_at_40</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>10034</th>
-      <td>8</td>
-      <td>((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (dist, income), (dist, marital_status), (gender, marital_status))</td>
-      <td>62.672811</td>
-    </tr>
-    <tr>
-      <th>13078</th>
-      <td>9</td>
-      <td>((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, marital_status), (gender, marital_status))</td>
-      <td>62.672811</td>
-    </tr>
-    <tr>
-      <th>15077</th>
-      <td>10</td>
-      <td>((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, gender), (income, gender), (income, marital_status))</td>
-      <td>62.672811</td>
-    </tr>
-    <tr>
-      <th>6175</th>
-      <td>6</td>
-      <td>((age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, gender), (dist, marital_status))</td>
-      <td>62.211982</td>
-    </tr>
-    <tr>
-      <th>3131</th>
-      <td>5</td>
-      <td>((age_lt80, marital_status), (age_ge80, income), (dist, income), (dist, gender), (dist, marital_status))</td>
-      <td>62.211982</td>
-    </tr>
-    <tr>
-      <th>7895</th>
-      <td>7</td>
-      <td>((age_lt80, dist), (age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, marital_status), (income, gender))</td>
-      <td>62.211982</td>
-    </tr>
-    <tr>
-      <th>1228</th>
-      <td>4</td>
-      <td>((age_lt80, marital_status), (age_ge80, marital_status), (dist, income), (income, gender))</td>
-      <td>62.211982</td>
-    </tr>
-    <tr>
-      <th>12731</th>
-      <td>8</td>
-      <td>((age_lt80, gender), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, gender), (dist, marital_status), (income, gender), (income, marital_status))</td>
-      <td>62.211982</td>
-    </tr>
-    <tr>
-      <th>1242</th>
-      <td>4</td>
-      <td>((age_lt80, marital_status), (dist, income), (dist, gender), (income, gender))</td>
-      <td>62.211982</td>
-    </tr>
-    <tr>
-      <th>10602</th>
-      <td>8</td>
-      <td>((age_lt80, dist), (age_lt80, income), (age_lt80, marital_status), (age_ge80, marital_status), (dist, income), (dist, gender), (dist, marital_status), (income, marital_status))</td>
-      <td>62.211982</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+           num_interactions  \
+    10034                 8   
+    13078                 9   
+    15077                10   
+    6175                  6   
+    3131                  5   
+    7895                  7   
+    1228                  4   
+    12731                 8   
+    1242                  4   
+    10602                 8   
+    
+                                                                                                                                                                                                                 interactions  \
+    10034                                        ((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (dist, income), (dist, marital_status), (gender, marital_status))   
+    13078            ((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, marital_status), (gender, marital_status))   
+    15077  ((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, gender), (income, gender), (income, marital_status))   
+    6175                                                                                 ((age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, gender), (dist, marital_status))   
+    3131                                                                                                             ((age_lt80, marital_status), (age_ge80, income), (dist, income), (dist, gender), (dist, marital_status))   
+    7895                                                             ((age_lt80, dist), (age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, marital_status), (income, gender))   
+    1228                                                                                                                           ((age_lt80, marital_status), (age_ge80, marital_status), (dist, income), (income, gender))   
+    12731                                            ((age_lt80, gender), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, gender), (dist, marital_status), (income, gender), (income, marital_status))   
+    1242                                                                                                                                       ((age_lt80, marital_status), (dist, income), (dist, gender), (income, gender))   
+    10602                                    ((age_lt80, dist), (age_lt80, income), (age_lt80, marital_status), (age_ge80, marital_status), (dist, income), (dist, gender), (dist, marital_status), (income, marital_status))   
+    
+           lift_at_40  
+    10034   62.672811  
+    13078   62.672811  
+    15077   62.672811  
+    6175    62.211982  
+    3131    62.211982  
+    7895    62.211982  
+    1228    62.211982  
+    12731   62.211982  
+    1242    62.211982  
+    10602   62.211982  
 
 
 #### Logistic Regression Model evaluated with best combination of interaction terms.
@@ -428,10 +373,10 @@ plt.tight_layout()
 plt.show()
 
 print("\nTop 10 observations by predicted probability:")
-display(test_data_sorted[['target', 'predicted_probs'] + base_features].head(10))
+print(test_data_sorted[['target', 'predicted_probs'] + base_features].head(10))
 
 print("\nBottom 10 observations by predicted probability:")
-display(test_data_sorted[['target', 'predicted_probs'] + base_features].tail(10))
+print(test_data_sorted[['target', 'predicted_probs'] + base_features].tail(10))
 
 ```
 
@@ -458,300 +403,54 @@ display(test_data_sorted[['target', 'predicted_probs'] + base_features].tail(10)
 
     
     Top 10 observations by predicted probability:
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>target</th>
-      <th>predicted_probs</th>
-      <th>age_lt80</th>
-      <th>age_ge80</th>
-      <th>dist</th>
-      <th>income</th>
-      <th>gender</th>
-      <th>marital_status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1405</th>
-      <td>0</td>
-      <td>0.593696</td>
-      <td>80</td>
-      <td>1</td>
-      <td>2</td>
-      <td>5000</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>2586</th>
-      <td>1</td>
-      <td>0.574583</td>
-      <td>80</td>
-      <td>2</td>
-      <td>0</td>
-      <td>15000</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>184</th>
-      <td>0</td>
-      <td>0.572051</td>
-      <td>80</td>
-      <td>6</td>
-      <td>1</td>
-      <td>5000</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>3331</th>
-      <td>1</td>
-      <td>0.565112</td>
-      <td>80</td>
-      <td>2</td>
-      <td>3</td>
-      <td>15000</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>279</th>
-      <td>1</td>
-      <td>0.563361</td>
-      <td>80</td>
-      <td>1</td>
-      <td>5</td>
-      <td>15000</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>2682</th>
-      <td>0</td>
-      <td>0.548136</td>
-      <td>80</td>
-      <td>5</td>
-      <td>4</td>
-      <td>15000</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>862</th>
-      <td>0</td>
-      <td>0.545801</td>
-      <td>80</td>
-      <td>11</td>
-      <td>2</td>
-      <td>5000</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>893</th>
-      <td>0</td>
-      <td>0.543115</td>
-      <td>80</td>
-      <td>2</td>
-      <td>3</td>
-      <td>25000</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>63</th>
-      <td>0</td>
-      <td>0.536778</td>
-      <td>80</td>
-      <td>2</td>
-      <td>0</td>
-      <td>35000</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>3379</th>
-      <td>0</td>
-      <td>0.535007</td>
-      <td>80</td>
-      <td>3</td>
-      <td>11</td>
-      <td>15000</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
+          target  predicted_probs  age_lt80  age_ge80  dist  income  gender  \
+    1405       0         0.599455        80         0     2    5000       1   
+    2586       1         0.579098        80         1     0   15000       1   
+    184        0         0.572839        80         5     1    5000       1   
+    3331       1         0.569536        80         1     3   15000       1   
+    279        1         0.568641        80         0     5   15000       1   
+    2682       0         0.549747        80         4     4   15000       1   
+    893        0         0.547198        80         1     3   25000       1   
+    862        0         0.541378        80        10     2    5000       1   
+    63         0         0.540583        80         1     0   35000       1   
+    3379       0         0.538233        80         2    11   15000       1   
+    
+          marital_status  
+    1405               1  
+    2586               1  
+    184                1  
+    3331               1  
+    279                1  
+    2682               1  
+    893                1  
+    862                1  
+    63                 1  
+    3379               1  
     
     Bottom 10 observations by predicted probability:
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>target</th>
-      <th>predicted_probs</th>
-      <th>age_lt80</th>
-      <th>age_ge80</th>
-      <th>dist</th>
-      <th>income</th>
-      <th>gender</th>
-      <th>marital_status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1476</th>
-      <td>0</td>
-      <td>0.034667</td>
-      <td>65</td>
-      <td>0</td>
-      <td>18</td>
-      <td>125000</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>990</th>
-      <td>0</td>
-      <td>0.033738</td>
-      <td>66</td>
-      <td>0</td>
-      <td>18</td>
-      <td>225000</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1532</th>
-      <td>0</td>
-      <td>0.032145</td>
-      <td>65</td>
-      <td>0</td>
-      <td>4</td>
-      <td>250000</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>538</th>
-      <td>0</td>
-      <td>0.030922</td>
-      <td>68</td>
-      <td>0</td>
-      <td>7</td>
-      <td>250000</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1926</th>
-      <td>1</td>
-      <td>0.028749</td>
-      <td>79</td>
-      <td>0</td>
-      <td>22</td>
-      <td>225000</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1916</th>
-      <td>0</td>
-      <td>0.028738</td>
-      <td>70</td>
-      <td>0</td>
-      <td>17</td>
-      <td>187500</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>3594</th>
-      <td>0</td>
-      <td>0.024361</td>
-      <td>80</td>
-      <td>14</td>
-      <td>18</td>
-      <td>225000</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>270</th>
-      <td>0</td>
-      <td>0.021723</td>
-      <td>80</td>
-      <td>3</td>
-      <td>25</td>
-      <td>225000</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>3052</th>
-      <td>0</td>
-      <td>0.021652</td>
-      <td>67</td>
-      <td>0</td>
-      <td>18</td>
-      <td>187500</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>2476</th>
-      <td>0</td>
-      <td>0.016573</td>
-      <td>65</td>
-      <td>0</td>
-      <td>12</td>
-      <td>250000</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+          target  predicted_probs  age_lt80  age_ge80  dist  income  gender  \
+    1476       0         0.034817        65         0    18  125000       0   
+    990        0         0.034035        66         0    18  225000       1   
+    1532       0         0.032403        65         0     4  250000       0   
+    538        0         0.031023        68         0     7  250000       0   
+    1916       0         0.028767        70         0    17  187500       0   
+    1926       1         0.028329        79         0    22  225000       1   
+    3594       0         0.025362        80        13    18  225000       0   
+    3052       0         0.021765        67         0    18  187500       0   
+    270        0         0.021538        80         2    25  225000       1   
+    2476       0         0.016740        65         0    12  250000       0   
+    
+          marital_status  
+    1476               1  
+    990                1  
+    1532               1  
+    538                1  
+    1916               1  
+    1926               1  
+    3594               0  
+    3052               1  
+    270                1  
+    2476               1  
 
 
 
