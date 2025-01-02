@@ -93,64 +93,68 @@ def plot_ratio_positive_negative_with_corr(df, continuous_var, categorical_var='
     plot_df = pd.DataFrame({continuous_var: ratio.index, 'ratio_positive_negative': ratio.values})
     return plot_df, *pointbiserialr(df[continuous_var], df[categorical_var])
 
-fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(10, 15))
+
+fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(20, 36))
 
 dist_plot_df, dist_corr, dist_p = plot_ratio_positive_negative_with_corr(data, 'dist', 'target')
-sns.scatterplot(x='dist', y='ratio_positive_negative', data=dist_plot_df, color='blue', s=50, label='Data Points', ax=ax1)
+sns.scatterplot(x='dist', y='ratio_positive_negative', data=dist_plot_df, color='blue', s=150, label='Data Points', ax=ax1)
 
 dist_plot_df_lt10 = dist_plot_df[dist_plot_df['dist'] <= 10]
 dist_plot_df_gt10 = dist_plot_df[dist_plot_df['dist'] > 10]
 
 sns.regplot(x='dist', y='ratio_positive_negative', data=dist_plot_df_lt10, scatter=False,
-            lowess=True, color='red', line_kws={'lw': 2}, label='Lowess Smoother (≤10)', ax=ax1)
+            lowess=True, color='red', line_kws={'lw': 4}, label='Lowess Smoother (≤10)', ax=ax1)
 sns.regplot(x='dist', y='ratio_positive_negative', data=dist_plot_df_gt10, scatter=False,
-            lowess=True, color='green', line_kws={'lw': 2}, label='Lowess Smoother (>10)', ax=ax1)
+            lowess=True, color='green', line_kws={'lw': 4}, label='Lowess Smoother (>10)', ax=ax1)
 
-ax1.text(0.05, 0.95, f'Point-Biserial Corr: {dist_corr:.4f}\nP-Value: {dist_p:.4e}', transform=ax1.transAxes, fontsize=12, verticalalignment='top', bbox=dict(facecolor='white', alpha=0.8))
-ax1.set_title('Ratio of Positive Outcomes and Correlation by Distance')
-ax1.set_xlabel('Distance')
-ax1.set_ylabel('Ratio (Positive / Total)')
+ax1.text(0.05, 0.95, f'Point-Biserial Corr: {dist_corr:.4f}\nP-Value: {dist_p:.4e}', transform=ax1.transAxes, fontsize=16, verticalalignment='top', bbox=dict(facecolor='white', alpha=0.8))
+ax1.set_title('Ratio of Positive Outcomes and Correlation by Distance', fontsize=20)
+ax1.set_xlabel('Distance', fontsize=16)
+ax1.set_ylabel('Ratio (Positive / Total)', fontsize=16)
 ax1.set_ylim(0, 0.50)
-ax1.legend()
-ax1.grid()
+ax1.legend(fontsize=14)
+ax1.grid(True)
+ax1.tick_params(labelsize=14)
 
 income_plot_df, income_corr, income_p = plot_ratio_positive_negative_with_corr(data, 'income', 'target')
-sns.scatterplot(x='income', y='ratio_positive_negative', data=income_plot_df, color='blue', s=50, label='Data Points', ax=ax2)
+sns.scatterplot(x='income', y='ratio_positive_negative', data=income_plot_df, color='blue', s=150, label='Data Points', ax=ax2)
 
 income_plot_df_lt65k = income_plot_df[income_plot_df['income'] <= 65000]
 income_plot_df_gt65k = income_plot_df[income_plot_df['income'] > 65000]
 
 sns.regplot(x='income', y='ratio_positive_negative', data=income_plot_df_lt65k, scatter=False,
-            lowess=True, color='red', line_kws={'lw': 2}, label='Lowess Smoother (≤65k)', ax=ax2)
+            lowess=True, color='red', line_kws={'lw': 4}, label='Lowess Smoother (≤65k)', ax=ax2)
 sns.regplot(x='income', y='ratio_positive_negative', data=income_plot_df_gt65k, scatter=False,
-            lowess=True, color='green', line_kws={'lw': 2}, label='Lowess Smoother (>65k)', ax=ax2)
+            lowess=True, color='green', line_kws={'lw': 4}, label='Lowess Smoother (>65k)', ax=ax2)
 
-ax2.text(0.05, 0.95, f'Point-Biserial Corr: {income_corr:.4f}\nP-Value: {income_p:.4e}', transform=ax2.transAxes, fontsize=12, verticalalignment='top', bbox=dict(facecolor='white', alpha=0.8))
-ax2.set_title('Ratio of Positive Outcomes and Correlation by Income')
-ax2.set_xlabel('Income')
-ax2.set_ylabel('Ratio (Positive / Total)')
+ax2.text(0.05, 0.95, f'Point-Biserial Corr: {income_corr:.4f}\nP-Value: {income_p:.4e}', transform=ax2.transAxes, fontsize=16, verticalalignment='top', bbox=dict(facecolor='white', alpha=0.8))
+ax2.set_title('Ratio of Positive Outcomes and Correlation by Income', fontsize=20)
+ax2.set_xlabel('Income', fontsize=16)
+ax2.set_ylabel('Ratio (Positive / Total)', fontsize=16)
 ax2.set_ylim(0, 0.50)
-ax2.legend()
-ax2.grid()
+ax2.legend(fontsize=14)
+ax2.grid(True)
+ax2.tick_params(labelsize=14)
 
 age_plot_df, age_corr, age_p = plot_ratio_positive_negative_with_corr(data, 'age', 'target')
-sns.scatterplot(x='age', y='ratio_positive_negative', data=age_plot_df, color='blue', s=50, label='Data Points', ax=ax3)
+sns.scatterplot(x='age', y='ratio_positive_negative', data=age_plot_df, color='blue', s=150, label='Data Points', ax=ax3)
 
 age_plot_df_lt82 = age_plot_df[age_plot_df['age'] <= 82]
 age_plot_df_gt82 = age_plot_df[age_plot_df['age'] > 82]
 
 sns.regplot(x='age', y='ratio_positive_negative', data=age_plot_df_lt82, scatter=False,
-            lowess=True, color='red', line_kws={'lw': 2}, label='Lowess Smoother (≤82)', ax=ax3)
+            lowess=True, color='red', line_kws={'lw': 4}, label='Lowess Smoother (≤82)', ax=ax3)
 sns.regplot(x='age', y='ratio_positive_negative', data=age_plot_df_gt82, scatter=False,
-            lowess=True, color='green', line_kws={'lw': 2}, label='Lowess Smoother (>82)', ax=ax3)
+            lowess=True, color='green', line_kws={'lw': 4}, label='Lowess Smoother (>82)', ax=ax3)
 
-ax3.text(0.05, 0.95, f'Point-Biserial Corr: {age_corr:.4f}\nP-Value: {age_p:.4e}', transform=ax3.transAxes, fontsize=12, verticalalignment='top', bbox=dict(facecolor='white', alpha=0.8))
-ax3.set_title('Ratio of Positive Outcomes and Correlation by Age')
-ax3.set_xlabel('Age')
-ax3.set_ylabel('Ratio (Positive / Total)')
+ax3.text(0.05, 0.95, f'Point-Biserial Corr: {age_corr:.4f}\nP-Value: {age_p:.4e}', transform=ax3.transAxes, fontsize=16, verticalalignment='top', bbox=dict(facecolor='white', alpha=0.8))
+ax3.set_title('Ratio of Positive Outcomes and Correlation by Age', fontsize=20)
+ax3.set_xlabel('Age', fontsize=16)
+ax3.set_ylabel('Ratio (Positive / Total)', fontsize=16)
 ax3.set_ylim(0, 0.50)
-ax3.legend()
-ax3.grid()
+ax3.legend(fontsize=14)
+ax3.grid(True)
+ax3.tick_params(labelsize=14)
 
 plt.tight_layout()
 plt.show()
@@ -269,43 +273,110 @@ print("\nTop 10 interaction combinations by lift at 40%:")
 print(results_df.head(10))
 ```
 
-    
-    Top 10 interaction combinations by lift at 40%:
-           num_interactions  \
-    10034                 8   
-    13078                 9   
-    15077                10   
-    6175                  6   
-    3131                  5   
-    7895                  7   
-    1228                  4   
-    12731                 8   
-    1242                  4   
-    10602                 8   
-    
-                                                                                                                                                                                                                 interactions  \
-    10034                                        ((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (dist, income), (dist, marital_status), (gender, marital_status))   
-    13078            ((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, marital_status), (gender, marital_status))   
-    15077  ((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, gender), (income, gender), (income, marital_status))   
-    6175                                                                                 ((age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, gender), (dist, marital_status))   
-    3131                                                                                                             ((age_lt80, marital_status), (age_ge80, income), (dist, income), (dist, gender), (dist, marital_status))   
-    7895                                                             ((age_lt80, dist), (age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, marital_status), (income, gender))   
-    1228                                                                                                                           ((age_lt80, marital_status), (age_ge80, marital_status), (dist, income), (income, gender))   
-    12731                                            ((age_lt80, gender), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, gender), (dist, marital_status), (income, gender), (income, marital_status))   
-    1242                                                                                                                                       ((age_lt80, marital_status), (dist, income), (dist, gender), (income, gender))   
-    10602                                    ((age_lt80, dist), (age_lt80, income), (age_lt80, marital_status), (age_ge80, marital_status), (dist, income), (dist, gender), (dist, marital_status), (income, marital_status))   
-    
-           lift_at_40  
-    10034   62.672811  
-    13078   62.672811  
-    15077   62.672811  
-    6175    62.211982  
-    3131    62.211982  
-    7895    62.211982  
-    1228    62.211982  
-    12731   62.211982  
-    1242    62.211982  
-    10602   62.211982  
+
+    ---------------------------------------------------------------------------
+
+    KeyboardInterrupt                         Traceback (most recent call last)
+
+    Cell In[20], line 31
+         28 y = data['target']
+         29 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    ---> 31 model = sm.Logit(y_train, sm.add_constant(X_train)).fit(disp=0)
+         32 y_pred_proba_test = model.predict(sm.add_constant(X_test))
+         34 test_data = pd.DataFrame({'target': y_test, 'predicted_probs': y_pred_proba_test})
+
+
+    File /opt/miniconda3/lib/python3.12/site-packages/statsmodels/discrete/discrete_model.py:2601, in Logit.fit(self, start_params, method, maxiter, full_output, disp, callback, **kwargs)
+       2598 @Appender(DiscreteModel.fit.__doc__)
+       2599 def fit(self, start_params=None, method='newton', maxiter=35,
+       2600         full_output=1, disp=1, callback=None, **kwargs):
+    -> 2601     bnryfit = super().fit(start_params=start_params,
+       2602                           method=method,
+       2603                           maxiter=maxiter,
+       2604                           full_output=full_output,
+       2605                           disp=disp,
+       2606                           callback=callback,
+       2607                           **kwargs)
+       2609     discretefit = LogitResults(self, bnryfit)
+       2610     return BinaryResultsWrapper(discretefit)
+
+
+    File /opt/miniconda3/lib/python3.12/site-packages/statsmodels/discrete/discrete_model.py:243, in DiscreteModel.fit(self, start_params, method, maxiter, full_output, disp, callback, **kwargs)
+        240 else:
+        241     pass  # TODO: make a function factory to have multiple call-backs
+    --> 243 mlefit = super().fit(start_params=start_params,
+        244                      method=method,
+        245                      maxiter=maxiter,
+        246                      full_output=full_output,
+        247                      disp=disp,
+        248                      callback=callback,
+        249                      **kwargs)
+        251 return mlefit
+
+
+    File /opt/miniconda3/lib/python3.12/site-packages/statsmodels/base/model.py:566, in LikelihoodModel.fit(self, start_params, method, maxiter, full_output, disp, fargs, callback, retall, skip_hessian, **kwargs)
+        563     del kwargs["use_t"]
+        565 optimizer = Optimizer()
+    --> 566 xopt, retvals, optim_settings = optimizer._fit(f, score, start_params,
+        567                                                fargs, kwargs,
+        568                                                hessian=hess,
+        569                                                method=method,
+        570                                                disp=disp,
+        571                                                maxiter=maxiter,
+        572                                                callback=callback,
+        573                                                retall=retall,
+        574                                                full_output=full_output)
+        575 # Restore cov_type, cov_kwds and use_t
+        576 optim_settings.update(kwds)
+
+
+    File /opt/miniconda3/lib/python3.12/site-packages/statsmodels/base/optimizer.py:243, in Optimizer._fit(self, objective, gradient, start_params, fargs, kwargs, hessian, method, maxiter, full_output, disp, callback, retall)
+        240     fit_funcs.update(extra_fit_funcs)
+        242 func = fit_funcs[method]
+    --> 243 xopt, retvals = func(objective, gradient, start_params, fargs, kwargs,
+        244                      disp=disp, maxiter=maxiter, callback=callback,
+        245                      retall=retall, full_output=full_output,
+        246                      hess=hessian)
+        248 optim_settings = {'optimizer': method, 'start_params': start_params,
+        249                   'maxiter': maxiter, 'full_output': full_output,
+        250                   'disp': disp, 'fargs': fargs, 'callback': callback,
+        251                   'retall': retall, "extra_fit_funcs": extra_fit_funcs}
+        252 optim_settings.update(kwargs)
+
+
+    File /opt/miniconda3/lib/python3.12/site-packages/statsmodels/base/optimizer.py:440, in _fit_newton(f, score, start_params, fargs, kwargs, disp, maxiter, callback, retall, full_output, hess, ridge_factor)
+        438 if retall:
+        439     history = [oldparams, newparams]
+    --> 440 while (iterations < maxiter and np.any(np.abs(newparams -
+        441                                               oldparams) > tol)):
+        442     H = np.asarray(hess(newparams))
+        443     # regularize Hessian, not clear what ridge factor should be
+        444     # keyword option with absolute default 1e-10, see #1847
+
+
+    File /opt/miniconda3/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:2504, in any(a, axis, out, keepdims, where)
+       2400 @array_function_dispatch(_any_dispatcher)
+       2401 def any(a, axis=None, out=None, keepdims=np._NoValue, *, where=np._NoValue):
+       2402     """
+       2403     Test whether any array element along a given axis evaluates to True.
+       2404 
+       (...)
+       2502 
+       2503     """
+    -> 2504     return _wrapreduction_any_all(a, np.logical_or, 'any', axis, out,
+       2505                                   keepdims=keepdims, where=where)
+
+
+    File /opt/miniconda3/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:91, in _wrapreduction_any_all(obj, ufunc, method, axis, out, **kwargs)
+         89 def _wrapreduction_any_all(obj, ufunc, method, axis, out, **kwargs):
+         90     # Same as above function, but dtype is always bool (but never passed on)
+    ---> 91     passkwargs = {k: v for k, v in kwargs.items()
+         92                   if v is not np._NoValue}
+         94     if type(obj) is not mu.ndarray:
+         95         try:
+
+
+    KeyboardInterrupt: 
 
 
 #### Logistic Regression Model evaluated with best combination of interaction terms.
@@ -459,6 +530,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 def plot_full_pairplot_with_corr_binary_target(df, continuous_vars, target_var='target', positive_value=1, negative_value=0):
+    plt.rcParams['figure.dpi'] = 300
+    plt.rcParams['savefig.dpi'] = 300
     pairplot_data = df[continuous_vars + [target_var]].copy()
     pairplot_data[target_var] = pairplot_data[target_var].astype('category')
     correlation_matrix = pairplot_data[continuous_vars].corr()
