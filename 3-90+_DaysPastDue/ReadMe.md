@@ -4,11 +4,11 @@ import pandas as pd
 import os
 import matplotlib.pyplot as plt
 
-os.chdir("/Users/jacobrichards/Desktop/DS_DA_Projects/3-90+_DaysPastDue/Data_Files")
+os.chdir("/Users/jacobrichards/Desktop/DS_DA_Projects/3-90+_DaysPastDue/data")
 
-train = pd.read_csv("FITB_train.csv", na_values=["", "NA"])
+train = pd.read_csv("train.csv", na_values=["", "NA"])
 
-test = pd.read_csv("FITB_test.csv", na_values=["", "NA"])
+test = pd.read_csv("test.csv", na_values=["", "NA"])
 
 # Suppress warnings
 import warnings
@@ -140,7 +140,7 @@ plt.show()
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_19_0.png)
+![png](Main_files/Main_19_0.png)
     
 
 
@@ -289,7 +289,7 @@ plt.show()
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_25_1.png)
+![png](Main_files/Main_25_1.png)
     
 
 
@@ -336,7 +336,7 @@ plt.show()
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_28_0.png)
+![png](Main_files/Main_28_0.png)
     
 
 
@@ -370,7 +370,7 @@ plt.show()
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_32_0.png)
+![png](Main_files/Main_32_0.png)
     
 
 
@@ -407,7 +407,7 @@ plt.show()
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_36_0.png)
+![png](Main_files/Main_36_0.png)
     
 
 
@@ -463,7 +463,7 @@ plt.show()
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_38_0.png)
+![png](Main_files/Main_38_0.png)
     
 
 
@@ -518,7 +518,7 @@ if interaction_pvalue < 0.05:
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_41_1.png)
+![png](Main_files/Main_41_1.png)
     
 
 
@@ -575,7 +575,7 @@ print(conf_matrix)
 print(f"\nRecall at optimal threshold: {recall:.3f}")
 ```
 
-    Optimal threshold: 0.220
+    Optimal threshold: 0.230
     Confusion Matrix:
     [[794  51]
      [ 13 201]]
@@ -585,7 +585,7 @@ print(f"\nRecall at optimal threshold: {recall:.3f}")
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_43_1.png)
+![png](Main_files/Main_43_1.png)
     
 
 
@@ -642,25 +642,25 @@ plt.show()
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_46_0.png)
+![png](Main_files/Main_46_0.png)
     
 
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_46_1.png)
+![png](Main_files/Main_46_1.png)
     
 
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_46_2.png)
+![png](Main_files/Main_46_2.png)
     
 
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_46_3.png)
+![png](Main_files/Main_46_3.png)
     
 
 
@@ -692,6 +692,6 @@ plt.show()
 
 
     
-![png](90_DPD_Python_files/90_DPD_Python_49_0.png)
+![png](Main_files/Main_49_0.png)
     
 
