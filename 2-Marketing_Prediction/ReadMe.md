@@ -162,7 +162,7 @@ plt.show()
     
 
 
-These predictors are relatively week individually within the aggregate of the data. They also have mixed effects.
+These predictors are relatively weak individually within the aggregate of the data. They also have mixed effects.
 
 In model testing, "knotting" only the variable age yielded the best results. 
 
