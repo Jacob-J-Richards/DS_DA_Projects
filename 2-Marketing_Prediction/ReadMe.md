@@ -273,110 +273,43 @@ print("\nTop 10 interaction combinations by lift at 40%:")
 print(results_df.head(10))
 ```
 
-
-    ---------------------------------------------------------------------------
-
-    KeyboardInterrupt                         Traceback (most recent call last)
-
-    Cell In[20], line 31
-         28 y = data['target']
-         29 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    ---> 31 model = sm.Logit(y_train, sm.add_constant(X_train)).fit(disp=0)
-         32 y_pred_proba_test = model.predict(sm.add_constant(X_test))
-         34 test_data = pd.DataFrame({'target': y_test, 'predicted_probs': y_pred_proba_test})
-
-
-    File /opt/miniconda3/lib/python3.12/site-packages/statsmodels/discrete/discrete_model.py:2601, in Logit.fit(self, start_params, method, maxiter, full_output, disp, callback, **kwargs)
-       2598 @Appender(DiscreteModel.fit.__doc__)
-       2599 def fit(self, start_params=None, method='newton', maxiter=35,
-       2600         full_output=1, disp=1, callback=None, **kwargs):
-    -> 2601     bnryfit = super().fit(start_params=start_params,
-       2602                           method=method,
-       2603                           maxiter=maxiter,
-       2604                           full_output=full_output,
-       2605                           disp=disp,
-       2606                           callback=callback,
-       2607                           **kwargs)
-       2609     discretefit = LogitResults(self, bnryfit)
-       2610     return BinaryResultsWrapper(discretefit)
-
-
-    File /opt/miniconda3/lib/python3.12/site-packages/statsmodels/discrete/discrete_model.py:243, in DiscreteModel.fit(self, start_params, method, maxiter, full_output, disp, callback, **kwargs)
-        240 else:
-        241     pass  # TODO: make a function factory to have multiple call-backs
-    --> 243 mlefit = super().fit(start_params=start_params,
-        244                      method=method,
-        245                      maxiter=maxiter,
-        246                      full_output=full_output,
-        247                      disp=disp,
-        248                      callback=callback,
-        249                      **kwargs)
-        251 return mlefit
-
-
-    File /opt/miniconda3/lib/python3.12/site-packages/statsmodels/base/model.py:566, in LikelihoodModel.fit(self, start_params, method, maxiter, full_output, disp, fargs, callback, retall, skip_hessian, **kwargs)
-        563     del kwargs["use_t"]
-        565 optimizer = Optimizer()
-    --> 566 xopt, retvals, optim_settings = optimizer._fit(f, score, start_params,
-        567                                                fargs, kwargs,
-        568                                                hessian=hess,
-        569                                                method=method,
-        570                                                disp=disp,
-        571                                                maxiter=maxiter,
-        572                                                callback=callback,
-        573                                                retall=retall,
-        574                                                full_output=full_output)
-        575 # Restore cov_type, cov_kwds and use_t
-        576 optim_settings.update(kwds)
-
-
-    File /opt/miniconda3/lib/python3.12/site-packages/statsmodels/base/optimizer.py:243, in Optimizer._fit(self, objective, gradient, start_params, fargs, kwargs, hessian, method, maxiter, full_output, disp, callback, retall)
-        240     fit_funcs.update(extra_fit_funcs)
-        242 func = fit_funcs[method]
-    --> 243 xopt, retvals = func(objective, gradient, start_params, fargs, kwargs,
-        244                      disp=disp, maxiter=maxiter, callback=callback,
-        245                      retall=retall, full_output=full_output,
-        246                      hess=hessian)
-        248 optim_settings = {'optimizer': method, 'start_params': start_params,
-        249                   'maxiter': maxiter, 'full_output': full_output,
-        250                   'disp': disp, 'fargs': fargs, 'callback': callback,
-        251                   'retall': retall, "extra_fit_funcs": extra_fit_funcs}
-        252 optim_settings.update(kwargs)
-
-
-    File /opt/miniconda3/lib/python3.12/site-packages/statsmodels/base/optimizer.py:440, in _fit_newton(f, score, start_params, fargs, kwargs, disp, maxiter, callback, retall, full_output, hess, ridge_factor)
-        438 if retall:
-        439     history = [oldparams, newparams]
-    --> 440 while (iterations < maxiter and np.any(np.abs(newparams -
-        441                                               oldparams) > tol)):
-        442     H = np.asarray(hess(newparams))
-        443     # regularize Hessian, not clear what ridge factor should be
-        444     # keyword option with absolute default 1e-10, see #1847
-
-
-    File /opt/miniconda3/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:2504, in any(a, axis, out, keepdims, where)
-       2400 @array_function_dispatch(_any_dispatcher)
-       2401 def any(a, axis=None, out=None, keepdims=np._NoValue, *, where=np._NoValue):
-       2402     """
-       2403     Test whether any array element along a given axis evaluates to True.
-       2404 
-       (...)
-       2502 
-       2503     """
-    -> 2504     return _wrapreduction_any_all(a, np.logical_or, 'any', axis, out,
-       2505                                   keepdims=keepdims, where=where)
-
-
-    File /opt/miniconda3/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:91, in _wrapreduction_any_all(obj, ufunc, method, axis, out, **kwargs)
-         89 def _wrapreduction_any_all(obj, ufunc, method, axis, out, **kwargs):
-         90     # Same as above function, but dtype is always bool (but never passed on)
-    ---> 91     passkwargs = {k: v for k, v in kwargs.items()
-         92                   if v is not np._NoValue}
-         94     if type(obj) is not mu.ndarray:
-         95         try:
-
-
-    KeyboardInterrupt: 
+    
+    Top 10 interaction combinations by lift at 40%:
+           num_interactions  \
+    10034                 8   
+    13078                 9   
+    15077                10   
+    6175                  6   
+    3131                  5   
+    7895                  7   
+    1228                  4   
+    12731                 8   
+    1242                  4   
+    10602                 8   
+    
+                                                                                                                                                                                                                 interactions  \
+    10034                                        ((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (dist, income), (dist, marital_status), (gender, marital_status))   
+    13078            ((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, marital_status), (gender, marital_status))   
+    15077  ((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, gender), (income, gender), (income, marital_status))   
+    6175                                                                                 ((age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, gender), (dist, marital_status))   
+    3131                                                                                                             ((age_lt80, marital_status), (age_ge80, income), (dist, income), (dist, gender), (dist, marital_status))   
+    7895                                                             ((age_lt80, dist), (age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, marital_status), (income, gender))   
+    1228                                                                                                                           ((age_lt80, marital_status), (age_ge80, marital_status), (dist, income), (income, gender))   
+    12731                                            ((age_lt80, gender), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, gender), (dist, marital_status), (income, gender), (income, marital_status))   
+    1242                                                                                                                                       ((age_lt80, marital_status), (dist, income), (dist, gender), (income, gender))   
+    10602                                    ((age_lt80, dist), (age_lt80, income), (age_lt80, marital_status), (age_ge80, marital_status), (dist, income), (dist, gender), (dist, marital_status), (income, marital_status))   
+    
+           lift_at_40  
+    10034   62.672811  
+    13078   62.672811  
+    15077   62.672811  
+    6175    62.211982  
+    3131    62.211982  
+    7895    62.211982  
+    1228    62.211982  
+    12731   62.211982  
+    1242    62.211982  
+    10602   62.211982  
 
 
 #### Logistic Regression Model evaluated with best combination of interaction terms.
