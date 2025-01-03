@@ -191,21 +191,25 @@ print(data.head())
 ```python
 predictors = pd.DataFrame({
     'Single': [data[(data['gender'] == 0) & (data['marital_status'] == 0)]['target'].mean(),
-               data[(data['gender'] == 1) & (data['marital_status'] == 0)]['target'].mean()],
+               data[(data['gender'] == 1) & (data['marital_status'] == 0)]['target'].mean(),
+               data[data['marital_status'] == 0]['target'].mean()],
     'Married': [data[(data['gender'] == 0) & (data['marital_status'] == 1)]['target'].mean(),
-                data[(data['gender'] == 1) & (data['marital_status'] == 1)]['target'].mean()],
-    'Overall': [data[data['gender'] == 0]['target'].mean(),
-                data[data['gender'] == 1]['target'].mean()]
-}, index=['Female', 'Male'])
+                data[(data['gender'] == 1) & (data['marital_status'] == 1)]['target'].mean(),
+                data[data['marital_status'] == 1]['target'].mean()],
+    'Overall for gender': [data[data['gender'] == 0]['target'].mean(),
+                data[data['gender'] == 1]['target'].mean(),
+                None]
+}, index=['Female', 'Male', 'Overall for marital_status'])
 
-print("Proportion of Gender that Responded") 
+print("Proportion of Gender and Marital_Status subset that responded")
 print(predictors)
 ```
 
-    Proportion of Gender that Responded
-              Single   Married  Overall
-    Female  0.224093  0.219920  0.22151
-    Male    0.214156  0.304501  0.27927
+    Proportion of Gender and Marital_Status subset that responded
+                                  Single   Married  Overall for gender
+    Female                      0.224093  0.219920             0.22151
+    Male                        0.214156  0.304501             0.27927
+    Overall for marital_status  0.219955  0.264849                 NaN
 
 
 Gender effects relationship between marital_status and response. 
@@ -256,7 +260,6 @@ for r in range(len(interaction_terms) + 1):
         lift_at_40 = test_data_sorted.iloc[:cutoff_index]['target'].sum() / total_pos * 100
         
         results.append({
-            'num_interactions': len(terms),
             'interactions': terms,
             'lift_at_40': lift_at_40
         })
@@ -269,47 +272,17 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', None)
 
-print("\nTop 10 interaction combinations by lift at 40%:")
-print(results_df.head(10))
+print("\nbest interaction term combinations by lift at 40%:")
+print(results_df.head(1))
 ```
 
     
-    Top 10 interaction combinations by lift at 40%:
-           num_interactions  \
-    10034                 8   
-    13078                 9   
-    15077                10   
-    6175                  6   
-    3131                  5   
-    7895                  7   
-    1228                  4   
-    12731                 8   
-    1242                  4   
-    10602                 8   
-    
-                                                                                                                                                                                                                 interactions  \
-    10034                                        ((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (dist, income), (dist, marital_status), (gender, marital_status))   
-    13078            ((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, marital_status), (gender, marital_status))   
-    15077  ((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, gender), (income, gender), (income, marital_status))   
-    6175                                                                                 ((age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, gender), (dist, marital_status))   
-    3131                                                                                                             ((age_lt80, marital_status), (age_ge80, income), (dist, income), (dist, gender), (dist, marital_status))   
-    7895                                                             ((age_lt80, dist), (age_lt80, marital_status), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, marital_status), (income, gender))   
-    1228                                                                                                                           ((age_lt80, marital_status), (age_ge80, marital_status), (dist, income), (income, gender))   
-    12731                                            ((age_lt80, gender), (age_ge80, income), (age_ge80, marital_status), (dist, income), (dist, gender), (dist, marital_status), (income, gender), (income, marital_status))   
-    1242                                                                                                                                       ((age_lt80, marital_status), (dist, income), (dist, gender), (income, gender))   
-    10602                                    ((age_lt80, dist), (age_lt80, income), (age_lt80, marital_status), (age_ge80, marital_status), (dist, income), (dist, gender), (dist, marital_status), (income, marital_status))   
+    best interaction term combinations by lift at 40%:
+                                                                                                                                                                           interactions  \
+    10034  ((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (dist, income), (dist, marital_status), (gender, marital_status))   
     
            lift_at_40  
     10034   62.672811  
-    13078   62.672811  
-    15077   62.672811  
-    6175    62.211982  
-    3131    62.211982  
-    7895    62.211982  
-    1228    62.211982  
-    12731   62.211982  
-    1242    62.211982  
-    10602   62.211982  
 
 
 #### Logistic Regression Model evaluated with best combination of interaction terms.
@@ -362,8 +335,9 @@ plt.tight_layout()
 plt.show()
 
 from sklearn.metrics import roc_curve, auc
-fpr, tpr, _ = roc_curve(y_test, y_pred_proba_test)
+fpr, tpr, thresholds = roc_curve(y_test, y_pred_proba_test)
 roc_auc = auc(fpr, tpr)
+optimal_threshold = thresholds[np.argmin(np.abs(tpr - (1-fpr)))]
 
 plt.figure(figsize=(10, 6), dpi=300)
 plt.plot(fpr, tpr, label=f'ROC Curve (AUC = {roc_auc:.2f})', linewidth=2)
@@ -374,6 +348,10 @@ plt.title('ROC Curve', fontsize=14)
 plt.legend(fontsize=10)
 plt.grid(True, alpha=0.3)
 plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(8, 6))
+sns.heatmap(confusion_matrix(y_test, (y_pred_proba_test >= optimal_threshold).astype(int)), annot=True, fmt='d', cmap='Blues')
 plt.show()
 
 print("\nTop 10 observations by predicted probability:")
@@ -402,6 +380,12 @@ print(test_data_sorted[['target', 'predicted_probs'] + base_features].tail(10))
 
     
 ![png](Main_files/Main_16_3.png)
+    
+
+
+
+    
+![png](Main_files/Main_16_4.png)
     
 
 
@@ -462,21 +446,18 @@ print(test_data_sorted[['target', 'predicted_probs'] + base_features].tail(10))
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-def plot_full_pairplot_with_corr_binary_target(df, continuous_vars, target_var='target', positive_value=1, negative_value=0):
-    plt.rcParams['figure.dpi'] = 300
-    plt.rcParams['savefig.dpi'] = 300
-    pairplot_data = df[continuous_vars + [target_var]].copy()
-    pairplot_data[target_var] = pairplot_data[target_var].astype('category')
-    correlation_matrix = pairplot_data[continuous_vars].corr()
-    g = sns.pairplot(pairplot_data, hue=target_var, palette={positive_value: 'green', negative_value: 'red'}, diag_kind='kde', corner=False)
-    for i, row_var in enumerate(continuous_vars):
-        for j, col_var in enumerate(continuous_vars):
-            if i != j:
-                g.axes[i, j].annotate(f"Corr: {correlation_matrix.loc[row_var, col_var]:.2f}", xy=(0.5, 0.1), xycoords="axes fraction", ha="center", fontsize=9, color="blue")
-    plt.suptitle(f"Full Pair Plot for Predictors Colored by '{target_var}'", y=1.02, fontsize=16)
-    plt.show()
+fig, axes = plt.subplots(1, 5, figsize=(25, 5), dpi=300)
 
-plot_full_pairplot_with_corr_binary_target(data, ['age_lt80', 'age_ge80', 'dist', 'income', 'gender', 'marital_status'], 'target')
+variables = ['age', 'dist', 'income', 'gender', 'marital_status']
+
+for i, var in enumerate(variables):
+    sns.kdeplot(data=data[data['target']==1][var], ax=axes[i], label='Target=1', color='blue', fill=True, linewidth=0.5, edgecolor='black')
+    sns.kdeplot(data=data[data['target']==0][var], ax=axes[i], label='Target=0', color='yellow', fill=True, linewidth=0.5, edgecolor='black')
+    axes[i].set_title(f'Distribution of {var} by Target')
+    axes[i].legend()
+
+plt.tight_layout()
+plt.show()
 ```
 
 
@@ -486,3 +467,73 @@ plot_full_pairplot_with_corr_binary_target(data, ['age_lt80', 'age_ge80', 'dist'
 
 
 #### As the data lacks strongly predictive patterns between predictors and response, the logistic regression model’s moderate confidence at best in response is actually an appropriate representation of the true relationship available to us in the given data.
+
+To demonstraight this, let's cherry pick the observations of the data which have the qualities where response is most likely. 
+
+
+```python
+filtered_data = data[
+    (data['age'].between(79, 85)) & 
+    (data['gender'] == 1) & 
+    (data['marital_status'] == 1) & 
+    (data['income'].between(0, 65000)) &
+    (data['dist'].between(0, 5))
+]
+
+print("\nNumber of observations in filtered data:", len(filtered_data))
+print("\nFiltered observations matching criteria:")
+print(filtered_data[['target', 'age', 'gender', 'marital_status', 'income', 'dist']].head())
+print(f"\nResponse rate in filtered data: {filtered_data['target'].mean():.2%}")
+```
+
+    
+    Number of observations in filtered data: 80
+    
+    Filtered observations matching criteria:
+         target  age  gender  marital_status  income  dist
+    26        1   84       1               1   45000     4
+    63        0   81       1               1   35000     0
+    103       1   82       1               1   65000     4
+    134       1   83       1               1   45000     1
+    150       0   83       1               1   45000     4
+    
+    Response rate in filtered data: 51.25%
+
+
+even when we take a slice out of the data set where response is most likely, At best we get 51.25% response rate. 
+
+Thus, observe what would happen if we evaluated a Random Forest model on this data. 
+
+
+```python
+test_data = pd.DataFrame(X_test)
+test_data['target'] = y_test
+test_data['predicted_probs'] = y_pred_proba
+test_data_sorted = test_data.sort_values(by='predicted_probs', ascending=False)
+total_positives = test_data_sorted['target'].sum()
+n_rows = len(test_data_sorted)
+
+lift_curve = [(test_data_sorted.iloc[:int((i/10)*n_rows)]['target'].sum() / total_positives * 100) for i in range(11)]
+baseline_curve = [i*10 for i in range(11)]
+
+plt.figure(figsize=(8, 6))
+plt.plot(range(0, 101, 10), lift_curve, label='Lift Curve', color='blue', marker='o', lw=2, markersize=8)
+plt.plot(range(0, 101, 10), baseline_curve, label='Baseline', color='red', linestyle='--', marker='o', lw=2, markersize=8)
+plt.text(30, lift_curve[4], f'{lift_curve[4]:.1f}%', fontsize=10)
+plt.xlabel('Percentage of Sample', fontsize=12)
+plt.ylabel('Percentage of Positive Cases', fontsize=12)
+plt.title('Lift Chart', fontsize=14, pad=20)
+plt.legend(fontsize=10)
+plt.grid(True, alpha=0.3)
+plt.tick_params(labelsize=10)
+plt.tight_layout()
+plt.show()
+```
+
+
+    
+![png](Main_files/Main_23_0.png)
+    
+
+
+It performs very poorly as random forest seeks granular patterns within the data that are predictive of response with very high confidence. As such patterns do not exist, it has very poor yield as it does not produce probabilities by general trends which is the true relationship of the variables in the given data set. 
