@@ -1,5 +1,7 @@
+# Binary Classification Modelling
+
+
 ```python
-import numpy as np 
 import pandas as pd 
 import os
 import matplotlib.pyplot as plt
@@ -11,11 +13,11 @@ data = pd.read_csv("data.csv", na_values=["", "NA"])
 import warnings
 warnings.filterwarnings('ignore')
 
-plt.rcParams['figure.figsize'] = [8, 6]  # Default figure size
-plt.rcParams['figure.dpi'] = 100  # Controls display resolution
+plt.rcParams['figure.figsize'] = [8, 6]  
+plt.rcParams['figure.dpi'] = 100  
 ```
 
-#### data preview
+### Data Preview
 
 
 ```python
@@ -30,14 +32,18 @@ print(data.head())
     4   5   76  2.594408    10-19,999      M              S       1
 
 
-#### Income: continuous, distance: integer, gender/marital_status/target: binary.
+### Prepare Data
+
+#### Predictors
+- income from categorical to continuous variable by assigning midpoint of the range as integer (income level char: "90-99,999" --> int: 95,000)
+- age and distance as integer 
+- gender, marital_status as binary
+
+#### Response
+- target as binary
 
 
 ```python
-import pandas as pd
-import numpy as np
-
-# Replace missing or empty values in columns 4, 5, 6 with "unknown"
 data.iloc[:, [3, 4, 5]] = data.iloc[:, [3, 4, 5]].applymap(lambda x: "unknown" if pd.isna(x) or x == "" else x)
 
 income_mapping = {
@@ -60,118 +66,110 @@ income_mapping = {
 }
 data["income"] = data["income"].map(income_mapping).astype(int)
 
-# Replace gender with 1 for male, 0 for female, and 0 for unknown
 gender_mapping = {"M": 1, "F": 0, "unknown": 0}
 data["gender"] = data["gender"].map(gender_mapping).astype(int)
 
-# Replace marital_status with 1 for married, 0 for single, and 1 for unknown
 marital_status_mapping = {"M": 1, "S": 0, "unknown": 1}
 data["marital_status"] = data["marital_status"].map(marital_status_mapping).astype(int)
 
-# Convert target to categorical values (0 or 1)
 data["target"] = data["target"].astype(int)
 
-# Convert distance (dist) column to integer
 data["dist"] = data["dist"].astype(int)
 ```
 
-#### Examine strength of continuous predictors within data set by plotting observed probability of response corresponding to predictor values.   
+#### Examine individual strength of continuous predictors within data set by plotting observed probability of response corresponding to predictor values.   
 
 
 ```python
 import seaborn as sns
 from scipy.stats import pointbiserialr
 
+
+def make_plot(df, var, ax, threshold=None):
+    plot_df, corr, p = plot_ratio_positive_negative_with_corr(df, var, 'target')
+    sns.scatterplot(x=var, y='ratio_positive_negative', data=plot_df, color='blue', s=150, label='Data Points', ax=ax)
+    
+    if threshold:
+        df_below = plot_df[plot_df[var] <= threshold]
+        df_above = plot_df[plot_df[var] > threshold]
+        sns.regplot(x=var, y='ratio_positive_negative', data=df_below, scatter=False,
+                   lowess=True, color='red', line_kws={'lw': 4}, 
+                   label=f'Lowess Smoother (≤{threshold})', ax=ax)
+        sns.regplot(x=var, y='ratio_positive_negative', data=df_above, scatter=False,
+                   lowess=True, color='green', line_kws={'lw': 4}, 
+                   label=f'Lowess Smoother (>{threshold})', ax=ax)
+    else:
+        sns.regplot(x=var, y='ratio_positive_negative', data=plot_df, scatter=False,
+                   lowess=True, color='red', line_kws={'lw': 4}, label='Lowess Smoother', ax=ax)
+    
+    ax.text(0.05, 0.95, f'Point-Biserial Corr: {corr:.4f}\nP-Value: {p:.4e}', 
+            transform=ax.transAxes, fontsize=16, bbox=dict(facecolor='white', alpha=0.8))
+    ax.set_title(f'Ratio of Positive Outcomes by {var.title()}', fontsize=20)
+    ax.set_xlabel(var.title(), fontsize=16)
+    ax.set_ylabel('Ratio (Positive / Total)', fontsize=16)
+    ax.set_ylim(0, 0.50)
+    ax.legend(fontsize=14)
+    ax.grid(True)
+    ax.tick_params(labelsize=14)
+
 def plot_ratio_positive_negative_with_corr(df, continuous_var, categorical_var='target', positive_value=1, negative_value=0):
     grouped = df.groupby([continuous_var, categorical_var]).size().reset_index(name='count')
     pivot = grouped.pivot(index=continuous_var, columns=categorical_var, values='count').fillna(0)
-    
-    positive_counts = pivot[positive_value] if positive_value in pivot.columns else 0
-    total_counts = positive_counts + pivot[negative_value] if negative_value in pivot.columns else positive_counts
-    ratio = positive_counts / (total_counts + 1e-9)
-    
+    ratio = pivot[positive_value] / (pivot[positive_value] + pivot[negative_value] + 1e-9)
     plot_df = pd.DataFrame({continuous_var: ratio.index, 'ratio_positive_negative': ratio.values})
     return plot_df, *pointbiserialr(df[continuous_var], df[categorical_var])
 
 
+for var in ['dist', 'income', 'age']:
+    fig, ax = plt.subplots(figsize=(20, 12))
+    make_plot(data, var, ax)
+    plt.tight_layout()
+    plt.show()
+```
+
+
+    
+![png](Main_files/Main_8_0.png)
+    
+
+
+
+    
+![png](Main_files/Main_8_1.png)
+    
+
+
+
+    
+![png](Main_files/Main_8_2.png)
+    
+
+
+#### Continuous predictors appear to have mixed effects, visualize significance of change in variable effect by plotting with separate smoother.
+
+
+```python
 fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(20, 36))
-
-dist_plot_df, dist_corr, dist_p = plot_ratio_positive_negative_with_corr(data, 'dist', 'target')
-sns.scatterplot(x='dist', y='ratio_positive_negative', data=dist_plot_df, color='blue', s=150, label='Data Points', ax=ax1)
-
-dist_plot_df_lt10 = dist_plot_df[dist_plot_df['dist'] <= 10]
-dist_plot_df_gt10 = dist_plot_df[dist_plot_df['dist'] > 10]
-
-sns.regplot(x='dist', y='ratio_positive_negative', data=dist_plot_df_lt10, scatter=False,
-            lowess=True, color='red', line_kws={'lw': 4}, label='Lowess Smoother (≤10)', ax=ax1)
-sns.regplot(x='dist', y='ratio_positive_negative', data=dist_plot_df_gt10, scatter=False,
-            lowess=True, color='green', line_kws={'lw': 4}, label='Lowess Smoother (>10)', ax=ax1)
-
-ax1.text(0.05, 0.95, f'Point-Biserial Corr: {dist_corr:.4f}\nP-Value: {dist_p:.4e}', transform=ax1.transAxes, fontsize=16, verticalalignment='top', bbox=dict(facecolor='white', alpha=0.8))
-ax1.set_title('Ratio of Positive Outcomes and Correlation by Distance', fontsize=20)
-ax1.set_xlabel('Distance', fontsize=16)
-ax1.set_ylabel('Ratio (Positive / Total)', fontsize=16)
-ax1.set_ylim(0, 0.50)
-ax1.legend(fontsize=14)
-ax1.grid(True)
-ax1.tick_params(labelsize=14)
-
-income_plot_df, income_corr, income_p = plot_ratio_positive_negative_with_corr(data, 'income', 'target')
-sns.scatterplot(x='income', y='ratio_positive_negative', data=income_plot_df, color='blue', s=150, label='Data Points', ax=ax2)
-
-income_plot_df_lt65k = income_plot_df[income_plot_df['income'] <= 65000]
-income_plot_df_gt65k = income_plot_df[income_plot_df['income'] > 65000]
-
-sns.regplot(x='income', y='ratio_positive_negative', data=income_plot_df_lt65k, scatter=False,
-            lowess=True, color='red', line_kws={'lw': 4}, label='Lowess Smoother (≤65k)', ax=ax2)
-sns.regplot(x='income', y='ratio_positive_negative', data=income_plot_df_gt65k, scatter=False,
-            lowess=True, color='green', line_kws={'lw': 4}, label='Lowess Smoother (>65k)', ax=ax2)
-
-ax2.text(0.05, 0.95, f'Point-Biserial Corr: {income_corr:.4f}\nP-Value: {income_p:.4e}', transform=ax2.transAxes, fontsize=16, verticalalignment='top', bbox=dict(facecolor='white', alpha=0.8))
-ax2.set_title('Ratio of Positive Outcomes and Correlation by Income', fontsize=20)
-ax2.set_xlabel('Income', fontsize=16)
-ax2.set_ylabel('Ratio (Positive / Total)', fontsize=16)
-ax2.set_ylim(0, 0.50)
-ax2.legend(fontsize=14)
-ax2.grid(True)
-ax2.tick_params(labelsize=14)
-
-age_plot_df, age_corr, age_p = plot_ratio_positive_negative_with_corr(data, 'age', 'target')
-sns.scatterplot(x='age', y='ratio_positive_negative', data=age_plot_df, color='blue', s=150, label='Data Points', ax=ax3)
-
-age_plot_df_lt82 = age_plot_df[age_plot_df['age'] <= 82]
-age_plot_df_gt82 = age_plot_df[age_plot_df['age'] > 82]
-
-sns.regplot(x='age', y='ratio_positive_negative', data=age_plot_df_lt82, scatter=False,
-            lowess=True, color='red', line_kws={'lw': 4}, label='Lowess Smoother (≤82)', ax=ax3)
-sns.regplot(x='age', y='ratio_positive_negative', data=age_plot_df_gt82, scatter=False,
-            lowess=True, color='green', line_kws={'lw': 4}, label='Lowess Smoother (>82)', ax=ax3)
-
-ax3.text(0.05, 0.95, f'Point-Biserial Corr: {age_corr:.4f}\nP-Value: {age_p:.4e}', transform=ax3.transAxes, fontsize=16, verticalalignment='top', bbox=dict(facecolor='white', alpha=0.8))
-ax3.set_title('Ratio of Positive Outcomes and Correlation by Age', fontsize=20)
-ax3.set_xlabel('Age', fontsize=16)
-ax3.set_ylabel('Ratio (Positive / Total)', fontsize=16)
-ax3.set_ylim(0, 0.50)
-ax3.legend(fontsize=14)
-ax3.grid(True)
-ax3.tick_params(labelsize=14)
-
+make_plot(data, 'dist', ax1, threshold=10)
+make_plot(data, 'income', ax2, threshold=45000)
+make_plot(data, 'age', ax3, threshold=82)
 plt.tight_layout()
 plt.show()
 ```
 
 
     
-![png](Main_files/Main_6_0.png)
+![png](Main_files/Main_10_0.png)
     
 
 
-These predictors are relatively weak individually within the aggregate of the data. They also have mixed effects.
+#### Age and Income have most visually apparent change in relationship to response.
 
-In model testing, "knotting" only the variable age yielded the best results. 
+#### In model testing, only accounting for the mixed effects of variable age provided significant increase in model performance. 
 
 
 ```python
+import numpy as np
 data['age_lt80'] = np.where(data['age'] < 80, data['age'], 80)
 data['age_ge80'] = np.where(data['age'] >= 80, data['age'] - 80, 0)
 print(data.head())
@@ -185,46 +183,94 @@ print(data.head())
     4   5   76     2   15000       1               0       1        76         0
 
 
-#### Examine strength of categorical predictors while checking for interactions.
+#### Examine strength of categorical predictors and check for interactions between them.
 
 
 ```python
-predictors = pd.DataFrame({
-    'Single': [data[(data['gender'] == 0) & (data['marital_status'] == 0)]['target'].mean(),
-               data[(data['gender'] == 1) & (data['marital_status'] == 0)]['target'].mean(),
-               data[data['marital_status'] == 0]['target'].mean()],
-    'Married': [data[(data['gender'] == 0) & (data['marital_status'] == 1)]['target'].mean(),
-                data[(data['gender'] == 1) & (data['marital_status'] == 1)]['target'].mean(),
-                data[data['marital_status'] == 1]['target'].mean()],
-    'Overall for gender': [data[data['gender'] == 0]['target'].mean(),
-                data[data['gender'] == 1]['target'].mean(),
-                None]
-}, index=['Female', 'Male', 'Overall for marital_status'])
+import plotly.graph_objects as go
+from scipy import stats
 
-print("Proportion of Gender and Marital_Status subset that responded")
-print(predictors)
+def plot_ratio_by_category(data, col, labels):
+    group0 = data[data[col] == 0]['target']
+    group1 = data[data[col] == 1]['target']
+    
+    ratios = [len(data[(data[col] == i) & (data['target'] == 1)]) / len(data[data[col] == i]) for i in [0,1]]
+    
+    _, pvalue = stats.ttest_ind(group0, group1)
+    
+    fig = go.Figure(data=[go.Bar(x=labels, y=ratios)])
+    fig.update_layout(
+        title=f'Observed probability of response by {col}<br>p-value: {pvalue:.4e}',
+        xaxis_title=col.replace('_',' ').title(),
+        yaxis_title='Ratio of Positive Responses', 
+        yaxis_gridcolor='lightgray',
+        showlegend=False,
+        height=600,
+        width=1000
+    )
+    fig.show()
+
+plot_ratio_by_category(data, 'gender', ['Female', 'Male'])
+plot_ratio_by_category(data, 'marital_status', ['Single', 'Married'])
 ```
 
-    Proportion of Gender and Marital_Status subset that responded
-                                  Single   Married  Overall for gender
-    Female                      0.224093  0.219920             0.22151
-    Male                        0.214156  0.304501             0.27927
-    Overall for marital_status  0.219955  0.264849                 NaN
 
 
-Gender effects relationship between marital_status and response. 
 
-##### Evaluate Logistic Regression Model with every possible combination of interaction terms and select combination with best performance. Model performance is measured by the percentage of total responses captured among the top 40% of customers, ranked by predicted response probability visualized in a lift chart. 
+
+#### Observed probability of response is significantly greater for men than women (gender = 1) and is significantly greater for married than single individuals (marital_status = 1).  
+
+### Check for interaction between gender and marital status in effects on response.
 
 
 ```python
-from sklearn.linear_model import LogisticRegression
+import plotly.graph_objects as go
+
+ratios = pd.DataFrame({
+    'Single': [len(data[(data['gender'] == 0) & (data['marital_status'] == 0) & (data['target'] == 1)]) / len(data[(data['gender'] == 0) & (data['marital_status'] == 0)]),
+               len(data[(data['gender'] == 1) & (data['marital_status'] == 0) & (data['target'] == 1)]) / len(data[(data['gender'] == 1) & (data['marital_status'] == 0)])],
+    'Married': [len(data[(data['gender'] == 0) & (data['marital_status'] == 1) & (data['target'] == 1)]) / len(data[(data['gender'] == 0) & (data['marital_status'] == 1)]),
+                len(data[(data['gender'] == 1) & (data['marital_status'] == 1) & (data['target'] == 1)]) / len(data[(data['gender'] == 1) & (data['marital_status'] == 1)])],
+    'Total': [len(data[(data['gender'] == 0) & (data['target'] == 1)]) / len(data[data['gender'] == 0]),
+              len(data[(data['gender'] == 1) & (data['target'] == 1)]) / len(data[data['gender'] == 1])]
+}, index=['Female', 'Male'])
+
+fig = go.Figure()
+
+for col in ratios.columns:
+    fig.add_trace(go.Bar(
+        name=col,
+        x=ratios.index,
+        y=ratios[col]
+    ))
+
+fig.update_layout(
+    title='Observed probability of response by gender and marital status',
+    xaxis_title='Gender',
+    yaxis_title='Ratio of Positive Responses',
+    barmode='group',
+    height=600,
+    width=1000,
+    yaxis_gridcolor='lightgray',
+    legend_title='Marital Status'
+)
+
+fig.show()
+```
+
+
+
+#### The Observed probability for male and for married individuals being greater than the women and single individuals is due to the variable interaction revealed in this plot. 
+
+#### There is interaction between variables gender and marital status such that marital status is a significant predictor of response for men but not for women.
+
+### Evaluate Logistic Regression Model on training data with every possible combination of interaction terms and select combination with best performance to evaluate on testing data.
+
+
+```python
 from sklearn.model_selection import train_test_split
 import statsmodels.api as sm
-from sklearn.metrics import roc_curve, auc, confusion_matrix
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 import pandas as pd
 from itertools import combinations
 
@@ -236,28 +282,29 @@ interaction_terms = [
     ('income', 'gender'), ('income', 'marital_status'), ('gender', 'marital_status')
 ]
 
+X_base = data[base_features].copy()
+y = data['target']
+X_train_base, X_test_base, y_train, y_test = train_test_split(X_base, y, test_size=0.2, random_state=42)
+
 results = []
 
 for r in range(len(interaction_terms) + 1):
     for terms in combinations(interaction_terms, r):
-        X = data[base_features].copy()
+        X_train = X_train_base.copy()
         
         for t1, t2 in terms:
-            X[f'{t1}_{t2}'] = X[t1] * X[t2]
+            X_train[f'{t1}_{t2}'] = X_train[t1] * X_train[t2]
             
-        y = data['target']
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-        
         model = sm.Logit(y_train, sm.add_constant(X_train)).fit(disp=0)
-        y_pred_proba_test = model.predict(sm.add_constant(X_test))
+        y_pred_proba = model.predict(sm.add_constant(X_train))
         
-        test_data = pd.DataFrame({'target': y_test, 'predicted_probs': y_pred_proba_test})
-        test_data_sorted = test_data.sort_values('predicted_probs', ascending=False)
+        train_data = pd.DataFrame({'target': y_train, 'predicted_probs': y_pred_proba})
+        train_data_sorted = train_data.sort_values('predicted_probs', ascending=False)
         
-        total_pos = test_data_sorted['target'].sum()
-        n_rows = len(test_data_sorted)
+        total_pos = train_data_sorted['target'].sum()
+        n_rows = len(train_data_sorted)
         cutoff_index = int(0.4 * n_rows)
-        lift_at_40 = test_data_sorted.iloc[:cutoff_index]['target'].sum() / total_pos * 100
+        lift_at_40 = train_data_sorted.iloc[:cutoff_index]['target'].sum() / total_pos * 100
         
         results.append({
             'interactions': terms,
@@ -267,194 +314,72 @@ for r in range(len(interaction_terms) + 1):
 results_df = pd.DataFrame(results)
 results_df = results_df.sort_values('lift_at_40', ascending=False)
 
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
-pd.set_option('display.width', None)
-pd.set_option('display.max_colwidth', None)
-
-print("\nbest interaction term combinations by lift at 40%:")
+print("\nBest interaction term combinations by lift at 40%:")
 print(results_df.head(1))
+
+best_terms = results_df.iloc[0]['interactions']
 ```
 
     
-    best interaction term combinations by lift at 40%:
-                                                                                                                                                                           interactions  \
-    10034  ((age_lt80, dist), (age_lt80, income), (age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (dist, income), (dist, marital_status), (gender, marital_status))   
+    Best interaction term combinations by lift at 40%:
+                                                                                                                                                                                                     interactions  \
+    14779  ((age_lt80, gender), (age_lt80, marital_status), (age_ge80, income), (age_ge80, gender), (age_ge80, marital_status), (dist, income), (dist, gender), (dist, marital_status), (gender, marital_status))   
     
            lift_at_40  
-    10034   62.672811  
+    14779    63.85696  
 
 
-#### Logistic Regression Model evaluated with best combination of interaction terms.
+#### Model performance is measured by the percentage of total responses captured among the top 40% of customers, ranked in order of descending predicted probability of response. 
+
+#### Logistic Regression Model evaluated with best combination of interaction terms on testing data results visualized by Lift Chart.
 
 
 ```python
-best_terms = results_df.iloc[0]['interactions']
+X_test = X_test_base.copy()
+X_train_final = X_train_base.copy()
 
-X = data[base_features].copy()
 for t1, t2 in best_terms:
-    X[f'{t1}_{t2}'] = X[t1] * X[t2]
+    X_train_final[f'{t1}_{t2}'] = X_train_base[t1] * X_train_base[t2]
+    X_test[f'{t1}_{t2}'] = X_test_base[t1] * X_test_base[t2]
 
-y = data['target']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-model = sm.Logit(y_train, sm.add_constant(X_train)).fit(disp=0)
-y_pred_proba_test = model.predict(sm.add_constant(X_test))
+final_model = sm.Logit(y_train, sm.add_constant(X_train_final)).fit(disp=0)
+y_pred_proba_test = final_model.predict(sm.add_constant(X_test))
 
 test_data = pd.DataFrame({'target': y_test, 'predicted_probs': y_pred_proba_test})
-for col in X_test.columns:
-    test_data[col] = X_test[col]
 test_data_sorted = test_data.sort_values('predicted_probs', ascending=False)
 
 total_pos = test_data_sorted['target'].sum()
 n_rows = len(test_data_sorted)
+cutoff_index = int(0.4 * n_rows)
+lift_at_40 = test_data_sorted.iloc[:cutoff_index]['target'].sum() / total_pos * 100
+
 deciles = np.linspace(0, n_rows, 11, dtype=int)
 lift_curve = [test_data_sorted.iloc[:i]['target'].sum() / total_pos * 100 for i in deciles]
 baseline = np.linspace(0, 100, 11)
 
-print(f'Yield at 40%: {lift_curve[4]:.1f}%')
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6), dpi=300)
 
-plt.figure(figsize=(10, 6), dpi=300)
-plt.plot(baseline, lift_curve, marker='o', label='Lift Curve', linewidth=2)
-plt.plot(baseline, baseline, linestyle='--', marker='o', label='Baseline', linewidth=2)
-plt.xlabel('Percentage of Data', fontsize=12)
-plt.ylabel('Percentage of Positive Cases', fontsize=12)
-plt.legend(fontsize=10)
-plt.grid(True, alpha=0.3)
-plt.tight_layout()
-plt.show()
+ax1.plot(baseline, lift_curve, marker='o', label='Lift Curve', color='red', linewidth=2)
+ax1.plot(baseline, baseline, linestyle='--', marker='o', label='Baseline', color='blue', linewidth=2)
+ax1.set_xlabel('Percentage of Data', fontsize=12)
+ax1.set_ylabel('Percentage of Positive Cases', fontsize=12)
+ax1.set_title(f'Lift Chart\nPercentage of positive responses captured in top 40% of predictions: {lift_at_40:.2f}%', 
+          fontsize=12, pad=20)
+ax1.legend(fontsize=10)
+ax1.grid(True, alpha=0.3)
+ax1.set_facecolor('white')
 
-plt.figure(figsize=(10, 6), dpi=300)
-plt.plot(range(11), np.array(lift_curve) / baseline, marker='o', linewidth=2)
-plt.axhline(y=1, linestyle='--', color='r', linewidth=2)
-plt.xlabel('Observations', fontsize=12)
-plt.ylabel('Lift Curve / Baseline', fontsize=12)
-plt.title('Advantage Plot', fontsize=14)
-plt.grid(True, alpha=0.3)
-plt.tight_layout()
-plt.show()
-
-from sklearn.metrics import roc_curve, auc
-fpr, tpr, thresholds = roc_curve(y_test, y_pred_proba_test)
+fpr, tpr, _ = roc_curve(y_test, y_pred_proba_test)
 roc_auc = auc(fpr, tpr)
-optimal_threshold = thresholds[np.argmin(np.abs(tpr - (1-fpr)))]
 
-plt.figure(figsize=(10, 6), dpi=300)
-plt.plot(fpr, tpr, label=f'ROC Curve (AUC = {roc_auc:.2f})', linewidth=2)
-plt.plot([0, 1], [0, 1], 'k--', linewidth=2)
-plt.xlabel('False Positive Rate', fontsize=12)
-plt.ylabel('True Positive Rate', fontsize=12)
-plt.title('ROC Curve', fontsize=14)
-plt.legend(fontsize=10)
-plt.grid(True, alpha=0.3)
-plt.tight_layout()
-plt.show()
-
-plt.figure(figsize=(8, 6))
-sns.heatmap(confusion_matrix(y_test, (y_pred_proba_test >= optimal_threshold).astype(int)), annot=True, fmt='d', cmap='Blues')
-plt.show()
-
-print("\nTop 10 observations by predicted probability:")
-print(test_data_sorted[['target', 'predicted_probs'] + base_features].head(10))
-
-print("\nBottom 10 observations by predicted probability:")
-print(test_data_sorted[['target', 'predicted_probs'] + base_features].tail(10))
-
-```
-
-    Yield at 40%: 62.7%
-
-
-
-    
-![png](Main_files/Main_16_1.png)
-    
-
-
-
-    
-![png](Main_files/Main_16_2.png)
-    
-
-
-
-    
-![png](Main_files/Main_16_3.png)
-    
-
-
-
-    
-![png](Main_files/Main_16_4.png)
-    
-
-
-    
-    Top 10 observations by predicted probability:
-          target  predicted_probs  age_lt80  age_ge80  dist  income  gender  \
-    1405       0         0.599455        80         0     2    5000       1   
-    2586       1         0.579098        80         1     0   15000       1   
-    184        0         0.572839        80         5     1    5000       1   
-    3331       1         0.569536        80         1     3   15000       1   
-    279        1         0.568641        80         0     5   15000       1   
-    2682       0         0.549747        80         4     4   15000       1   
-    893        0         0.547198        80         1     3   25000       1   
-    862        0         0.541378        80        10     2    5000       1   
-    63         0         0.540583        80         1     0   35000       1   
-    3379       0         0.538233        80         2    11   15000       1   
-    
-          marital_status  
-    1405               1  
-    2586               1  
-    184                1  
-    3331               1  
-    279                1  
-    2682               1  
-    893                1  
-    862                1  
-    63                 1  
-    3379               1  
-    
-    Bottom 10 observations by predicted probability:
-          target  predicted_probs  age_lt80  age_ge80  dist  income  gender  \
-    1476       0         0.034817        65         0    18  125000       0   
-    990        0         0.034035        66         0    18  225000       1   
-    1532       0         0.032403        65         0     4  250000       0   
-    538        0         0.031023        68         0     7  250000       0   
-    1916       0         0.028767        70         0    17  187500       0   
-    1926       1         0.028329        79         0    22  225000       1   
-    3594       0         0.025362        80        13    18  225000       0   
-    3052       0         0.021765        67         0    18  187500       0   
-    270        0         0.021538        80         2    25  225000       1   
-    2476       0         0.016740        65         0    12  250000       0   
-    
-          marital_status  
-    1476               1  
-    990                1  
-    1532               1  
-    538                1  
-    1916               1  
-    1926               1  
-    3594               0  
-    3052               1  
-    270                1  
-    2476               1  
-
-
-
-```python
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-fig, axes = plt.subplots(1, 5, figsize=(25, 5), dpi=300)
-
-variables = ['age', 'dist', 'income', 'gender', 'marital_status']
-
-for i, var in enumerate(variables):
-    sns.kdeplot(data=data[data['target']==1][var], ax=axes[i], label='Target=1', color='blue', fill=True, linewidth=0.5, edgecolor='black')
-    sns.kdeplot(data=data[data['target']==0][var], ax=axes[i], label='Target=0', color='yellow', fill=True, linewidth=0.5, edgecolor='black')
-    axes[i].set_title(f'Distribution of {var} by Target')
-    axes[i].legend()
+ax2.plot(fpr, tpr, color='red', linewidth=2, label=f'ROC Curve (AUC = {roc_auc:.2f})')
+ax2.plot([0, 1], [0, 1], color='blue', linestyle='--', linewidth=2, label='Random')
+ax2.set_xlabel('False Positive Rate', fontsize=12)
+ax2.set_ylabel('True Positive Rate', fontsize=12)
+ax2.set_title('ROC Curve', fontsize=12, pad=20)
+ax2.legend(fontsize=10)
+ax2.grid(True, alpha=0.3)
+ax2.set_facecolor('white')
 
 plt.tight_layout()
 plt.show()
@@ -462,78 +387,8 @@ plt.show()
 
 
     
-![png](Main_files/Main_17_0.png)
+![png](Main_files/Main_25_0.png)
     
 
 
-#### As the data lacks strongly predictive patterns between predictors and response, the logistic regression model’s moderate confidence at best in response is actually an appropriate representation of the true relationship available to us in the given data.
-
-To demonstraight this, let's cherry pick the observations of the data which have the qualities where response is most likely. 
-
-
-```python
-filtered_data = data[
-    (data['age'].between(79, 85)) & 
-    (data['gender'] == 1) & 
-    (data['marital_status'] == 1) & 
-    (data['income'].between(0, 65000)) &
-    (data['dist'].between(0, 5))
-]
-
-print("\nNumber of observations in filtered data:", len(filtered_data))
-print("\nFiltered observations matching criteria:")
-print(filtered_data[['target', 'age', 'gender', 'marital_status', 'income', 'dist']].head())
-print(f"\nResponse rate in filtered data: {filtered_data['target'].mean():.2%}")
-```
-
-    
-    Number of observations in filtered data: 80
-    
-    Filtered observations matching criteria:
-         target  age  gender  marital_status  income  dist
-    26        1   84       1               1   45000     4
-    63        0   81       1               1   35000     0
-    103       1   82       1               1   65000     4
-    134       1   83       1               1   45000     1
-    150       0   83       1               1   45000     4
-    
-    Response rate in filtered data: 51.25%
-
-
-even when we take a slice out of the data set where response is most likely, At best we get 51.25% response rate. 
-
-Thus, observe what would happen if we evaluated a Random Forest model on this data. 
-
-
-```python
-test_data = pd.DataFrame(X_test)
-test_data['target'] = y_test
-test_data['predicted_probs'] = y_pred_proba
-test_data_sorted = test_data.sort_values(by='predicted_probs', ascending=False)
-total_positives = test_data_sorted['target'].sum()
-n_rows = len(test_data_sorted)
-
-lift_curve = [(test_data_sorted.iloc[:int((i/10)*n_rows)]['target'].sum() / total_positives * 100) for i in range(11)]
-baseline_curve = [i*10 for i in range(11)]
-
-plt.figure(figsize=(8, 6))
-plt.plot(range(0, 101, 10), lift_curve, label='Lift Curve', color='blue', marker='o', lw=2, markersize=8)
-plt.plot(range(0, 101, 10), baseline_curve, label='Baseline', color='red', linestyle='--', marker='o', lw=2, markersize=8)
-plt.text(30, lift_curve[4], f'{lift_curve[4]:.1f}%', fontsize=10)
-plt.xlabel('Percentage of Sample', fontsize=12)
-plt.ylabel('Percentage of Positive Cases', fontsize=12)
-plt.title('Lift Chart', fontsize=14, pad=20)
-plt.legend(fontsize=10)
-plt.grid(True, alpha=0.3)
-plt.tick_params(labelsize=10)
-plt.tight_layout()
-plt.show()
-```
-
-
-    
-![png](Main_files/Main_23_0.png)
-    
-
-
-It performs very poorly as random forest seeks granular patterns within the data that are predictive of response with very high confidence. As such patterns do not exist, it has very poor yield as it does not produce probabilities by general trends which is the true relationship of the variables in the given data set. 
+#### If this model were used on in future advertising campains assuming that the population of potential customers does not change, we can expect to yield ~60% of the responses by advertising to 40% of the potential customers.
