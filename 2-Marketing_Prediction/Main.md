@@ -198,7 +198,7 @@ def plot_ratio_by_category(data, col, labels):
     
     _, pvalue = stats.ttest_ind(group0, group1)
     
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(20, 12), dpi=300)
     ax.bar(labels, ratios)
     ax.set_title(f'Observed probability of response by {col}\np-value: {pvalue:.4e}')
     ax.set_xlabel(col.replace('_',' ').title())
@@ -239,7 +239,7 @@ ratios = pd.DataFrame({
               len(data[(data['gender'] == 1) & (data['target'] == 1)]) / len(data[data['gender'] == 1])]
 }, index=['Female', 'Male'])
 
-fig, ax = plt.subplots(figsize=(10, 6))
+fig, ax = plt.subplots(figsize=(20, 12), dpi=300)
 
 x = np.arange(len(ratios.index))
 width = 0.25
@@ -248,13 +248,14 @@ ax.bar(x - width, ratios['Single'], width, label='Single')
 ax.bar(x, ratios['Married'], width, label='Married')
 ax.bar(x + width, ratios['Total'], width, label='Total')
 
-ax.set_title('Observed probability of response by gender and marital status')
-ax.set_xlabel('Gender')
-ax.set_ylabel('Ratio of Positive Responses')
+ax.set_title('Observed probability of response by gender and marital status', fontsize=14)
+ax.set_xlabel('Gender', fontsize=12)
+ax.set_ylabel('Ratio of Positive Responses', fontsize=12)
 ax.set_xticks(x)
-ax.set_xticklabels(ratios.index)
-ax.legend(title='Marital Status')
+ax.set_xticklabels(ratios.index, fontsize=12)
+ax.legend(title='Marital Status', fontsize=12, title_fontsize=12)
 ax.grid(axis='y', color='lightgray')
+ax.tick_params(axis='both', labelsize=12)
 
 plt.show()
 ```
