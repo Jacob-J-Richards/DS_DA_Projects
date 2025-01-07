@@ -1,4 +1,4 @@
-# Binary Classification Modelling
+# Binary Classification Predictive Modelling
 
 
 ```python
@@ -77,6 +77,19 @@ data["target"] = data["target"].astype(int)
 data["dist"] = data["dist"].astype(int)
 ```
 
+
+```python
+print(data.head())
+```
+
+       id  age  dist  income  gender  marital_status  target
+    0   1   73     4   95000       1               0       1
+    1   2   89     1  125000       1               1       1
+    2   3   85     1   15000       0               0       1
+    3   4   76     2   95000       1               1       1
+    4   5   76     2   15000       1               0       1
+
+
 #### Examine individual strength of continuous predictors within data set by plotting observed probability of response corresponding to predictor values.   
 
 
@@ -129,23 +142,23 @@ for var in ['dist', 'income', 'age']:
 
 
     
-![png](Main_files/Main_8_0.png)
+![png](Main_files/Main_9_0.png)
     
 
 
 
     
-![png](Main_files/Main_8_1.png)
+![png](Main_files/Main_9_1.png)
     
 
 
 
     
-![png](Main_files/Main_8_2.png)
+![png](Main_files/Main_9_2.png)
     
 
 
-#### Continuous predictors appear to have mixed effects, visualize significance of change in variable effect by plotting with separate smoother.
+Continuous predictors appear to have mixed effects, visualize significance of change in variable effect by plotting with separate smoother.
 
 
 ```python
@@ -159,13 +172,13 @@ plt.show()
 
 
     
-![png](Main_files/Main_10_0.png)
+![png](Main_files/Main_11_0.png)
     
 
 
-#### Age and Income have most visually apparent change in relationship to response.
+Age and Income have most visually apparent change in relationship to response.
 
-#### In model testing, only accounting for the mixed effects of variable age provided significant increase in model performance. 
+In model testing, only accounting for the mixed effects of variable age provided significant increase in model performance. 
 
 
 ```python
@@ -183,7 +196,7 @@ print(data.head())
     4   5   76     2   15000       1               0       1        76         0
 
 
-#### Examine strength of categorical predictors and check for interactions between them.
+Examine strength of categorical predictors and check for interactions between them.
 
 
 ```python
@@ -198,7 +211,7 @@ def plot_ratio_by_category(data, col, labels):
     
     _, pvalue = stats.ttest_ind(group0, group1)
     
-    fig, ax = plt.subplots(figsize=(20, 12), dpi=300)
+    fig, ax = plt.subplots(figsize=(10, 6), dpi=300)
     ax.bar(labels, ratios)
     ax.set_title(f'Observed probability of response by {col}\np-value: {pvalue:.4e}')
     ax.set_xlabel(col.replace('_',' ').title())
@@ -212,19 +225,19 @@ plot_ratio_by_category(data, 'marital_status', ['Single', 'Married'])
 
 
     
-![png](Main_files/Main_15_0.png)
+![png](Main_files/Main_16_0.png)
     
 
 
 
     
-![png](Main_files/Main_15_1.png)
+![png](Main_files/Main_16_1.png)
     
 
 
-#### Observed probability of response is significantly greater for men than women (gender = 1) and is significantly greater for married than single individuals (marital_status = 1).  
+Observed probability of response is significantly greater for men than women (gender = 1) and is significantly greater for married than single individuals (marital_status = 1).  
 
-### Check for interaction between gender and marital status in effects on response.
+Check for interaction between gender and marital status in effects on response.
 
 
 ```python
@@ -239,7 +252,7 @@ ratios = pd.DataFrame({
               len(data[(data['gender'] == 1) & (data['target'] == 1)]) / len(data[data['gender'] == 1])]
 }, index=['Female', 'Male'])
 
-fig, ax = plt.subplots(figsize=(20, 12), dpi=300)
+fig, ax = plt.subplots(figsize=(10, 6), dpi=300)
 
 x = np.arange(len(ratios.index))
 width = 0.25
@@ -262,15 +275,15 @@ plt.show()
 
 
     
-![png](Main_files/Main_18_0.png)
+![png](Main_files/Main_19_0.png)
     
 
 
-#### The Observed probability for male and for married individuals being greater than the women and single individuals is due to the variable interaction revealed in this plot. 
+The Observed probability for male and for married individuals being greater than the women and single individuals is due to the variable interaction revealed in this plot. 
 
-#### There is interaction between variables gender and marital status such that marital status is a significant predictor of response for men but not for women.
+There is interaction between variables gender and marital status such that marital status is a significant predictor of response for men but not for women.
 
-### Evaluate Logistic Regression Model on training data with every possible combination of interaction terms and select combination with best performance to evaluate on testing data.
+Evaluate Logistic Regression Model on training data with every possible combination of interaction terms and select combination with best performance to evaluate on testing data.
 
 
 ```python
@@ -332,9 +345,9 @@ best_terms = results_df.iloc[0]['interactions']
     14779  ((age_lt80, gender), (age_lt80, marital_status...    63.85696
 
 
-#### Model performance is measured by the percentage of total responses captured among the top 40% of customers, ranked in order of descending predicted probability of response. 
+Model performance is measured by the percentage of total responses captured among the top 40% of customers, ranked in order of descending predicted probability of response. 
 
-#### Logistic Regression Model evaluated with best combination of interaction terms on testing data results visualized by Lift Chart.
+Logistic Regression Model evaluated with best combination of interaction terms on testing data results visualized by Lift Chart.
 
 
 ```python
@@ -392,8 +405,8 @@ plt.show()
 
 
     
-![png](Main_files/Main_25_0.png)
+![png](Main_files/Main_26_0.png)
     
 
 
-#### If this model were used on in future advertising campains assuming that the population of potential customers does not change, we can expect to yield ~60% of the responses by advertising to 40% of the potential customers.
+If this model were used on in future advertising campaigns assuming that the population of potential customers does not change, we can expect to yield ~60% of the responses by advertising to 40% of the potential customers.
