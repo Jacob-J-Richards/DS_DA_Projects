@@ -1,0 +1,43 @@
+---
+title: "Untitled"
+output: html_document
+date: "2025-01-10"
+---
+
+
+```{r}
+setwd("~/Desktop/DS_DA_Projects/3-90+_DaysPastDue")
+train <- read.csv(file="data/train.csv", header=TRUE)
+test <- read.csv(file="data/test.csv", header=TRUE)
+
+data <- rbind(train,test)
+
+print(data)
+```
+
+
+```{r}
+data[,2][is.na(data[,2])] <- median(data[,2], na.rm=TRUE)
+
+print(data)
+```
+
+
+```{r}
+data <- data[order(data$ID, data$Year),]
+for(i in 1:nrow(data)) {
+  if(is.na(data[i,3])) {
+    id <- data[i,"ID"]
+    year <- data[i,"Year"]
+    prev_val <- data[data$ID == id & data$Year == (year-1), 3]
+    next_val <- data[data$ID == id & data$Year == (year+1), 3]
+    if(length(prev_val) > 0 && !is.na(prev_val)) {
+      data[i,3] <- prev_val
+    } else if(length(next_val) > 0 && !is.na(next_val)) {
+      data[i,3] <- next_val
+    }
+  }
+}
+print(data)
+
+```
